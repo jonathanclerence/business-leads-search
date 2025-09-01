@@ -172,44 +172,47 @@
         }
         
         async function fetchPlaces(query) {
-             if (!placesService) {
-                throw new Error("Google Places Service is not initialized. Check your API key.");
-            }
-            
-            // Step 1: Search for places (returns basic info + place_id)
-            const searchRequest = { query, fields: ['name', 'place_id', 'formatted_address'] };
-            const places = await new Promise((resolve, reject) => {
-                placesService.textSearch(searchRequest, (results, status) => {
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        resolve(results);
-                    } else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-                        resolve([]);
-                    } else {
-                        reject(new Error(`Place search failed with status: ${status}`));
-                    }
-                });
-            });
+    if (!placesService) throw new Error("Google Places Service not initialized.");
 
-            // Step 2: For each place, get detailed information (website, phone)
-            const detailPromises = places.map(place => {
-                return new Promise((resolve, reject) => {
-                    const detailRequest = {
-                        placeId: place.place_id,
-                        fields: ['name', 'website', 'formatted_phone_number', 'formatted_address']
-                    };
-                    placesService.getDetails(detailRequest, (details, status) => {
-                         if (status === google.maps.places.PlacesServiceStatus.OK) {
-                            resolve(details);
-                        } else {
-                            // Resolve with basic info if details fail, so we don't lose the result
-                            resolve({ name: place.name, formatted_address: place.formatted_address }); 
-                        }
-                    });
-                });
-            });
+    let allResults = [];
 
-            return Promise.all(detailPromises);
-        }
+    async function getAllPages(request) {
+        return new Promise((resolve, reject) => {
+            placesService.textSearch(request, async (results, status, pagination) => {
+                if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                    return reject(new Error(`Place search failed: ${status}`));
+                }
+
+                allResults.push(...results);
+
+                if (pagination && pagination.hasNextPage) {
+                    // wait before calling nextPage
+                    await new Promise(r => setTimeout(r, 2000));
+                    pagination.nextPage(); // this will trigger the callback again
+                    // but we need to keep resolving only once
+                    resolve(await getAllPages(request));
+                } else {
+                    resolve(allResults);
+                }
+            });
+        });
+    }
+
+    const allPlaces = await getAllPages({ query });
+
+    // Now get details for each
+    const detailPromises = allPlaces.map(place => new Promise(resolve => {
+        placesService.getDetails(
+            { placeId: place.place_id, fields: ['name','website','formatted_phone_number','formatted_address'] },
+            (details, status) => resolve(
+                status === google.maps.places.PlacesServiceStatus.OK ? details : place
+            )
+        );
+    }));
+
+    return Promise.all(detailPromises);
+}
+
 
         // --- UI LOGIC ---
         searchBtn.addEventListener('click', async () => {
