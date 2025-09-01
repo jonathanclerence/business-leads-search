@@ -1,0 +1,2 @@
+# Ignore the configuration file containing the secret API key
+config.js

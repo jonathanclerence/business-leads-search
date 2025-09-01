@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Lead Finder (Google API)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- The Google Maps script will be added dynamically later -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .loader {
+            border-top-color: #3498db;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Hidden div for Google Maps Service -->
+    <div id="map" class="hidden"></div>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Google Maps Lead Finder</h1>
+            <p class="mt-2 text-gray-600">Find local businesses that need a website using the official Google Maps API.</p>
+        </header>
+
+        <!-- Search Form -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="md:col-span-1">
+                    <label for="businessType" class="block text-sm font-medium text-gray-700 mb-1">Business Type</label>
+                    <input type="text" id="businessType" value="Roofing" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., Salons, Plumbers...">
+                </div>
+                <div class="md:col-span-1">
+                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    <input type="text" id="location" value="Dallas, Texas" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., Miami, Florida">
+                </div>
+                <div class="md:col-span-1 flex items-end">
+                    <button id="searchBtn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-semibold transition-colors duration-300">
+                        Find Businesses
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- API Key Instructions -->
+        <div id="api-instructions" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md mb-8" role="alert">
+            <p class="font-bold">Action Required: Add Your Google API Key</p>
+            <p>This app is ready for live data. To enable searches, you need to get a free API key from the Google Cloud Platform.</p>
+            <ol class="list-decimal list-inside mt-2 text-sm">
+                <li>Go to the <a href="https://console.cloud.google.com/" target="_blank" class="font-semibold underline hover:text-yellow-800">Google Cloud Console</a> and create a new project.</li>
+                <li>In the project, search for and enable the "<b>Places API</b>".</li>
+                <li>Go to "Credentials", create a new API Key, and copy it.</li>
+                <li>Paste your key into the JavaScript code in the `API_KEY` variable to unlock live searches.</li>
+            </ol>
+             <p class="text-xs mt-2">Note: Google requires a billing account, but provides a $200 monthly credit, which covers thousands of searches for free.</p>
+        </div>
+
+
+        <!-- Results Section -->
+        <div id="results-container" class="space-y-8 hidden">
+             <!-- Loader -->
+            <div id="loader" class="flex justify-center items-center py-10 hidden">
+                <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                 <p class="ml-4 text-gray-600">Searching for businesses...</p>
+            </div>
+
+            <!-- Error Message -->
+            <div id="error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md relative hidden" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline" id="error-text"></span>
+            </div>
+            
+            <!-- Potential Leads (No Website) -->
+            <div id="leads-section" class="hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">🚀 Potential Leads (No Website Found)</h2>
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Business Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsTable" class="bg-white divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+             <!-- All Results -->
+            <div id="all-results-section" class="hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">📋 All Businesses Found</h2>
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Business Name</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Website</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allResultsTable" class="bg-white divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="no-results" class="text-center py-10 hidden">
+                <p class="text-gray-500">No businesses found for this search.</p>
+            </div>
+        </div>
+
+    </div>
+    
+    <script src="config.js"></script> 
+
+    <script>
+        // --- CONFIGURATION ---
+        // Get your free API key from the Google Cloud Console as per the instructions above
+        
+        // --- DOM ELEMENTS ---
+        const searchBtn = document.getElementById('searchBtn');
+        const businessTypeInput = document.getElementById('businessType');
+        const locationInput = document.getElementById('location');
+        const resultsContainer = document.getElementById('results-container');
+        const loader = document.getElementById('loader');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const leadsSection = document.getElementById('leads-section');
+        const allResultsSection = document.getElementById('all-results-section');
+        const noResults = document.getElementById('no-results');
+        const leadsTable = document.getElementById('leadsTable');
+        const allResultsTable = document.getElementById('allResultsTable');
+        const apiInstructions = document.getElementById('api-instructions');
+        
+        let placesService;
+        let isGoogleApiLoaded = false;
+        
+        // --- API & DATA FETCHING LOGIC ---
+        function loadGoogleMapsAPI() {
+            if (isGoogleApiLoaded || API_KEY === 'YOUR_GOOGLE_API_KEY') return;
+            
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places&callback=initService`;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+            isGoogleApiLoaded = true;
+        }
+
+        window.initService = function() {
+            const mapDiv = document.getElementById('map');
+            if (mapDiv) {
+                const map = new google.maps.Map(mapDiv);
+                placesService = new google.maps.places.PlacesService(map);
+                console.log("Google Places Service Initialized.");
+            } else {
+                console.error("Map div not found for initializing Places Service.");
+            }
+        }
+        
+        async function fetchPlaces(query) {
+             if (!placesService) {
+                throw new Error("Google Places Service is not initialized. Check your API key.");
+            }
+            
+            // Step 1: Search for places (returns basic info + place_id)
+            const searchRequest = { query, fields: ['name', 'place_id', 'formatted_address'] };
+            const places = await new Promise((resolve, reject) => {
+                placesService.textSearch(searchRequest, (results, status) => {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        resolve(results);
+                    } else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+                        resolve([]);
+                    } else {
+                        reject(new Error(`Place search failed with status: ${status}`));
+                    }
+                });
+            });
+
+            // Step 2: For each place, get detailed information (website, phone)
+            const detailPromises = places.map(place => {
+                return new Promise((resolve, reject) => {
+                    const detailRequest = {
+                        placeId: place.place_id,
+                        fields: ['name', 'website', 'formatted_phone_number', 'formatted_address']
+                    };
+                    placesService.getDetails(detailRequest, (details, status) => {
+                         if (status === google.maps.places.PlacesServiceStatus.OK) {
+                            resolve(details);
+                        } else {
+                            // Resolve with basic info if details fail, so we don't lose the result
+                            resolve({ name: place.name, formatted_address: place.formatted_address }); 
+                        }
+                    });
+                });
+            });
+
+            return Promise.all(detailPromises);
+        }
+
+        // --- UI LOGIC ---
+        searchBtn.addEventListener('click', async () => {
+            const businessType = businessTypeInput.value.trim();
+            const location = locationInput.value.trim();
+
+            if (!businessType || !location) {
+                showError("Please enter both a business type and a location.");
+                return;
+            }
+
+            if (API_KEY === 'YOUR_GOOGLE_API_KEY') {
+                showError("Please add your Google API Key to the script file.");
+                apiInstructions.classList.remove('bg-yellow-100', 'border-yellow-500', 'text-yellow-700');
+                apiInstructions.classList.add('bg-red-100', 'border-red-500', 'text-red-700');
+                return;
+            }
+
+            resetUI();
+            loader.classList.remove('hidden');
+            resultsContainer.classList.remove('hidden');
+
+            try {
+                const results = await fetchPlaces(`${businessType} in ${location}`);
+                if (results && results.length > 0) {
+                    displayResults(results);
+                } else {
+                    noResults.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error(err);
+                showError(err.message);
+                noResults.classList.remove('hidden');
+            } finally {
+                loader.classList.add('hidden');
+            }
+        });
+
+        function displayResults(results) {
+            let leadsCount = 0;
+            allResultsTable.innerHTML = '';
+            leadsTable.innerHTML = '';
+
+            results.forEach(business => {
+                const hasWebsite = business.website && business.website.trim() !== '';
+                const phone = business.formatted_phone_number || 'N/A';
+                const address = business.formatted_address || 'N/A';
+                
+                const allRow = `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${business.name}</div></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${phone}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            ${hasWebsite ? `<a href="${business.website}" target="_blank" class="text-indigo-600 hover:text-indigo-900">${business.website}</a>` : '<span class="text-red-500 font-semibold">None</span>'}
+                        </td>
+                    </tr>`;
+                allResultsTable.innerHTML += allRow;
+
+                if (!hasWebsite) {
+                    leadsCount++;
+                    const leadRow = `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900">${business.name}</div></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${phone}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${address}</td>
+                        </tr>`;
+                    leadsTable.innerHTML += leadRow;
+                }
+            });
+            
+            allResultsSection.classList.remove('hidden');
+            if(leadsCount > 0) {
+                leadsSection.classList.remove('hidden');
+            }
+        }
+
+        function resetUI() {
+            apiInstructions.classList.add('hidden');
+            loader.classList.add('hidden');
+            errorMessage.classList.add('hidden');
+            leadsSection.classList.add('hidden');
+            allResultsSection.classList.add('hidden');
+            noResults.classList.add('hidden');
+            leadsTable.innerHTML = '';
+            allResultsTable.innerHTML = '';
+        }
+
+        function showError(message) {
+            errorText.textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+        
+        // --- INITIALIZATION ---
+        // Dynamically load the Google API once the user is ready to search
+        document.addEventListener('DOMContentLoaded', loadGoogleMapsAPI);
+        searchBtn.addEventListener('focus', loadGoogleMapsAPI);
+        businessTypeInput.addEventListener('focus', loadGoogleMapsAPI);
+        locationInput.addEventListener('focus', loadGoogleMapsAPI);
+    </script>
+</body>
+</html>
+
