@@ -1,0 +1,13 @@
+{
+  "name": "leadfinder-css",
+  "private": true,
+  "description": "Build tooling for the dashboard stylesheet. Only needed if you edit templates/index.html — the compiled static/tailwind.css is committed.",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i static/input.css -o static/tailwind.css --minify",
+    "watch:css": "tailwindcss -c tailwind.config.js -i static/input.css -o static/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17",
+    "@tailwindcss/forms": "0.5.10"
+  }
+}

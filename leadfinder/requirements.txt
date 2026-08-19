@@ -1,0 +1,18 @@
+# ---- Core (required) -------------------------------------------------------
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+jinja2==3.1.5
+python-multipart==0.0.20
+pydantic==2.10.5
+python-dotenv==1.0.1
+
+# ---- Scraper engine (required for the Playwright provider) -----------------
+playwright==1.49.1
+
+# ---- Google Places API (New) provider --------------------------------------
+httpx==0.28.1
+
+# ---- Optional: direct "Push to Google Sheets" export -----------------------
+# Safe to remove these two lines if you only need CSV.
+gspread==6.1.4
+google-auth==2.37.0

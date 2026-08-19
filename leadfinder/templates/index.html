@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Finder — Google Maps business scraper</title>
+<!-- Tailwind is pre-compiled into static/tailwind.css — no CDN, works offline,
+     and no "cdn.tailwindcss.com should not be used in production" warning.
+     If you add new Tailwind classes to this file, rebuild with:  ./build_css.sh -->
+<link rel="stylesheet" href="/static/tailwind.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📍</text></svg>">
+<style>
+  body { font-feature-settings: "cv02","cv03","cv04","cv11"; }
+  .spin { animation: spin 0.9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .fade-in { animation: fadeIn .28s ease both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  .bar-stripe {
+    background-image: linear-gradient(45deg, rgba(255,255,255,.22) 25%, transparent 25%, transparent 50%,
+      rgba(255,255,255,.22) 50%, rgba(255,255,255,.22) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem; animation: stripe 1s linear infinite;
+  }
+  @keyframes stripe { from { background-position: 0 0; } to { background-position: 1rem 0; } }
+  th[data-sort] { cursor: pointer; user-select: none; }
+  th[data-sort]:hover { color: #4f46e5; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+</style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 antialiased">
+
+<div class="min-h-full">
+  <!-- ══════════════════════════ Header ══════════════════════════ -->
+  <header class="bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-indigo-600 grid place-items-center text-white text-lg shadow-sm">📍</div>
+        <div>
+          <h1 class="text-lg font-semibold text-slate-900 leading-tight">Lead Finder</h1>
+          <p class="text-xs text-slate-500">Google Maps business scraper &amp; lead exporter</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <span id="engineBadge" class="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 font-medium text-slate-600">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span><span id="engineBadgeText">Playwright</span>
+        </span>
+        <span class="text-slate-400">v{{ version }}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+    <!-- ══════════════════════════ Search card ══════════════════════════ -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <form id="searchForm" class="p-5 sm:p-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+          <div class="md:col-span-4">
+            <label for="query" class="block text-sm font-medium text-slate-700 mb-1.5">Business type / keyword</label>
+            <input id="query" name="query" type="text" required autocomplete="off" value="a/c repair"
+              placeholder="e.g. a/c repair, dentists, hair salons"
+              class="w-full rounded-lg border-slate-300 border px-3 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+          </div>
+          <div class="md:col-span-4">
+            <label for="location" class="block text-sm font-medium text-slate-700 mb-1.5">Location</label>
+            <input id="location" name="location" type="text" autocomplete="off" value="Sydney, Australia"
+              placeholder="e.g. Sydney, Australia"
+              class="w-full rounded-lg border-slate-300 border px-3 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+          </div>
+          <div class="md:col-span-2">
+            <label for="maxResults" class="block text-sm font-medium text-slate-700 mb-1.5">Max results</label>
+            <select id="maxResults"
+              class="w-full rounded-lg border-slate-300 border px-3 py-2.5 text-sm shadow-sm bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+              <option>20</option><option selected>50</option><option>100</option><option>200</option>
+            </select>
+          </div>
+          <div class="md:col-span-2 flex items-end">
+            <button id="searchBtn" type="submit"
+              class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-300 disabled:opacity-60 disabled:cursor-not-allowed transition">
+              <svg id="searchIcon" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 11a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"/>
+              </svg>
+              <svg id="searchSpinner" class="h-4 w-4 spin hidden" fill="none" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity=".25"/>
+                <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              <span id="searchBtnText">Search</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Engine picker -->
+        <div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <span class="text-xs font-medium uppercase tracking-wide text-slate-400">Data engine</span>
+          <label class="inline-flex items-center gap-2 text-sm cursor-pointer">
+            <input type="radio" name="provider" value="playwright" checked class="text-indigo-600 focus:ring-indigo-300">
+            <span>Playwright scraper <span class="text-slate-400">— no API key, unlimited results</span></span>
+          </label>
+          <label class="inline-flex items-center gap-2 text-sm {% if not places_api_available %}opacity-50 cursor-not-allowed{% else %}cursor-pointer{% endif %}">
+            <input type="radio" name="provider" value="places_api" {% if not places_api_available %}disabled{% endif %} class="text-indigo-600 focus:ring-indigo-300">
+            <span>Google Places API
+              <span class="text-slate-400">— {% if places_api_available %}fast &amp; reliable, max 60{% else %}add GOOGLE_MAPS_API_KEY to .env{% endif %}</span>
+            </span>
+          </label>
+        </div>
+      </form>
+
+      <!-- Progress strip -->
+      <div id="progressWrap" class="hidden border-t border-slate-100 px-5 sm:px-6 py-4 bg-slate-50/70 rounded-b-2xl">
+        <div class="flex items-center justify-between gap-4 mb-2">
+          <p id="progressText" class="text-sm text-slate-600 truncate">Starting…</p>
+          <button id="cancelBtn" type="button" class="shrink-0 text-xs font-medium text-slate-500 hover:text-red-600 transition">Cancel</button>
+        </div>
+        <div class="h-2 w-full rounded-full bg-slate-200 overflow-hidden">
+          <div id="progressBar" class="h-full w-0 rounded-full bg-indigo-600 bar-stripe transition-all duration-300"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ Alerts ══════════════════════════ -->
+    <div id="alert" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
+
+    <!-- ══════════════════════════ Results ══════════════════════════ -->
+    <section id="resultsSection" class="hidden space-y-4">
+
+      <!-- Stat tiles -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Businesses found</p>
+          <p id="statTotal" class="mt-1 text-2xl font-semibold text-slate-900 tabular-nums">0</p>
+        </div>
+        <div class="bg-white rounded-xl border border-amber-200 p-4">
+          <p class="text-xs font-medium uppercase tracking-wide text-amber-700">No website 🎯</p>
+          <p id="statNoSite" class="mt-1 text-2xl font-semibold text-amber-600 tabular-nums">0</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-500">With website</p>
+          <p id="statSite" class="mt-1 text-2xl font-semibold text-slate-900 tabular-nums">0</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4">
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Has phone number</p>
+          <p id="statPhone" class="mt-1 text-2xl font-semibold text-slate-900 tabular-nums">0</p>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <div class="p-4 flex flex-col lg:flex-row lg:items-center gap-3 border-b border-slate-100">
+          <div class="relative flex-1 min-w-0">
+            <svg class="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" d="m21 21-4.35-4.35M17 11a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"/>
+            </svg>
+            <input id="filterText" type="search" placeholder="Filter results by name, address, phone…"
+              class="w-full rounded-lg border border-slate-300 pl-9 pr-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition">
+          </div>
+          <label class="inline-flex items-center gap-2 text-sm shrink-0 cursor-pointer select-none rounded-lg bg-amber-50 border border-amber-200 px-3 py-2">
+            <input id="leadsOnly" type="checkbox" class="rounded text-amber-600 focus:ring-amber-300">
+            <span class="font-medium text-amber-800">Leads only (no website)</span>
+          </label>
+          <div class="flex items-center gap-2 shrink-0">
+            <button id="copyBtn" type="button" title="Copy as TSV — paste straight into Google Sheets or Excel"
+              class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-2M8 5a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2M8 5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2m0 0h2a2 2 0 0 1 2 2v3"/></svg>
+              <span id="copyBtnText">Copy</span>
+            </button>
+            <button id="csvBtn" type="button"
+              class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              Export CSV
+            </button>
+            <button id="sheetsBtn" type="button"
+              class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition {% if not sheets_available %}opacity-60{% endif %}">
+              <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm2 16H8v-2h8v2Zm0-4H8v-2h8v2Z"/></svg>
+              Google Sheets
+            </button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-slate-50 text-slate-500">
+              <tr class="text-left text-xs uppercase tracking-wide">
+                <th class="px-4 py-3 font-semibold w-10">#</th>
+                <th class="px-4 py-3 font-semibold" data-sort="name">Business name</th>
+                <th class="px-4 py-3 font-semibold" data-sort="address">Address</th>
+                <th class="px-4 py-3 font-semibold" data-sort="phone">Phone</th>
+                <th class="px-4 py-3 font-semibold text-center" data-sort="has_website">Website?</th>
+                <th class="px-4 py-3 font-semibold">Website URL</th>
+                <th class="px-4 py-3 font-semibold whitespace-nowrap" data-sort="rating">Rating</th>
+                <th class="px-4 py-3 font-semibold w-12"></th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+
+        <div id="emptyState" class="hidden px-4 py-14 text-center">
+          <p id="emptyStateText" class="text-slate-500">No businesses match your filters.</p>
+        </div>
+        <div class="px-4 py-3 border-t border-slate-100 text-xs text-slate-500 flex justify-between">
+          <span id="rowCount">0 rows</span>
+          <span class="hidden sm:inline">Tip: “Copy” puts tab-separated rows on your clipboard — paste directly into a Google Sheet.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ Idle state ══════════════════════════ -->
+    <section id="idleState" class="rounded-2xl border-2 border-dashed border-slate-200 px-6 py-16 text-center">
+      <div class="text-4xl mb-3">🔎</div>
+      <h2 class="text-base font-semibold text-slate-700">Run a search to get started</h2>
+      <p class="mt-1 text-sm text-slate-500 max-w-md mx-auto">
+        Enter a business type and a location above. Results stream in live as each listing is read —
+        businesses with no website are flagged as leads.
+      </p>
+    </section>
+  </main>
+
+  <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 pt-2 text-xs text-slate-400">
+    Scraped data is public business information. Respect Google's Terms of Service and use reasonable rates —
+    for production or commercial volume, switch to the official Places API engine.
+  </footer>
+</div>
+
+<!-- ══════════════════════════ Sheets modal ══════════════════════════ -->
+<div id="sheetsModal" class="hidden fixed inset-0 z-50 grid place-items-center bg-slate-900/50 p-4">
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 space-y-4">
+    <h3 class="text-base font-semibold text-slate-900">Export to Google Sheets</h3>
+    <div id="sheetsUnavailable" class="hidden rounded-lg bg-amber-50 border border-amber-200 p-3 text-xs text-amber-800">
+      No service-account key detected. Set <code class="font-mono">GOOGLE_SERVICE_ACCOUNT_FILE</code> in
+      <code class="font-mono">.env</code> first — see the README section “Google Sheets export”.
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-700 mb-1">Existing spreadsheet URL <span class="text-slate-400 font-normal">(optional)</span></label>
+      <input id="sheetUrl" type="url" placeholder="https://docs.google.com/spreadsheets/d/…"
+        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+      <p class="mt-1 text-xs text-slate-500">Leave blank to create a brand-new sheet.</p>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-700 mb-1">Share the new sheet with</label>
+      <input id="shareWith" type="email" placeholder="you@example.com"
+        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+    </div>
+    <div id="sheetsResult" class="hidden text-sm rounded-lg p-3"></div>
+    <div class="flex justify-end gap-2 pt-1">
+      <button id="sheetsCancel" type="button" class="rounded-lg px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+      <button id="sheetsGo" type="button" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60">Push rows</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   State
+   ══════════════════════════════════════════════════════════════════════════ */
+const SHEETS_AVAILABLE = {{ 'true' if sheets_available else 'false' }};
+let rows = [];              // every business returned by the current job
+let jobId = null;
+let evtSource = null;
+let running = false;
+let sortKey = null, sortDir = 1;
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Search lifecycle
+   ══════════════════════════════════════════════════════════════════════════ */
+$('searchForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const query = $('query').value.trim();
+  const location = $('location').value.trim();
+  if (!query) return showAlert('error', 'Enter a business type or keyword.');
+
+  const provider = document.querySelector('input[name="provider"]:checked').value;
+  const max_results = parseInt($('maxResults').value, 10);
+
+  resetResults();
+  setBusy(true);
+  showAlert(null);
+  $('idleState').classList.add('hidden');
+  $('resultsSection').classList.remove('hidden');
+  $('progressWrap').classList.remove('hidden');
+  setProgress(0, 'Launching browser…');
+
+  try {
+    const res = await fetch('/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, location, max_results, provider }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Search failed to start.');
+    jobId = data.job_id;
+    subscribe(jobId);
+  } catch (err) {
+    setBusy(false);
+    $('progressWrap').classList.add('hidden');
+    showAlert('error', err.message);
+  }
+});
+
+function subscribe(id) {
+  if (evtSource) evtSource.close();
+  evtSource = new EventSource(`/api/stream/${id}`);
+
+  evtSource.onmessage = (e) => {
+    let d; try { d = JSON.parse(e.data); } catch { return; }
+
+    if (d.message) $('progressText').textContent = d.message;
+
+    if (d.item) addRow(d.item);
+    if (Array.isArray(d.items)) {
+      // The final payload is the authoritative, correctly-ordered set.
+      // Rows streamed in earlier arrive in whatever order the worker pool
+      // finished, so replace rather than append to restore Google's ranking.
+      if (d.event === 'done') { rows = []; }
+      d.items.forEach(addRow);
+    }
+
+    // Two phases with very different shapes: scrolling the feed (we only know
+    // how many cards have loaded) and reading details (we know x of y). Give
+    // the first phase the leading 30% of the bar so it never looks stuck.
+    const target = d.target || 0, processed = d.processed || 0, found = d.found || 0;
+    if (d.event === 'scrolling' && target > 0) {
+      setProgress(Math.min(30, Math.round(found / target * 30)));
+    } else if (target > 0 && processed > 0) {
+      setProgress(30 + Math.min(69, Math.round(processed / target * 69)));
+    }
+
+    if (d.event === 'done') {
+      setProgress(100, d.message || 'Done.');
+      finish();
+      if (!rows.length) showAlert('warn',
+        'No businesses came back. Try a broader keyword, a bigger location, or the Places API engine.');
+    } else if (d.event === 'error') {
+      finish();
+      showAlert('error', d.error || d.message || 'Something went wrong.');
+    } else if (d.event === 'cancelled') {
+      finish();
+      showAlert('warn', 'Search cancelled. Partial results are kept below.');
+    }
+  };
+
+  evtSource.onerror = () => { /* browser retries automatically */ };
+}
+
+function finish() {
+  setBusy(false);
+  if (evtSource) { evtSource.close(); evtSource = null; }
+  setTimeout(() => $('progressWrap').classList.add('hidden'), 1400);
+}
+
+$('cancelBtn').addEventListener('click', async () => {
+  if (jobId) await fetch(`/api/cancel/${jobId}`, { method: 'POST' });
+});
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Rows + rendering
+   ══════════════════════════════════════════════════════════════════════════ */
+function addRow(item) {
+  if (!item || !item.name) return;
+  const key = item.place_id || (item.name + '|' + (item.address || ''));
+  if (rows.some(r => (r.place_id || (r.name + '|' + (r.address || ''))) === key)) return;
+  rows.push(item);
+  render();
+}
+
+function visibleRows() {
+  const q = $('filterText').value.trim().toLowerCase();
+  const leadsOnly = $('leadsOnly').checked;
+  let out = rows.filter(r => {
+    if (leadsOnly && r.has_website) return false;
+    if (!q) return true;
+    return [r.name, r.address, r.phone, r.website, r.category]
+      .some(v => (v || '').toLowerCase().includes(q));
+  });
+  if (sortKey) {
+    out = [...out].sort((a, b) => {
+      let x = a[sortKey], y = b[sortKey];
+      if (sortKey === 'rating') { x = x ?? -1; y = y ?? -1; return (x - y) * sortDir; }
+      if (sortKey === 'has_website') return ((x ? 1 : 0) - (y ? 1 : 0)) * sortDir;
+      return String(x || '').localeCompare(String(y || '')) * sortDir;
+    });
+  }
+  return out;
+}
+
+function render() {
+  const list = visibleRows();
+  const tbody = $('tableBody');
+
+  tbody.innerHTML = list.map((r, i) => {
+    const phone = r.phone
+      ? `<a href="tel:${esc(r.phone.replace(/[^\d+]/g, ''))}" class="text-indigo-600 hover:underline whitespace-nowrap">${esc(r.phone)}</a>`
+      : '<span class="text-slate-400">—</span>';
+    const site = r.has_website
+      ? `<a href="${esc(r.website)}" target="_blank" rel="noopener noreferrer"
+            class="text-indigo-600 hover:underline break-all">${esc(shortUrl(r.website))}</a>`
+      : '<span class="text-slate-400">N/A</span>';
+    const badge = r.has_website
+      ? '<span class="inline-flex rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">Yes</span>'
+      : '<span class="inline-flex rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800">No</span>';
+    const rating = r.rating != null
+      ? `<span class="whitespace-nowrap">⭐ ${r.rating} <span class="text-slate-400">(${r.reviews ?? 0})</span></span>`
+      : '<span class="text-slate-400">—</span>';
+    const maps = r.maps_url
+      ? `<a href="${esc(r.maps_url)}" target="_blank" rel="noopener noreferrer" title="Open in Google Maps"
+           class="text-slate-400 hover:text-indigo-600">↗</a>` : '';
+
+    return `<tr class="fade-in ${r.has_website ? '' : 'bg-amber-50/40'} hover:bg-slate-50">
+      <td class="px-4 py-3 text-slate-400 tabular-nums">${i + 1}</td>
+      <td class="px-4 py-3">
+        <div class="font-medium text-slate-900">${esc(r.name)}</div>
+        ${r.category ? `<div class="text-xs text-slate-500">${esc(r.category)}</div>` : ''}
+      </td>
+      <td class="px-4 py-3 text-slate-600 max-w-xs">${esc(r.address) || '<span class="text-slate-400">—</span>'}</td>
+      <td class="px-4 py-3">${phone}</td>
+      <td class="px-4 py-3 text-center">${badge}</td>
+      <td class="px-4 py-3 max-w-[16rem]">${site}</td>
+      <td class="px-4 py-3 text-slate-600">${rating}</td>
+      <td class="px-4 py-3 text-center">${maps}</td>
+    </tr>`;
+  }).join('');
+
+  $('emptyState').classList.toggle('hidden', list.length > 0);
+  $('emptyStateText').textContent = (running && !rows.length)
+    ? 'Collecting listings from Google Maps…'
+    : 'No businesses match your filters.';
+  $('rowCount').textContent = `${list.length} row${list.length === 1 ? '' : 's'}` +
+    (list.length !== rows.length ? ` (of ${rows.length})` : '');
+
+  $('statTotal').textContent  = rows.length;
+  $('statNoSite').textContent = rows.filter(r => !r.has_website).length;
+  $('statSite').textContent   = rows.filter(r => r.has_website).length;
+  $('statPhone').textContent  = rows.filter(r => r.phone).length;
+}
+
+function shortUrl(u) {
+  try { const p = new URL(u); return p.hostname.replace(/^www\./, '') + (p.pathname !== '/' ? p.pathname : ''); }
+  catch { return u; }
+}
+
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    sortDir = (sortKey === k) ? -sortDir : 1;
+    sortKey = k;
+    document.querySelectorAll('th[data-sort]').forEach(t =>
+      t.textContent = t.textContent.replace(/ [▲▼]$/, ''));
+    th.textContent += sortDir === 1 ? ' ▲' : ' ▼';
+    render();
+  });
+});
+
+$('filterText').addEventListener('input', render);
+$('leadsOnly').addEventListener('change', render);
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Export
+   ══════════════════════════════════════════════════════════════════════════ */
+const HEADERS = ['Business Name','Category','Full Address','Phone Number',
+                 'Website Available?','Website URL','Rating','Review Count','Google Maps URL'];
+const toRow = (r) => [r.name || '', r.category || '', r.address || '', r.phone || '',
+                      r.has_website ? 'Yes' : 'No', r.website || 'N/A',
+                      r.rating ?? '', r.reviews ?? '', r.maps_url || ''];
+
+$('csvBtn').addEventListener('click', async () => {
+  const list = visibleRows();
+  if (!list.length) return showAlert('warn', 'Nothing to export.');
+  const filename = `leads-${slug($('query').value)}-${slug($('location').value)}.csv`;
+  try {
+    const res = await fetch('/api/export/csv', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rows: list, job_id: jobId, filename }),
+    });
+    if (!res.ok) throw new Error((await res.json()).detail || 'Export failed');
+    download(await res.blob(), filename);
+  } catch (err) {
+    // Backend unreachable? Build the CSV in the browser instead.
+    const csv = [HEADERS, ...list.map(toRow)]
+      .map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    download(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }), filename);
+  }
+});
+
+$('copyBtn').addEventListener('click', async () => {
+  const list = visibleRows();
+  if (!list.length) return showAlert('warn', 'Nothing to copy.');
+  const tsv = [HEADERS, ...list.map(toRow)]
+    .map(r => r.map(c => String(c).replace(/[\t\n\r]/g, ' ')).join('\t')).join('\n');
+  try {
+    await navigator.clipboard.writeText(tsv);
+    $('copyBtnText').textContent = `Copied ${list.length}`;
+    setTimeout(() => $('copyBtnText').textContent = 'Copy', 2000);
+  } catch { showAlert('warn', 'Clipboard blocked by the browser — use Export CSV instead.'); }
+});
+
+$('sheetsBtn').addEventListener('click', () => {
+  if (!visibleRows().length) return showAlert('warn', 'Nothing to export.');
+  $('sheetsUnavailable').classList.toggle('hidden', SHEETS_AVAILABLE);
+  $('sheetsResult').classList.add('hidden');
+  $('sheetsModal').classList.remove('hidden');
+});
+$('sheetsCancel').addEventListener('click', () => $('sheetsModal').classList.add('hidden'));
+$('sheetsModal').addEventListener('click', (e) => { if (e.target === $('sheetsModal')) $('sheetsModal').classList.add('hidden'); });
+
+$('sheetsGo').addEventListener('click', async () => {
+  const btn = $('sheetsGo'); btn.disabled = true; btn.textContent = 'Pushing…';
+  const box = $('sheetsResult');
+  try {
+    const res = await fetch('/api/export/sheets', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        rows: visibleRows(), job_id: jobId,
+        title: `Leads — ${$('query').value} — ${$('location').value}`,
+        share_with: $('shareWith').value.trim() || null,
+        spreadsheet_url: $('sheetUrl').value.trim() || null,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Export failed');
+    box.className = 'text-sm rounded-lg p-3 bg-emerald-50 border border-emerald-200 text-emerald-800';
+    box.innerHTML = `Done — <a class="underline font-medium" target="_blank" href="${esc(data.url)}">open the spreadsheet</a>` +
+      (data.service_account ? `<div class="mt-1 text-xs">Owned by <code class="font-mono">${esc(data.service_account)}</code></div>` : '');
+  } catch (err) {
+    box.className = 'text-sm rounded-lg p-3 bg-red-50 border border-red-200 text-red-700';
+    box.textContent = err.message;
+  } finally {
+    box.classList.remove('hidden');
+    btn.disabled = false; btn.textContent = 'Push rows';
+  }
+});
+
+function download(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href: url, download: filename });
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+const slug = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 30) || 'export';
+
+/* ══════════════════════════════════════════════════════════════════════════
+   UI helpers
+   ══════════════════════════════════════════════════════════════════════════ */
+function setBusy(busy) {
+  running = busy;
+  $('searchBtn').disabled = busy;
+  $('searchIcon').classList.toggle('hidden', busy);
+  $('searchSpinner').classList.toggle('hidden', !busy);
+  $('searchBtnText').textContent = busy ? 'Searching…' : 'Search';
+  render();
+}
+function setProgress(pct, text) {
+  $('progressBar').style.width = pct + '%';
+  if (text) $('progressText').textContent = text;
+  if (pct >= 100) $('progressBar').classList.remove('bar-stripe');
+  else $('progressBar').classList.add('bar-stripe');
+}
+function resetResults() { rows = []; sortKey = null; render(); }
+function showAlert(kind, msg) {
+  const el = $('alert');
+  if (!kind) return el.classList.add('hidden');
+  const styles = {
+    error: 'bg-red-50 border-red-200 text-red-700',
+    warn:  'bg-amber-50 border-amber-200 text-amber-800',
+    info:  'bg-blue-50 border-blue-200 text-blue-800',
+  };
+  el.className = `rounded-xl border px-4 py-3 text-sm ${styles[kind] || styles.info}`;
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+document.querySelectorAll('input[name="provider"]').forEach(r =>
+  r.addEventListener('change', () => {
+    $('engineBadgeText').textContent = r.value === 'places_api' ? 'Places API' : 'Playwright';
+  }));
+</script>
+</body>
+</html>
