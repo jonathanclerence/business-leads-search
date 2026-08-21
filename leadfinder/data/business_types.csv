@@ -1,0 +1,81 @@
+business_type,priority,notes
+# Business types ordered by how well they fit a "website + online booking" pitch.
+# Priority 1 runs first, so if a batch is interrupted you have COMPLETE coverage
+# of your best-converting verticals rather than a partial map of everything.
+#
+# priority 1 = the appointment book IS the business; often no website at all
+# priority 2 = books jobs or classes; booking system is an easy sell
+# priority 3 = reservations help but aren't core; lower conversion
+hair salon,1,Highest volume of no-website listings in regional towns
+barber shop,1,Very often phone-only booking
+nail salon,1,Walk-in heavy; online booking is a real upgrade
+beauty salon,1,
+day spa,1,
+massage therapist,1,
+remedial massage,1,
+pet grooming,1,Your example; strong fit
+dog grooming,1,
+mobile mechanic,1,Rarely has a website
+mechanic,1,
+physiotherapist,1,
+chiropractor,1,
+podiatrist,1,
+dentist,1,Higher budget; often has a site already
+driving school,1,Almost never has online booking
+tattoo studio,1,
+personal trainer,1,
+pilates studio,1,
+yoga studio,1,
+veterinary clinic,2,
+optometrist,2,
+acupuncture,2,
+naturopath,2,
+psychologist,2,
+speech pathologist,2,
+car detailing,2,
+car wash,2,
+tyre shop,2,
+auto electrician,2,
+panel beater,2,
+windscreen repair,2,
+lawn mowing,2,
+gardening service,2,
+landscaping,2,
+tree removal,2,
+pest control,2,
+carpet cleaning,2,
+cleaning service,2,
+handyman,2,
+plumber,2,
+electrician,2,
+locksmith,2,
+painter and decorator,2,
+air conditioning service,2,
+appliance repair,2,
+computer repair,2,
+phone repair,2,
+photographer,2,
+wedding photographer,2,
+marriage celebrant,2,
+caterer,2,
+swim school,2,
+dance school,2,
+music teacher,2,
+tutoring service,2,
+childcare centre,2,
+dog walker,2,
+pet sitter,2,
+removalist,2,
+skip bin hire,2,
+bookkeeper,2,
+accountant,2,
+mortgage broker,2,
+cafe,3,Lower fit; bookings less central
+restaurant,3,
+bakery,3,
+butcher,3,
+florist,3,
+pizza shop,3,
+fish and chips,3,
+brewery,3,
+winery,3,

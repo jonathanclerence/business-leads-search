@@ -1,0 +1,13 @@
+town,business_type
+# A hand-picked starter batch — 8 searches, ~5 minutes.
+# Run this FIRST to confirm the scraper is working before you commit to a
+# 500-search overnight sweep:
+#     python batch_cli.py run --pairs data/starter_geelong.csv --name geelong-test
+Geelong,pet grooming
+Geelong,hair salon
+Geelong,mobile mechanic
+Geelong,driving school
+Highton,pet grooming
+Highton,hair salon
+Belmont,pet grooming
+Belmont,hair salon

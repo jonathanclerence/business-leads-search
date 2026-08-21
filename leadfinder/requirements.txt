@@ -6,6 +6,10 @@ python-multipart==0.0.20
 pydantic==2.10.5
 python-dotenv==1.0.1
 
+# Lets Pydantic understand `int | None` annotations on Python 3.9.
+# Harmless on 3.10+; keep it if you're unsure which version you're running.
+eval-type-backport==0.2.2
+
 # ---- Scraper engine (required for the Playwright provider) -----------------
 playwright==1.49.1
 

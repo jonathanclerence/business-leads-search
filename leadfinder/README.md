@@ -6,7 +6,16 @@ and review count** — in a live dashboard you can filter, sort and export to
 CSV or straight into Google Sheets.
 
 Built for finding businesses that *don't* have a website: those rows are
-flagged, counted, and one checkbox away from being your entire export.
+flagged, counted, scored for how well they'd suit a website-plus-booking
+pitch, and one checkbox away from being your entire export.
+
+Two ways to use it:
+
+- **Single search** — one business type, one location, results in a live table.
+- **[Bulk batch & tracker](#bulk-batch--lead-tracker)** — feed it a CSV of
+  towns and a CSV of business types, and it runs every combination
+  automatically, deduplicates across all of them, ranks the results, and hands
+  you one CSV for your sales team.
 
 ```
 ┌─ Business type ──┐ ┌─ Location ─────────┐ ┌ Max ┐ ┌────────┐
@@ -22,22 +31,24 @@ flagged, counted, and one checkbox away from being your entire export.
 ## Table of contents
 
 1. [Quick start](#quick-start)
-2. [How it works](#how-it-works)
-3. [The two data engines](#the-two-data-engines)
-4. [Exporting](#exporting)
-5. [Configuration reference](#configuration-reference)
-6. [Project layout](#project-layout)
-7. [Tests](#tests)
-8. [When Google changes their HTML](#when-google-changes-their-html)
-9. [Troubleshooting](#troubleshooting)
-10. [What changed from the old version](#what-changed-from-the-old-version)
-11. [Legal & rate-limiting notes](#legal--rate-limiting-notes)
+2. [Bulk batch & lead tracker](#bulk-batch--lead-tracker) ← **the CSV-in/CSV-out workflow**
+3. [Lead scoring](#lead-scoring)
+4. [How it works](#how-it-works)
+5. [The two data engines](#the-two-data-engines)
+6. [Exporting](#exporting)
+7. [Configuration reference](#configuration-reference)
+8. [Project layout](#project-layout)
+9. [Tests](#tests)
+10. [When Google changes their HTML](#when-google-changes-their-html)
+11. [Troubleshooting](#troubleshooting)
+12. [What changed from the old version](#what-changed-from-the-old-version)
+13. [Legal & rate-limiting notes](#legal--rate-limiting-notes)
 
 ---
 
 ## Quick start
 
-**Requirements:** Python 3.10 or newer. Nothing else — no API key, no billing
+**Requirements:** Python 3.9 or newer. Nothing else — no API key, no billing
 account, no Node.js.
 
 ### The one-liner
@@ -74,6 +85,204 @@ Open <http://localhost:5000>, type `a/c repair` + `Sydney, Australia`, pick
 > **First search is the slow one.** Chromium cold-starts in ~3 seconds.
 > After that, budget roughly **1–2 seconds per listing** — 50 results in about
 > a minute with the default concurrency of 4.
+
+---
+
+## Bulk batch & lead tracker
+
+Searching one town at a time doesn't scale. To cover Victoria you'd be typing
+"pet groomers in Geelong", "salons in Geelong", "pet groomers in Highton" by
+hand for a week. The batch runner does the cross-referencing for you.
+
+**Two CSVs in → one scored, deduplicated CSV out.**
+
+```
+towns.csv          business_types.csv            leads.csv
+┌──────────┐       ┌──────────────┐              ┌───────────────────────────┐
+│ Geelong  │       │ hair salon   │              │ Score Grade Business Phone│
+│ Highton  │   ×   │ pet grooming │  ────────►   │  100   Hot  Snip &… 03 52…│
+│ Belmont  │       │ cafe         │   9 searches │   98   Hot  Waggy … 03 52…│
+└──────────┘       └──────────────┘              │   62  Warm  Bean T… 03 52…│
+   3 towns            3 types                    └───────────────────────────┘
+                                                  13 unique · 4 dupes collapsed
+```
+
+### Start here
+
+A sanity check before you commit a night to it — 8 searches, about 5 minutes:
+
+```bash
+python batch_cli.py run --pairs data/starter_geelong.csv --name geelong-test
+```
+
+If that returns leads, you're in business.
+
+### From the dashboard
+
+Open the **Bulk batch & tracker** tab. Pick your towns CSV and business-types
+CSV, hit **Preview plan** — it tells you how many searches that is and roughly
+how long it'll take *before* you start — then **Start batch**. Progress streams
+live, and the lead tracker below fills in as results arrive.
+
+### From the terminal (better for long runs)
+
+A 500-search sweep runs for hours and shouldn't depend on a browser tab
+staying open. Use the CLI, ideally under `screen` or `tmux`:
+
+```bash
+# See the cost first — this scrapes nothing
+python batch_cli.py run --towns data/towns_victoria.csv \
+                        --types data/business_types.csv --dry-run
+
+# The real run, trimmed to something sane
+python batch_cli.py run --towns data/towns_victoria.csv \
+                        --types data/business_types.csv \
+                        --max-towns 40 --max-types 12 --name victoria-sweep
+
+python batch_cli.py list              # all batches
+python batch_cli.py status latest     # progress + best towns/types so far
+python batch_cli.py resume latest     # pick up exactly where it stopped
+python batch_cli.py export latest --no-website --min-score 78 -o hot-leads.csv
+```
+
+`Ctrl-C` once finishes the search in flight and saves cleanly; twice force-quits.
+
+### The input files
+
+Both shipped files are starting points — **delete rows freely**. The full
+Victoria list is 156 towns × 73 types = **11,388 searches ≈ 100 hours**. That
+is not a plan; it's a warning the tool will show you.
+
+| File | What it is |
+|---|---|
+| `data/towns_victoria.csv` | 156 Victorian towns and suburbs — regional centres, their suburbs, coastal and rural towns. Has a `priority` column controlling run order and a `region` column for your own slicing. |
+| `data/business_types.csv` | 73 business types ranked by how well they fit a website-plus-booking pitch. Priority 1 is where the money is. |
+| `data/starter_geelong.csv` | 8 hand-picked pairs. Run this first. |
+
+The parser is deliberately forgiving: header row or no header row, any of
+`town` / `suburb` / `location` / `city` (or `business_type` / `type` /
+`keyword` / `niche`), extra columns ignored, `#` comment lines skipped,
+Excel BOMs handled, duplicates dropped. Or upload your own from the dashboard.
+
+A CSV with **both** a town and a business_type column is treated as an explicit
+pair list instead — use that when you want a hand-picked set rather than a full
+cross product.
+
+### Why it survives a 6-hour run
+
+You asked for files rather than a database. Files can still be crash-safe, and
+at this scale they have to be:
+
+- **Every completed search is `fsync`-ed to disk immediately.** A crash at hour
+  six costs you the one search that was in flight, not the night.
+- **Resume is exact.** `tasks.jsonl` records which town/type pairs finished;
+  resume skips them. Nothing is re-scraped, nothing is lost.
+- **A half-written final line is skipped on load** rather than poisoning the
+  file — that's the classic crash artifact, and it's tested for.
+- **Type-major run order.** It finishes every town for business type #1 before
+  starting type #2. So an interrupted run leaves you *complete* coverage of
+  your best-converting verticals rather than a partial map of everywhere. Put
+  your best types at the top of `business_types.csv`.
+- **One browser for the whole run**, recycled every 50 searches. Launching
+  Chromium per search would add 25 minutes of pure startup to a 500-search sweep.
+
+Everything lives in `batches/<timestamp>-<name>/` as plain text you can `grep`,
+`wc -l`, `tail -f`, or open in a text editor:
+
+```
+batches/20260820-1231-victoria-sweep/
+  manifest.json    config + live counters
+  tasks.jsonl      one line per finished search — the resume log
+  leads.jsonl      one line per unique business — the data
+  leads.csv        the sales hand-off, regenerated on export
+```
+
+### Deduplication (the thing that saves your reps' time)
+
+Highton and Belmont are Geelong suburbs, so Google returns overlapping results
+for all three. Without dedupe your reps ring the same salon three times and
+sound like idiots.
+
+Every lead is keyed on its Google place id (falling back to a normalised
+name+address). The first sighting wins; later ones increment a **Times Seen**
+counter and append to **Also Found In**. A business that keeps surfacing across
+searches is usually a bigger, more prominent operator — that column is a signal,
+not noise.
+
+### Blocking
+
+Google will throttle a single IP at this volume. The runner treats that as a
+first-class outcome rather than grinding out hundreds of empty results:
+
+- A CAPTCHA page raises immediately instead of returning "no results".
+- Four consecutive empty searches is treated as a soft block.
+- Either way it backs off 5 → 15 → 30 minutes, recycles the browser, and
+  retries. If it still can't get through it stops cleanly, and everything is
+  resumable once your IP cools down.
+
+To go faster or further: raise `--pace`, lower `--max-results`, split across
+nights, or set `SCRAPER_PROXY` in `.env`.
+
+---
+
+## Lead scoring
+
+Every lead gets a **0-100 booking-fit score** and a grade — Hot, Warm, Cool,
+Cold — so your reps start at the top of the file instead of working
+alphabetically through 4,000 rows.
+
+The key design decision: **category fit gates the opportunity rather than just
+adding to it.** If "no website" were a flat +40, a supermarket with no website
+would outrank a hair salon. That's exactly backwards — the pitch doesn't apply
+to a supermarket at all.
+
+```
+score = opportunity × fit   (max 45)   no website, AND the pitch applies
+      + contactability      (max 20)   is there a phone number to ring
+      + credibility         (max 20)   reviews + rating: real, busy, solvent
+      + booking bonus × fit (max 15)   appointment-driven verticals
+
+      ...then ×0.8 with no phone, because a lead your rep can't dial
+         is barely a lead
+```
+
+`fit` runs from **1.00** (hair salon — the appointment book *is* the business)
+through **0.85** (mechanic, plumber — books jobs) and **0.45** (café —
+reservations aren't core) down to **0.12** (supermarket, real estate).
+
+How that plays out:
+
+| Lead | Score | Grade |
+|---|---|---|
+| Pet groomer, no website, phone, 180 reviews, 4.9★ | 98 | Hot |
+| Hair salon, no website, phone, 12 reviews | 90 | Hot |
+| Auto repair, no website, phone, 90 reviews | 82 | Hot |
+| Café, no website, phone, 300 reviews, 4.5★ | 62 | Warm |
+| Hair salon that already **has** a website, 200 reviews | 61 | Warm |
+| Hair salon, no website, **no phone** | 50 | Cool |
+| Supermarket, no website, phone, 400 reviews | 44 | Cool |
+
+Every lead also carries a **Why This Lead** string — *"no website ·
+appointment-based · 180 reviews · 4.9★"* — so whoever picks up the phone knows
+the angle before they dial.
+
+**Tuning it for your own patch:** the taxonomy in `leadfinder/scoring.py` is
+just a keyword → tier list. Add your verticals to `CATEGORY_TIERS`, adjust the
+`FIT` numbers, and re-export — scores recompute on load.
+
+### The sales CSV
+
+20 columns, sorted best-first, with four blank ones your reps fill in:
+
+```
+Score · Grade · Business Name · Phone Number · Category · Full Address ·
+Search Town · Search Business Type · Website Available? · Website URL ·
+Rating · Review Count · Why This Lead · Google Maps URL · Times Seen ·
+Also Found In · First Found · Status · Assigned To · Last Contacted · Notes
+```
+
+`Status` is pre-filled with `New`. Hand the file to your team, let them work it
+in Google Sheets, and the columns are already there.
 
 ---
 
@@ -273,14 +482,28 @@ The dashboard is just a client for these — script against them if you like.
 
 | Method | Path | Purpose |
 |---|---|---|
-| `POST` | `/api/search` | Start a job → `{"job_id": "..."}` |
+| `POST` | `/api/search` | Start a single search → `{"job_id": "..."}` |
 | `GET` | `/api/stream/{job_id}` | Server-Sent Events progress feed |
 | `GET` | `/api/results/{job_id}` | Full JSON results |
 | `POST` | `/api/cancel/{job_id}` | Stop a running job (partial results are kept) |
 | `POST` | `/api/export/csv` | CSV download from posted rows or a job id |
 | `POST` | `/api/export/sheets` | Push to Google Sheets |
+| `GET` | `/api/batch/inputs` | CSVs available in `data/` |
+| `POST` | `/api/batch/upload` | Upload a new input CSV |
+| `POST` | `/api/batch/preview` | Search count + ETA, scrapes nothing |
+| `POST` | `/api/batch/start` | Start a bulk batch |
+| `GET` | `/api/batch/list` | All batches on disk |
+| `GET` | `/api/batch/{id}` | One batch's summary + recent searches |
+| `GET` | `/api/batch/stream/{id}` | Live batch progress (SSE) |
+| `POST` | `/api/batch/{id}/resume` | Continue an interrupted batch |
+| `POST` | `/api/batch/{id}/cancel` | Stop after the current search |
+| `POST` | `/api/batch/{id}/leads` | Filtered, scored leads |
+| `POST` | `/api/batch/{id}/export` | Sales CSV download |
 | `GET` | `/api/config` | Which optional features are configured |
 | `GET` | `/api/health` | Liveness check |
+
+Only one batch runs at a time — two would compete for the same browser and get
+you rate-limited faster.
 
 Interactive docs are at **<http://localhost:5000/docs>** (FastAPI gives you
 these for free).
@@ -302,6 +525,7 @@ curl -s localhost:5000/api/results/$JOB | jq .  # grab the data
 ```
 leadfinder/
 ├── app.py                    FastAPI app: routes, job runner, exports
+├── batch_cli.py              bulk runner for long/overnight sweeps
 ├── run.sh                    one-command setup + start
 ├── diagnose.py               selector health-check (see below)
 ├── requirements.txt
@@ -313,14 +537,24 @@ leadfinder/
 │   ├── scraper.py            Playwright engine + in-page extraction JS
 │   ├── places_api.py         Google Places API (New) engine
 │   ├── jobs.py               in-memory job store + SSE stream
+│   ├── batch.py              CSV cross-reference, pacing, block handling
+│   ├── store.py              crash-safe append-only JSONL store
+│   ├── scoring.py            booking-fit score + category taxonomy
 │   └── exporters.py          CSV + gspread
 │
-├── templates/index.html      the entire dashboard (one file)
+├── data/                     batch inputs (edit these)
+│   ├── towns_victoria.csv    156 Victorian towns and suburbs
+│   ├── business_types.csv    73 types, ranked by booking-pitch fit
+│   └── starter_geelong.csv   8 pairs — run this first
+│
+├── batches/                  one folder per run (created automatically)
+├── templates/index.html      the entire dashboard (one file, two tabs)
 ├── static/tailwind.css       pre-compiled — no CDN, works offline
 │
 └── tests/
     ├── test_extraction.py    57 checks: parsing, CSV, HTTP
     ├── test_pipeline.py      19 checks: full scrape vs. a fake Maps server
+    ├── test_batch.py         67 checks: crash/resume, dedupe, scoring, export
     └── fixtures/             HTML mirroring Google Maps' real markup
 ```
 
@@ -338,13 +572,20 @@ regenerate it.
 source .venv/bin/activate
 python tests/test_extraction.py    # parsing, CSV shape, HTTP contract
 python tests/test_pipeline.py      # full scrape against a fake Maps server
+python tests/test_batch.py         # crash/resume, dedupe, scoring, sales CSV
 ```
 
-Both run offline with no Google quota. `test_pipeline.py` spins up a local
-server that reproduces Maps' lazy-loading feed and detail-panel markup, then
-runs the real scraper against it — so scrolling, link harvesting, the
-concurrent worker pool, dedupe, result ordering and the SSE stream are all
-covered.
+**143 checks, all offline, no Google quota.** `test_pipeline.py` and
+`test_batch.py` spin up local servers that reproduce Maps' lazy-loading feed
+and detail-panel markup, then run the real scraper against them — so scrolling,
+link harvesting, the concurrent worker pool, dedupe, result ordering and the
+SSE stream are all covered against real browser behaviour.
+
+`test_batch.py` specifically covers the failure modes that would cost you a
+night's work: it kills a batch mid-run, reopens it from disk, resumes, and
+asserts that no search was repeated and no lead was lost. It also appends a
+deliberately truncated JSON line to simulate a hard kill, and checks that the
+store skips it instead of choking.
 
 ---
 
@@ -409,6 +650,25 @@ enabled on the project.
 **Google Sheets: "permission denied"**
 The service account can't see your spreadsheet. Open the sheet → Share → add
 the `client_email` from `service_account.json` as an **Editor**.
+
+**A batch stopped partway through**
+Nothing is lost — every completed search was written to disk. Run
+`python batch_cli.py resume latest`, or click **Resume** in the batch list. If
+it stopped with status `blocked`, wait a few hours first (or add a proxy),
+then resume with a higher `--pace`.
+
+**The dashboard says a batch isn't running, but I know I started it**
+Restarting the server clears the *live view*, not the data. The batch folder is
+intact — reload the batch list and hit **Resume**. This is exactly why long runs
+belong in the CLI.
+
+**"Batch X is still running"**
+Only one batch at a time by design. Stop the current one, or wait for it.
+
+**A batch finished suspiciously fast with almost no leads**
+Check the status output for `blocked` or a run of failed searches. Google
+throttling mid-run is the usual cause. `python batch_cli.py status latest`
+lists the failed searches and their errors; resuming retries them.
 
 ---
 

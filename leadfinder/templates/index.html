@@ -50,9 +50,22 @@
         <span class="text-slate-400">v{{ version }}</span>
       </div>
     </div>
+
+    <!-- Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex gap-1 -mb-px">
+        <button data-tab="search" class="tab-btn border-b-2 border-indigo-600 text-indigo-700 px-4 py-2.5 text-sm font-semibold">
+          Single search
+        </button>
+        <button data-tab="batch" class="tab-btn border-b-2 border-transparent text-slate-500 hover:text-slate-800 px-4 py-2.5 text-sm font-semibold">
+          Bulk batch &amp; tracker
+          <span id="batchRunningDot" class="hidden ml-1.5 inline-block h-2 w-2 rounded-full bg-emerald-500 align-middle"></span>
+        </button>
+      </nav>
+    </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+  <main id="tab-search" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
     <!-- ══════════════════════════ Search card ══════════════════════════ -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm">
@@ -216,6 +229,244 @@
         Enter a business type and a location above. Results stream in live as each listing is read —
         businesses with no website are flagged as leads.
       </p>
+    </section>
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       BULK BATCH + TRACKER
+       ════════════════════════════════════════════════════════════════════ -->
+  <main id="tab-batch" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+    <!-- ─────────────── Setup ─────────────── -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <div class="p-5 sm:p-6 space-y-5">
+        <div>
+          <h2 class="text-base font-semibold text-slate-900">New bulk batch</h2>
+          <p class="mt-1 text-sm text-slate-500">
+            Cross-references every town against every business type — "pet grooming in Geelong",
+            "hair salon in Geelong", "pet grooming in Highton"… Duplicates across searches are
+            collapsed automatically, and progress is saved after every single search so you can
+            stop and resume.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Towns / suburbs CSV</label>
+            <select id="bTowns" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">Business types CSV</label>
+            <select id="bTypes" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1.5">
+              Or one CSV of exact pairs <span class="font-normal text-slate-400">(skips the cross-reference)</span>
+            </label>
+            <select id="bPairs" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"></select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">Batch name</label>
+            <input id="bName" value="victoria-sweep" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">First N towns</label>
+            <input id="bMaxTowns" type="number" min="1" placeholder="all" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">First N types</label>
+            <input id="bMaxTypes" type="number" min="1" placeholder="all" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">Results / search</label>
+            <input id="bMaxResults" type="number" min="1" max="200" value="20" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5" title="Delay between searches. Lower is faster and likelier to get you blocked.">Pace (sec)</label>
+            <input id="bPace" type="number" min="0" max="120" step="1" value="8" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-600 mb-1.5">Run order</label>
+            <select id="bOrder" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+              <option value="type">By type</option>
+              <option value="town">By town</option>
+            </select>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 -mt-2">
+          <strong class="font-medium text-slate-500">By type</strong> finishes every town for your
+          first business type before moving to the second — so if a run is cut short you have
+          complete coverage of your best verticals, not a partial map of everything.
+        </p>
+
+        <!-- Preview -->
+        <div id="bPreview" class="hidden rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+            <div><p class="text-xs uppercase tracking-wide text-slate-500">Searches</p><p id="pvSearches" class="text-xl font-semibold text-slate-900 tabular-nums">0</p></div>
+            <div><p class="text-xs uppercase tracking-wide text-slate-500">Listings read</p><p id="pvListings" class="text-xl font-semibold text-slate-900 tabular-nums">0</p></div>
+            <div><p class="text-xs uppercase tracking-wide text-slate-500">Estimated time</p><p id="pvEta" class="text-xl font-semibold text-slate-900">—</p></div>
+            <div><p class="text-xs uppercase tracking-wide text-slate-500">Inputs</p><p id="pvInputs" class="text-sm text-slate-700 pt-1.5">—</p></div>
+          </div>
+          <p id="pvSample" class="mt-3 text-xs text-slate-500"></p>
+          <div id="pvWarning" class="hidden mt-3 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800"></div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="bPreviewBtn" type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+            Preview plan
+          </button>
+          <button id="bStartBtn" type="button" disabled class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
+            <svg id="bStartSpinner" class="h-4 w-4 spin hidden" fill="none" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" opacity=".25"/>
+              <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <span id="bStartText">Start batch</span>
+          </button>
+          <label class="text-sm text-slate-500 cursor-pointer hover:text-slate-800">
+            <input id="bUpload" type="file" accept=".csv" class="hidden">
+            <span class="underline">Upload a CSV</span>
+          </label>
+          <span class="text-xs text-slate-400 ml-auto hidden lg:block">
+            For very long runs use the terminal: <code class="font-mono">python batch_cli.py run …</code>
+          </span>
+        </div>
+      </div>
+
+      <!-- Live progress -->
+      <div id="bProgress" class="hidden border-t border-slate-100 bg-slate-50/70 px-5 sm:px-6 py-4 rounded-b-2xl space-y-3">
+        <div class="flex items-center justify-between gap-4">
+          <p id="bProgressText" class="text-sm font-medium text-slate-700 truncate">Starting…</p>
+          <div class="flex items-center gap-3 shrink-0">
+            <span id="bEta" class="text-xs text-slate-500"></span>
+            <button id="bCancelBtn" type="button" class="text-xs font-medium text-slate-500 hover:text-red-600">Stop</button>
+          </div>
+        </div>
+        <div class="h-2 w-full rounded-full bg-slate-200 overflow-hidden">
+          <div id="bProgressBar" class="h-full w-0 rounded-full bg-indigo-600 bar-stripe transition-all duration-300"></div>
+        </div>
+        <div class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-slate-600">
+          <span>Searches <b id="bDone" class="tabular-nums">0</b>/<span id="bTotal" class="tabular-nums">0</span></span>
+          <span>Unique leads <b id="bLeads" class="tabular-nums">0</b></span>
+          <span class="text-amber-700">No website <b id="bNoSite" class="tabular-nums">0</b></span>
+          <span class="text-red-600">Hot <b id="bHot" class="tabular-nums">0</b></span>
+        </div>
+        <p id="bLastLine" class="text-xs text-slate-400 truncate"></p>
+      </div>
+    </section>
+
+    <div id="bAlert" class="hidden rounded-xl border px-4 py-3 text-sm"></div>
+
+    <!-- ─────────────── Batch history ─────────────── -->
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <h2 class="text-base font-semibold text-slate-900">Batches</h2>
+        <button id="bRefreshBtn" type="button" class="text-xs font-medium text-indigo-600 hover:text-indigo-800">Refresh</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-50 text-slate-500">
+            <tr class="text-left text-xs uppercase tracking-wide">
+              <th class="px-4 py-3 font-semibold">Batch</th>
+              <th class="px-4 py-3 font-semibold">Status</th>
+              <th class="px-4 py-3 font-semibold">Searches</th>
+              <th class="px-4 py-3 font-semibold">Leads</th>
+              <th class="px-4 py-3 font-semibold">No website</th>
+              <th class="px-4 py-3 font-semibold text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bBatchList" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+      <div id="bNoBatches" class="hidden px-4 py-12 text-center text-slate-500">
+        No batches yet — set one up above.
+      </div>
+    </section>
+
+    <!-- ─────────────── Lead tracker ─────────────── -->
+    <section id="bTracker" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm">
+      <div class="px-5 py-4 border-b border-slate-100">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-semibold text-slate-900">Lead tracker — <span id="tkBatchName" class="text-indigo-600"></span></h2>
+            <p id="tkSubtitle" class="text-xs text-slate-500 mt-0.5"></p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="tkExportBtn" type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+              Export sales CSV
+            </button>
+            <button id="tkCopyBtn" type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+              <span id="tkCopyText">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grade tiles double as filters -->
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <button data-grade="Hot"  class="grade-chip rounded-xl border-2 border-red-200 bg-red-50 px-3 py-2.5 text-left transition hover:border-red-400">
+            <p class="text-xs font-semibold uppercase tracking-wide text-red-700">Hot 🔥</p>
+            <p id="gHot" class="text-xl font-semibold text-red-700 tabular-nums">0</p>
+          </button>
+          <button data-grade="Warm" class="grade-chip rounded-xl border-2 border-amber-200 bg-amber-50 px-3 py-2.5 text-left transition hover:border-amber-400">
+            <p class="text-xs font-semibold uppercase tracking-wide text-amber-700">Warm</p>
+            <p id="gWarm" class="text-xl font-semibold text-amber-700 tabular-nums">0</p>
+          </button>
+          <button data-grade="Cool" class="grade-chip rounded-xl border-2 border-slate-200 bg-slate-50 px-3 py-2.5 text-left transition hover:border-slate-400">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-600">Cool</p>
+            <p id="gCool" class="text-xl font-semibold text-slate-700 tabular-nums">0</p>
+          </button>
+          <button data-grade="Cold" class="grade-chip rounded-xl border-2 border-slate-200 bg-white px-3 py-2.5 text-left transition hover:border-slate-400">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Cold</p>
+            <p id="gCold" class="text-xl font-semibold text-slate-500 tabular-nums">0</p>
+          </button>
+        </div>
+
+        <!-- Filters -->
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+          <input id="tkSearch" type="search" placeholder="Filter by name, phone, address…"
+            class="flex-1 min-w-[12rem] rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+          <select id="tkTown" class="rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white"><option value="">All towns</option></select>
+          <select id="tkType" class="rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white"><option value="">All business types</option></select>
+          <label class="inline-flex items-center gap-2 text-sm cursor-pointer rounded-lg bg-amber-50 border border-amber-200 px-3 py-2">
+            <input id="tkNoSite" type="checkbox" checked class="rounded text-amber-600 focus:ring-amber-300">
+            <span class="font-medium text-amber-800">No website only</span>
+          </label>
+          <label class="inline-flex items-center gap-2 text-sm cursor-pointer rounded-lg border border-slate-200 px-3 py-2">
+            <input id="tkPhone" type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-300">
+            <span class="text-slate-700">Has phone</span>
+          </label>
+          <label class="inline-flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2">
+            <span class="text-slate-600">Min score</span>
+            <input id="tkMinScore" type="range" min="0" max="100" step="5" value="0" class="w-24 align-middle">
+            <b id="tkMinScoreVal" class="tabular-nums text-slate-800 w-6">0</b>
+          </label>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-50 text-slate-500">
+            <tr class="text-left text-xs uppercase tracking-wide">
+              <th class="px-4 py-3 font-semibold w-16">Score</th>
+              <th class="px-4 py-3 font-semibold">Business</th>
+              <th class="px-4 py-3 font-semibold">Phone</th>
+              <th class="px-4 py-3 font-semibold">Address</th>
+              <th class="px-4 py-3 font-semibold">Found via</th>
+              <th class="px-4 py-3 font-semibold">Why</th>
+              <th class="px-4 py-3 font-semibold w-12"></th>
+            </tr>
+          </thead>
+          <tbody id="tkBody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+      <div id="tkEmpty" class="hidden px-4 py-14 text-center text-slate-500">No leads match those filters.</div>
+      <div class="px-4 py-3 border-t border-slate-100 text-xs text-slate-500 flex justify-between">
+        <span id="tkCount">0 leads</span>
+        <span id="tkTruncated" class="text-amber-700"></span>
+      </div>
     </section>
   </main>
 
@@ -579,6 +830,425 @@ document.querySelectorAll('input[name="provider"]').forEach(r =>
   r.addEventListener('change', () => {
     $('engineBadgeText').textContent = r.value === 'places_api' ? 'Places API' : 'Playwright';
   }));
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BULK BATCH + TRACKER
+   ══════════════════════════════════════════════════════════════════════════ */
+let bBatchId = null;        // batch currently running
+let bSource = null;         // its EventSource
+let tkBatchId = null;       // batch open in the tracker (may differ)
+let tkLeads = [];
+let tkFacets = { towns: [], business_types: [] };
+let tkGrades = new Set();
+let tkSort = { key: 'score', dir: -1 };
+
+/* ---------- tabs ---------- */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      const on = b === btn;
+      b.classList.toggle('border-indigo-600', on);
+      b.classList.toggle('text-indigo-700', on);
+      b.classList.toggle('border-transparent', !on);
+      b.classList.toggle('text-slate-500', !on);
+    });
+    $('tab-search').classList.toggle('hidden', tab !== 'search');
+    $('tab-batch').classList.toggle('hidden', tab !== 'batch');
+    if (tab === 'batch') { loadInputs(); loadBatches(); }
+  });
+});
+
+/* ---------- input files ---------- */
+async function loadInputs() {
+  let data;
+  try { data = await (await fetch('/api/batch/inputs')).json(); }
+  catch { return bAlert('error', 'Could not read the data/ folder.'); }
+
+  const fill = (sel, files, pick, allowNone) => {
+    const el = $(sel), prev = el.value;
+    el.innerHTML = (allowNone ? '<option value="">— none —</option>' : '') +
+      files.map(f => `<option value="${esc(f.file)}">${esc(f.file)} — ${pick(f)}</option>`).join('');
+    if (prev) el.value = prev;
+  };
+  const files = data.files || [];
+  fill('bTowns', files.filter(f => f.town_count > 0), f => `${f.town_count} rows`, false);
+  fill('bTypes', files.filter(f => f.type_count > 0), f => `${f.type_count} rows`, false);
+  fill('bPairs', files.filter(f => f.pair_count > 0), f => `${f.pair_count} pairs`, true);
+
+  // Sensible defaults on first load.
+  const pref = (sel, want) => {
+    const el = $(sel);
+    if (!el.value || el.selectedIndex < 0) return;
+    const hit = [...el.options].find(o => o.value.includes(want));
+    if (hit && !el.dataset.touched) el.value = hit.value;
+  };
+  pref('bTowns', 'towns'); pref('bTypes', 'business_types');
+  ['bTowns', 'bTypes', 'bPairs'].forEach(id =>
+    $(id).addEventListener('change', () => { $(id).dataset.touched = '1'; $('bStartBtn').disabled = true; }));
+}
+
+$('bUpload').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const fd = new FormData(); fd.append('file', file);
+  try {
+    const res = await fetch('/api/batch/upload', { method: 'POST', body: fd });
+    if (!res.ok) throw new Error((await res.json()).detail || 'Upload failed');
+    await loadInputs();
+    bAlert('info', `Uploaded ${file.name}. Pick it from the dropdowns above.`);
+  } catch (err) { bAlert('error', err.message); }
+  e.target.value = '';
+});
+
+/* ---------- preview ---------- */
+function batchBody() {
+  const pairs = $('bPairs').value;
+  return {
+    name: $('bName').value.trim() || 'batch',
+    pairs_file: pairs || null,
+    towns_file: pairs ? null : ($('bTowns').value || null),
+    types_file: pairs ? null : ($('bTypes').value || null),
+    max_towns: parseInt($('bMaxTowns').value, 10) || null,
+    max_types: parseInt($('bMaxTypes').value, 10) || null,
+    max_results: parseInt($('bMaxResults').value, 10) || 20,
+    pace_seconds: parseFloat($('bPace').value) || 0,
+    order: $('bOrder').value,
+  };
+}
+
+$('bPreviewBtn').addEventListener('click', async () => {
+  bAlert(null);
+  try {
+    const res = await fetch('/api/batch/preview', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(batchBody()),
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail || 'Preview failed');
+    $('pvSearches').textContent = d.searches.toLocaleString();
+    $('pvListings').textContent = d.max_listings.toLocaleString();
+    $('pvEta').textContent = fmtDur(d.eta_seconds);
+    $('pvInputs').textContent = d.pairs
+      ? `${d.pairs} explicit pairs`
+      : `${d.towns} towns × ${d.business_types} types`;
+    $('pvSample').textContent = d.sample.length ? 'e.g. ' + d.sample.join(' · ') : '';
+    $('pvWarning').classList.toggle('hidden', !d.warning);
+    $('pvWarning').textContent = d.warning || '';
+    $('bPreview').classList.remove('hidden');
+    $('bStartBtn').disabled = d.searches === 0;
+  } catch (err) { bAlert('error', err.message); }
+});
+
+/* ---------- start / stream ---------- */
+$('bStartBtn').addEventListener('click', async () => {
+  bAlert(null);
+  bSetBusy(true);
+  try {
+    const res = await fetch('/api/batch/start', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(batchBody()),
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail || 'Could not start');
+    bBatchId = d.batch_id;
+    $('bProgress').classList.remove('hidden');
+    $('bTotal').textContent = d.searches;
+    $('batchRunningDot').classList.remove('hidden');
+    subscribeBatch(d.batch_id);
+    loadBatches();
+  } catch (err) { bSetBusy(false); bAlert('error', err.message); }
+});
+
+function subscribeBatch(id) {
+  if (bSource) bSource.close();
+  bSource = new EventSource(`/api/batch/stream/${id}`);
+  bSource.onmessage = (e) => {
+    let d; try { d = JSON.parse(e.data); } catch { return; }
+
+    if (d.message) {
+      if (d.event === 'task_start') $('bProgressText').textContent = d.message;
+      else $('bLastLine').textContent = d.message;
+    }
+    if (d.total) $('bTotal').textContent = d.total;
+    if (d.done != null) {
+      $('bDone').textContent = d.done;
+      const total = parseInt($('bTotal').textContent, 10) || 1;
+      $('bProgressBar').style.width = Math.min(100, Math.round(d.done / total * 100)) + '%';
+    }
+    if (d.leads_total != null) $('bLeads').textContent = d.leads_total;
+    if (d.leads_no_website != null) $('bNoSite').textContent = d.leads_no_website;
+    if (d.grades) $('bHot').textContent = d.grades.Hot || 0;
+    if (d.eta_seconds != null) $('bEta').textContent = 'about ' + fmtDur(d.eta_seconds) + ' left';
+
+    if (d.event === 'blocked') bAlert('warn', d.message);
+    if (d.event === 'finished') {
+      bSetBusy(false);
+      $('batchRunningDot').classList.add('hidden');
+      $('bProgressBar').classList.remove('bar-stripe');
+      $('bEta').textContent = '';
+      $('bProgressText').textContent = d.message || 'Finished.';
+      bAlert(d.status === 'done' ? 'info' : 'warn', d.message || 'Batch finished.');
+      if (bSource) { bSource.close(); bSource = null; }
+      loadBatches();
+      openTracker(bBatchId);
+    }
+  };
+}
+
+$('bCancelBtn').addEventListener('click', async () => {
+  if (!bBatchId) return;
+  await fetch(`/api/batch/${bBatchId}/cancel`, { method: 'POST' });
+  $('bProgressText').textContent = 'Stopping after the current search…';
+});
+
+function bSetBusy(busy) {
+  $('bStartBtn').disabled = busy;
+  $('bStartSpinner').classList.toggle('hidden', !busy);
+  $('bStartText').textContent = busy ? 'Running…' : 'Start batch';
+  $('bPreviewBtn').disabled = busy;
+}
+
+/* ---------- batch list ---------- */
+$('bRefreshBtn').addEventListener('click', loadBatches);
+
+async function loadBatches() {
+  let data;
+  try { data = await (await fetch('/api/batch/list')).json(); } catch { return; }
+  const items = data.batches || [];
+  $('bNoBatches').classList.toggle('hidden', items.length > 0);
+
+  const badge = (s) => {
+    const map = {
+      done:  'bg-emerald-100 text-emerald-800', running: 'bg-blue-100 text-blue-800',
+      paused:'bg-amber-100 text-amber-800',     blocked: 'bg-red-100 text-red-800',
+      error: 'bg-red-100 text-red-800',        'backing-off': 'bg-amber-100 text-amber-800',
+    };
+    return `<span class="inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${map[s] || 'bg-slate-100 text-slate-600'}">${esc(s)}</span>`;
+  };
+
+  $('bBatchList').innerHTML = items.map(b => {
+    const c = b.counts || {};
+    const incomplete = (c.tasks_done || 0) < (c.tasks_total || 0);
+    return `<tr class="hover:bg-slate-50">
+      <td class="px-4 py-3">
+        <div class="font-medium text-slate-900">${esc(b.name || b.batch_id)}</div>
+        <div class="text-xs text-slate-400 font-mono">${esc(b.batch_id)}</div>
+      </td>
+      <td class="px-4 py-3">${badge(b.live ? 'running' : (b.status || '?'))}</td>
+      <td class="px-4 py-3 tabular-nums text-slate-600">${c.tasks_done || 0}/${c.tasks_total || 0}</td>
+      <td class="px-4 py-3 tabular-nums font-medium text-slate-900">${c.leads_total || 0}</td>
+      <td class="px-4 py-3 tabular-nums font-medium text-amber-700">${c.leads_no_website || 0}</td>
+      <td class="px-4 py-3 text-right whitespace-nowrap">
+        <button data-open="${esc(b.batch_id)}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Open</button>
+        ${(!b.live && incomplete)
+          ? `<button data-resume="${esc(b.batch_id)}" class="ml-3 text-sm font-medium text-emerald-600 hover:text-emerald-800">Resume</button>`
+          : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  $('bBatchList').querySelectorAll('[data-open]').forEach(el =>
+    el.addEventListener('click', () => openTracker(el.dataset.open)));
+  $('bBatchList').querySelectorAll('[data-resume]').forEach(el =>
+    el.addEventListener('click', () => resumeBatch(el.dataset.resume)));
+}
+
+async function resumeBatch(id) {
+  bAlert(null);
+  try {
+    const res = await fetch(`/api/batch/${id}/resume`, { method: 'POST' });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail || 'Could not resume');
+    bBatchId = id;
+    bSetBusy(true);
+    $('bProgress').classList.remove('hidden');
+    $('batchRunningDot').classList.remove('hidden');
+    subscribeBatch(id);
+  } catch (err) { bAlert('error', err.message); }
+}
+
+/* ---------- tracker ---------- */
+async function openTracker(id) {
+  if (!id) return;
+  tkBatchId = id;
+  $('bTracker').classList.remove('hidden');
+  $('tkBatchName').textContent = id;
+  await loadLeads();
+  $('bTracker').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function tkFilterBody() {
+  return {
+    no_website_only: $('tkNoSite').checked,
+    require_phone: $('tkPhone').checked,
+    min_score: parseInt($('tkMinScore').value, 10) || 0,
+    grades: [...tkGrades],
+    towns: $('tkTown').value ? [$('tkTown').value] : [],
+    business_types: $('tkType').value ? [$('tkType').value] : [],
+  };
+}
+
+async function loadLeads() {
+  if (!tkBatchId) return;
+  try {
+    const res = await fetch(`/api/batch/${tkBatchId}/leads?limit=500`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(tkFilterBody()),
+    });
+    const d = await res.json();
+    if (!res.ok) throw new Error(d.detail || 'Could not load leads');
+    tkLeads = d.items || [];
+    tkFacets = d.facets || tkFacets;
+    fillFacets();
+    renderLeads(d.total, d.shown);
+    const meta = await (await fetch(`/api/batch/${tkBatchId}`)).json();
+    const g = (meta.counts || {}).grades || {};
+    $('gHot').textContent = g.Hot || 0; $('gWarm').textContent = g.Warm || 0;
+    $('gCool').textContent = g.Cool || 0; $('gCold').textContent = g.Cold || 0;
+    const c = meta.counts || {};
+    $('tkSubtitle').textContent =
+      `${c.tasks_done || 0}/${c.tasks_total || 0} searches · ${c.leads_total || 0} unique leads · ` +
+      `${c.duplicates || 0} duplicates collapsed`;
+  } catch (err) { bAlert('error', err.message); }
+}
+
+function fillFacets() {
+  const set = (sel, values, label) => {
+    const el = $(sel), prev = el.value;
+    el.innerHTML = `<option value="">${label}</option>` +
+      values.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+    el.value = prev;
+  };
+  set('tkTown', tkFacets.towns || [], 'All towns');
+  set('tkType', tkFacets.business_types || [], 'All business types');
+}
+
+function gradeClass(g) {
+  return { Hot: 'bg-red-100 text-red-800', Warm: 'bg-amber-100 text-amber-800',
+           Cool: 'bg-slate-100 text-slate-700', Cold: 'bg-slate-100 text-slate-500' }[g]
+         || 'bg-slate-100 text-slate-600';
+}
+
+let tkTotals = { total: 0, shown: 0 };
+
+function renderLeads(total, shown) {
+  // The text box filters client-side, so it re-renders without new server
+  // totals — remember the last ones rather than printing "undefined".
+  if (total != null) tkTotals = { total, shown };
+  ({ total, shown } = tkTotals);
+  const q = $('tkSearch').value.trim().toLowerCase();
+  let list = tkLeads;
+  if (q) list = list.filter(l => [l.name, l.address, l.phone, l.category]
+    .some(v => (v || '').toLowerCase().includes(q)));
+
+  $('tkBody').innerHTML = list.map(l => {
+    const phone = l.phone
+      ? `<a href="tel:${esc((l.phone || '').replace(/[^\d+]/g, ''))}" class="text-indigo-600 hover:underline whitespace-nowrap font-medium">${esc(l.phone)}</a>`
+      : '<span class="text-slate-400">—</span>';
+    const seen = (l.times_seen || 1) > 1
+      ? `<span class="ml-1 text-xs text-slate-400" title="${esc((l.also_found_in || []).join(', '))}">×${l.times_seen}</span>` : '';
+    return `<tr class="hover:bg-slate-50 align-top">
+      <td class="px-4 py-3">
+        <div class="inline-flex flex-col items-center rounded-lg px-2 py-1 ${gradeClass(l.grade)}">
+          <span class="text-base font-bold tabular-nums leading-none">${l.score}</span>
+          <span class="text-[10px] font-semibold uppercase tracking-wide">${esc(l.grade || '')}</span>
+        </div>
+      </td>
+      <td class="px-4 py-3">
+        <div class="font-medium text-slate-900">${esc(l.name)}${seen}</div>
+        <div class="text-xs text-slate-500">${esc(l.category || '')}
+          ${l.rating != null ? `· ⭐ ${l.rating} (${l.reviews ?? 0})` : ''}</div>
+        ${l.has_website
+          ? `<a href="${esc(l.website)}" target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:underline break-all">${esc(l.website)}</a>`
+          : '<span class="text-xs font-semibold text-amber-700">no website</span>'}
+      </td>
+      <td class="px-4 py-3">${phone}</td>
+      <td class="px-4 py-3 text-slate-600 max-w-xs text-xs">${esc(l.address || '')}</td>
+      <td class="px-4 py-3 text-xs text-slate-500 whitespace-nowrap">
+        ${esc(l.search_business_type || '')}<br><span class="text-slate-400">${esc(l.search_town || '')}</span>
+      </td>
+      <td class="px-4 py-3 text-xs text-slate-500 max-w-[14rem]">${esc(l.why || '')}</td>
+      <td class="px-4 py-3 text-center">
+        ${l.maps_url ? `<a href="${esc(l.maps_url)}" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-indigo-600" title="Open in Google Maps">↗</a>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  $('tkEmpty').classList.toggle('hidden', list.length > 0);
+  $('tkCount').textContent = `${list.length} lead${list.length === 1 ? '' : 's'}` +
+    (q ? ` (text-filtered from ${total})` : ` of ${total} matching`);
+  $('tkTruncated').textContent = (total > shown)
+    ? `showing the top ${shown} — Export CSV includes all ${total}` : '';
+}
+
+document.querySelectorAll('.grade-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const g = chip.dataset.grade;
+    if (tkGrades.has(g)) tkGrades.delete(g); else tkGrades.add(g);
+    chip.classList.toggle('ring-2', tkGrades.has(g));
+    chip.classList.toggle('ring-indigo-500', tkGrades.has(g));
+    loadLeads();
+  });
+});
+['tkNoSite', 'tkPhone', 'tkTown', 'tkType'].forEach(id =>
+  $(id).addEventListener('change', loadLeads));
+$('tkMinScore').addEventListener('input', () => {
+  $('tkMinScoreVal').textContent = $('tkMinScore').value;
+});
+$('tkMinScore').addEventListener('change', loadLeads);
+$('tkSearch').addEventListener('input', () => renderLeads());
+
+$('tkExportBtn').addEventListener('click', async () => {
+  if (!tkBatchId) return;
+  const filename = `leads-${tkBatchId}.csv`;
+  try {
+    const res = await fetch(`/api/batch/${tkBatchId}/export`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...tkFilterBody(), filename }),
+    });
+    if (!res.ok) throw new Error((await res.json()).detail || 'Export failed');
+    download(await res.blob(), filename);
+  } catch (err) { bAlert('error', err.message); }
+});
+
+$('tkCopyBtn').addEventListener('click', async () => {
+  if (!tkLeads.length) return bAlert('warn', 'Nothing to copy.');
+  const head = ['Score', 'Grade', 'Business Name', 'Phone Number', 'Category',
+                'Full Address', 'Search Town', 'Search Business Type',
+                'Website Available?', 'Website URL', 'Why This Lead'];
+  const tsv = [head, ...tkLeads.map(l => [
+    l.score, l.grade, l.name, l.phone, l.category, l.address,
+    l.search_town, l.search_business_type, l.has_website ? 'Yes' : 'No',
+    l.website || 'N/A', l.why,
+  ])].map(r => r.map(c => String(c ?? '').replace(/[\t\n\r]/g, ' ')).join('\t')).join('\n');
+  try {
+    await navigator.clipboard.writeText(tsv);
+    $('tkCopyText').textContent = `Copied ${tkLeads.length}`;
+    setTimeout(() => $('tkCopyText').textContent = 'Copy', 2000);
+  } catch { bAlert('warn', 'Clipboard blocked — use Export CSV.'); }
+});
+
+/* ---------- helpers ---------- */
+function fmtDur(seconds) {
+  seconds = Math.max(0, Math.round(seconds || 0));
+  const h = Math.floor(seconds / 3600), m = Math.floor((seconds % 3600) / 60);
+  if (h) return `${h}h ${String(m).padStart(2, '0')}m`;
+  if (m) return `${m}m`;
+  return `${seconds}s`;
+}
+function bAlert(kind, msg) {
+  const el = $('bAlert');
+  if (!kind) return el.classList.add('hidden');
+  const styles = {
+    error: 'bg-red-50 border-red-200 text-red-700',
+    warn:  'bg-amber-50 border-amber-200 text-amber-800',
+    info:  'bg-blue-50 border-blue-200 text-blue-800',
+  };
+  el.className = `rounded-xl border px-4 py-3 text-sm ${styles[kind] || styles.info}`;
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
 </script>
 </body>
 </html>

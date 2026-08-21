@@ -38,6 +38,15 @@ from .models import Business
 
 ProgressFn = Callable[[str, dict], Awaitable[None]]
 
+
+class BlockedError(RuntimeError):
+    """Google served a CAPTCHA / "unusual traffic" interstitial.
+
+    Raised rather than returning zero results, so a long batch run can tell
+    the difference between "this town genuinely has no dentists" and "we have
+    been rate-limited and everything from here is garbage".
+    """
+
 # A current, ordinary desktop Chrome UA. Playwright's default UA contains
 # "HeadlessChrome", which is the single easiest way to get flagged.
 USER_AGENT = (
@@ -419,6 +428,15 @@ class GoogleMapsScraper:
             timeout=settings.TIMEOUT_MS,
         )
         await self._dismiss_consent(page)
+
+        # Bail loudly if we've been rate-limited. Silently returning [] here
+        # would poison an overnight batch with hundreds of empty "results".
+        if "/sorry/" in page.url or "captcha" in page.url.lower():
+            await page.close()
+            raise BlockedError(
+                "Google served a CAPTCHA (/sorry/index). Slow down, switch IP, "
+                "or set HEADLESS=false and solve it once by hand."
+            )
 
         # Two shapes are possible: a results feed, or (for a very specific
         # query) Maps jumps straight to a single place page.

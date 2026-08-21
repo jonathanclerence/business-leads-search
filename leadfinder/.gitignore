@@ -2,9 +2,17 @@
 service_account.json
 *.json.key
 exports/*.csv
+exports/*.png
+exports/*.html
+
+# Batch output. These are your leads — delete this line if you'd rather
+# version them (they're plain text and diff fine, just potentially large).
+batches/
+
 __pycache__/
 *.py[cod]
 .venv/
 venv/
+node_modules/
 .DS_Store
 .pytest_cache/

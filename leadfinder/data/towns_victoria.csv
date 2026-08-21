@@ -1,0 +1,161 @@
+town,region,priority
+# Victoria, Australia — regional centres, their suburbs, and coastal/rural towns.
+# `priority` controls run order (lower runs first). `region` is ignored by the
+# app; it's there so you can slice this file yourself.
+# Delete rows freely — 150 towns x 70 types is 10,500 searches. Start smaller.
+Geelong,Geelong,1
+Highton,Geelong,1
+Belmont,Geelong,1
+Newtown,Geelong,1
+Grovedale,Geelong,1
+Waurn Ponds,Geelong,1
+Geelong West,Geelong,1
+North Geelong,Geelong,1
+Corio,Geelong,1
+Norlane,Geelong,1
+Lara,Geelong,1
+Leopold,Geelong,1
+Newcomb,Geelong,2
+Whittington,Geelong,2
+Herne Hill,Geelong,2
+Hamlyn Heights,Geelong,2
+Bell Post Hill,Geelong,2
+Armstrong Creek,Geelong,2
+Marshall,Geelong,2
+Curlewis,Geelong,2
+Drysdale,Bellarine,1
+Clifton Springs,Bellarine,2
+Ocean Grove,Bellarine,1
+Barwon Heads,Bellarine,1
+Portarlington,Bellarine,2
+St Leonards,Bellarine,2
+Torquay,Surf Coast,1
+Jan Juc,Surf Coast,2
+Anglesea,Surf Coast,2
+Lorne,Surf Coast,2
+Apollo Bay,Surf Coast,2
+Winchelsea,Surf Coast,3
+Bannockburn,Golden Plains,3
+Ballarat,Ballarat,1
+Wendouree,Ballarat,1
+Sebastopol,Ballarat,1
+Alfredton,Ballarat,2
+Delacombe,Ballarat,2
+Buninyong,Ballarat,2
+Miners Rest,Ballarat,3
+Creswick,Central Highlands,3
+Clunes,Central Highlands,3
+Daylesford,Central Highlands,2
+Beaufort,Central Highlands,3
+Bacchus Marsh,Moorabool,1
+Ballan,Moorabool,3
+Trentham,Central Highlands,3
+Bendigo,Bendigo,1
+Kangaroo Flat,Bendigo,1
+Eaglehawk,Bendigo,2
+Golden Square,Bendigo,2
+Strathdale,Bendigo,2
+Strathfieldsaye,Bendigo,2
+Maiden Gully,Bendigo,3
+Epsom,Bendigo,3
+Castlemaine,Mount Alexander,2
+Kyneton,Macedon Ranges,2
+Woodend,Macedon Ranges,2
+Gisborne,Macedon Ranges,2
+Romsey,Macedon Ranges,3
+Maryborough,Central Goldfields,2
+Heathcote,Bendigo,3
+Shepparton,Goulburn Valley,1
+Mooroopna,Goulburn Valley,2
+Tatura,Goulburn Valley,3
+Kyabram,Goulburn Valley,2
+Numurkah,Goulburn Valley,3
+Nathalia,Goulburn Valley,3
+Cobram,Goulburn Valley,2
+Yarrawonga,Goulburn Valley,2
+Echuca,Campaspe,1
+Rochester,Campaspe,3
+Kerang,Loddon Mallee,3
+Cohuna,Loddon Mallee,3
+Swan Hill,Loddon Mallee,2
+Mildura,Mallee,1
+Robinvale,Mallee,3
+Ouyen,Mallee,3
+Seymour,Mitchell,2
+Kilmore,Mitchell,2
+Broadford,Mitchell,3
+Wallan,Mitchell,2
+Yea,Murrindindi,3
+Alexandra,Murrindindi,3
+Mansfield,High Country,2
+Euroa,Strathbogie,3
+Nagambie,Strathbogie,3
+Benalla,Hume,2
+Wangaratta,Hume,1
+Myrtleford,Alpine,3
+Bright,Alpine,2
+Beechworth,Indigo,3
+Rutherglen,Indigo,3
+Chiltern,Indigo,3
+Wodonga,Hume,1
+Tallangatta,Hume,3
+Corryong,Hume,3
+Traralgon,Latrobe,1
+Morwell,Latrobe,1
+Moe,Latrobe,2
+Churchill,Latrobe,3
+Warragul,Baw Baw,1
+Drouin,Baw Baw,2
+Trafalgar,Baw Baw,3
+Sale,Wellington,1
+Maffra,Wellington,3
+Heyfield,Wellington,3
+Yarram,Wellington,3
+Bairnsdale,East Gippsland,1
+Paynesville,East Gippsland,3
+Lakes Entrance,East Gippsland,2
+Metung,East Gippsland,3
+Bruthen,East Gippsland,3
+Orbost,East Gippsland,3
+Omeo,East Gippsland,3
+Leongatha,South Gippsland,2
+Korumburra,South Gippsland,3
+Foster,South Gippsland,3
+Inverloch,Bass Coast,2
+Wonthaggi,Bass Coast,2
+Cowes,Bass Coast,2
+San Remo,Bass Coast,3
+Warrnambool,South West,1
+Port Fairy,South West,2
+Koroit,South West,3
+Terang,South West,3
+Camperdown,South West,3
+Colac,South West,2
+Portland,South West,2
+Hamilton,South West,2
+Casterton,South West,3
+Horsham,Wimmera,1
+Stawell,Wimmera,2
+Ararat,Wimmera,2
+Nhill,Wimmera,3
+Warracknabeal,Wimmera,3
+St Arnaud,Wimmera,3
+Melton,Melbourne Fringe,1
+Sunbury,Melbourne Fringe,1
+Pakenham,Melbourne Fringe,1
+Officer,Melbourne Fringe,2
+Cranbourne,Melbourne Fringe,1
+Berwick,Melbourne Fringe,1
+Emerald,Melbourne Fringe,3
+Koo Wee Rup,Melbourne Fringe,3
+Healesville,Yarra Valley,2
+Lilydale,Yarra Valley,1
+Yarra Glen,Yarra Valley,3
+Whittlesea,Melbourne Fringe,3
+Diamond Creek,Melbourne Fringe,2
+Hurstbridge,Melbourne Fringe,3
+Mornington,Mornington Peninsula,1
+Rosebud,Mornington Peninsula,1
+Hastings,Mornington Peninsula,2
+Sorrento,Mornington Peninsula,2
+Dromana,Mornington Peninsula,2
