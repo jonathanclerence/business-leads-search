@@ -105,11 +105,11 @@ _KIND_RULES = [
     (r"nail", "nail-salon"),
     (r"hair|stylist", "hair-salon"),
     (r"tattoo|piercing", "tattoo"),
-    (r"day spa|^spa$", "day-spa"),
+    (r"day spa|health spa|beauty spa|^spa$", "day-spa"),
     (r"massage|remedial|myotherap", "massage"),
-    (r"beaut|lash|brow|wax|skin care|cosmetic|tanning|make-?up", "beauty-salon"),
+    (r"beaut|lash|brow|wax|skin care|cosmetic|tanning|make-?up|facial|spa", "beauty-salon"),
     (r"acupunct|chinese medicine", "acupuncture"),
-    (r"naturopath|herbal|wellness|homeopath|kinesiolog|reiki", "naturopath"),
+    (r"naturopath|herbal|wellness|homeopath|kinesiolog|reiki|nutrition|holistic|alternative medicine", "naturopath"),
     (r"vet|animal hospital", "vet"),
     (r"groom", "pet-grooming"),
     (r"dog walk", "dog-walker"),
@@ -118,7 +118,7 @@ _KIND_RULES = [
     (r"chiropract", "chiropractor"),
     (r"podiatr|foot", "podiatrist"),
     (r"dent|orthodont", "dentist"),
-    (r"optom|optician|eye", "optometrist"),
+    (r"optom|optician|ophthalm|eye", "optometrist"),
     (r"psycholog|counsel|psychotherap|mental health", "psychologist"),
     (r"speech", "speech-pathologist"),
     (r"medical|general practitioner|doctor", "medical"),
@@ -126,7 +126,7 @@ _KIND_RULES = [
     (r"yoga", "yoga"),
     (r"gym|fitness cent", "gym"),
     (r"personal trainer|fitness|boot ?camp", "personal-trainer"),
-    (r"dance", "dance-school"),
+    (r"dance|ballet", "dance-school"),
     (r"music|guitar|piano|singing|vocal|drum", "music-teacher"),
     (r"swim", "swim-school"),
     (r"child ?care|day care|kindergarten|preschool|early learning", "childcare"),
@@ -138,15 +138,15 @@ _KIND_RULES = [
     (r"panel|body shop|smash|auto restoration|spray paint", "panel-beater"),
     (r"detail", "car-detailing"),
     (r"car wash", "car-wash"),
-    (r"mechanic|auto repair|car repair|truck repair|diesel|auto parts|towing|motorcycle", "mechanic"),
+    (r"mechanic|auto repair|car repair|truck repair|diesel|auto parts|towing|motorcycle|brake|engine rebuild|car inspection|rv repair", "mechanic"),
     (r"plumb|gas fitt|hot water|drain", "plumber"),
     (r"electric", "electrician"),
-    (r"locksmith", "locksmith"),
-    (r"appliance|refrigerator repair|washing machine", "appliance-repair"),
+    (r"locksmith|key dup", "locksmith"),
+    (r"appliance|refrigerator repair|washing machine|washer|television repair|sewing machine repair|electronics repair|antenna", "appliance-repair"),
     (r"air condition|hvac|heating|refrigerat", "air-conditioning"),
     (r"pest|termite", "pest-control"),
     (r"carpet|tile clean|upholster", "carpet-cleaning"),
-    (r"clean|maid|pressure wash|gutter|laundr", "cleaning"),
+    (r"clean|maid|pressure wash|gutter|laundr|janitor|chimney|septic", "cleaning"),
     (r"moving|removal|relocation", "removalist"),
     (r"skip|waste|rubbish|garbage|junk", "skip-bin"),
     (r"tree|arborist|stump", "tree-removal"),
@@ -154,8 +154,8 @@ _KIND_RULES = [
     (r"lawn|mow", "lawn-mowing"),
     (r"garden", "gardening"),
     (r"paint", "painter"),
-    (r"handy|property maint|carpent|contractor|builder|construct|glazier|glass|excavat|concret|fenc|roof|tiler|renovat", "handyman"),
-    (r"photo", "photographer"),
+    (r"handy|property maint|carpent|contractor|builder|construct|glazier|glass|excavat|earth ?works|concret|fenc|roof|tiler|renovat", "handyman"),
+    (r"photo|portrait|video produc", "photographer"),
     (r"celebrant|wedding", "celebrant"),
     (r"florist|flower", "florist"),
     (r"cater", "caterer"),
@@ -168,12 +168,16 @@ _KIND_RULES = [
     (r"cafe|café|coffee|espresso|brunch|tea house", "cafe"),
     (r"restaurant|takeaway|takeout|kebab|noodle|bistro|diner|grill|sushi|burger|chicken|^bar$|pub", "restaurant"),
     (r"bookkeep", "bookkeeper"),
-    (r"account|tax", "accountant"),
+    (r"account|tax|financial plan", "accountant"),
     (r"mortgage|loan|finance|broker", "mortgage-broker"),
     (r"phone|cell", "phone-repair"),
     (r"computer|laptop|it support|software", "computer-repair"),
 ]
 _KIND_RULES_RE = [(re.compile(p), k) for p, k in _KIND_RULES]
+
+# Google's placeholder categories; only for these (and a blank one) do we fall
+# back to the business type the scraper searched for.
+_PLACEHOLDER_CATEGORIES = {"", "add website", "add hours", "store", "repair service", "service"}
 
 # The business types the scraper searched for, used when Google's category is
 # missing or unhelpful ("Store", "Add website").
@@ -216,7 +220,10 @@ def classify(category: str, search_type: str, name: str = "") -> str:
             kind = k
             break
     if not kind:
-        kind = _SEARCH_TYPE_KIND.get((search_type or "").strip().lower(), "local")
+        # A real category we have no copy for (a pharmacy found by a "nail
+        # salon" search) gets the generic template, never another trade's.
+        kind = (_SEARCH_TYPE_KIND.get((search_type or "").strip().lower(), "local")
+                if cat in _PLACEHOLDER_CATEGORIES else "local")
     if kind == "mechanic" and "mobile" in (name or "").lower():
         kind = "mobile-mechanic"
     return kind if kind in KINDS else "local"

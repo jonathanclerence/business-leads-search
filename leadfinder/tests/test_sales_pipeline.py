@@ -66,6 +66,8 @@ def test_classify():
     check("placeholder category falls back to search type", classify("Add website", "plumber"), "plumber")
     check("mobile mechanic from name", classify("Mechanic", "mechanic", "Dave's Mobile Mechanic"), "mobile-mechanic")
     check("unknown → local", classify("Something odd", "nothing"), "local")
+    check("real but unknown category → generic, not the search type", classify("Pharmacy", "nail salon"), "local")
+    check("ballet school is a dance school", classify("Ballet school", "dance school"), "dance-school")
     check("every kind has a known theme", all(k["theme"] in THEME_ABOUT for k in KINDS.values()), True)
     check("every kind has 4 services", all(len(k["services"]) == 4 for k in KINDS.values()), True)
     check("slug", slugify("Mansfield Nails & Spa"), "mansfield-nails-and-spa")
