@@ -94,7 +94,9 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
     t_accent, t_type, t_paper = THEME_STYLE.get(theme, THEME_STYLE["local"])
     accent = lead.get("accent") if _HEX.match(lead.get("accent") or "") else t_accent
     hours = _json(lead.get("hours_json"))
-    quotes = _json(lead.get("reviews_json")) or []
+    # The template adds its own curly quotes, so drop any the reviewer typed.
+    quotes = [dict(q, text=q["text"].strip().strip('"“”\'').strip())
+              for q in (_json(lead.get("reviews_json")) or []) if q.get("text")]
     if rated:
         lede = f"Trusted by locals — rated {rating:g} stars from {reviews:,} Google reviews."
     else:
