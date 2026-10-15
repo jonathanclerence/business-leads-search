@@ -159,6 +159,8 @@ async def cmd_run(args: argparse.Namespace) -> int:
         long_break_every=args.long_break_every,
         long_break_seconds=args.long_break,
         recycle_every=args.recycle_every,
+        state=args.state,
+        country=args.country,
     )
 
     tasks = cfg.tasks()
@@ -358,6 +360,10 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--long-break", type=float, default=180.0, help="long break, seconds")
     r.add_argument("--long-break-every", type=int, default=40)
     r.add_argument("--recycle-every", type=int, default=50, help="relaunch browser every N")
+    r.add_argument("--state", default=settings.SEARCH_STATE,
+                   help='added to every search, e.g. NSW → "plumber in Albury, NSW, Australia"')
+    r.add_argument("--country", default=settings.SEARCH_COUNTRY,
+                   help="added to every search; results outside it are dropped")
     r.add_argument("--dry-run", action="store_true", help="show the plan, scrape nothing")
     r.add_argument("--yes", "-y", action="store_true", help="skip the confirmation prompt")
     r.add_argument("--quiet", "-q", action="store_true")

@@ -35,6 +35,7 @@ from leadfinder.batch import (  # noqa: E402
     BatchConfig,
     BatchRunner,
     build_query,
+    in_country,
     load_input_list,
     load_pairs,
 )
@@ -177,6 +178,20 @@ def test_inputs(tmp: Path):
            {"town": "Highton", "business_type": "cafe"}])
 
     check("query format", build_query("pet grooming", "Geelong"), "pet grooming in Geelong")
+    check("query pins state + country", build_query("plumber", "Portland", "VIC", "Australia"),
+          "plumber in Portland, VIC, Australia")
+    check("town with its own region keeps it", build_query("plumber", "Albury, NSW", "VIC", "Australia"),
+          "plumber in Albury, NSW, Australia")
+
+    au = "Australia"
+    check("AU address kept", in_country({"address": "429 King St, Newtown NSW 2042, Australia"}, au), True)
+    check("AU address without country kept", in_country({"address": "25 Treloar Ln, Pakenham VIC 3810"}, au), True)
+    check("AU address without postcode kept", in_country({"address": "1 Main St, Geelong VIC"}, au), True)
+    check("US address dropped", in_country({"address": "960 N Walnut Creek Dr, Mansfield, TX 76063, United States"}, au), False)
+    check("UK address dropped", in_country({"address": "12 Strand, Torquay TQ1 2AA, United Kingdom"}, au), False)
+    check("no address, AU phone kept", in_country({"address": "", "phone": "+61405014380"}, au), True)
+    check("no address, UK phone dropped", in_country({"address": "", "phone": "+44 1803 123456"}, au), False)
+    check("no country filter keeps all", in_country({"address": "x, United States"}, ""), True)
 
     cfg = BatchConfig(towns=["A", "B"], business_types=["x", "y"])
     check("type-major ordering keeps verticals whole",
@@ -270,8 +285,10 @@ async def test_batch(tmp: Path):
     scraper_mod.build_search_url = lambda q: f"{base}/maps/search/{q}"
     root = tmp / "batches"
 
+    # The fake Maps server keys results on the bare "x in Town" query.
     cfg = BatchConfig(name="geelong", towns=["Geelong", "Highton", "Belmont"],
-                      business_types=["hair salon", "pet grooming", "cafe"], **FAST)
+                      business_types=["hair salon", "pet grooming", "cafe"],
+                      state="", country="", **FAST)
 
     # ---------------- crash halfway ----------------
     print("\nBatch run — crash and resume")

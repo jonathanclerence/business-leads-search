@@ -36,7 +36,16 @@ class Settings:
     CONCURRENCY: int = max(1, min(_int("SCRAPER_CONCURRENCY", 4), 10))
     TIMEOUT_MS: int = _int("SCRAPER_TIMEOUT_MS", 30_000)
     HL: str = os.getenv("SCRAPER_HL", "en")
-    GL: str = os.getenv("SCRAPER_GL", "us")
+    GL: str = os.getenv("SCRAPER_GL", "au")
+    # The browser's locale/timezone. Google uses these (with GL) to decide
+    # which "Portland" you mean, so keep them in the country you're searching.
+    LOCALE: str = os.getenv("SCRAPER_LOCALE", "en-AU")
+    TIMEZONE: str = os.getenv("SCRAPER_TIMEZONE", "Australia/Melbourne")
+    # Batch searches become "plumber in Portland, VIC, Australia", and any
+    # result outside SEARCH_COUNTRY is dropped. Override per batch with
+    # `batch_cli.py run --state NSW`, or write "Albury, NSW" in the towns CSV.
+    SEARCH_STATE: str = os.getenv("SCRAPER_STATE", "VIC")
+    SEARCH_COUNTRY: str = os.getenv("SCRAPER_COUNTRY", "Australia")
     PROXY: str | None = os.getenv("SCRAPER_PROXY") or None
     # Point at a Chrome/Chromium binary you already have instead of the one
     # `playwright install` downloads. Leave unset for the normal setup.

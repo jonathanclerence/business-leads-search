@@ -35,6 +35,7 @@ from __future__ import annotations
 import asyncio
 import csv
 import random
+import re
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -163,6 +164,10 @@ class BatchConfig:
     long_break_seconds: float = 180.0
     recycle_every: int = 50        # relaunch the browser this often
 
+    # where — appended to every search, and results elsewhere are dropped
+    state: str = settings.SEARCH_STATE
+    country: str = settings.SEARCH_COUNTRY
+
     # block handling
     block_threshold: int = 4       # consecutive empty searches == suspicious
     block_backoff: Sequence[float] = (300.0, 900.0, 1800.0)  # 5m, 15m, 30m
@@ -192,8 +197,51 @@ class BatchConfig:
         return cls(**known)
 
 
-def build_query(business_type: str, town: str) -> str:
-    return f"{business_type.strip()} in {town.strip()}"
+def build_query(business_type: str, town: str, state: str = "", country: str = "") -> str:
+    """'plumber in Portland, VIC, Australia'.
+
+    Without the state and country Google resolves ambiguous names abroad
+    (Portland → Oregon, Torquay → Devon). A town that already names its own
+    region ("Albury, NSW") keeps it.
+    """
+    where = town.strip()
+    if state and "," not in where:
+        where += f", {state.strip()}"
+    if country and country.strip().lower() not in where.lower():
+        where += f", {country.strip()}"
+    return f"{business_type.strip()} in {where}"
+
+
+_AU_ADDRESS = re.compile(r"\b(VIC|NSW|QLD|SA|WA|TAS|ACT|NT)(\s+\d{4}\b|\s*$)")
+_CALLING_CODES = {"australia": "61", "new zealand": "64", "united kingdom": "44",
+                  "united states": "1", "canada": "1"}
+_COUNTRIES = {"australia", "united states", "usa", "united kingdom", "uk", "canada",
+              "new zealand", "ireland", "south africa", "italy", "india", "philippines",
+              "singapore", "malaysia", "germany", "france", "spain", "netherlands"}
+
+
+def in_country(lead: Dict[str, Any], country: str) -> bool:
+    """False when a result is clearly outside ``country``.
+
+    Google appends the country to addresses, so a different trailing country
+    (or, for Australia, no "VIC 3220"-style state + postcode) means abroad.
+    With no address, a foreign "+44…" phone number gives it away.
+    """
+    want = (country or "").strip().lower()
+    if not want:
+        return True
+    address = (lead.get("address") or "").strip()
+    if address:
+        if address.lower().endswith(want):
+            return True
+        if want == "australia":
+            return bool(_AU_ADDRESS.search(address))
+        return address.rsplit(",", 1)[-1].strip().lower() not in _COUNTRIES
+    phone = re.sub(r"[^\d+]", "", lead.get("phone") or "")
+    code = _CALLING_CODES.get(want)
+    if phone.startswith("+") and code:
+        return phone.startswith("+" + code)
+    return True
 
 
 def estimate_seconds(n_tasks: int, cfg: BatchConfig) -> float:
@@ -325,7 +373,7 @@ class BatchRunner:
                     break
 
                 town, btype = task["town"], task["business_type"]
-                query = build_query(btype, town)
+                query = build_query(btype, town, self.cfg.state, self.cfg.country)
                 started = time.monotonic()
 
                 await self._emit(
@@ -364,7 +412,9 @@ class BatchRunner:
                 elapsed = time.monotonic() - started
                 self._durations.append(elapsed)
 
-                dicts = [b.to_dict() for b in results]
+                found = [b.to_dict() for b in results]
+                dicts = [d for d in found if in_country(d, self.cfg.country)]
+                abroad = len(found) - len(dicts)
                 new = self.store.add_leads(dicts, town, btype)
                 self.store.record_task(town, btype, query, "done", found=len(dicts),
                                        new_leads=new, seconds=elapsed)
@@ -396,7 +446,8 @@ class BatchRunner:
                     leads_no_website=counts.get("leads_no_website", 0),
                     grades=counts.get("grades", {}),
                     eta_seconds=round(self._eta_seconds(len(pending) - i - 1)),
-                    message=f"{query} — {len(dicts)} found, {new} new",
+                    message=f"{query} — {len(dicts)} found, {new} new"
+                            + (f", {abroad} outside {self.cfg.country} dropped" if abroad else ""),
                 )
 
                 self._since_recycle += 1

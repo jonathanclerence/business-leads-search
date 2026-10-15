@@ -269,11 +269,11 @@ class GoogleMapsScraper:
         self._ctx = await self._browser.new_context(
             user_agent=USER_AGENT,
             viewport={"width": 1440, "height": 900},
-            locale="en-US",
-            timezone_id="America/New_York",
+            locale=settings.LOCALE,
+            timezone_id=settings.TIMEZONE,
             geolocation=None,
             extra_http_headers={
-                "Accept-Language": "en-US,en;q=0.9",
+                "Accept-Language": f"{settings.LOCALE},{settings.HL};q=0.9",
                 "Sec-Ch-Ua": '"Chromium";v="131", "Not_A Brand";v="24"',
                 "Sec-Ch-Ua-Mobile": "?0",
                 "Sec-Ch-Ua-Platform": '"macOS"',
