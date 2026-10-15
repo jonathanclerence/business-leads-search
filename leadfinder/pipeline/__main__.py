@@ -23,7 +23,7 @@ def main(argv=None) -> int:
 
     pub = sub.add_parser("publish", help="generate previews for the next leads and push them live")
     pub.add_argument("--grade", default="Hot", help="comma list, e.g. Hot,Warm (default Hot). Use 'all' for every grade")
-    pub.add_argument("--limit", type=int, help="at most this many new previews")
+    pub.add_argument("--limit", type=int, help="at most this many new previews (0 = just update the live ones)")
     pub.add_argument("--min-score", type=int, default=0)
     pub.add_argument("--region", default="", help="comma list of regions, e.g. Geelong,Ballarat")
     pub.add_argument("--no-push", action="store_true", help="commit in the publish worktree but don't push")

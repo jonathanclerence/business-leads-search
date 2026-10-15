@@ -504,27 +504,28 @@ THEMES = sorted({k["theme"] for k in KINDS.values()})
 
 
 # Design defaults per theme: accent colour, type style ("serif" = Instrument
-# Serif display, "grotesk" = Bricolage Grotesque) and paper (light/dark).
+# Serif display, "grotesk" = Bricolage Grotesque, "sans" = Geist) and paper
+# ("light" white, "warm" cream, "dark").
 # The client can change all three in the preview's colour picker.
 THEME_STYLE = {
-    "hair":         ("#9a5b43", "serif",   "light"),
-    "beauty":       ("#b0546f", "serif",   "light"),
+    "hair":         ("#9a5b43", "serif",   "warm"),
+    "beauty":       ("#b0546f", "serif",   "warm"),
     "tattoo":       ("#c9a14a", "grotesk", "dark"),
-    "wellness":     ("#5f7a62", "serif",   "light"),
-    "health":       ("#2563a8", "grotesk", "light"),
+    "wellness":     ("#5f7a62", "serif",   "warm"),
+    "health":       ("#2563a8", "grotesk", "warm"),
     "fitness":      ("#ff5a1f", "grotesk", "dark"),
-    "learning":     ("#2f5bd3", "grotesk", "light"),
-    "auto":         ("#d23a2a", "grotesk", "light"),
-    "trades":       ("#e09a12", "grotesk", "light"),
-    "cleaning":     ("#138a9e", "grotesk", "light"),
-    "garden":       ("#4c7a3a", "serif",   "light"),
-    "pets":         ("#d9712c", "grotesk", "light"),
-    "food":         ("#b4532a", "serif",   "light"),
-    "winery":       ("#7a2b3a", "serif",   "light"),
-    "creative":     ("#8a6a4f", "serif",   "light"),
-    "professional": ("#1f3a63", "grotesk", "light"),
-    "tech":         ("#4b46d6", "grotesk", "light"),
-    "local":        ("#2f6f62", "serif",   "light"),
+    "learning":     ("#2f5bd3", "grotesk", "warm"),
+    "auto":         ("#d23a2a", "grotesk", "warm"),
+    "trades":       ("#e09a12", "grotesk", "warm"),
+    "cleaning":     ("#138a9e", "grotesk", "warm"),
+    "garden":       ("#4c7a3a", "serif",   "warm"),
+    "pets":         ("#d9712c", "grotesk", "warm"),
+    "food":         ("#b4532a", "serif",   "warm"),
+    "winery":       ("#7a2b3a", "serif",   "warm"),
+    "creative":     ("#8a6a4f", "serif",   "warm"),
+    "professional": ("#1f3a63", "grotesk", "warm"),
+    "tech":         ("#4b46d6", "grotesk", "warm"),
+    "local":        ("#2f6f62", "serif",   "warm"),
 }
 
 # One line for the "about" statement; <em> words are set in the accent italic.
@@ -556,3 +557,57 @@ CTA_BAND = {
     "enquire": "Let's talk.",
     "visit": "Come and see us.",
 }
+
+
+# Line over the video further down the page.
+THEME_CINEMA = {
+    "hair": "Every cut, done with care.", "beauty": "The details make the difference.",
+    "tattoo": "Art that lasts a lifetime.", "wellness": "Time, just for you.",
+    "health": "Care you can feel.", "fitness": "Show up. Get stronger.",
+    "learning": "Learning that sticks.", "auto": "Built on honest work.",
+    "trades": "Done right the first time.", "cleaning": "Spotless, every time.",
+    "garden": "Outdoor spaces, looked after.", "pets": "Pampered, every visit.",
+    "food": "Made fresh, every day.", "winery": "Grown with care.",
+    "creative": "Moments, beautifully kept.", "professional": "Numbers, sorted.",
+    "tech": "Back up and running.", "local": "Local, and proud of it.",
+}
+
+# The booking widget, per kind of business.
+BOOKING = {
+    "appointment": dict(title="Book an appointment", short="Book now", nav="Book",
+        heading="Book online in under a minute",
+        sub="Pick a service, a day and a time that suits you — we'll confirm by text.",
+        q1="What would you like?", q2="Pick a day", q3="Pick a time",
+        steps=["Service", "Day", "Time", "Details"], done="Request sent!", tick="Book online, any time"),
+    "quote": dict(title="Get a free quote", short="Free quote", nav="Quote",
+        heading="Get a free quote",
+        sub="Tell us what you need and when suits you — we'll come back to you with a quote, fast.",
+        q1="What do you need?", q2="Preferred day", q3="Best time for us",
+        steps=["Job", "Day", "Time", "Details"], done="Quote request sent!", tick="Free quotes, fast replies"),
+    "table": dict(title="Book a table", short="Book a table", nav="Book",
+        heading="Book a table",
+        sub="Choose a day and a time and we'll keep a table for you.",
+        q1="How many people?", q2="Pick a day", q3="Pick a time",
+        steps=["Guests", "Day", "Time", "Details"], done="Table request sent!", tick="Book a table online"),
+    "order": dict(title="Order ahead", short="Order ahead", nav="Order",
+        heading="Order ahead, skip the wait",
+        sub="Tell us what you'd like and when you'll pick it up.",
+        q1="What would you like?", q2="Pick-up day", q3="Pick-up time",
+        steps=["Order", "Day", "Time", "Details"], done="Order request sent!", tick="Order ahead online"),
+    "consult": dict(title="Book a consultation", short="Book now", nav="Book",
+        heading="Book a consultation",
+        sub="Choose what it's about and a time that suits — we'll confirm by text.",
+        q1="What's it about?", q2="Pick a day", q3="Pick a time",
+        steps=["Topic", "Day", "Time", "Details"], done="Request sent!", tick="Easy online bookings"),
+}
+TABLE_KINDS = {"cafe", "restaurant", "pizza", "fish-and-chips", "brewery", "winery"}
+ORDER_KINDS = {"bakery", "butcher", "caterer", "florist"}
+GUESTS = ["1 person", "2 people", "3 people", "4 people", "5 people", "6+ people"]
+
+
+def booking_mode(kind: str, cta: str) -> str:
+    if kind in TABLE_KINDS:
+        return "table"
+    if kind in ORDER_KINDS:
+        return "order"
+    return {"book": "appointment", "quote": "quote", "enquire": "consult"}.get(cta, "appointment")

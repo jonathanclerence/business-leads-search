@@ -15,7 +15,8 @@ from typing import Any, Dict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import config
-from .content import CTA_BAND, CTA_LABELS, KINDS, THEME_ABOUT, THEME_STATEMENT, THEME_STYLE
+from .content import (BOOKING, CTA_BAND, CTA_LABELS, GUESTS, KINDS, THEME_ABOUT, THEME_CINEMA,
+                      THEME_STATEMENT, THEME_STYLE, booking_mode)
 from .leads import slugify
 
 HERE = Path(__file__).resolve().parent
@@ -91,6 +92,7 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
     service_area = not street or "mobile" in lead["name"].lower() or lead.get("kind") == "mobile-mechanic"
 
     version = asset_version()
+    mode = booking_mode(lead.get("kind") or "local", cta)
     t_accent, t_type, t_paper = THEME_STYLE.get(theme, THEME_STYLE["local"])
     accent = lead.get("accent") if _HEX.match(lead.get("accent") or "") else t_accent
     hours = _json(lead.get("hours_json"))
@@ -105,8 +107,14 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
     return {
         "accent": accent,
         "accent_ink": ink_for(accent),
-        "type_style": lead.get("type_style") if lead.get("type_style") in ("serif", "grotesk") else t_type,
-        "paper": lead.get("paper") if lead.get("paper") in ("light", "dark") else t_paper,
+        "type_style": lead.get("type_style") if lead.get("type_style") in ("serif", "grotesk", "sans") else t_type,
+        "paper": lead.get("paper") if lead.get("paper") in ("light", "warm", "dark") else t_paper,
+        "corners": lead.get("corners") if lead.get("corners") in ("sharp", "soft", "round") else "round",
+        "booking": dict(BOOKING[mode], mode=mode,
+                        options=GUESTS if mode == "table" else [t for t, _ in kind["services"]]),
+        "cinema_line": THEME_CINEMA.get(theme, THEME_CINEMA["local"]),
+        "scene": "boxes" if lead.get("kind") in ("removalist", "skip-bin") else theme,
+        "brand_url": config.SITE_URL,
         "swatches": list(dict.fromkeys([t_accent] + SWATCHES)),
         "initials": initials(lead["name"]),
         "name_words": lead["name"].split(),

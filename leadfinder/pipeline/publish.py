@@ -42,6 +42,10 @@ def _git(cwd: Path, *args: str) -> str:
 
 def select_new(con, grades: Sequence[str], limit: Optional[int], min_score: int = 0,
                regions: Sequence[str] = ()) -> List[str]:
+    """The next leads to publish. limit=None means all; limit=0 means none
+    (re-render the existing previews only)."""
+    if limit is not None and limit <= 0:
+        return []
     sql = "SELECT slug FROM leads WHERE stage = 'new' AND score >= ?"
     args: List[Any] = [min_score]
     if grades:
@@ -208,7 +212,7 @@ def export_site(slug: str, log: Log = print) -> Path:
         shutil.rmtree(out)
     (out / "assets" / "img").mkdir(parents=True)
     (out / "index.html").write_text(render(lead, final=True, assets="assets"), encoding="utf-8")
-    for name in ("preview.css", "preview-icons.svg", "site.js"):
+    for name in ("preview.css", "preview-icons.svg", "site.js", "hero.js"):
         shutil.copyfile(ASSET_SRC / name, out / "assets" / name)
     site_assets = config.MARKETING_SITE_DIR / config.ASSETS_DIR
     shutil.copytree(site_assets / "fonts", out / "assets" / "fonts")

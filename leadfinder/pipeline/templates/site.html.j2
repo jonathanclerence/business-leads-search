@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="en-AU" data-type="{{ type_style }}" data-paper="{{ paper }}" style="--accent:{{ accent }};--accent-ink:{{ accent_ink }}">
+<html lang="en-AU" data-type="{{ type_style }}" data-paper="{{ paper }}" data-corners="{{ corners }}" data-fx="on" style="--accent:{{ accent }};--accent-ink:{{ accent_ink }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 {% if final %}
 <title>{{ lead.name }} — {{ lead.category }} in {{ lead.suburb }}</title>
-<meta name="description" content="{{ lead.name }}: {{ lead.category | lower }} in {{ lead.suburb }} {{ lead.state }}. {{ cta_label }} — call {{ lead.phone_display }}.">
+<meta name="description" content="{{ lead.name }}: {{ lead.category | lower }} in {{ lead.suburb }} {{ lead.state }}. {{ booking.title }} online or call {{ lead.phone_display }}.">
 {% else %}
 <title>{{ lead.name }} — website preview</title>
 <meta name="robots" content="noindex, nofollow, noarchive">
@@ -14,7 +14,7 @@
 {% endif %}
 <meta name="theme-color" content="{{ accent }}">
 <link rel="preload" href="{{ assets }}/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="{{ assets }}/fonts/{{ 'instrument-serif' if type_style == 'serif' else 'bricolage' }}.woff2" as="font" type="font/woff2" crossorigin>
+{% if type_style != "sans" %}<link rel="preload" href="{{ assets }}/fonts/{{ 'instrument-serif' if type_style == 'serif' else 'bricolage' }}.woff2" as="font" type="font/woff2" crossorigin>{% endif %}
 <link rel="stylesheet" href="{{ assets }}/preview.css?v={{ version }}">
 <script>document.documentElement.classList.add("js")</script>
 </head>
@@ -23,46 +23,43 @@
 
 {% if not final %}
 <div class="pv-bar" role="region" aria-label="Preview notice">
-  <p><span class="pv-dot"></span><span>Website preview made for <b>{{ lead.name }}</b><span class="pv-bar-note"> · sample photos &amp; wording</span></span></p>
+  <p class="pv-bar-msg"><span class="pv-dot"></span><span>Preview made for <b data-bizname>{{ lead.name }}</b></span>
+    <a class="pv-by" href="{{ brand_url }}" target="_blank" rel="noopener">by <b>{{ brand }}</b><svg class="ic"><use href="{{ icons }}#i-out"/></svg></a></p>
   <div class="pv-bar-actions">
-    <button class="pv-btn pv-btn-ghost" type="button" data-panel="style"><svg class="ic"><use href="{{ icons }}#i-palette"/></svg><span>Colours</span></button>
-    <button class="pv-btn pv-btn-ghost pv-hide-sm" type="button" data-open="changes">Request changes</button>
-    <button class="pv-btn" type="button" data-open="buy">Make it mine</button>
+    <button class="pv-btn pv-btn-ghost" type="button" data-panel><svg class="ic"><use href="{{ icons }}#i-palette"/></svg><span>Customise</span></button>
+    <button class="pv-btn" type="button" data-open>Make it mine<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></button>
   </div>
 </div>
 {% endif %}
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="#top"><span class="mono" aria-hidden="true">{{ initials }}</span><span class="brand-name">{{ lead.name }}</span></a>
+    <a class="brand" href="#top"><span class="mono" aria-hidden="true" data-initials>{{ initials }}</span><span class="brand-name" data-bizname>{{ lead.name }}</span></a>
     <nav class="nav-links" aria-label="Sections">
       <a href="#services">Services</a>
       <a href="#about">About</a>
       {% if reviews or rated %}<a href="#reviews">Reviews</a>{% endif %}
-      <a href="#visit">{{ "Visit" if street else "Contact" }}</a>
+      <a href="#book">{{ booking.nav }}</a>
     </nav>
-    <a class="btn btn-accent btn-sm" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg><span>{{ lead.phone_display }}</span></a>
+    <a class="btn btn-accent btn-sm" href="#book"><svg class="ic"><use href="{{ icons }}#i-calendar"/></svg><span>{{ booking.short }}</span></a>
   </div>
 </header>
 
 <main id="top">
-  <section class="hero">
-    <div class="wrap hero-grid">
+  <section class="hero" data-scene="{{ scene }}">
+    <canvas class="hero-fx" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
       <div class="hero-copy">
         <p class="eyebrow" data-reveal>
           {% if hours %}<span class="status" data-open-status hidden><i></i><b></b></span>{% endif %}
           <span>{{ lead.category }} · {{ lead.suburb }}</span>
         </p>
-        <h1 class="hero-name hero-name--{{ name_size }}" aria-label="{{ lead.name }}">
+        <h1 class="hero-name hero-name--{{ name_size }}" aria-label="{{ lead.name }}" data-hero-name>
           {% for w in name_words %}<span class="w" aria-hidden="true"><span style="--i:{{ loop.index0 }}">{{ w }}</span></span>{{ " " if not loop.last }}{% endfor %}
         </h1>
-        <p class="hero-lede" data-reveal style="--d:3">{{ headline }}.</p>
+        <p class="hero-lede" data-reveal style="--d:3" data-edit="headline">{{ headline }}.</p>
         <div class="actions" data-reveal style="--d:4">
-          {% if cta == "visit" %}
-          <a class="btn btn-accent" href="{{ maps_link }}" target="_blank" rel="noopener">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
-          {% else %}
-          <a class="btn btn-accent" href="#visit">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
-          {% endif %}
+          <a class="btn btn-accent" href="#book">{{ booking.title }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
           <a class="btn btn-line" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg>{{ lead.phone_display }}</a>
         </div>
         {% if rated %}
@@ -72,19 +69,8 @@
         </a>
         {% endif %}
       </div>
-      <figure class="hero-media" data-reveal="zoom" style="--d:2">
-        {% if video %}
-        <video class="media" autoplay muted loop playsinline preload="metadata" poster="{{ assets }}/video/{{ theme }}-poster.webp" aria-hidden="true">
-          <source src="{{ assets }}/video/{{ theme }}.mp4" type="video/mp4">
-        </video>
-        {% else %}
-        <img class="media" src="{{ assets }}/img/{{ theme }}-hero.webp" alt="" width="1600" height="1000" fetchpriority="high">
-        {% endif %}
-        <figcaption class="chip chip-float">
-          <svg class="ic"><use href="{{ icons }}#i-pin"/></svg>{{ "Servicing " ~ lead.suburb if service_area else lead.suburb ~ ", " ~ lead.state }}
-        </figcaption>
-      </figure>
     </div>
+    <p class="hero-hint" aria-hidden="true"><svg class="ic"><use href="{{ icons }}#i-spark"/></svg>Tap the scene</p>
   </section>
 
   <div class="marquee" aria-hidden="true">
@@ -98,22 +84,38 @@
       <div class="section-head">
         <div>
           <p class="kicker" data-reveal>Services</p>
-          <h2 data-reveal style="--d:1">{{ services_title }}</h2>
+          <h2 data-reveal style="--d:1" data-edit="services-title">{{ services_title }}</h2>
         </div>
-        <p class="section-sub" data-reveal style="--d:2">Everything you need from a {{ lead.category | lower }}, close to home. Call or message and we'll take care of the rest.</p>
+        <p class="section-sub" data-reveal style="--d:2" data-edit="services-sub">Everything you need from a {{ lead.category | lower }}, close to home. Book online in a few taps, or give us a call.</p>
       </div>
       <ol class="services">
         {% for title, desc in services %}
         <li class="service" data-reveal style="--d:{{ loop.index0 }}">
           <span class="service-num">{{ "%02d" | format(loop.index) }}</span>
-          <h3>{{ title }}</h3>
-          <p>{{ desc }}</p>
-          <svg class="ic service-arrow"><use href="{{ icons }}#i-arrow"/></svg>
+          <h3 data-edit="service-{{ loop.index }}">{{ title }}</h3>
+          <p data-edit="service-{{ loop.index }}-text">{{ desc }}</p>
+          <a class="service-book" href="#book" data-pick="{{ title }}" aria-label="Book {{ title }}"><svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
         </li>
         {% endfor %}
       </ol>
     </div>
   </section>
+
+  {% if video %}
+  <section class="cinema" aria-label="{{ lead.category }} in {{ lead.suburb }}">
+    <div class="wrap">
+      <div class="cinema-frame" data-reveal="zoom">
+        <video class="cinema-video" muted loop playsinline preload="none" poster="{{ assets }}/video/{{ theme }}-poster.webp" aria-hidden="true">
+          <source src="{{ assets }}/video/{{ theme }}.mp4" type="video/mp4">
+        </video>
+        <div class="cinema-cap">
+          <p data-edit="cinema">{{ cinema_line }}</p>
+          <a class="btn btn-light" href="#book">{{ booking.title }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
 
   <section class="section about" id="about">
     <div class="wrap about-grid">
@@ -121,12 +123,12 @@
         <img src="{{ assets }}/img/{{ theme }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async" data-parallax>
       </div>
       <div class="about-copy">
-        <p class="kicker" data-reveal>About {{ lead.name }}</p>
-        <p class="statement" data-reveal style="--d:1">{{ statement | safe }}</p>
-        <p class="about-text" data-reveal style="--d:2">{{ about }}</p>
+        <p class="kicker" data-reveal>About <span data-bizname>{{ lead.name }}</span></p>
+        <p class="statement" data-reveal style="--d:1" data-edit="statement">{{ statement | safe }}</p>
+        <p class="about-text" data-reveal style="--d:2" data-edit="about">{{ about }}</p>
         <ul class="ticks" data-reveal style="--d:3">
           <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Servicing " ~ lead.suburb ~ " and surrounds" if service_area else "Easy to find in " ~ lead.suburb }}</li>
-          <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Quick, friendly replies" if cta != "visit" else "Friendly local service" }}</li>
+          <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ booking.tick }}</li>
           <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Rated " ~ rating ~ "★ by " ~ reviews_fmt ~ " locals" if rated else "Call us on " ~ lead.phone_display }}</li>
         </ul>
       </div>
@@ -161,12 +163,13 @@
   </section>
   {% endif %}
 
-  <section class="section visit" id="visit">
-    <div class="wrap visit-grid">
-      <div>
-        <p class="kicker" data-reveal>{{ "Visit" if street else "Get in touch" }}</p>
-        <h2 data-reveal style="--d:1">{{ "Find us in " ~ lead.suburb if street else "We come to you" }}</h2>
-        <ul class="contact-list" data-reveal style="--d:2">
+  <section class="section book" id="book">
+    <div class="wrap book-grid">
+      <div class="book-intro">
+        <p class="kicker" data-reveal>Online booking</p>
+        <h2 data-reveal style="--d:1" data-edit="book-title">{{ booking.heading }}</h2>
+        <p class="section-sub" data-reveal style="--d:2" data-edit="book-sub">{{ booking.sub }}</p>
+        <ul class="contact-list" data-reveal style="--d:3">
           <li><svg class="ic"><use href="{{ icons }}#i-phone"/></svg><a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a></li>
           {% if street %}
           <li><svg class="ic"><use href="{{ icons }}#i-pin"/></svg><a href="{{ maps_link }}" target="_blank" rel="noopener">{{ lead.address }}</a></li>
@@ -177,37 +180,81 @@
           <li><svg class="ic"><use href="{{ icons }}#i-chat"/></svg><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></li>
           {% endif %}
         </ul>
-        <a class="btn btn-line" href="{{ maps_link }}" target="_blank" rel="noopener" data-reveal style="--d:3"><svg class="ic"><use href="{{ icons }}#i-pin"/></svg>{{ "Get directions" if street else "See us on Google Maps" }}</a>
+        <div class="hours-card" data-reveal style="--d:4">
+          <h3>Opening hours</h3>
+          {% if hours %}
+          <table class="hours">
+            {% for day, text in hours %}<tr data-day="{{ day }}"><th>{{ day }}</th><td>{{ text }}</td></tr>{% endfor %}
+          </table>
+          <p class="hours-status" data-open-status hidden><i></i><b></b></p>
+          {% else %}
+          <p class="muted">Call us on <a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a> for today's hours{{ " — we'll add them here" if not final else "" }}.</p>
+          {% endif %}
+          <a class="link-arrow" href="{{ maps_link }}" target="_blank" rel="noopener"><svg class="ic"><use href="{{ icons }}#i-pin"/></svg>{{ "Get directions" if street else "See us on Google Maps" }}</a>
+        </div>
       </div>
-      <div class="hours-card" data-reveal="zoom" style="--d:1">
-        <h3>Opening hours</h3>
-        {% if hours %}
-        <table class="hours">
-          {% for day, text in hours %}<tr data-day="{{ day }}"><th>{{ day }}</th><td>{{ text }}</td></tr>{% endfor %}
-        </table>
-        <p class="hours-status" data-open-status hidden><i></i><b></b></p>
-        {% else %}
-        <p class="muted">Call us on <a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a> for today's hours{{ " — we'll add them here" if not final else "" }}.</p>
-        {% endif %}
+
+      <div class="booker" id="booker" data-reveal="zoom" data-mode="{{ booking.mode }}" data-final="{{ 1 if final else 0 }}"
+           data-phone="{{ lead.phone }}" data-mobile="{{ 1 if lead.mobile else 0 }}" data-email="{{ lead.email or '' }}" data-biz="{{ lead.name }}">
+        <div class="bk-head">
+          <span class="mono" aria-hidden="true" data-initials>{{ initials }}</span>
+          <div><b>{{ booking.title }}</b><span><span data-bizname>{{ lead.name }}</span> · {{ lead.suburb }}</span></div>
+        </div>
+        <ol class="bk-progress" aria-hidden="true">
+          {% for label in booking.steps %}<li data-i="{{ loop.index0 }}"{% if loop.first %} class="is-on"{% endif %}><span>{{ label }}</span></li>{% endfor %}
+        </ol>
+        <form class="bk-form" novalidate>
+          <fieldset class="bk-step is-on" data-step="0">
+            <legend>{{ booking.q1 }}</legend>
+            <div class="bk-options">
+              {% for opt in booking.options %}<label class="bk-opt"><input type="radio" name="what" value="{{ opt }}"><span>{{ opt }}</span></label>{% endfor %}
+            </div>
+          </fieldset>
+          <fieldset class="bk-step" data-step="1">
+            <legend>{{ booking.q2 }}</legend>
+            <div class="bk-days" role="radiogroup"></div>
+          </fieldset>
+          <fieldset class="bk-step" data-step="2">
+            <legend>{{ booking.q3 }}</legend>
+            <div class="bk-times"></div>
+          </fieldset>
+          <fieldset class="bk-step" data-step="3">
+            <legend>Your details</legend>
+            <div class="bk-fields">
+              <label><span>Name</span><input name="name" autocomplete="name" required></label>
+              <label><span>Mobile</span><input name="phone" type="tel" autocomplete="tel" required></label>
+              {% if booking.mode == "quote" %}<label class="bk-wide"><span>Address or suburb</span><input name="where" autocomplete="street-address"></label>{% endif %}
+              <label class="bk-wide"><span>Anything we should know? <i>(optional)</i></span><textarea name="note" rows="2"></textarea></label>
+            </div>
+          </fieldset>
+          <p class="bk-error" role="alert"></p>
+          <div class="bk-nav">
+            <button type="button" class="bk-back" hidden>Back</button>
+            <button type="button" class="btn btn-accent bk-next">Continue<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></button>
+          </div>
+        </form>
+        <div class="bk-done" hidden>
+          <span class="bk-tick"><svg class="ic"><use href="{{ icons }}#i-check"/></svg></span>
+          <h3>{{ booking.done }}</h3>
+          <p class="bk-summary"></p>
+          {% if final %}
+          <p class="muted">We'll confirm by text as soon as we can.</p>
+          {% else %}
+          <p class="bk-note">This is a preview — on your finished website, booking requests like this go straight to your phone and inbox.</p>
+          <button class="pv-btn pv-btn-dark" type="button" data-open>Make it mine<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></button>
+          {% endif %}
+          <button class="bk-again" type="button">Make another booking</button>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="cta-band">
     <div class="wrap cta-inner">
-      <p class="cta-big" data-reveal>{{ cta_band }}</p>
+      <p class="cta-big" data-reveal data-edit="cta">{{ cta_band }}</p>
       <div class="cta-actions" data-reveal style="--d:1">
         <a class="cta-phone" href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a>
-        {% if not final %}
-        <form class="enquiry" id="demo-form" novalidate>
-          <input name="n" placeholder="Your name" autocomplete="off" aria-label="Your name">
-          <input name="p" type="tel" placeholder="Phone" autocomplete="off" aria-label="Phone">
-          <button class="btn btn-ink" type="submit">Send</button>
-          <p class="demo-note" hidden>This is a preview — on your live website, messages like this go straight to your phone or inbox.</p>
-        </form>
-        {% elif lead.email %}
-        <a class="btn btn-ink" href="mailto:{{ lead.email }}?subject=Enquiry">Email us</a>
-        {% endif %}
+        <a class="btn btn-ink" href="#book">{{ booking.title }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
       </div>
     </div>
   </section>
@@ -215,66 +262,72 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p class="foot-word foot-word--{{ name_size }}" aria-hidden="true">{{ lead.name }}</p>
+    <p class="foot-word foot-word--{{ name_size }}" aria-hidden="true" data-bizname>{{ lead.name }}</p>
     <div class="foot-row">
       <p>{{ lead.category }} · {{ lead.suburb }} {{ lead.state }} · <a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a></p>
-      <p>© {{ year }} {{ lead.name }}{% if not final %} · Preview by {{ brand }}{% endif %}</p>
+      <p>© {{ year }} <span data-bizname>{{ lead.name }}</span>{% if not final %} · Preview by <a href="{{ brand_url }}" target="_blank" rel="noopener">{{ brand }}</a>{% endif %}</p>
     </div>
   </div>
 </footer>
 
 <nav class="dock" aria-label="Quick actions">
   <a href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg>Call</a>
-  {% if cta == "visit" %}
-  <a class="dock-main" href="{{ maps_link }}" target="_blank" rel="noopener">{{ cta_short }}</a>
-  {% else %}
-  <a class="dock-main" href="#visit">{{ cta_short }}</a>
-  {% endif %}
+  <a class="dock-main" href="#book"><svg class="ic"><use href="{{ icons }}#i-calendar"/></svg>{{ booking.short }}</a>
 </nav>
 
 {% if hours %}<script type="application/json" id="site-hours">{{ hours_json | safe }}</script>{% endif %}
+<script src="{{ assets }}/hero.js?v={{ version }}" defer></script>
 <script src="{{ assets }}/site.js?v={{ version }}" defer></script>
 
 {% if not final %}
-<aside class="pv-panel" id="pv-panel" hidden aria-label="Try your colours">
-  <div class="pv-panel-head"><b>Make it yours</b><button type="button" class="pv-close" data-panel-close aria-label="Close"><svg class="ic"><use href="{{ icons }}#i-x"/></svg></button></div>
-  <p class="pv-panel-label">Colour</p>
-  <div class="swatches" role="radiogroup" aria-label="Accent colour">
-    {% for c in swatches %}<button type="button" class="swatch" data-accent="{{ c }}" style="--c:{{ c }}" aria-label="{{ c }}"></button>{% endfor %}
-    <label class="swatch swatch-custom" title="Pick any colour"><input type="color" value="{{ accent }}" data-accent-input aria-label="Custom colour"></label>
+<aside class="pv-panel" id="pv-panel" hidden aria-label="Customise this website">
+  <div class="pv-panel-head"><b>Customise</b><button type="button" class="pv-close" data-panel-close aria-label="Close"><svg class="ic"><use href="{{ icons }}#i-x"/></svg></button></div>
+  <div class="pv-panel-body">
+    <p class="pv-panel-label">Colour</p>
+    <div class="swatches" role="radiogroup" aria-label="Main colour">
+      {% for c in swatches %}<button type="button" class="swatch" data-accent="{{ c }}" style="--c:{{ c }}" aria-label="{{ c }}"></button>{% endfor %}
+      <label class="swatch swatch-custom" title="Pick any colour"><input type="color" value="{{ accent }}" data-accent-input aria-label="Custom colour"></label>
+    </div>
+    <p class="pv-panel-label">Font</p>
+    <div class="seg seg-3" data-seg="type"><button type="button" data-value="serif" class="f-serif">Classic</button><button type="button" data-value="grotesk" class="f-grotesk">Bold</button><button type="button" data-value="sans" class="f-sans">Clean</button></div>
+    <p class="pv-panel-label">Background</p>
+    <div class="seg seg-3" data-seg="paper"><button type="button" data-value="light">Light</button><button type="button" data-value="warm">Warm</button><button type="button" data-value="dark">Dark</button></div>
+    <p class="pv-panel-label">Corners</p>
+    <div class="seg seg-3" data-seg="corners"><button type="button" data-value="sharp">Sharp</button><button type="button" data-value="soft">Soft</button><button type="button" data-value="round">Round</button></div>
+    <p class="pv-panel-label">Animation</p>
+    <div class="seg" data-seg="fx"><button type="button" data-value="on">On</button><button type="button" data-value="off">Off</button></div>
+    <p class="pv-panel-label">Business name</p>
+    <input class="pv-input" data-name-input value="{{ lead.name }}" maxlength="60" aria-label="Business name">
+    <button type="button" class="pv-edit" data-edit-toggle><svg class="ic"><use href="{{ icons }}#i-pen"/></svg><span>Edit the words on the page</span></button>
+    <button type="button" class="pv-reset" data-reset>Reset everything</button>
   </div>
-  <p class="pv-panel-label">Style</p>
-  <div class="seg" data-seg="type"><button type="button" data-value="serif">Classic</button><button type="button" data-value="grotesk">Modern</button></div>
-  <div class="seg" data-seg="paper"><button type="button" data-value="light">Light</button><button type="button" data-value="dark">Dark</button></div>
-  <button type="button" class="pv-reset" data-reset>Reset to original</button>
-  <p class="pv-panel-note">Your choice is saved on this device and sent to us when you say “Make it mine”.</p>
+  <button class="pv-btn pv-panel-cta" type="button" data-open>Make it mine<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></button>
 </aside>
+<div class="pv-editbar" hidden><span><svg class="ic"><use href="{{ icons }}#i-pen"/></svg>Click any highlighted text to change it</span><button type="button" class="pv-btn" data-edit-toggle>Done</button></div>
 
 <dialog class="pv-sheet" id="pv-sheet" aria-labelledby="pv-title">
   <form id="pv-form" novalidate>
     <div class="pv-head">
-      <h2 id="pv-title">Make this website yours</h2>
+      <h2 id="pv-title">Love it? Let's finish it.</h2>
       <button class="pv-close" type="button" data-close aria-label="Close"><svg class="ic"><use href="{{ icons }}#i-x"/></svg></button>
     </div>
-    <div class="pv-tabs" role="tablist">
-      <button type="button" role="tab" data-intent="buy" aria-selected="true">I want this website</button>
-      <button type="button" role="tab" data-intent="changes" aria-selected="false">Request changes</button>
-    </div>
-    <p class="pv-sub" data-for="buy">We'll put it on your own web address (like {{ domain_hint }}), add your photos, hours and prices, and get it live — usually within 48 hours. Leave your details and we'll email you.</p>
-    <p class="pv-sub" data-for="changes" hidden>Tell us what you'd change — colours, wording, photos, anything. We'll update this preview and send you the new link.</p>
+    <p class="pv-sub">This is a first draft we made for <b data-bizname>{{ lead.name }}</b>. Tell us what you'd like changed and we'll build the finished version — on your own web address (like {{ domain_hint }}), with your photos, prices and real online bookings.</p>
+    <p class="pv-look" hidden></p>
     <input type="hidden" name="intent" value="buy">
     <input type="hidden" name="slug" value="{{ lead.slug }}">
     <input type="hidden" name="business" value="{{ lead.name }}">
     <div class="pv-hp" aria-hidden="true"><label>Company website<input name="hp" tabindex="-1" autocomplete="off"></label></div>
-    <label><span>Your name</span><input name="name" required maxlength="80" autocomplete="name"></label>
+    <div class="pv-grid">
+      <label><span>Your name</span><input name="name" required maxlength="80" autocomplete="name"></label>
+      <label><span>Mobile <i>(optional)</i></span><input name="phone" type="tel" maxlength="25" autocomplete="tel"></label>
+    </div>
     <label><span>Email</span><input name="email" type="email" required maxlength="254" autocomplete="email"></label>
-    <label><span>Mobile <i>(optional)</i></span><input name="phone" type="tel" maxlength="25" autocomplete="tel"></label>
-    <label data-for="buy"><span>Web address you'd like <i>(optional)</i></span><input name="domain" maxlength="100" placeholder="{{ domain_hint }}"></label>
-    <label><span data-for="buy">Anything we should know? <i>(optional)</i></span><span data-for="changes" hidden>What would you change?</span><textarea name="message" rows="3" maxlength="2000"></textarea></label>
+    <label><span>Web address you'd like <i>(optional)</i></span><input name="domain" maxlength="100" placeholder="{{ domain_hint }}"></label>
+    <label><span>Anything you'd change? <i>(optional)</i></span><textarea name="message" rows="3" maxlength="1500" placeholder="Colours, wording, photos, services, prices…"></textarea></label>
     <div class="pv-ts"></div>
     <p class="pv-status" role="status" aria-live="polite"></p>
-    <button class="pv-btn pv-submit" type="submit">Send</button>
-    <p class="pv-alt">Prefer to chat? <a href="{{ whatsapp_href }}" target="_blank" rel="noopener">WhatsApp us on {{ whatsapp_display }}</a></p>
+    <button class="pv-btn pv-submit" type="submit">Finish my website</button>
+    <p class="pv-alt">Prefer to chat? <a href="{{ whatsapp_href }}" target="_blank" rel="noopener">WhatsApp {{ whatsapp_display }}</a> · <a href="{{ brand_url }}" target="_blank" rel="noopener">About {{ brand }}</a></p>
   </form>
 </dialog>
 <script src="{{ assets }}/preview.js?v={{ version }}" defer></script>

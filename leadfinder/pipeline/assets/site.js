@@ -1,10 +1,12 @@
-/* Motion and live details for the generated sites (previews and finished
-   client sites): scroll reveals, the hero name rising in, count-ups, gentle
-   parallax, scroll progress, and "Open now" from the business's hours. */
+/* Shared by previews and finished client sites: scroll reveals, the hero
+   name rising in, count-ups, parallax, scroll progress, the video further
+   down, "Open now" from the business's hours, and the booking widget. */
 (function () {
   "use strict";
   var doc = document.documentElement;
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  var MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   requestAnimationFrame(function () { document.body.classList.add("is-ready"); });
 
@@ -57,30 +59,23 @@
   }, { passive: true });
   onScroll();
 
-  /* ---- hero video: only play while visible ---------------------------- */
-  var video = document.querySelector(".hero-media video");
-  if (video) {
-    if (reduce) { video.removeAttribute("autoplay"); video.pause(); }
-    else if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) video.play().catch(function () {}); else video.pause(); });
-      }).observe(video);
-    }
-  }
+  /* ---- the video: load and play only while it's on screen ------------- */
+  document.querySelectorAll("video.cinema-video").forEach(function (video) {
+    if (reduce || !("IntersectionObserver" in window)) return;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { video.preload = "auto"; video.play().catch(function () {}); } else video.pause();
+      });
+    }, { rootMargin: "200px 0px" }).observe(video);
+  });
 
-  /* ---- opening hours: today + open now (Melbourne time) --------------- */
-  var hoursEl = document.getElementById("site-hours");
-  if (!hoursEl) return;
-  var hours;
-  try { hours = JSON.parse(hoursEl.textContent); } catch (e) { return; }
-  var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-  function nowInMelbourne() {
-    var parts = new Intl.DateTimeFormat("en-AU", { timeZone: "Australia/Melbourne", weekday: "long", hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(new Date());
+  /* ---- opening hours (Melbourne time) --------------------------------- */
+  function melbourne() {
+    var parts = new Intl.DateTimeFormat("en-AU", { timeZone: "Australia/Melbourne", year: "numeric", month: "numeric", day: "numeric", weekday: "long", hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(new Date());
     var get = function (t) { return (parts.find(function (p) { return p.type === t; }) || {}).value; };
-    return { day: get("weekday"), mins: (+get("hour") % 24) * 60 + +get("minute") };
+    return { y: +get("year"), m: +get("month") - 1, d: +get("day"), day: get("weekday"), mins: (+get("hour") % 24) * 60 + +get("minute") };
   }
-  // "9 am–5:30 pm", "9–11:30 am, 1–5 pm", "Open 24 hours", "Closed" → [[start, end] minutes]
+  // "9 AM–5:30 PM", "9–11:30 am, 1–5 pm", "Open 24 hours", "Closed" → [[start, end] minutes]
   function parseTime(s, fallbackMer) {
     var m = /(\d{1,2})(?::(\d{2}))?\s*([ap]\.?m\.?)?/i.exec(s);
     if (!m) return null;
@@ -108,31 +103,154 @@
     h = h % 12 || 12;
     return h + (m ? ":" + String(m).padStart(2, "0") : "") + " " + mer;
   }
-  var byDay = {};
-  hours.forEach(function (row) { byDay[row[0]] = ranges(row[1]); });
-  var now = nowInMelbourne();
-  document.querySelectorAll('.hours tr[data-day="' + now.day + '"]').forEach(function (tr) { tr.classList.add("is-today"); });
 
-  var today = byDay[now.day] || [];
-  var open = today.find(function (r) { return now.mins >= r[0] && now.mins < r[1]; });
-  var text;
-  if (open) {
-    text = open[1] >= 1440 && open[0] === 0 ? "Open 24 hours" : "Open now · closes " + fmt(open[1]);
-  } else {
-    var later = today.find(function (r) { return r[0] > now.mins; });
-    if (later) text = "Closed now · opens " + fmt(later[0]);
+  var byDay = null;
+  var hoursEl = document.getElementById("site-hours");
+  if (hoursEl) {
+    try {
+      byDay = {};
+      JSON.parse(hoursEl.textContent).forEach(function (row) { byDay[row[0]] = ranges(row[1]); });
+    } catch (e) { byDay = null; }
+  }
+  var now = melbourne();
+
+  if (byDay && byDay[now.day]) {
+    document.querySelectorAll('.hours tr[data-day="' + now.day + '"]').forEach(function (tr) { tr.classList.add("is-today"); });
+    var today = byDay[now.day];
+    var open = today.find(function (r) { return now.mins >= r[0] && now.mins < r[1]; });
+    var text;
+    if (open) text = open[1] >= 1440 && open[0] === 0 ? "Open 24 hours" : "Open now · closes " + fmt(open[1]);
     else {
-      var i = DAYS.indexOf(now.day);
-      for (var k = 1; k <= 7 && !text; k++) {
-        var d = DAYS[(i + k) % 7], r = byDay[d];
-        if (r && r.length) text = "Closed now · opens " + (k === 1 ? "tomorrow" : d.slice(0, 3)) + " " + fmt(r[0][0]);
+      var later = today.find(function (r) { return r[0] > now.mins; });
+      if (later) text = "Closed now · opens " + fmt(later[0]);
+      else {
+        var i = DAYS.indexOf(now.day);
+        for (var k = 1; k <= 7 && !text; k++) {
+          var d = DAYS[(i + k) % 7], rr = byDay[d];
+          if (rr && rr.length) text = "Closed now · opens " + (k === 1 ? "tomorrow" : d.slice(0, 3)) + " " + fmt(rr[0][0]);
+        }
       }
     }
+    if (text) document.querySelectorAll("[data-open-status]").forEach(function (el) {
+      el.hidden = false;
+      el.classList.toggle("is-open", !!open);
+      el.querySelector("b").textContent = text;
+    });
   }
-  if (!text || !byDay[now.day]) return;
-  document.querySelectorAll("[data-open-status]").forEach(function (el) {
-    el.hidden = false;
-    el.classList.toggle("is-open", !!open);
-    el.querySelector("b").textContent = text;
-  });
+
+  /* ---- booking widget ------------------------------------------------- */
+  var booker = document.getElementById("booker");
+  if (booker) booking(booker);
+
+  function booking(el) {
+    var mode = el.dataset.mode, isFinal = el.dataset.final === "1";
+    var form = el.querySelector(".bk-form");
+    var steps = Array.prototype.slice.call(el.querySelectorAll(".bk-step"));
+    var dots = Array.prototype.slice.call(el.querySelectorAll(".bk-progress li"));
+    var next = el.querySelector(".bk-next"), back = el.querySelector(".bk-back"), err = el.querySelector(".bk-error");
+    var done = el.querySelector(".bk-done"), daysEl = el.querySelector(".bk-days"), timesEl = el.querySelector(".bk-times");
+    var nextLabel = next.innerHTML;
+    var st = { step: 0, what: "", day: "", dayLabel: "", time: "" };
+
+    // Days: the next 14 from today in Melbourne; closed days are shown but can't be picked.
+    var html = "";
+    for (var i = 0; i < 14; i++) {
+      var dt = new Date(Date.UTC(now.y, now.m, now.d + i)), wd = DAYS[dt.getUTCDay()];
+      var closed = byDay && byDay[wd] && byDay[wd].length === 0;
+      if (i === 0 && byDay && byDay[wd]) closed = closed || !byDay[wd].some(function (r) { return r[1] - 60 > now.mins; });
+      var iso = dt.toISOString().slice(0, 10);
+      var label = (i === 0 ? "Today" : i === 1 ? "Tomorrow" : wd.slice(0, 3) + " " + dt.getUTCDate() + " " + MONTHS[dt.getUTCMonth()]);
+      html += '<label class="bk-day' + (closed ? " is-closed" : "") + '"><input type="radio" name="day" value="' + iso + '" data-wd="' + wd + '" data-label="' + label + '"' + (closed ? " disabled" : "") + '>' +
+        '<span><small>' + wd.slice(0, 3) + '</small><b>' + dt.getUTCDate() + '</b><em>' + (closed ? "Closed" : i === 0 ? "Today" : MONTHS[dt.getUTCMonth()]) + "</em></span></label>";
+    }
+    daysEl.innerHTML = html;
+
+    function slots(wd, isToday) {
+      if (mode === "quote") return null;
+      var rs = byDay && byDay[wd] ? byDay[wd] : [[9 * 60, 17 * 60]];
+      var out = [];
+      rs.forEach(function (r) {
+        for (var t = Math.ceil(r[0] / 30) * 30; t <= Math.min(r[1], 1440) - (mode === "table" ? 60 : 30); t += 30) {
+          if (!isToday || t >= now.mins + 60) out.push(t);
+        }
+      });
+      return out;
+    }
+    function renderTimes() {
+      var input = form.querySelector('input[name="day"]:checked');
+      if (!input) return;
+      var list = slots(input.dataset.wd, input.value === daysEl.querySelector("input").value);
+      timesEl.classList.toggle("is-windows", list === null);
+      if (list === null) {
+        timesEl.innerHTML = [["Morning", "7 – 10 am"], ["Midday", "10 am – 1 pm"], ["Afternoon", "1 – 5 pm"], ["Any time", "Whenever suits"]].map(function (w) {
+          return '<label class="bk-time"><input type="radio" name="time" value="' + w[0] + '"><span>' + w[0] + "<small>" + w[1] + "</small></span></label>";
+        }).join("");
+      } else if (!list.length) {
+        timesEl.innerHTML = '<p class="bk-empty">No times left that day — try another day.</p>';
+      } else {
+        timesEl.innerHTML = list.map(function (t) {
+          return '<label class="bk-time"><input type="radio" name="time" value="' + fmt(t) + '"><span>' + fmt(t) + "</span></label>";
+        }).join("");
+      }
+    }
+    form.addEventListener("change", function (e) {
+      err.textContent = "";
+      if (e.target.name === "day") renderTimes();
+      if (e.target.name === "what" || e.target.name === "day" || e.target.name === "time") setTimeout(function () { go(st.step + 1); }, 220);
+    });
+
+    function value(name) { var f = form.querySelector('[name="' + name + '"]:checked') || form.querySelector('[name="' + name + '"]'); return f ? f.value.trim() : ""; }
+    function check(step) {
+      if (step === 0 && !value("what")) return "Choose one to continue.";
+      if (step === 1 && !form.querySelector('input[name="day"]:checked')) return "Pick a day.";
+      if (step === 2 && !form.querySelector('input[name="time"]:checked')) return "Pick a time.";
+      if (step === 3) {
+        if (!value("name")) return "Please add your name.";
+        if (value("phone").replace(/\D/g, "").length < 8) return "Please add a mobile number so we can confirm.";
+      }
+      return "";
+    }
+    function go(to) {
+      if (to > st.step) for (var s = st.step; s < to; s++) { var problem = check(s); if (problem) { err.textContent = problem; return; } }
+      if (to > 3) return finish();
+      st.step = Math.max(0, to);
+      steps.forEach(function (f, i) { f.classList.toggle("is-on", i === st.step); });
+      dots.forEach(function (d, i) { d.classList.toggle("is-on", i === st.step); d.classList.toggle("is-done", i < st.step); });
+      back.hidden = st.step === 0;
+      next.innerHTML = st.step === 3 ? "Request booking" : nextLabel;
+      err.textContent = "";
+      var first = steps[st.step].querySelector("input:not([disabled])");
+      if (st.step === 3 && first) setTimeout(function () { first.focus({ preventScroll: true }); }, 350);
+    }
+    function finish() {
+      var day = form.querySelector('input[name="day"]:checked');
+      var summary = value("what") + " · " + day.dataset.label + " · " + value("time");
+      el.querySelector(".bk-summary").textContent = summary + " — for " + value("name") + ".";
+      form.hidden = true;
+      el.querySelector(".bk-progress").hidden = true;
+      done.hidden = false;
+      if (isFinal) {
+        var body = "Booking request for " + el.dataset.biz + ": " + summary + ". Name: " + value("name") + ", mobile: " + value("phone") +
+          (value("where") ? ", address: " + value("where") : "") + (value("note") ? ". " + value("note") : "");
+        var link = el.dataset.mobile === "1" ? "sms:" + el.dataset.phone + "?&body=" + encodeURIComponent(body)
+          : el.dataset.email ? "mailto:" + el.dataset.email + "?subject=" + encodeURIComponent("Booking request") + "&body=" + encodeURIComponent(body)
+          : "tel:" + el.dataset.phone;
+        window.location.href = link;
+      }
+    }
+    next.addEventListener("click", function () { go(st.step + 1); });
+    back.addEventListener("click", function () { go(st.step - 1); });
+    dots.forEach(function (d, i) { d.addEventListener("click", function () { if (i < st.step) go(i); }); });
+    form.addEventListener("submit", function (e) { e.preventDefault(); go(st.step + 1); });
+    el.querySelector(".bk-again").addEventListener("click", function () {
+      form.reset(); timesEl.innerHTML = ""; form.hidden = false; el.querySelector(".bk-progress").hidden = false; done.hidden = true; go(0);
+    });
+    // "Book this" arrows on the services list pre-pick the service.
+    document.querySelectorAll("[data-pick]").forEach(function (a) {
+      a.addEventListener("click", function () {
+        var opt = Array.prototype.find.call(form.querySelectorAll('input[name="what"]'), function (o) { return o.value === a.dataset.pick; });
+        if (opt) { opt.checked = true; setTimeout(function () { go(1); }, 500); }
+      });
+    });
+  }
 })();

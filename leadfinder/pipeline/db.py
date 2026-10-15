@@ -109,7 +109,7 @@ CREATE INDEX IF NOT EXISTS events_slug ON events(slug, at);
 
 # Fields the tracker UI may edit directly.
 EDITABLE = {"follow_up", "contact_name", "email", "price_quoted", "price_agreed", "domain", "notes",
-            "accent", "type_style", "paper"}
+            "accent", "type_style", "paper", "corners"}
 
 
 def now() -> str:
@@ -142,8 +142,9 @@ LATE_COLUMNS = {
     "reviews_json": "TEXT",    # [{"text": "...", "author": "Sam", "stars": 5}, …] short snippets
     "enriched_at": "TEXT",
     "accent": "TEXT",          # client's chosen colour, e.g. "#2f6f62" (else the theme's)
-    "type_style": "TEXT",      # "serif" | "grotesk" (else the theme's)
-    "paper": "TEXT",           # "light" | "dark" (else the theme's)
+    "type_style": "TEXT",      # "serif" | "grotesk" | "sans" (else the theme's)
+    "paper": "TEXT",           # "light" | "warm" | "dark" (else the theme's)
+    "corners": "TEXT",         # "sharp" | "soft" | "round" (default round)
 }
 
 

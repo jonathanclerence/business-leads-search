@@ -38,7 +38,7 @@ class CallBody(BaseModel):
 
 class PublishBody(BaseModel):
     grades: List[str] = Field(default_factory=lambda: ["Hot"])
-    limit: Optional[int] = Field(None, ge=1, le=20000)
+    limit: Optional[int] = Field(100, ge=0, le=20000)
     regions: List[str] = Field(default_factory=list)
     min_score: int = Field(0, ge=0, le=100)
 
