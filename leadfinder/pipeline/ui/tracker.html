@@ -152,6 +152,12 @@ function tickClock() {
 
 /* ---------- personalised script + SMS ---------- */
 const me = () => store.get("pv-me", "");
+/** +61352211234 → 0352211234 (13/1300/1800 numbers have no leading 0) — how Crazytel dials. */
+function national(e164) {
+  if (!e164 || !e164.startsWith("+61")) return (e164 || "").replace(/[^0-9+]/g, "");
+  const n = e164.slice(3);
+  return n.startsWith("13") || n.startsWith("18") ? n : "0" + n;
+}
 function firstName(n) { return (n || "").trim().split(/\s+/)[0] || ""; }
 function payoff(l) {
   const t = l.theme;
@@ -248,7 +254,8 @@ function renderDetail() {
     <h2>${esc(l.name)}</h2>
     <p class="sub">${esc(l.category)} · ${esc(l.suburb)} ${esc(l.state || "")} · <span class="badge g-${esc(l.grade)}">${esc(l.grade)} ${l.score}</span> · <span class="badge">${esc(l.stage_label)}</span>${l.rating ? ` · ${l.rating}★ (${l.reviews})` : ""}</p>
     <div class="row-btns">
-      <a class="btn good call" href="tel:${esc(l.phone)}">📞 ${esc(l.phone_display)}</a>
+      <a class="btn good call" href="sip:${esc(national(l.phone))}" title="Dial with Zoiper (sip: link)">📞 ${esc(l.phone_display)}</a>
+      <a class="btn" href="tel:${esc(l.phone)}" title="Dial with your Mac's default phone app (FaceTime / iPhone)">tel:</a>
       <button class="btn" data-copy="${esc(l.phone)}">Copy number</button>
       <a class="btn" href="${esc(l.preview_url)}" target="_blank" rel="noopener">${live ? "Open preview ↗" : "Preview (not live yet) ↗"}</a>
       <a class="btn" href="${esc(l.maps_url)}" target="_blank" rel="noopener">Google Maps ↗</a>
