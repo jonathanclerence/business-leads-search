@@ -2,6 +2,7 @@
 dunous.com/previewsite/<slug>, and track every lead from "new" to "live".
 
     python -m pipeline import     # batches/*/leads.csv → clean list + tracker
+    python -m pipeline enrich     # real opening hours + review quotes for the next leads
     python -m pipeline publish    # build previews → marketing-site → push
     python -m pipeline verify     # mark previews that are live as hosted
     python -m pipeline coverage   # which towns × business types are done

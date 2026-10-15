@@ -14,13 +14,17 @@ How the page is read (checked against live place pages, Oct 2026):
            ``li.G8aQO`` items are the displayed ranges. Rows start at *today*,
            so we re-order to Monday..Sunday. Fallbacks: an element whose
            aria-label lists all seven days, then the per-day "Copy open hours"
-           buttons (``data-value="Thursday, 9 AM–7 PM"``).
+           buttons (``data-value="Thursday, 9 AM–7 PM"``). Places with several
+           hour types (e.g. "Senior hours") show only "Closed · Opens 9 AM Fri ·
+           See more hours" (``button[data-item-id="oh"]``); we click it and read
+           the first table of the sub-panel.
   reviews  Click the "Reviews" tab; each review is ``div.jftiEf[data-review-id]``
            with the author in ``.d4r55``, stars in ``span[role=img][aria-label="5 stars"]``
            and the text in ``.MyEned .wiI7pd`` (owner replies live in ``.CDe7pd``
            and are ignored). Long reviews are cut with a "More" button
            (``button[aria-label="See more"]``) which we click before reading.
-           If the first page is thin we scroll the list to load more.
+           Signed out, Google serves only its top 5 "most relevant" reviews
+           (sorting / loading more asks to sign in), so we pick from those.
 
 Everything that decides *what* we keep (hours normalising, snippet trimming,
 the "is this review safe to put on a website" filter) is pure Python, tested
@@ -60,7 +64,7 @@ SCROLL_ROUNDS = 2        # extra pages of reviews to load when the first page is
 JS_HOURS = r"""
 () => {
   const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-  const main = document.querySelector('div[role="main"]') || document;
+  const main = document;  // the "See more hours" sub-panel is its own pane
   const parts = (el) => {
     const out = [];
     if (!el) return out;
@@ -260,7 +264,7 @@ def parse_hours(raw: Optional[Dict[str, Any]]) -> Optional[List[List[str]]]:
     elif raw.get("label"):
         # "Monday, 9 AM to 5 PM; Tuesday, …; Hide open hours for the week"
         for chunk in norm_ws(raw["label"]).split(";"):
-            chunk = chunk.strip().rstrip(".")
+            chunk = re.split(r"\.\s", chunk.strip())[0].rstrip(".")  # drop ". Hide open hours…"
             day = next((d for d in DAYS if chunk.startswith(d)), None)
             if not day or day in week:
                 continue
@@ -342,7 +346,8 @@ _URL = re.compile(r"https?://|\bwww\.|\.com\b|\.au\b|\.net\b|\.org\b", re.I)
 _PHONE_RUN = re.compile(r"\+?\(?\d[\d\s().-]{6,}\d")
 _COMPARE = re.compile(
     r"\b(?:better than|compared (?:to|with)|unlike (?:the|other|most|many|some)|competitors?|elsewhere|"
-    r"other (?:\w+ )?(?:salons?|places?|shops?|barbers?|vets?|clinics?|businesses|companies|stores?|"
+    r"(?:other|another|different) (?:\w+ )?(?:salons?|places?|shops?|barbers?|vets?|clinics?|businesses|"
+    r"companies|company|stores?|"
     r"mechanics?|plumbers?|electricians?|hairdressers?|studios?|spas?|practices?|providers?)|"
     r"previous (?:\w+ )?(?:salon|barber|place|vet|clinic|mechanic|plumber|electrician|hairdresser|"
     r"company|shop|groomer|dentist|studio)|used to go to|switched from|instead of going|"
@@ -376,7 +381,20 @@ google maps review reviews australia australian victoria melbourne sydney geelon
 cbd mum dad husband wife son daughter partner kids family friend friends
 gel acrylic acrylics nails nail pedicure manicure shellac lash lashes brows haircut cut fade beard
 dog dogs cat cats puppy vet vets mechanic plumber electrician car cars
+inner outer upper lower north south east west northern southern eastern western central peninsula
+bay beach hill hills park valley creek river lake mount mt street road st rd city centre center plaza
+mall station coast island ranges heights point port shire region suburbs town village
 """.split())
+
+# Display names that aren't names ("Nothing", "NOOB BRO", "A Google User").
+NOT_NAMES = {"nothing", "noob", "anonymous", "anon", "user", "guest", "customer", "unknown", "someone",
+             "me", "na", "n/a", "google", "local", "the", "a", "mr", "mrs", "ms", "miss", "dr"}
+
+# Fine reviews, wrong place for a sales preview.
+_SENSITIVE = re.compile(
+    r"\b(?:passed away|passing|died|death|funeral|euthan\w*|put (?:him|her|them) down|cancer|"
+    r"hospital|chemo|terminal|grief|grieving|suicide|rip)\b",
+    re.I)
 
 
 def _word(w: str) -> str:
@@ -408,6 +426,8 @@ def snippet_problem(text: str, own_words: Iterable[str] = ()) -> Optional[str]:
         return "price"
     if _COMPARE.search(text):
         return "competitor"
+    if _SENSITIVE.search(text):
+        return "sensitive"
     # "Pro Nails", "Smith's Barbers": a name in front of a business noun that
     # isn't this business's own name.
     for m in _NAMED_BUSINESS.finditer(text):
@@ -445,12 +465,14 @@ def pick_reviews(raw: Sequence[Dict[str, Any]], own_words: Iterable[str] = (),
         if not text or "(Translated by Google)" in text or "(Original)" in text:
             continue
         truncated = bool(r.get("truncated"))
-        if truncated and text.endswith("…"):
-            text = text[:-1].rstrip()
+        if text.endswith("…") and (truncated or text[-2:-1] == " "):
+            text = text[:-1].rstrip()  # Google's " …" cut: we only have the start
+            truncated = True
         if len(text) < MIN_CHARS or snippet_problem(text, own):
             continue
         author = first_name(r.get("author"))
-        if not author or author.lower() in seen_author:
+        if (len(author) < 2 or any(c.isdigit() for c in author)
+                or author.lower() in NOT_NAMES or author.lower() in seen_author):
             continue
         if len(text) > MAX_CHARS:
             snippet = trim_snippet(text)
@@ -514,39 +536,88 @@ async def _open_place(scraper: GoogleMapsScraper, page, url: str) -> Dict[str, A
     return state
 
 
-async def _read_hours(page) -> Optional[List[List[str]]]:
+# Compact layout: no inline week, just "Closed · Opens 9 AM Fri · See more hours".
+OH_BUTTON = 'button[data-item-id="oh"], button[aria-label*="See more hours" i]'
+
+
+async def _read_hours(page) -> Tuple[Optional[List[List[str]]], bool]:
+    """Hours shown inline on the Overview → (hours, has_more_hours_button)."""
+    hours = None
     for attempt in range(2):
         try:
             hours = parse_hours(await page.evaluate(JS_HOURS))
         except Exception:
             hours = None
         if hours or attempt:
-            return hours
+            break
         await asyncio.sleep(1.5)  # the info panel sometimes paints a beat later
-    return None
+    try:
+        has_button = await page.locator(OH_BUTTON).count() > 0
+    except Exception:
+        has_button = False
+    return hours, has_button
+
+
+async def _read_hours_panel(page) -> Optional[List[List[str]]]:
+    """Open the "See more hours" sub-panel (from the Overview tab) and read it."""
+    try:
+        btn = page.locator(OH_BUTTON).first
+        if not await btn.count() or not await btn.is_visible():
+            await page.locator('button[role="tab"][aria-label^="Overview" i]').first.click(timeout=5_000)
+            await page.wait_for_selector(OH_BUTTON, state="visible", timeout=8_000)
+            btn = page.locator(OH_BUTTON).first
+        await _human_pause(0.4, 0.9)
+        await btn.click(timeout=5_000)
+        await page.wait_for_function(JS_HOURS, timeout=8_000)
+        return parse_hours(await page.evaluate(JS_HOURS))
+    except Exception:
+        return None
+
+
+# The Overview shows ~3 reviews; they stay in the DOM for a moment after the
+# tab click, so mark them and wait for the Reviews tab's own list.
+JS_MARK_OLD_REVIEWS = """
+() => document.querySelectorAll('[data-review-id]').forEach((e) => e.setAttribute('data-enrich-old', '1'))
+"""
+JS_REVIEWS_READY = r"""
+() => {
+  const tabs = document.querySelectorAll('button[role="tab"]');
+  const sel = document.querySelector('button[role="tab"][aria-selected="true"]');
+  const onReviews = !tabs.length
+    || (sel && /^reviews/i.test((sel.getAttribute('aria-label') || sel.textContent || '').trim()));
+  return !!onReviews && !!document.querySelector('div.jftiEf[data-review-id]:not([data-enrich-old])');
+}
+"""
 
 
 async def _open_reviews_tab(page) -> bool:
+    try:
+        await page.evaluate(JS_MARK_OLD_REVIEWS)
+    except Exception:
+        pass
     for sel in ('button[role="tab"][aria-label^="Reviews" i]',
                 'button[role="tab"]:has-text("Reviews")',
                 'button[aria-label^="More reviews" i]',
                 'button:has-text("More reviews")'):
         try:
             el = page.locator(sel).first
-            if await el.count():
-                await el.click(timeout=5_000)
-                await page.wait_for_selector("div.jftiEf[data-review-id], [data-review-id] .wiI7pd",
-                                             timeout=10_000)
-                return True
+            if not await el.count():
+                continue
+            await el.click(timeout=5_000)
+            await page.wait_for_function(JS_REVIEWS_READY, timeout=12_000)
+            return True
         except Exception:
             continue
     return False
 
 
 async def _read_reviews(page, own_words: List[str]) -> Optional[List[Dict[str, Any]]]:
+    """Reviews tab → expand "More" → pick. Signed-out Maps ("limited view")
+    only serves the top 5 reviews and asks to sign in for more or for sorting,
+    so we only scroll for more while scrolling actually yields more."""
     on_tab = await _open_reviews_tab(page)  # if not, read the few shown on Overview
-    await asyncio.sleep(random.uniform(1.2, 2.0))
-    picks = None
+    await asyncio.sleep(random.uniform(1.0, 1.6))
+    picks, seen = None, -1
     for round_no in range(SCROLL_ROUNDS + 1):
         try:
             if await page.evaluate(JS_EXPAND_REVIEWS):
@@ -556,8 +627,10 @@ async def _read_reviews(page, own_words: List[str]) -> Optional[List[Dict[str, A
             raw = []
         picks = pick_reviews(raw, own_words)
         ideal = [p for p in (picks or []) if p["stars"] == 5 and not p["text"].endswith("…")]
-        if len(ideal) >= MAX_REVIEWS or not on_tab or round_no == SCROLL_ROUNDS:
+        if (len(ideal) >= MAX_REVIEWS or not on_tab or round_no == SCROLL_ROUNDS
+                or len(raw) <= seen):
             break
+        seen = len(raw)
         try:
             if not await page.evaluate(JS_SCROLL_REVIEWS):
                 break
@@ -589,13 +662,15 @@ async def _enrich_one(scraper: GoogleMapsScraper, page, lead: Dict[str, Any],
         log(f"    page is {state['h1']!r}, not {lead['name']!r} — skipped")
         return None
 
-    hours = await _read_hours(page)  # Overview tab: read before switching to Reviews
+    hours, more_hours = await _read_hours(page)  # Overview tab: read before switching to Reviews
     own = name_words(lead.get("name"), state["h1"], lead.get("suburb"), lead.get("address"))
     try:
         reviews = await _read_reviews(page, own)
     except Exception as e:
         log(f"    reviews failed: {type(e).__name__}: {str(e)[:120]}")
         reviews = None
+    if not hours and more_hours:
+        hours = await _read_hours_panel(page)
     return {"hours": hours, "reviews": reviews}
 
 

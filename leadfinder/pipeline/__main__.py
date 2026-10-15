@@ -30,6 +30,11 @@ def main(argv=None) -> int:
     pub.add_argument("--local", action="store_true", help="write into your own marketing-site checkout for `npm run dev`")
     pub.add_argument("--wait", action="store_true", help="after pushing, wait for the deploy and mark previews live")
 
+    en = sub.add_parser("enrich", help="add real opening hours + Google review quotes to the next leads (run before publish)")
+    en.add_argument("--grade", default="Hot", help="comma list (default Hot)")
+    en.add_argument("--limit", type=int, default=100)
+    en.add_argument("--pace", type=float, default=6.0, help="seconds between businesses (keep ≥ 6)")
+
     sub.add_parser("verify", help="mark published previews whose URL loads as 'Preview live'")
     sub.add_parser("coverage", help="towns × business types searched, by region")
     sub.add_parser("stats", help="how many leads are at each stage")
@@ -59,6 +64,14 @@ def main(argv=None) -> int:
                 if not left:
                     break
                 time.sleep(45)
+    elif a.cmd == "enrich":
+        from .enrich import enrich
+        with db.connect() as con:
+            # The same leads `publish` will pick next, in the same order.
+            slugs = publish.select_new(con, _list(a.grade), a.limit)
+            slugs = [s for s in slugs if not con.execute(
+                "SELECT enriched_at FROM leads WHERE slug = ?", (s,)).fetchone()[0]]
+        print(json.dumps(enrich(slugs, pace=a.pace), indent=2))
     elif a.cmd == "verify":
         print(json.dumps(publish.verify(), indent=2))
     elif a.cmd == "coverage":
