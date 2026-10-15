@@ -115,9 +115,18 @@ def test_render():
     check("rating shown", "368 Google reviews" in html, True)
     check("tap to call", 'href="tel:+61484589929"' in html, True)
     final = render(lead, final=True, assets="assets")
-    check("final has no preview bar", "pv-bar" in final or "pv-form" in final, False)
+    check("final has no preview bar", 'class="pv-bar"' in final or "pv-form" in final, False)
     check("final is indexable", "noindex" in final, False)
     check("final uses relative assets", 'href="assets/preview.css' in final, True)
+    check("theme accent applied", 'style="--accent:#b0546f' in html, True)
+    check("client colour overrides theme", 'style="--accent:#123456' in render({**lead, "accent": "#123456"}), True)
+    check("bad colour ignored", 'style="--accent:#b0546f' in render({**lead, "accent": "red;}"}), True)
+    hours = '[["Monday", "9 am–5 pm"]]'
+    quotes = '[{"text": "Lovely </script> people", "author": "Sam", "stars": 5}]'
+    personal = render({**lead, "hours_json": hours, "reviews_json": quotes})
+    check("hours shown", "9 am–5 pm" in personal, True)
+    check("review quote escaped", "Lovely &lt;/script&gt; people" in personal, True)
+    check("final keeps motion but no colour panel", ("site.js" in final, "pv-panel" in final), (True, False))
     unrated = render({**lead, "rating": None, "reviews": 0})
     check("no rating → no reviews section", "Google reviews" in unrated, False)
 

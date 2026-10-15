@@ -1,5 +1,6 @@
-/* Preview websites: the "Make it mine" / "Request changes" sheet and the
-   demo enquiry form. Posts to /api/preview-request, which emails DuNous. */
+/* Preview websites only: the colour/style panel, the "Make it mine" /
+   "Request changes" sheet and the demo enquiry form. Requests post to
+   /api/preview-request, which emails DuNous (with the client's chosen look). */
 (function () {
   "use strict";
   var sheet = document.getElementById("pv-sheet");
@@ -87,7 +88,7 @@
           body: JSON.stringify({
             intent: intent, slug: el("slug").value, business: el("business").value,
             name: el("name").value, email: el("email").value, phone: el("phone").value,
-            domain: el("domain").value, message: msg, hp: el("hp").value, t: openedAt, token: t
+            domain: el("domain").value, message: msg + lookNote(), hp: el("hp").value, t: openedAt, token: t
           })
         });
       }).then(function (r) {
@@ -111,6 +112,72 @@
         if (window.turnstile && tsWidget && tsWidget !== "loading") window.turnstile.reset(tsWidget);
       });
     });
+  }
+
+  /* ---- colour / style panel -------------------------------------------- */
+  var root = document.documentElement;
+  var panel = document.getElementById("pv-panel");
+  var slug = (document.querySelector('meta[name="pv-slug"]') || {}).content || "";
+  var ORIGINAL = { accent: root.style.getPropertyValue("--accent").trim(), type: root.dataset.type, paper: root.dataset.paper };
+  var look = Object.assign({}, ORIGINAL);
+  var KEY = "pv-look:" + slug;
+
+  function inkFor(hex) {
+    var c = [1, 3, 5].map(function (i) {
+      var v = parseInt(hex.substr(i, 2), 16) / 255;
+      return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2] > 0.36 ? "#141414" : "#ffffff";
+  }
+  function apply(next, save) {
+    look = Object.assign(look, next);
+    root.style.setProperty("--accent", look.accent);
+    root.style.setProperty("--accent-ink", inkFor(look.accent));
+    root.dataset.type = look.type;
+    root.dataset.paper = look.paper;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = look.accent;
+    if (panel) {
+      panel.querySelectorAll("[data-accent]").forEach(function (b) {
+        b.setAttribute("aria-checked", String(b.dataset.accent.toLowerCase() === look.accent.toLowerCase()));
+      });
+      panel.querySelectorAll(".seg").forEach(function (seg) {
+        var v = seg.dataset.seg === "type" ? look.type : look.paper;
+        seg.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.value === v)); });
+      });
+      var input = panel.querySelector("[data-accent-input]");
+      if (input) input.value = look.accent;
+    }
+    if (save) { try { localStorage.setItem(KEY, JSON.stringify(look)); } catch (e) {} }
+  }
+  function lookNote() {
+    var changed = ["accent", "type", "paper"].filter(function (k) { return look[k] !== ORIGINAL[k]; });
+    if (!changed.length) return "";
+    return "\n\n[Chosen look: colour " + look.accent + ", " + (look.type === "serif" ? "Classic" : "Modern") +
+      " type, " + look.paper + " background]";
+  }
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved && /^#[0-9a-f]{6}$/i.test(saved.accent)) apply(saved, false); } catch (e) {}
+  apply({}, false);
+  if (panel) {
+    document.querySelectorAll("[data-panel]").forEach(function (b) {
+      b.addEventListener("click", function () { panel.hidden = !panel.hidden; });
+    });
+    panel.querySelector("[data-panel-close]").addEventListener("click", function () { panel.hidden = true; });
+    panel.querySelectorAll("[data-accent]").forEach(function (b) {
+      b.addEventListener("click", function () { apply({ accent: b.dataset.accent }, true); });
+    });
+    panel.querySelector("[data-accent-input]").addEventListener("input", function (e) { apply({ accent: e.target.value }, true); });
+    panel.querySelectorAll(".seg button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var k = b.parentElement.dataset.seg === "type" ? "type" : "paper";
+        var next = {}; next[k] = b.dataset.value; apply(next, true);
+      });
+    });
+    panel.querySelector("[data-reset]").addEventListener("click", function () {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      apply(ORIGINAL, false);
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") panel.hidden = true; });
   }
 
   function fail(text) {

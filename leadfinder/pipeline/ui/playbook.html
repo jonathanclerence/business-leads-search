@@ -77,7 +77,7 @@
 
 <h2>4 · From “yes” to live</h2>
 <ol>
-  <li><b>Invoice</b> (Payable or a PayPal invoice) → stage <b>Invoice sent</b>, fill in “Agreed”. Check what currency the client is charged in: if it isn't AUD, their bank may add a ~3% foreign transaction fee — say so upfront, or invoice in AUD through PayPal.</li>
+  <li><b>Invoice</b> → send a Payoneer payment request (Payoneer → Get paid → Request a payment) in <b>AUD</b>, or put your Payoneer AUD receiving account (BSB + account number) on the invoice so they pay by normal bank transfer — the cheapest option for them. Stage <b>Invoice sent</b>, fill in “Agreed”. Card payments through a payment request cost more in fees, so offer bank transfer first. Payoneer needs to finish verifying your account before you can receive.</li>
   <li><b>Paid</b> → stage <b>Payment received</b>. Ask for: preferred domain, photos, opening hours, prices, logo, and the email that should get enquiries.</li>
   <li><b>Domain</b> → stage <b>Domain chosen</b>. A <i>.com.au</i> needs the client's ABN and must be registered in their name — use an Australian registrar (e.g. VentraIP or Crazy Domains), then point it at Cloudflare.</li>
   <li><b>Hosting</b> → on the lead, press <b>Export finished site folder</b> (stage must be Payment received or later). Swap in their photos (<code>assets/img</code>) and details. Create a free Cloudflare account <i>with the client's email</i> (they own it; invite yourself as a member) → Workers &amp; Pages → Create → Pages → <b>Upload assets</b> → drag the folder in → add their custom domain. Stage <b>Site hosted</b>.</li>

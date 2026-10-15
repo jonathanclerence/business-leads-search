@@ -5,6 +5,8 @@ after payment (`final=True`: no preview bar, no DuNous form)."""
 from __future__ import annotations
 
 import hashlib
+import json
+import re
 import urllib.parse
 from datetime import date
 from pathlib import Path
@@ -13,7 +15,7 @@ from typing import Any, Dict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import config
-from .content import CTA_LABELS, KINDS, THEME_ABOUT
+from .content import CTA_BAND, CTA_LABELS, KINDS, THEME_ABOUT, THEME_STATEMENT, THEME_STYLE
 from .leads import slugify
 
 HERE = Path(__file__).resolve().parent
@@ -24,6 +26,42 @@ _env = Environment(loader=FileSystemLoader(HERE / "templates"),
                    trim_blocks=True, lstrip_blocks=True)
 
 CTA_SHORT = {"book": "Book now", "quote": "Free quote", "enquire": "Enquire", "visit": "Directions"}
+
+# Offered in the preview's colour picker (the theme's own colour comes first).
+SWATCHES = ["#9a5b43", "#b0546f", "#7a2b3a", "#d23a2a", "#e09a12", "#4c7a3a",
+            "#138a9e", "#2563a8", "#4b46d6", "#1f1f1f"]
+_HEX = re.compile(r"^#[0-9a-fA-F]{6}$")
+
+
+def ink_for(hex_colour: str) -> str:
+    """Black or white text, whichever reads better on the colour."""
+    r, g, b = (int(hex_colour[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    lin = [c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4 for c in (r, g, b)]
+    lum = 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+    return "#141414" if lum > 0.36 else "#ffffff"
+
+
+def initials(name: str) -> str:
+    words = [w for w in re.findall(r"[A-Za-z0-9]+", name) if w.lower() not in {"the", "and", "of", "pty", "ltd"}]
+    return "".join(w[0] for w in words[:2]).upper() or name[:1].upper()
+
+
+def name_size(name: str) -> str:
+    n = len(name)
+    return "xl" if n <= 14 else "l" if n <= 24 else "m" if n <= 36 else "s"
+
+
+def _json(value: Any) -> Any:
+    if isinstance(value, str) and value:
+        try:
+            return json.loads(value)
+        except ValueError:
+            return None
+    return value or None
+
+
+def video_available(theme: str) -> bool:
+    return (config.MARKETING_SITE_DIR / config.ASSETS_DIR / "video" / f"{theme}.mp4").exists()
 
 
 def asset_version() -> str:
@@ -53,12 +91,32 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
     service_area = not street or "mobile" in lead["name"].lower() or lead.get("kind") == "mobile-mechanic"
 
     version = asset_version()
+    t_accent, t_type, t_paper = THEME_STYLE.get(theme, THEME_STYLE["local"])
+    accent = lead.get("accent") if _HEX.match(lead.get("accent") or "") else t_accent
+    hours = _json(lead.get("hours_json"))
+    quotes = _json(lead.get("reviews_json")) or []
     if rated:
         lede = f"Trusted by locals — rated {rating:g} stars from {reviews:,} Google reviews."
     else:
         lede = f"Your local {lead['category'].lower()} in {suburb}. Friendly, reliable and easy to reach."
 
     return {
+        "accent": accent,
+        "accent_ink": ink_for(accent),
+        "type_style": lead.get("type_style") if lead.get("type_style") in ("serif", "grotesk") else t_type,
+        "paper": lead.get("paper") if lead.get("paper") in ("light", "dark") else t_paper,
+        "swatches": list(dict.fromkeys([t_accent] + SWATCHES)),
+        "initials": initials(lead["name"]),
+        "name_words": lead["name"].split(),
+        "name_size": name_size(lead["name"]),
+        "video": video_available(theme),
+        "marquee": [t for t, _ in kind["services"]] + [f"{lead['category']} in {suburb}"]
+                   + ([f"{rating:g}★ on Google"] if rated else []),
+        "statement": THEME_STATEMENT.get(theme, THEME_STATEMENT["local"]),
+        "cta_band": CTA_BAND[cta],
+        "hours": hours,
+        "hours_json": json.dumps(hours).replace("</", "<\\/") if hours else "",
+        "reviews": quotes[:3],
         "lead": lead,
         "final": final,
         "theme": theme,

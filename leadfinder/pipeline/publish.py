@@ -208,12 +208,17 @@ def export_site(slug: str, log: Log = print) -> Path:
         shutil.rmtree(out)
     (out / "assets" / "img").mkdir(parents=True)
     (out / "index.html").write_text(render(lead, final=True, assets="assets"), encoding="utf-8")
-    for name in ("preview.css", "preview-icons.svg"):
+    for name in ("preview.css", "preview-icons.svg", "site.js"):
         shutil.copyfile(ASSET_SRC / name, out / "assets" / name)
-    img_src = config.MARKETING_SITE_DIR / config.ASSETS_DIR / "img"
-    for part in ("hero", "about"):
-        f = img_src / f"{lead['theme']}-{part}.webp"
-        if f.exists():
-            shutil.copyfile(f, out / "assets" / "img" / f.name)
+    site_assets = config.MARKETING_SITE_DIR / config.ASSETS_DIR
+    shutil.copytree(site_assets / "fonts", out / "assets" / "fonts")
+    theme = lead["theme"]
+    for sub, names in (("img", [f"{theme}-hero.webp", f"{theme}-about.webp"]),
+                       ("video", [f"{theme}.mp4", f"{theme}-poster.webp"])):
+        for name in names:
+            f = site_assets / sub / name
+            if f.exists():
+                (out / "assets" / sub).mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(f, out / "assets" / sub / name)
     log(f"Exported {out} — swap in the client's own photos in assets/img/ before going live.")
     return out

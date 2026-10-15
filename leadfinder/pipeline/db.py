@@ -108,7 +108,8 @@ CREATE INDEX IF NOT EXISTS events_slug ON events(slug, at);
 """
 
 # Fields the tracker UI may edit directly.
-EDITABLE = {"follow_up", "contact_name", "email", "price_quoted", "price_agreed", "domain", "notes"}
+EDITABLE = {"follow_up", "contact_name", "email", "price_quoted", "price_agreed", "domain", "notes",
+            "accent", "type_style", "paper"}
 
 
 def now() -> str:
@@ -124,6 +125,7 @@ def connect(path: Optional[Path] = None) -> Iterator[sqlite3.Connection]:
     con.execute("PRAGMA journal_mode=WAL")
     con.execute("PRAGMA foreign_keys=ON")
     con.executescript(SCHEMA)
+    _migrate(con)
     try:
         yield con
         con.commit()
@@ -132,6 +134,24 @@ def connect(path: Optional[Path] = None) -> Iterator[sqlite3.Connection]:
         raise
     finally:
         con.close()
+
+
+# Columns added after the first release; created on demand so old databases upgrade.
+LATE_COLUMNS = {
+    "hours_json": "TEXT",      # [["Monday", "9 am–5 pm"], …] from the Google Maps place page
+    "reviews_json": "TEXT",    # [{"text": "...", "author": "Sam", "stars": 5}, …] short snippets
+    "enriched_at": "TEXT",
+    "accent": "TEXT",          # client's chosen colour, e.g. "#2f6f62" (else the theme's)
+    "type_style": "TEXT",      # "serif" | "grotesk" (else the theme's)
+    "paper": "TEXT",           # "light" | "dark" (else the theme's)
+}
+
+
+def _migrate(con: sqlite3.Connection) -> None:
+    have = {r["name"] for r in con.execute("PRAGMA table_info(leads)")}
+    for col, kind in LATE_COLUMNS.items():
+        if col not in have:
+            con.execute(f"ALTER TABLE leads ADD COLUMN {col} {kind}")
 
 
 def log(con: sqlite3.Connection, slug: str, kind: str, detail: str = "") -> None:

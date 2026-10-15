@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-AU">
+<html lang="en-AU" data-type="{{ type_style }}" data-paper="{{ paper }}" style="--accent:{{ accent }};--accent-ink:{{ accent_ink }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -12,16 +12,21 @@
 <meta name="pv-slug" content="{{ lead.slug }}">
 <meta name="pv-ts" content="%%TURNSTILE_SITE_KEY%%">
 {% endif %}
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="{{ accent }}">
+<link rel="preload" href="{{ assets }}/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ assets }}/fonts/{{ 'instrument-serif' if type_style == 'serif' else 'bricolage' }}.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ assets }}/preview.css?v={{ version }}">
+<script>document.documentElement.classList.add("js")</script>
 </head>
-<body data-theme="{{ theme }}"{% if not final %} class="is-preview"{% endif %}>
+<body{% if not final %} class="is-preview"{% endif %}>
+<div class="progress" aria-hidden="true"><i></i></div>
 
 {% if not final %}
 <div class="pv-bar" role="region" aria-label="Preview notice">
-  <p><svg class="ic"><use href="{{ icons }}#i-spark"/></svg><span>A free website preview made for <b>{{ lead.name }}</b><span class="pv-bar-note"> — sample photos &amp; wording</span></span></p>
+  <p><span class="pv-dot"></span><span>Website preview made for <b>{{ lead.name }}</b><span class="pv-bar-note"> · sample photos &amp; wording</span></span></p>
   <div class="pv-bar-actions">
-    <button class="pv-btn pv-btn-ghost" type="button" data-open="changes">Request changes</button>
+    <button class="pv-btn pv-btn-ghost" type="button" data-panel="style"><svg class="ic"><use href="{{ icons }}#i-palette"/></svg><span>Colours</span></button>
+    <button class="pv-btn pv-btn-ghost pv-hide-sm" type="button" data-open="changes">Request changes</button>
     <button class="pv-btn" type="button" data-open="buy">Make it mine</button>
   </div>
 </div>
@@ -29,135 +34,192 @@
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="#top">{{ lead.name }}</a>
-    <a class="btn btn-sm" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg><span>{{ lead.phone_display }}</span></a>
+    <a class="brand" href="#top"><span class="mono" aria-hidden="true">{{ initials }}</span><span class="brand-name">{{ lead.name }}</span></a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      {% if reviews or rated %}<a href="#reviews">Reviews</a>{% endif %}
+      <a href="#visit">{{ "Visit" if street else "Contact" }}</a>
+    </nav>
+    <a class="btn btn-accent btn-sm" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg><span>{{ lead.phone_display }}</span></a>
   </div>
 </header>
 
 <main id="top">
-  <section class="hero" style="--hero:url('{{ assets }}/img/{{ theme }}-hero.webp')">
-    <div class="wrap hero-inner">
-      <p class="eyebrow">{{ lead.category }} · {{ lead.suburb }}</p>
-      <h1>{{ headline }}</h1>
-      <p class="lede">{{ lede }}</p>
-      <div class="actions">
-        {% if cta == "visit" %}
-        <a class="btn btn-primary" href="{{ maps_link }}" target="_blank" rel="noopener">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
-        {% else %}
-        <a class="btn btn-primary" href="#contact">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow" data-reveal>
+          {% if hours %}<span class="status" data-open-status hidden><i></i><b></b></span>{% endif %}
+          <span>{{ lead.category }} · {{ lead.suburb }}</span>
+        </p>
+        <h1 class="hero-name hero-name--{{ name_size }}" aria-label="{{ lead.name }}">
+          {% for w in name_words %}<span class="w" aria-hidden="true"><span style="--i:{{ loop.index0 }}">{{ w }}</span></span>{{ " " if not loop.last }}{% endfor %}
+        </h1>
+        <p class="hero-lede" data-reveal style="--d:3">{{ headline }}.</p>
+        <div class="actions" data-reveal style="--d:4">
+          {% if cta == "visit" %}
+          <a class="btn btn-accent" href="{{ maps_link }}" target="_blank" rel="noopener">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+          {% else %}
+          <a class="btn btn-accent" href="#visit">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+          {% endif %}
+          <a class="btn btn-line" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg>{{ lead.phone_display }}</a>
+        </div>
+        {% if rated %}
+        <a class="hero-proof" href="{{ maps_link }}" target="_blank" rel="noopener" data-reveal style="--d:5">
+          <span class="stars" aria-hidden="true">{% for _ in range(5) %}<svg class="ic"><use href="{{ icons }}#i-star"/></svg>{% endfor %}</span>
+          <span><b>{{ rating }}</b> from {{ reviews_fmt }} Google reviews</span>
+        </a>
         {% endif %}
-        <a class="btn btn-light" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg>Call {{ lead.phone_display }}</a>
       </div>
-      {% if rated %}
-      <a class="hero-rating" href="{{ maps_link }}" target="_blank" rel="noopener">
-        <span class="stars" aria-hidden="true">{% for _ in range(5) %}<svg class="ic"><use href="{{ icons }}#i-star"/></svg>{% endfor %}</span>
-        <span><b>{{ rating }}</b> from {{ reviews_fmt }} Google reviews</span>
-      </a>
-      {% endif %}
+      <figure class="hero-media" data-reveal="zoom" style="--d:2">
+        {% if video %}
+        <video class="media" autoplay muted loop playsinline preload="metadata" poster="{{ assets }}/video/{{ theme }}-poster.webp" aria-hidden="true">
+          <source src="{{ assets }}/video/{{ theme }}.mp4" type="video/mp4">
+        </video>
+        {% else %}
+        <img class="media" src="{{ assets }}/img/{{ theme }}-hero.webp" alt="" width="1600" height="1000" fetchpriority="high">
+        {% endif %}
+        <figcaption class="chip chip-float">
+          <svg class="ic"><use href="{{ icons }}#i-pin"/></svg>{{ "Servicing " ~ lead.suburb if service_area else lead.suburb ~ ", " ~ lead.state }}
+        </figcaption>
+      </figure>
     </div>
   </section>
 
-  <section class="strip">
-    <div class="wrap strip-inner">
-      {% if rated %}<div><b>{{ rating }}★</b><span>Google rating</span></div>
-      <div><b>{{ reviews_fmt }}</b><span>happy reviews</span></div>{% endif %}
-      <div><b>{{ lead.suburb }}</b><span>{{ "We come to you" if service_area else "Proudly local" }}</span></div>
-      <div><b>{{ cta_short }}</b><span>{{ "Call or message" if cta != "visit" else "Walk-ins welcome" }}</span></div>
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      {% for _ in range(2) %}<div class="marquee-group">{% for item in marquee %}<span>{{ item }}</span><svg class="ic"><use href="{{ icons }}#i-spark"/></svg>{% endfor %}</div>{% endfor %}
     </div>
-  </section>
+  </div>
 
   <section class="section" id="services">
     <div class="wrap">
-      <p class="kicker">What we do</p>
-      <h2>{{ services_title }}</h2>
-      <div class="cards">
+      <div class="section-head">
+        <div>
+          <p class="kicker" data-reveal>Services</p>
+          <h2 data-reveal style="--d:1">{{ services_title }}</h2>
+        </div>
+        <p class="section-sub" data-reveal style="--d:2">Everything you need from a {{ lead.category | lower }}, close to home. Call or message and we'll take care of the rest.</p>
+      </div>
+      <ol class="services">
         {% for title, desc in services %}
-        <article class="card">
-          <span class="card-ic"><svg class="ic"><use href="{{ icons }}#i-check"/></svg></span>
+        <li class="service" data-reveal style="--d:{{ loop.index0 }}">
+          <span class="service-num">{{ "%02d" | format(loop.index) }}</span>
           <h3>{{ title }}</h3>
           <p>{{ desc }}</p>
-        </article>
+          <svg class="ic service-arrow"><use href="{{ icons }}#i-arrow"/></svg>
+        </li>
         {% endfor %}
-      </div>
+      </ol>
     </div>
   </section>
 
-  <section class="section about">
-    <div class="wrap about-inner">
-      <img class="about-img" src="{{ assets }}/img/{{ theme }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async">
-      <div>
-        <p class="kicker">About us</p>
-        <h2>Local, reliable and easy to deal with</h2>
-        <p class="about-text">{{ about }}</p>
-        <ul class="ticks">
+  <section class="section about" id="about">
+    <div class="wrap about-grid">
+      <div class="about-media" data-reveal="zoom">
+        <img src="{{ assets }}/img/{{ theme }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async" data-parallax>
+      </div>
+      <div class="about-copy">
+        <p class="kicker" data-reveal>About {{ lead.name }}</p>
+        <p class="statement" data-reveal style="--d:1">{{ statement | safe }}</p>
+        <p class="about-text" data-reveal style="--d:2">{{ about }}</p>
+        <ul class="ticks" data-reveal style="--d:3">
           <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Servicing " ~ lead.suburb ~ " and surrounds" if service_area else "Easy to find in " ~ lead.suburb }}</li>
           <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Quick, friendly replies" if cta != "visit" else "Friendly local service" }}</li>
-          <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Loved by locals — " ~ rating ~ "★ on Google" if rated else "Call us any time on " ~ lead.phone_display }}</li>
+          <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Rated " ~ rating ~ "★ by " ~ reviews_fmt ~ " locals" if rated else "Call us on " ~ lead.phone_display }}</li>
         </ul>
       </div>
     </div>
   </section>
 
-  {% if rated %}
-  <section class="section reviews">
-    <div class="wrap reviews-inner">
-      <div class="score">
-        <span class="score-num">{{ rating }}</span>
-        <span class="stars" aria-hidden="true">{% for _ in range(5) %}<svg class="ic"><use href="{{ icons }}#i-star"/></svg>{% endfor %}</span>
-        <span class="score-sub">{{ reviews_fmt }} reviews on Google</span>
+  {% if rated or reviews %}
+  <section class="section reviews" id="reviews">
+    <div class="wrap">
+      {% if rated %}
+      <div class="stats">
+        <div class="stat" data-reveal><b><span data-count="{{ rating }}" data-decimals="1">{{ rating }}</span><small>★</small></b><span>Google rating</span></div>
+        <div class="stat" data-reveal style="--d:1"><b><span data-count="{{ lead.reviews }}">{{ reviews_fmt }}</span></b><span>reviews from locals</span></div>
+        <div class="stat" data-reveal style="--d:2"><b class="stat-word">{{ lead.suburb }}</b><span>{{ "where we work" if service_area else "where you'll find us" }}</span></div>
       </div>
-      <div>
-        <h2>Don't just take our word for it</h2>
-        <p>{{ reviews_fmt }} people have reviewed {{ lead.name }} on Google, with an average of {{ rating }} stars. See what they say.</p>
-        <a class="btn btn-outline" href="{{ maps_link }}" target="_blank" rel="noopener">Read our Google reviews<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+      {% endif %}
+      {% if reviews %}
+      <div class="quotes">
+        {% for r in reviews %}
+        <figure class="quote" data-reveal style="--d:{{ loop.index0 }}">
+          <span class="stars" aria-label="{{ r.stars }} stars">{% for _ in range(r.stars) %}<svg class="ic"><use href="{{ icons }}#i-star"/></svg>{% endfor %}</span>
+          <blockquote>“{{ r.text }}”</blockquote>
+          <figcaption>{{ r.author }} · Google review</figcaption>
+        </figure>
+        {% endfor %}
       </div>
+      {% endif %}
+      {% if rated %}
+      <a class="link-arrow" href="{{ maps_link }}" target="_blank" rel="noopener" data-reveal>Read all {{ reviews_fmt }} reviews on Google<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+      {% endif %}
     </div>
   </section>
   {% endif %}
 
-  <section class="section contact" id="contact">
-    <div class="wrap contact-inner">
+  <section class="section visit" id="visit">
+    <div class="wrap visit-grid">
       <div>
-        <p class="kicker">Get in touch</p>
-        <h2>{{ cta_label }}</h2>
-        <p>The quickest way to reach us is a phone call or a message below.</p>
-        <ul class="contact-list">
+        <p class="kicker" data-reveal>{{ "Visit" if street else "Get in touch" }}</p>
+        <h2 data-reveal style="--d:1">{{ "Find us in " ~ lead.suburb if street else "We come to you" }}</h2>
+        <ul class="contact-list" data-reveal style="--d:2">
           <li><svg class="ic"><use href="{{ icons }}#i-phone"/></svg><a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a></li>
           {% if street %}
           <li><svg class="ic"><use href="{{ icons }}#i-pin"/></svg><a href="{{ maps_link }}" target="_blank" rel="noopener">{{ lead.address }}</a></li>
           {% else %}
-          <li><svg class="ic"><use href="{{ icons }}#i-pin"/></svg><span>Servicing {{ lead.suburb }} {{ lead.state }} and surrounds</span></li>
+          <li><svg class="ic"><use href="{{ icons }}#i-pin"/></svg><span>{{ lead.suburb }} {{ lead.state }} and surrounds</span></li>
           {% endif %}
           {% if final and lead.email %}
           <li><svg class="ic"><use href="{{ icons }}#i-chat"/></svg><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></li>
           {% endif %}
         </ul>
-        <a class="btn btn-outline" href="{{ maps_link }}" target="_blank" rel="noopener"><svg class="ic"><use href="{{ icons }}#i-pin"/></svg>{{ "Get directions" if street else "Find us on Google Maps" }}</a>
+        <a class="btn btn-line" href="{{ maps_link }}" target="_blank" rel="noopener" data-reveal style="--d:3"><svg class="ic"><use href="{{ icons }}#i-pin"/></svg>{{ "Get directions" if street else "See us on Google Maps" }}</a>
       </div>
-      {% if not final %}
-      <form class="enquiry" id="demo-form" novalidate>
-        <h3>Send us a message</h3>
-        <label><span>Your name</span><input name="n" autocomplete="off"></label>
-        <label><span>Phone</span><input name="p" type="tel" autocomplete="off"></label>
-        <label><span>How can we help?</span><textarea name="m" rows="3"></textarea></label>
-        <button class="btn btn-primary" type="submit">Send message</button>
-        <p class="demo-note" hidden>This is a preview. On your live website, messages like this go straight to your phone or inbox.</p>
-      </form>
-      {% elif lead.email %}
-      <div class="enquiry">
-        <h3>Send us a message</h3>
-        <p>Email us and we'll get back to you as soon as we can.</p>
-        <a class="btn btn-primary" href="mailto:{{ lead.email }}?subject=Enquiry">Email {{ lead.name }}</a>
+      <div class="hours-card" data-reveal="zoom" style="--d:1">
+        <h3>Opening hours</h3>
+        {% if hours %}
+        <table class="hours">
+          {% for day, text in hours %}<tr data-day="{{ day }}"><th>{{ day }}</th><td>{{ text }}</td></tr>{% endfor %}
+        </table>
+        <p class="hours-status" data-open-status hidden><i></i><b></b></p>
+        {% else %}
+        <p class="muted">Call us on <a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a> for today's hours{{ " — we'll add them here" if not final else "" }}.</p>
+        {% endif %}
       </div>
-      {% endif %}
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="wrap cta-inner">
+      <p class="cta-big" data-reveal>{{ cta_band }}</p>
+      <div class="cta-actions" data-reveal style="--d:1">
+        <a class="cta-phone" href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a>
+        {% if not final %}
+        <form class="enquiry" id="demo-form" novalidate>
+          <input name="n" placeholder="Your name" autocomplete="off" aria-label="Your name">
+          <input name="p" type="tel" placeholder="Phone" autocomplete="off" aria-label="Phone">
+          <button class="btn btn-ink" type="submit">Send</button>
+          <p class="demo-note" hidden>This is a preview — on your live website, messages like this go straight to your phone or inbox.</p>
+        </form>
+        {% elif lead.email %}
+        <a class="btn btn-ink" href="mailto:{{ lead.email }}?subject=Enquiry">Email us</a>
+        {% endif %}
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="foot">
-  <div class="wrap foot-inner">
-    <p><b>{{ lead.name }}</b> · {{ lead.category }} · {{ lead.suburb }} {{ lead.state }}</p>
-    <p>© {{ year }} {{ lead.name }}{% if not final %} · Preview by {{ brand }}{% endif %}</p>
+  <div class="wrap">
+    <p class="foot-word foot-word--{{ name_size }}" aria-hidden="true">{{ lead.name }}</p>
+    <div class="foot-row">
+      <p>{{ lead.category }} · {{ lead.suburb }} {{ lead.state }} · <a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a></p>
+      <p>© {{ year }} {{ lead.name }}{% if not final %} · Preview by {{ brand }}{% endif %}</p>
+    </div>
   </div>
 </footer>
 
@@ -166,11 +228,28 @@
   {% if cta == "visit" %}
   <a class="dock-main" href="{{ maps_link }}" target="_blank" rel="noopener">{{ cta_short }}</a>
   {% else %}
-  <a class="dock-main" href="#contact">{{ cta_short }}</a>
+  <a class="dock-main" href="#visit">{{ cta_short }}</a>
   {% endif %}
 </nav>
 
+{% if hours %}<script type="application/json" id="site-hours">{{ hours_json | safe }}</script>{% endif %}
+<script src="{{ assets }}/site.js?v={{ version }}" defer></script>
+
 {% if not final %}
+<aside class="pv-panel" id="pv-panel" hidden aria-label="Try your colours">
+  <div class="pv-panel-head"><b>Make it yours</b><button type="button" class="pv-close" data-panel-close aria-label="Close"><svg class="ic"><use href="{{ icons }}#i-x"/></svg></button></div>
+  <p class="pv-panel-label">Colour</p>
+  <div class="swatches" role="radiogroup" aria-label="Accent colour">
+    {% for c in swatches %}<button type="button" class="swatch" data-accent="{{ c }}" style="--c:{{ c }}" aria-label="{{ c }}"></button>{% endfor %}
+    <label class="swatch swatch-custom" title="Pick any colour"><input type="color" value="{{ accent }}" data-accent-input aria-label="Custom colour"></label>
+  </div>
+  <p class="pv-panel-label">Style</p>
+  <div class="seg" data-seg="type"><button type="button" data-value="serif">Classic</button><button type="button" data-value="grotesk">Modern</button></div>
+  <div class="seg" data-seg="paper"><button type="button" data-value="light">Light</button><button type="button" data-value="dark">Dark</button></div>
+  <button type="button" class="pv-reset" data-reset>Reset to original</button>
+  <p class="pv-panel-note">Your choice is saved on this device and sent to us when you say “Make it mine”.</p>
+</aside>
+
 <dialog class="pv-sheet" id="pv-sheet" aria-labelledby="pv-title">
   <form id="pv-form" novalidate>
     <div class="pv-head">

@@ -501,3 +501,58 @@ KINDS = {
 }
 
 THEMES = sorted({k["theme"] for k in KINDS.values()})
+
+
+# Design defaults per theme: accent colour, type style ("serif" = Instrument
+# Serif display, "grotesk" = Bricolage Grotesque) and paper (light/dark).
+# The client can change all three in the preview's colour picker.
+THEME_STYLE = {
+    "hair":         ("#9a5b43", "serif",   "light"),
+    "beauty":       ("#b0546f", "serif",   "light"),
+    "tattoo":       ("#c9a14a", "grotesk", "dark"),
+    "wellness":     ("#5f7a62", "serif",   "light"),
+    "health":       ("#2563a8", "grotesk", "light"),
+    "fitness":      ("#ff5a1f", "grotesk", "dark"),
+    "learning":     ("#2f5bd3", "grotesk", "light"),
+    "auto":         ("#d23a2a", "grotesk", "light"),
+    "trades":       ("#e09a12", "grotesk", "light"),
+    "cleaning":     ("#138a9e", "grotesk", "light"),
+    "garden":       ("#4c7a3a", "serif",   "light"),
+    "pets":         ("#d9712c", "grotesk", "light"),
+    "food":         ("#b4532a", "serif",   "light"),
+    "winery":       ("#7a2b3a", "serif",   "light"),
+    "creative":     ("#8a6a4f", "serif",   "light"),
+    "professional": ("#1f3a63", "grotesk", "light"),
+    "tech":         ("#4b46d6", "grotesk", "light"),
+    "local":        ("#2f6f62", "serif",   "light"),
+}
+
+# One line for the "about" statement; <em> words are set in the accent italic.
+THEME_STATEMENT = {
+    "hair": "Good hair days, <em>every</em> day.",
+    "beauty": "Little luxuries, <em>done properly</em>.",
+    "tattoo": "Ink that's <em>yours</em>, made with care.",
+    "wellness": "Leave lighter than <em>you arrived</em>.",
+    "health": "Care that <em>listens</em> first.",
+    "fitness": "Stronger starts <em>today</em>.",
+    "learning": "Confidence, one lesson <em>at a time</em>.",
+    "auto": "Honest work. <em>No surprises.</em>",
+    "trades": "On time. Done right. <em>Tidy after.</em>",
+    "cleaning": "Come home to <em>clean</em>.",
+    "garden": "Gardens worth <em>coming home to</em>.",
+    "pets": "Happy pets, <em>happy owners</em>.",
+    "food": "Made fresh, <em>made with care</em>.",
+    "winery": "Slow down and <em>stay a while</em>.",
+    "creative": "Every detail, <em>considered</em>.",
+    "professional": "Clear advice, <em>in plain English</em>.",
+    "tech": "Fixed fast, <em>fixed right</em>.",
+    "local": "Proudly <em>local</em>, always.",
+}
+
+# The closing call-to-action band, per main button type.
+CTA_BAND = {
+    "book": "Book your next visit.",
+    "quote": "Get a free quote today.",
+    "enquire": "Let's talk.",
+    "visit": "Come and see us.",
+}

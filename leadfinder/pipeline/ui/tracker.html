@@ -287,7 +287,10 @@ function renderDetail() {
         <label>Agreed (AUD)<input data-f="price_agreed" inputmode="numeric" value="${esc(l.price_agreed ?? "")}"></label>
         <label>Domain<input data-f="domain" value="${esc(l.domain || "")}" placeholder="theirbusiness.com.au"></label>
         <label>Follow up<input data-f="follow_up" type="date" value="${esc(l.follow_up || "")}"></label>
+        <label>Site colour<input data-f="accent" value="${esc(l.accent || "")}" placeholder="theme default, e.g. #2f6f62"></label>
+        <label>Type / background<span style="display:flex;gap:6px"><select data-f="type_style"><option value="">Theme default</option><option value="serif" ${l.type_style === "serif" ? "selected" : ""}>Classic</option><option value="grotesk" ${l.type_style === "grotesk" ? "selected" : ""}>Modern</option></select><select data-f="paper"><option value="">Theme default</option><option value="light" ${l.paper === "light" ? "selected" : ""}>Light</option><option value="dark" ${l.paper === "dark" ? "selected" : ""}>Dark</option></select></span></label>
       </div>
+      <p class="muted" style="margin:6px 0 0">If the client picked a look in the preview (it's in their “Make it mine” email), set it here and publish again — their preview and finished site use it.</p>
       <label class="full">Notes<textarea data-f="notes">${esc(l.notes || "")}</textarea></label>
       <p class="muted" style="margin:6px 0 0">${esc(l.address || "")} · Lead id <code>${esc(l.slug)}</code> · Tries: ${l.attempts}${l.last_contact ? " · Last: " + esc(l.last_contact.slice(0, 16).replace("T", " ")) + " UTC" : ""}</p>
     </section>
