@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline · Lead Finder</title>
+<style>
+:root{--bg:#f5f5f3;--panel:#fff;--ink:#16181c;--muted:#6b7079;--line:#e4e4e0;--accent:#1f5eff;--good:#0f8a4f;--warn:#b26b00;--bad:#c23030;--chip:#efefec;--radius:12px}
+@media (prefers-color-scheme:dark){:root{--bg:#121316;--panel:#1b1d21;--ink:#ececee;--muted:#9a9ea7;--line:#2b2e34;--chip:#25282d;--accent:#6b93ff}}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column}
+a{color:var(--accent)}button,select,input,textarea{font:inherit;color:inherit}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+header h1{font-size:16px;margin:0 8px 0 0}
+.tabs{display:flex;gap:4px}.tabs button{border:0;background:transparent;padding:6px 12px;border-radius:8px;cursor:pointer;color:var(--muted);font-weight:600}
+.tabs button.on{background:var(--chip);color:var(--ink)}
+.clock{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.btn{border:1px solid var(--line);background:var(--panel);padding:7px 12px;border-radius:9px;cursor:pointer;font-weight:600;white-space:nowrap;text-decoration:none;color:inherit;display:inline-block}
+.btn:hover{border-color:var(--muted)}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.good{background:var(--good);border-color:var(--good);color:#fff}.btn.sm{padding:4px 9px;font-size:12.5px}
+.stages{display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+.chip{display:inline-flex;gap:6px;align-items:center;border:1px solid transparent;background:var(--chip);border-radius:999px;padding:4px 10px;cursor:pointer;font-size:12.5px;font-weight:600;white-space:nowrap}
+.chip b{font-weight:700;color:var(--muted)}.chip.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--panel))}
+.chip.hot{background:color-mix(in srgb,#f25c2a 16%,var(--panel))}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 16px}
+.filters input[type=search]{min-width:220px}
+input,select,textarea{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 9px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+main{flex:1;display:flex;min-height:0}
+.list{flex:1;overflow:auto;min-width:0}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{position:sticky;top:0;background:var(--bg);font-size:12px;color:var(--muted);font-weight:600;z-index:1}
+tr.row{cursor:pointer}tr.row:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}tr.row.sel{background:color-mix(in srgb,var(--accent) 13%,transparent)}
+td.name{max-width:260px;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;background:var(--chip)}
+.g-Hot{background:#fde4da;color:#a5340b}.g-Warm{background:#fdf0d5;color:#8a5a00}.g-Cool{background:#e1ecfb;color:#24508f}.g-Cold{background:#ececec;color:#555}
+@media (prefers-color-scheme:dark){.g-Hot{background:#4a2216;color:#ffb39a}.g-Warm{background:#43361a;color:#f5cf7c}.g-Cool{background:#1c2c45;color:#9fc1f5}.g-Cold{background:#2c2c2c;color:#bbb}}
+.pager{display:flex;gap:8px;align-items:center;padding:10px 16px;color:var(--muted)}
+aside{width:min(560px,46vw);border-left:1px solid var(--line);background:var(--panel);overflow:auto;padding:18px 20px 40px}
+aside.empty{display:flex;align-items:center;justify-content:center;color:var(--muted)}
+aside h2{margin:0;font-size:20px}.sub{color:var(--muted);margin:2px 0 12px}
+.row-btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.call{font-size:16px;padding:10px 16px}
+section.box{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin:12px 0}
+section.box h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.script p{margin:0 0 8px}.script .say{background:color-mix(in srgb,var(--accent) 8%,transparent);border-left:3px solid var(--accent);padding:8px 10px;border-radius:0 8px 8px 0}
+.script .branch{font-weight:700;margin-top:10px}.script details{margin-top:8px}.script summary{cursor:pointer;font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid2 label,.full{display:grid;gap:4px;font-size:12px;color:var(--muted);font-weight:600}
+.full{margin-top:8px}textarea{width:100%;min-height:70px;resize:vertical}
+.outcomes{display:flex;flex-wrap:wrap;gap:6px}
+.hist{list-style:none;margin:0;padding:0;font-size:12.5px}.hist li{padding:6px 0;border-bottom:1px dashed var(--line)}.hist time{color:var(--muted);margin-right:8px}
+.sms{width:100%;min-height:96px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none;z-index:99}
+.toast.on{opacity:1}
+.page{flex:1;overflow:auto;padding:16px 20px 40px}
+.page table td,.page table th{white-space:normal}
+.bar{height:8px;border-radius:99px;background:var(--chip);overflow:hidden;min-width:80px}.bar i{display:block;height:100%;background:var(--good)}
+.md h2{font-size:18px;margin:24px 0 8px}.md h3{font-size:15px;margin:18px 0 6px}.md p,.md li{max-width:820px}.md .say{background:color-mix(in srgb,var(--accent) 8%,transparent);border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 8px 8px 0;max-width:820px}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:18px;width:min(520px,94vw)}
+dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-radius:8px;padding:10px;max-height:240px;overflow:auto;white-space:pre-wrap;font-size:12px}
+.muted{color:var(--muted)}.right{margin-left:auto}
+@media (max-width:900px){main{flex-direction:column}aside{width:100%;border-left:0;border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Pipeline</h1>
+  <nav class="tabs">
+    <button data-tab="leads" class="on">Leads</button>
+    <button data-tab="coverage">Coverage</button>
+    <button data-tab="playbook">Playbook</button>
+  </nav>
+  <a class="btn sm" href="/">← Lead finder</a>
+  <div class="clock"><span class="dot" id="clockDot"></span><span id="clock"></span></div>
+  <button class="btn" id="btnVerify" title="Check which published previews are live">Check live</button>
+  <button class="btn primary" id="btnPublish">Publish previews…</button>
+</header>
+
+<div id="tab-leads" style="display:flex;flex-direction:column;flex:1;min-height:0">
+  <div class="stages" id="stages"></div>
+  <div class="filters">
+    <input type="search" id="q" placeholder="Search name, suburb, phone…">
+    <select id="grade"><option value="">All grades</option><option>Hot</option><option>Warm</option><option>Cool</option><option>Cold</option></select>
+    <select id="region"><option value="">All regions</option></select>
+    <select id="theme"><option value="">All types</option></select>
+    <label><input type="checkbox" id="mobile"> Mobiles only</label>
+    <select id="sort"><option value="score">Best score</option><option value="reviews">Most reviews</option><option value="recent">Recently updated</option><option value="follow_up">Follow-up date</option><option value="name">Name</option></select>
+    <label class="right"><input type="checkbox" id="autonext" checked> Jump to next lead after logging a call</label>
+    <a class="btn sm" id="csv" href="#">Export CSV</a>
+  </div>
+  <main>
+    <div class="list">
+      <table><thead><tr><th>Business</th><th>Grade</th><th>Category</th><th>Suburb</th><th>Phone</th><th>Reviews</th><th>Stage</th><th>Tries</th><th>Follow up</th></tr></thead><tbody id="rows"></tbody></table>
+      <div class="pager"><button class="btn sm" id="prev">‹ Prev</button><span id="pageInfo"></span><button class="btn sm" id="next">Next ›</button></div>
+    </div>
+    <aside id="detail" class="empty">Pick a lead — or click “Call queue” to start dialling.</aside>
+  </main>
+</div>
+
+<div id="tab-coverage" class="page" hidden></div>
+<div id="tab-playbook" class="page md" hidden></div>
+
+<dialog id="pubDlg">
+  <h3 style="margin-top:0">Publish previews to dunous.com</h3>
+  <p class="muted">Generates a preview page for the next <b>new</b> leads (best score first), re-renders every live preview, and pushes to the site. Cloudflare deploys in 1–3 minutes — then press “Check live”.</p>
+  <div class="grid2">
+    <label>Grades<select id="pubGrade"><option value="Hot">Hot</option><option value="Hot,Warm">Hot + Warm</option><option value="">All grades</option></select></label>
+    <label>How many new<input id="pubLimit" type="number" min="1" placeholder="all"></label>
+    <label>Region<select id="pubRegion"><option value="">All regions</option></select></label>
+    <label>Min score<input id="pubMin" type="number" min="0" max="100" value="0"></label>
+  </div>
+  <pre class="log" id="pubLog" hidden></pre>
+  <div class="row-btns" style="justify-content:flex-end"><button class="btn" id="pubCancel">Close</button><button class="btn primary" id="pubGo">Publish</button></div>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store = { get(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+const api = async (url, opts = {}) => {
+  const r = await fetch(url, { headers: { "Content-Type": "application/json" }, ...opts });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
+  return data;
+};
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 1800); }
+async function copy(text, what = "Copied") { try { await navigator.clipboard.writeText(text); toast(what); } catch { prompt("Copy this:", text); } }
+
+let META = null, state = { stage: "", queue: false, due: false, offset: 0, limit: 100 }, LIST = [], CURRENT = null;
+
+/* ---------- Melbourne clock + legal calling window ---------- */
+function melbourneNow() {
+  const parts = new Intl.DateTimeFormat("en-AU", { timeZone: "Australia/Melbourne", weekday: "short", hour: "numeric", minute: "2-digit", hour12: false }).formatToParts(new Date());
+  const get = (t) => parts.find((p) => p.type === t)?.value;
+  return { day: get("weekday"), h: +get("hour") % 24, m: +get("minute") };
+}
+function tickClock() {
+  const { day, h, m } = melbourneNow();
+  const mins = h * 60 + m;
+  const open = day === "Sun" ? null : day === "Sat" ? [540, 1020] : [540, 1200];
+  const ok = open && mins >= open[0] && mins < open[1];
+  const sweet = ok && day !== "Sat" && ((mins >= 600 && mins < 690) || (mins >= 840 && mins < 960));
+  const time = new Intl.DateTimeFormat("en-AU", { timeZone: "Australia/Melbourne", weekday: "short", hour: "numeric", minute: "2-digit" }).format(new Date());
+  $("#clock").textContent = `Melbourne ${time} · ` + (!open ? "No calls on Sundays" : ok ? (sweet ? "Best time to call" : "OK to call") : mins < open[0] ? "Too early to call" : "Too late to call");
+  $("#clockDot").style.background = !ok ? "var(--bad)" : sweet ? "var(--good)" : "var(--warn)";
+}
+
+/* ---------- personalised script + SMS ---------- */
+const me = () => store.get("pv-me", "");
+function firstName(n) { return (n || "").trim().split(/\s+/)[0] || ""; }
+function payoff(l) {
+  const t = l.theme;
+  if (["hair","beauty","wellness","health","fitness","pets","tattoo"].includes(t)) return "book in or see your prices";
+  if (["trades","garden","cleaning","auto","tech"].includes(t)) return "see what you do and get a quote";
+  if (["food","winery"].includes(t)) return "see your menu and opening hours";
+  return "see what you offer and get in touch";
+}
+function proof(l) {
+  if (l.reviews >= 5 && l.rating >= 4) return `${l.reviews.toLocaleString()} Google reviews at ${l.rating} stars — that's brilliant — but there's no website`;
+  if (l.reviews >= 1) return `you've got Google reviews but no website`;
+  return `you're on Google Maps but there's no website`;
+}
+function smsText(l) {
+  const hi = l.contact_name ? `Hi ${firstName(l.contact_name)}, it's` : "Hi, it's";
+  return `${hi} ${me() || "[your name]"} from DuNous — here's the website I built for ${l.name}: ${l.preview_url}\n\nIf you like it, it can be live on your own web address this week. Reply STOP to opt out.`;
+}
+function scriptHtml(l) {
+  const name = esc(l.name), owner = l.contact_name ? esc(firstName(l.contact_name)) : "the owner";
+  return `
+  <p class="muted">Don't introduce yourself first. Lead with <b>their</b> problem and the fact the site already exists. Smile — they can hear it.</p>
+  <p class="branch">1 · Opener (whoever answers)</p>
+  <p class="say">“Hi! Quick one — I was looking at <b>${name}</b> on Google Maps: ${esc(proof(l))}. So people who find you can't ${esc(payoff(l))}, and some just ring the next place that has one.<br><br>I've actually already built you a website — it's finished and free to look at. What's the best mobile to text the link to?”</p>
+  <p class="muted">That last question does the “who am I talking to” job for you: owners say “send it to me”, staff say “that'd be the owner”.</p>
+  <p class="branch">2a · “Send it to me” — probably the owner</p>
+  <p class="say">“Sending it now, it'll come from this number… Got it? Have a quick look while I'm on the line — takes 20 seconds.”<br>…<br>“What do you think? Anything you'd change — colours, photos, wording?”</p>
+  <p class="muted">Let them suggest changes — once they're designing it, it's theirs. Then:</p>
+  <p class="say">“If you like it, I'll put it on your own address — something like <b>${esc(l.name.toLowerCase().replace(/[^a-z0-9]+/g, ""))}.com.au</b> — with your photos, hours and prices, live this week. Want me to set that up?”</p>
+  <p class="branch">2b · Staff / “the owner's not here”</p>
+  <p class="say">“No worries — what's their first name? I'll put it on the text so they know it's not spam.” → text the link → “When's the best time to catch them? I'll give them a quick ring then.”</p>
+  <p class="muted">Log “Spoke to staff”, save the owner's name, set a call-back.</p>
+  <p class="branch">3 · Price (only when they ask)</p>
+  <p class="say">“The one you're looking at is ready to go. Most businesses like yours take the package at <b>$1,290</b> — your own web address, your photos and prices, a booking or quote form straight to your phone, live this week. Does that work for you?”</p>
+  <p class="muted">Then stop talking. If they hesitate: “What did you have in mind?” Lower the price only by removing something (see Playbook → Pricing). Never below your floor.</p>
+  <details><summary>Objections</summary>
+    <p><b>“Not interested.”</b> “Totally fair — is that because you're flat out already, or you've had a bad run with web people?” Busy → “That's exactly why — the site takes the enquiries while you're working. I'll text the link, look whenever.” Firm no → “No worries, I'll take it down. Have a good one.” (log Not interested)</p>
+    <p><b>“All our work is word of mouth.”</b> “Makes sense — that's why you've got the reviews. The site catches the people who hear about you, then Google you before calling.”</p>
+    <p><b>“Are you from Google? Is this a scam?”</b> “No — I'm not Google and I don't want any money up front. I'm a web designer; I made you a preview to look at for free. You only pay if you want it live.”</p>
+    <p><b>“Where are you based?”</b> Be honest: “I work online with Aussie businesses — I'm based in Sri Lanka with an Australian number. You only pay once you're happy with it.”</p>
+    <p><b>“Email it to me.”</b> “Sure — what's the email? I'll text it too so you can see it on your phone now.” (save the email)</p>
+    <p><b>“Call me later.”</b> “Sure — tomorrow morning or afternoon better?” (set a follow-up)</p>
+  </details>
+  <p class="branch">Voicemail (≤15 seconds)</p>
+  <p class="say">“Hi, it's ${esc(me() || "[your name]")} — I've built a free website preview for ${name}. I'll text you the link from this number. Have a look when you get a sec. Cheers!”</p>`;
+}
+
+/* ---------- data ---------- */
+async function loadMeta() {
+  META = await api("/pipeline/api/meta");
+  const fill = (sel, items, label) => { const cur = sel.value; sel.innerHTML = `<option value="">${label}</option>` + items.map((v) => `<option>${esc(v)}</option>`).join(""); sel.value = cur; };
+  fill($("#region"), META.regions, "All regions"); fill($("#pubRegion"), META.regions, "All regions"); fill($("#theme"), META.themes, "All types");
+  const chips = [
+    `<span class="chip hot ${state.queue ? "on" : ""}" data-queue>📞 Call queue</span>`,
+    `<span class="chip ${state.due ? "on" : ""}" data-due>⏰ Follow-ups due <b>${META.follow_ups_due}</b></span>`,
+    `<span class="chip ${!state.stage && !state.queue && !state.due ? "on" : ""}" data-stage="">All <b>${META.stages.reduce((a, s) => a + s.count, 0).toLocaleString()}</b></span>`,
+    ...META.stages.map((s) => `<span class="chip ${state.stage === s.key ? "on" : ""}" data-stage="${s.key}">${esc(s.label)} <b>${s.count.toLocaleString()}</b></span>`),
+  ];
+  $("#stages").innerHTML = chips.join("");
+}
+function query() {
+  const p = new URLSearchParams({ q: $("#q").value, grade: $("#grade").value, region: $("#region").value, theme: $("#theme").value, sort: $("#sort").value, limit: state.limit, offset: state.offset });
+  if (state.stage) p.set("stage", state.stage);
+  if ($("#mobile").checked) p.set("mobile", "true");
+  if (state.queue) p.set("queue", "true");
+  if (state.due) p.set("due", "true");
+  return p;
+}
+async function loadList(keepSel = true) {
+  const p = query();
+  const data = await api("/pipeline/api/leads?" + p);
+  LIST = data.leads;
+  $("#csv").href = "/pipeline/api/leads.csv?" + p;
+  $("#pageInfo").textContent = data.total ? `${state.offset + 1}–${Math.min(state.offset + state.limit, data.total)} of ${data.total.toLocaleString()}` : "No leads match";
+  const stageLabel = Object.fromEntries(META.stages.map((s) => [s.key, s.label]));
+  $("#rows").innerHTML = LIST.map((l) => `<tr class="row ${CURRENT && CURRENT.slug === l.slug ? "sel" : ""}" data-slug="${l.slug}">
+    <td class="name" title="${esc(l.name)}">${esc(l.name)}</td><td><span class="badge g-${esc(l.grade)}">${esc(l.grade)} ${l.score}</span></td>
+    <td>${esc(l.category)}</td><td>${esc(l.suburb)}</td><td>${esc(l.phone_display)}${l.mobile ? " 📱" : ""}</td>
+    <td>${l.reviews ?? ""}${l.rating ? ` · ${l.rating}★` : ""}</td><td><span class="badge">${esc(stageLabel[l.stage])}</span></td>
+    <td>${l.attempts || ""}</td><td>${esc(l.follow_up || "")}</td></tr>`).join("");
+  if (!keepSel && LIST[0]) openLead(LIST[0].slug);
+}
+
+/* ---------- detail ---------- */
+async function openLead(slug) {
+  CURRENT = await api("/pipeline/api/leads/" + encodeURIComponent(slug));
+  $$("tr.row").forEach((r) => r.classList.toggle("sel", r.dataset.slug === slug));
+  renderDetail();
+}
+function renderDetail() {
+  const l = CURRENT, el = $("#detail");
+  el.classList.remove("empty");
+  const live = ["preview_hosted","contacted","follow_up","interested","invoice_sent","paid","domain_selected","site_hosted"].includes(l.stage);
+  el.innerHTML = `
+    <h2>${esc(l.name)}</h2>
+    <p class="sub">${esc(l.category)} · ${esc(l.suburb)} ${esc(l.state || "")} · <span class="badge g-${esc(l.grade)}">${esc(l.grade)} ${l.score}</span> · <span class="badge">${esc(l.stage_label)}</span>${l.rating ? ` · ${l.rating}★ (${l.reviews})` : ""}</p>
+    <div class="row-btns">
+      <a class="btn good call" href="tel:${esc(l.phone)}">📞 ${esc(l.phone_display)}</a>
+      <button class="btn" data-copy="${esc(l.phone)}">Copy number</button>
+      <a class="btn" href="${esc(l.preview_url)}" target="_blank" rel="noopener">${live ? "Open preview ↗" : "Preview (not live yet) ↗"}</a>
+      <a class="btn" href="${esc(l.maps_url)}" target="_blank" rel="noopener">Google Maps ↗</a>
+    </div>
+    <section class="box"><h3>Log this call</h3>
+      <div class="outcomes">${Object.entries(META.outcomes).map(([k, v]) => `<button class="btn sm" data-outcome="${k}">${esc(v)}</button>`).join("")}</div>
+      <div class="grid2" style="margin-top:8px">
+        <label>Note (optional)<input id="callNote" placeholder="e.g. owner Sam, in after 2pm"></label>
+        <label>Call back on<input id="callBack" type="date"></label>
+      </div>
+      <div class="row-btns"><button class="btn sm" data-cb="1">Tomorrow</button><button class="btn sm" data-cb="2">In 2 days</button><button class="btn sm" data-cb="7">Next week</button></div>
+    </section>
+    <section class="box"><h3>Text message ${l.mobile ? "" : "· <span style='color:var(--warn)'>landline — can't receive SMS</span>"}</h3>
+      <textarea class="sms" id="sms">${esc(smsText(l))}</textarea>
+      <div class="row-btns"><button class="btn sm" id="copySms">Copy SMS</button><label class="muted">Your first name <input id="me" value="${esc(me())}" style="width:120px"></label></div>
+    </section>
+    <section class="box script"><h3>Call script</h3>${scriptHtml(l)}</section>
+    <section class="box"><h3>Stage</h3>
+      <div class="grid2"><label>Move to<select id="stageSel">${META.stages.map((s) => `<option value="${s.key}" ${s.key === l.stage ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></label>
+      <label>Note<input id="stageNote" placeholder="optional"></label></div>
+      <div class="row-btns"><button class="btn sm primary" id="stageGo">Update stage</button>
+      ${["paid","domain_selected","site_hosted","live"].includes(l.stage) ? `<button class="btn sm" id="exportSite">Export finished site folder</button>` : ""}</div>
+    </section>
+    <section class="box"><h3>Details</h3>
+      <div class="grid2">
+        <label>Contact name<input data-f="contact_name" value="${esc(l.contact_name || "")}"></label>
+        <label>Email<input data-f="email" type="email" value="${esc(l.email || "")}"></label>
+        <label>Quoted (AUD)<input data-f="price_quoted" inputmode="numeric" value="${esc(l.price_quoted ?? "")}"></label>
+        <label>Agreed (AUD)<input data-f="price_agreed" inputmode="numeric" value="${esc(l.price_agreed ?? "")}"></label>
+        <label>Domain<input data-f="domain" value="${esc(l.domain || "")}" placeholder="theirbusiness.com.au"></label>
+        <label>Follow up<input data-f="follow_up" type="date" value="${esc(l.follow_up || "")}"></label>
+      </div>
+      <label class="full">Notes<textarea data-f="notes">${esc(l.notes || "")}</textarea></label>
+      <p class="muted" style="margin:6px 0 0">${esc(l.address || "")} · Lead id <code>${esc(l.slug)}</code> · Tries: ${l.attempts}${l.last_contact ? " · Last: " + esc(l.last_contact.slice(0, 16).replace("T", " ")) + " UTC" : ""}</p>
+    </section>
+    <section class="box"><h3>History</h3><ul class="hist">${l.history.map((h) => `<li><time>${esc(h.at.slice(0, 16).replace("T", " "))}</time>${esc(h.detail || h.kind)}</li>`).join("")}</ul></section>`;
+}
+function daysFromNowMelb(n) {
+  const d = new Date(Date.now() + n * 864e5);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Australia/Melbourne" }).format(d);
+}
+function nextLead() {
+  const i = LIST.findIndex((l) => l.slug === CURRENT?.slug);
+  return LIST[i + 1]?.slug;
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", async (e) => {
+  const t = e.target.closest("button, .chip, tr.row, [data-tab]");
+  if (!t) return;
+  try {
+    if (t.matches("[data-tab]")) {
+      $$("[data-tab]").forEach((b) => b.classList.toggle("on", b === t));
+      ["leads", "coverage", "playbook"].forEach((n) => ($("#tab-" + n).hidden = n !== t.dataset.tab));
+      $("#tab-leads").style.display = t.dataset.tab === "leads" ? "flex" : "none";
+      if (t.dataset.tab === "coverage") loadCoverage();
+      if (t.dataset.tab === "playbook") loadPlaybook();
+    } else if (t.matches(".chip")) {
+      state = { ...state, stage: t.dataset.stage ?? "", queue: t.hasAttribute("data-queue") ? !state.queue : false, due: t.hasAttribute("data-due") ? !state.due : false, offset: 0 };
+      if (state.queue) $("#sort").value = "score";
+      await loadMeta(); await loadList(!state.queue);
+    } else if (t.matches("tr.row")) {
+      openLead(t.dataset.slug);
+    } else if (t.dataset.copy) {
+      copy(t.dataset.copy, "Number copied");
+    } else if (t.id === "copySms") {
+      copy($("#sms").value, "SMS copied");
+    } else if (t.dataset.cb) {
+      $("#callBack").value = daysFromNowMelb(+t.dataset.cb);
+    } else if (t.dataset.outcome) {
+      const slug = CURRENT.slug;
+      const body = { outcome: t.dataset.outcome, note: $("#callNote").value, follow_up: $("#callBack").value || null };
+      await api(`/pipeline/api/leads/${slug}/call`, { method: "POST", body: JSON.stringify(body) });
+      toast(META.outcomes[t.dataset.outcome] + " — logged");
+      const nxt = $("#autonext").checked ? nextLead() : null;
+      await loadMeta(); await loadList();
+      await openLead(nxt || slug);
+    } else if (t.id === "stageGo") {
+      CURRENT = await api(`/pipeline/api/leads/${CURRENT.slug}/stage`, { method: "POST", body: JSON.stringify({ stage: $("#stageSel").value, note: $("#stageNote").value }) });
+      toast("Stage updated"); renderDetail(); loadMeta(); loadList();
+    } else if (t.id === "exportSite") {
+      const r = await api(`/pipeline/api/leads/${CURRENT.slug}/export`, { method: "POST" });
+      copy(r.folder, "Folder path copied: " + r.folder);
+    } else if (t.id === "prev") { state.offset = Math.max(0, state.offset - state.limit); loadList(); }
+    else if (t.id === "next") { state.offset += state.limit; loadList(); }
+    else if (t.id === "btnPublish") { $("#pubLog").hidden = true; $("#pubDlg").showModal(); }
+    else if (t.id === "pubCancel") { $("#pubDlg").close(); }
+    else if (t.id === "pubGo") {
+      t.disabled = true; const log = $("#pubLog"); log.hidden = false; log.textContent = "Publishing… (this can take a minute)";
+      try {
+        const g = $("#pubGrade").value;
+        const r = await api("/pipeline/api/publish", { method: "POST", body: JSON.stringify({ grades: g ? g.split(",") : [], limit: +$("#pubLimit").value || null, regions: $("#pubRegion").value ? [$("#pubRegion").value] : [], min_score: +$("#pubMin").value || 0 }) });
+        log.textContent = r.log.join("\n") + `\n\n${r.new} new · ${r.pages} pages live · ${r.removed} removed` + (r.pushed ? "\nPushed ✓ — press “Check live” in ~2 minutes." : "");
+        loadMeta(); loadList();
+      } catch (err) { log.textContent = "✗ " + err.message; }
+      t.disabled = false;
+    } else if (t.id === "btnVerify") {
+      t.disabled = true; toast("Checking previews…");
+      try { const r = await api("/pipeline/api/verify", { method: "POST" }); toast(`${r.live} live · ${r.checked - r.live} not yet`); loadMeta(); loadList(); }
+      catch (err) { toast("✗ " + err.message); }
+      t.disabled = false;
+    }
+  } catch (err) { toast("✗ " + err.message); }
+});
+document.addEventListener("change", async (e) => {
+  const t = e.target;
+  if (t.dataset.f && CURRENT) {
+    try { CURRENT = await api(`/pipeline/api/leads/${CURRENT.slug}`, { method: "PATCH", body: JSON.stringify({ [t.dataset.f]: t.value }) }); toast("Saved"); if (t.dataset.f === "contact_name") renderDetail(); }
+    catch (err) { toast("✗ " + err.message); }
+  } else if (t.id === "me") { store.set("pv-me", t.value.trim()); renderDetail(); }
+  else if (["grade", "region", "theme", "mobile", "sort"].includes(t.id)) { state.offset = 0; loadList(); }
+});
+let qTimer; $("#q").addEventListener("input", () => { clearTimeout(qTimer); qTimer = setTimeout(() => { state.offset = 0; loadList(); }, 250); });
+document.addEventListener("keydown", (e) => {
+  if (e.target.matches("input, textarea, select") || !CURRENT) return;
+  const i = LIST.findIndex((l) => l.slug === CURRENT.slug);
+  if (e.key === "j" && LIST[i + 1]) openLead(LIST[i + 1].slug);
+  if (e.key === "k" && LIST[i - 1]) openLead(LIST[i - 1].slug);
+});
+
+/* ---------- coverage ---------- */
+async function loadCoverage() {
+  const c = await api("/pipeline/api/coverage");
+  $("#tab-coverage").innerHTML = `<h2 style="margin-top:0">Where you've searched</h2>
+    <p class="muted">${c.searches_done.toLocaleString()} searches (town × business type) done, across ${c.types} business types. A town is “done” when every business type has been searched there. Add new towns to <code>data/towns_*.csv</code> (columns: town, region, priority) and run a batch to expand.</p>
+    <table><thead><tr><th>Region</th><th>State</th><th>Towns</th><th>Done</th><th>Partly</th><th>Progress</th><th>Leads</th><th>Not searched yet</th></tr></thead><tbody>
+    ${c.regions.map((r) => `<tr><td><b>${esc(r.region)}</b></td><td>${esc(r.state)}</td><td>${r.towns}</td><td>${r.towns_done}</td><td>${r.towns_partial}</td>
+      <td><div class="bar"><i style="width:${r.percent}%"></i></div> ${r.percent}%</td><td>${r.leads}</td><td>${esc(r.todo.join(", ")) || "—"}</td></tr>`).join("")}
+    </tbody></table>
+    ${c.searched_elsewhere.length ? `<p class="muted">Also searched (not in any towns file): ${esc(c.searched_elsewhere.join(", "))}</p>` : ""}`;
+}
+async function loadPlaybook() {
+  if ($("#tab-playbook").dataset.loaded) return;
+  const r = await fetch("/pipeline/playbook");
+  $("#tab-playbook").innerHTML = await r.text();
+  $("#tab-playbook").dataset.loaded = "1";
+}
+
+tickClock(); setInterval(tickClock, 30000);
+loadMeta().then(() => loadList());
+</script>
+</body>
+</html>

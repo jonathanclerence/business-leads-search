@@ -4,6 +4,8 @@ service_account.json
 exports/*.csv
 exports/*.png
 exports/*.html
+# Finished client sites from `python -m pipeline export-site`
+exports/sites/
 
 # Batch output. These are your leads — delete this line if you'd rather
 # version them (they're plain text and diff fine, just potentially large).

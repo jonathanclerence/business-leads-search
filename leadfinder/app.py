@@ -41,6 +41,7 @@ from leadfinder.models import Business, SearchRequest
 from leadfinder.places_api import PlacesAPIError, search_places
 from leadfinder.scraper import GoogleMapsScraper
 from leadfinder.store import SALES_HEADERS, BatchStore, list_batches
+from pipeline.web import router as pipeline_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -58,6 +59,8 @@ DATA_DIR.mkdir(exist_ok=True)
 app = FastAPI(title="Google Maps Lead Finder", version=__version__)
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+# Sales tracker: previews, call queue, stages → http://localhost:5000/pipeline
+app.include_router(pipeline_router)
 
 
 # ---------------------------------------------------------------------------
@@ -99,6 +102,8 @@ class BatchBody(BaseModel):
     pace_seconds: float = Field(8.0, ge=0.0, le=120.0)
     long_break_every: int = Field(40, ge=0, le=1000)
     long_break_seconds: float = Field(180.0, ge=0.0, le=3600.0)
+    state: Optional[str] = Field(None, max_length=40)
+    country: Optional[str] = Field(None, max_length=60)
 
 
 class LeadFilterBody(BaseModel):
@@ -413,6 +418,8 @@ def _config_from_body(body: BatchBody) -> BatchConfig:
         pace_seconds=body.pace_seconds,
         long_break_every=body.long_break_every,
         long_break_seconds=body.long_break_seconds,
+        state=body.state if body.state is not None else settings.SEARCH_STATE,
+        country=body.country if body.country is not None else settings.SEARCH_COUNTRY,
     )
 
 

@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{% if final %}
+<title>{{ lead.name }} — {{ lead.category }} in {{ lead.suburb }}</title>
+<meta name="description" content="{{ lead.name }}: {{ lead.category | lower }} in {{ lead.suburb }} {{ lead.state }}. {{ cta_label }} — call {{ lead.phone_display }}.">
+{% else %}
+<title>{{ lead.name }} — website preview</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="pv-slug" content="{{ lead.slug }}">
+<meta name="pv-ts" content="%%TURNSTILE_SITE_KEY%%">
+{% endif %}
+<meta name="theme-color" content="#111111">
+<link rel="stylesheet" href="{{ assets }}/preview.css?v={{ version }}">
+</head>
+<body data-theme="{{ theme }}"{% if not final %} class="is-preview"{% endif %}>
+
+{% if not final %}
+<div class="pv-bar" role="region" aria-label="Preview notice">
+  <p><svg class="ic"><use href="{{ icons }}#i-spark"/></svg><span>A free website preview made for <b>{{ lead.name }}</b><span class="pv-bar-note"> — sample photos &amp; wording</span></span></p>
+  <div class="pv-bar-actions">
+    <button class="pv-btn pv-btn-ghost" type="button" data-open="changes">Request changes</button>
+    <button class="pv-btn" type="button" data-open="buy">Make it mine</button>
+  </div>
+</div>
+{% endif %}
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">{{ lead.name }}</a>
+    <a class="btn btn-sm" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg><span>{{ lead.phone_display }}</span></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" style="--hero:url('{{ assets }}/img/{{ theme }}-hero.webp')">
+    <div class="wrap hero-inner">
+      <p class="eyebrow">{{ lead.category }} · {{ lead.suburb }}</p>
+      <h1>{{ headline }}</h1>
+      <p class="lede">{{ lede }}</p>
+      <div class="actions">
+        {% if cta == "visit" %}
+        <a class="btn btn-primary" href="{{ maps_link }}" target="_blank" rel="noopener">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+        {% else %}
+        <a class="btn btn-primary" href="#contact">{{ cta_label }}<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+        {% endif %}
+        <a class="btn btn-light" href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg>Call {{ lead.phone_display }}</a>
+      </div>
+      {% if rated %}
+      <a class="hero-rating" href="{{ maps_link }}" target="_blank" rel="noopener">
+        <span class="stars" aria-hidden="true">{% for _ in range(5) %}<svg class="ic"><use href="{{ icons }}#i-star"/></svg>{% endfor %}</span>
+        <span><b>{{ rating }}</b> from {{ reviews_fmt }} Google reviews</span>
+      </a>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="strip">
+    <div class="wrap strip-inner">
+      {% if rated %}<div><b>{{ rating }}★</b><span>Google rating</span></div>
+      <div><b>{{ reviews_fmt }}</b><span>happy reviews</span></div>{% endif %}
+      <div><b>{{ lead.suburb }}</b><span>{{ "We come to you" if service_area else "Proudly local" }}</span></div>
+      <div><b>{{ cta_short }}</b><span>{{ "Call or message" if cta != "visit" else "Walk-ins welcome" }}</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <p class="kicker">What we do</p>
+      <h2>{{ services_title }}</h2>
+      <div class="cards">
+        {% for title, desc in services %}
+        <article class="card">
+          <span class="card-ic"><svg class="ic"><use href="{{ icons }}#i-check"/></svg></span>
+          <h3>{{ title }}</h3>
+          <p>{{ desc }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section about">
+    <div class="wrap about-inner">
+      <img class="about-img" src="{{ assets }}/img/{{ theme }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async">
+      <div>
+        <p class="kicker">About us</p>
+        <h2>Local, reliable and easy to deal with</h2>
+        <p class="about-text">{{ about }}</p>
+        <ul class="ticks">
+          <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Servicing " ~ lead.suburb ~ " and surrounds" if service_area else "Easy to find in " ~ lead.suburb }}</li>
+          <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Quick, friendly replies" if cta != "visit" else "Friendly local service" }}</li>
+          <li><svg class="ic"><use href="{{ icons }}#i-check"/></svg>{{ "Loved by locals — " ~ rating ~ "★ on Google" if rated else "Call us any time on " ~ lead.phone_display }}</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {% if rated %}
+  <section class="section reviews">
+    <div class="wrap reviews-inner">
+      <div class="score">
+        <span class="score-num">{{ rating }}</span>
+        <span class="stars" aria-hidden="true">{% for _ in range(5) %}<svg class="ic"><use href="{{ icons }}#i-star"/></svg>{% endfor %}</span>
+        <span class="score-sub">{{ reviews_fmt }} reviews on Google</span>
+      </div>
+      <div>
+        <h2>Don't just take our word for it</h2>
+        <p>{{ reviews_fmt }} people have reviewed {{ lead.name }} on Google, with an average of {{ rating }} stars. See what they say.</p>
+        <a class="btn btn-outline" href="{{ maps_link }}" target="_blank" rel="noopener">Read our Google reviews<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="section contact" id="contact">
+    <div class="wrap contact-inner">
+      <div>
+        <p class="kicker">Get in touch</p>
+        <h2>{{ cta_label }}</h2>
+        <p>The quickest way to reach us is a phone call or a message below.</p>
+        <ul class="contact-list">
+          <li><svg class="ic"><use href="{{ icons }}#i-phone"/></svg><a href="tel:{{ lead.phone }}">{{ lead.phone_display }}</a></li>
+          {% if street %}
+          <li><svg class="ic"><use href="{{ icons }}#i-pin"/></svg><a href="{{ maps_link }}" target="_blank" rel="noopener">{{ lead.address }}</a></li>
+          {% else %}
+          <li><svg class="ic"><use href="{{ icons }}#i-pin"/></svg><span>Servicing {{ lead.suburb }} {{ lead.state }} and surrounds</span></li>
+          {% endif %}
+          {% if final and lead.email %}
+          <li><svg class="ic"><use href="{{ icons }}#i-chat"/></svg><a href="mailto:{{ lead.email }}">{{ lead.email }}</a></li>
+          {% endif %}
+        </ul>
+        <a class="btn btn-outline" href="{{ maps_link }}" target="_blank" rel="noopener"><svg class="ic"><use href="{{ icons }}#i-pin"/></svg>{{ "Get directions" if street else "Find us on Google Maps" }}</a>
+      </div>
+      {% if not final %}
+      <form class="enquiry" id="demo-form" novalidate>
+        <h3>Send us a message</h3>
+        <label><span>Your name</span><input name="n" autocomplete="off"></label>
+        <label><span>Phone</span><input name="p" type="tel" autocomplete="off"></label>
+        <label><span>How can we help?</span><textarea name="m" rows="3"></textarea></label>
+        <button class="btn btn-primary" type="submit">Send message</button>
+        <p class="demo-note" hidden>This is a preview. On your live website, messages like this go straight to your phone or inbox.</p>
+      </form>
+      {% elif lead.email %}
+      <div class="enquiry">
+        <h3>Send us a message</h3>
+        <p>Email us and we'll get back to you as soon as we can.</p>
+        <a class="btn btn-primary" href="mailto:{{ lead.email }}?subject=Enquiry">Email {{ lead.name }}</a>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <p><b>{{ lead.name }}</b> · {{ lead.category }} · {{ lead.suburb }} {{ lead.state }}</p>
+    <p>© {{ year }} {{ lead.name }}{% if not final %} · Preview by {{ brand }}{% endif %}</p>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Quick actions">
+  <a href="tel:{{ lead.phone }}"><svg class="ic"><use href="{{ icons }}#i-phone"/></svg>Call</a>
+  {% if cta == "visit" %}
+  <a class="dock-main" href="{{ maps_link }}" target="_blank" rel="noopener">{{ cta_short }}</a>
+  {% else %}
+  <a class="dock-main" href="#contact">{{ cta_short }}</a>
+  {% endif %}
+</nav>
+
+{% if not final %}
+<dialog class="pv-sheet" id="pv-sheet" aria-labelledby="pv-title">
+  <form id="pv-form" novalidate>
+    <div class="pv-head">
+      <h2 id="pv-title">Make this website yours</h2>
+      <button class="pv-close" type="button" data-close aria-label="Close"><svg class="ic"><use href="{{ icons }}#i-x"/></svg></button>
+    </div>
+    <div class="pv-tabs" role="tablist">
+      <button type="button" role="tab" data-intent="buy" aria-selected="true">I want this website</button>
+      <button type="button" role="tab" data-intent="changes" aria-selected="false">Request changes</button>
+    </div>
+    <p class="pv-sub" data-for="buy">We'll put it on your own web address (like {{ domain_hint }}), add your photos, hours and prices, and get it live — usually within 48 hours. Leave your details and we'll email you.</p>
+    <p class="pv-sub" data-for="changes" hidden>Tell us what you'd change — colours, wording, photos, anything. We'll update this preview and send you the new link.</p>
+    <input type="hidden" name="intent" value="buy">
+    <input type="hidden" name="slug" value="{{ lead.slug }}">
+    <input type="hidden" name="business" value="{{ lead.name }}">
+    <div class="pv-hp" aria-hidden="true"><label>Company website<input name="hp" tabindex="-1" autocomplete="off"></label></div>
+    <label><span>Your name</span><input name="name" required maxlength="80" autocomplete="name"></label>
+    <label><span>Email</span><input name="email" type="email" required maxlength="254" autocomplete="email"></label>
+    <label><span>Mobile <i>(optional)</i></span><input name="phone" type="tel" maxlength="25" autocomplete="tel"></label>
+    <label data-for="buy"><span>Web address you'd like <i>(optional)</i></span><input name="domain" maxlength="100" placeholder="{{ domain_hint }}"></label>
+    <label><span data-for="buy">Anything we should know? <i>(optional)</i></span><span data-for="changes" hidden>What would you change?</span><textarea name="message" rows="3" maxlength="2000"></textarea></label>
+    <div class="pv-ts"></div>
+    <p class="pv-status" role="status" aria-live="polite"></p>
+    <button class="pv-btn pv-submit" type="submit">Send</button>
+    <p class="pv-alt">Prefer to chat? <a href="{{ whatsapp_href }}" target="_blank" rel="noopener">WhatsApp us on {{ whatsapp_display }}</a></p>
+  </form>
+</dialog>
+<script src="{{ assets }}/preview.js?v={{ version }}" defer></script>
+{% endif %}
+</body>
+</html>

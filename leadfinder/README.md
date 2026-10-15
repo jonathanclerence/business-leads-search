@@ -32,6 +32,7 @@ Two ways to use it:
 
 1. [Quick start](#quick-start)
 2. [Bulk batch & lead tracker](#bulk-batch--lead-tracker) ← **the CSV-in/CSV-out workflow**
+   - [Sales pipeline: previews, calls, stages](#sales-pipeline-previews-calls-stages)
 3. [Lead scoring](#lead-scoring)
 4. [How it works](#how-it-works)
 5. [The two data engines](#the-two-data-engines)
@@ -224,6 +225,41 @@ To go faster or further: raise `--pace`, lower `--max-results`, split across
 nights, or set `SCRAPER_PROXY` in `.env`.
 
 ---
+
+## Sales pipeline: previews, calls, stages
+
+Turns the no-website leads into a call list with a ready-made website preview
+for each one, hosted at `https://www.dunous.com/previewsite/<slug>`, and tracks
+every lead from *New* to *Website live*.
+
+```bash
+.venv/bin/python -m pipeline import          # batches/*/leads.csv → clean list + tracker
+.venv/bin/python -m pipeline publish --grade Hot --limit 100 --wait
+.venv/bin/python -m pipeline coverage        # what's been searched, by region
+./run.sh                                     # then open http://localhost:5000/pipeline
+```
+
+- **Clean list:** `batches/clean/au-no-website.csv` — Australian businesses with
+  no website and a phone number, de-duplicated, best score first, with each
+  lead's preview URL and stage. Rewritten by every `import`.
+- **Tracker:** `http://localhost:5000/pipeline` — call queue, personalised call
+  script and SMS, one-click call logging, stages, follow-ups, notes, prices,
+  region coverage and the sales playbook. Data lives in `batches/pipeline.db`.
+- **Publish:** renders a page per lead (`pipeline/templates/site.html.j2`, copy
+  in `pipeline/content.py`) into the marketing-site repo's
+  `public/previewsite-pages/`, commits from a separate worktree
+  (`../.marketing-site-publish`) and pushes to `PUBLISH_BRANCH` (default
+  `main`). Your own marketing-site checkout is never touched. Leads marked *Not
+  interested*, *Do not contact* or *Website live* lose their preview on the
+  next publish.
+- **Stages:** New → Preview created → Preview live → Contacted → Follow up →
+  Interested → Invoice sent → Payment received → Domain chosen → Site hosted →
+  Website live (plus Not interested / Do not contact).
+- **Handover:** `python -m pipeline export-site <slug>` writes the finished site
+  (no preview bar) to `exports/sites/<slug>/`, ready to upload to the client's
+  own Cloudflare Pages.
+
+`python tests/test_sales_pipeline.py` runs the offline tests.
 
 ## Lead scoring
 
