@@ -308,10 +308,19 @@
 <dialog class="pv-sheet" id="pv-sheet" aria-labelledby="pv-title">
   <form id="pv-form" novalidate>
     <div class="pv-head">
-      <h2 id="pv-title">Love it? Let's finish it.</h2>
+      <h2 id="pv-title">{{ "Love it? Make it yours." if checkout_url else "Love it? Let's finish it." }}</h2>
       <button class="pv-close" type="button" data-close aria-label="Close"><svg class="ic"><use href="{{ icons }}#i-x"/></svg></button>
     </div>
+    {% if checkout_url %}
+    <p class="pv-sub">This is a first draft we made for <b data-bizname>{{ lead.name }}</b>. We'll finish it with your photos, prices and details and put it live on your own web address (like {{ domain_hint }}).</p>
+    <div class="pv-buy">
+      <a class="pv-btn pv-buy-btn" href="{{ checkout_url }}">Buy it now<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
+      <p>Choose a package and pay securely by card or PayPal. Usually live within 1–2 days.</p>
+    </div>
+    <p class="pv-or"><span>or send us a question first</span></p>
+    {% else %}
     <p class="pv-sub">This is a first draft we made for <b data-bizname>{{ lead.name }}</b>. Tell us what you'd like changed and we'll build the finished version — on your own web address (like {{ domain_hint }}), with your photos, prices and real online bookings.</p>
+    {% endif %}
     <p class="pv-look" hidden></p>
     <input type="hidden" name="intent" value="buy">
     <input type="hidden" name="slug" value="{{ lead.slug }}">
@@ -326,7 +335,7 @@
     <label><span>Anything you'd change? <i>(optional)</i></span><textarea name="message" rows="3" maxlength="1500" placeholder="Colours, wording, photos, services, prices…"></textarea></label>
     <div class="pv-ts"></div>
     <p class="pv-status" role="status" aria-live="polite"></p>
-    <button class="pv-btn pv-submit" type="submit">Finish my website</button>
+    <button class="pv-btn pv-submit" type="submit">{{ "Send" if checkout_url else "Finish my website" }}</button>
     <p class="pv-alt">Prefer to chat? <a href="{{ whatsapp_href }}" target="_blank" rel="noopener">WhatsApp {{ whatsapp_display }}</a> · <a href="{{ brand_url }}" target="_blank" rel="noopener">About {{ brand }}</a></p>
   </form>
 </dialog>

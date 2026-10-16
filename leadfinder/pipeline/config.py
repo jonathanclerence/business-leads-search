@@ -22,6 +22,13 @@ PUBLISH_WORKTREE = Path(os.getenv("PUBLISH_WORKTREE",
                                   str(ROOT.parent.parent / ".marketing-site-publish"))).expanduser()
 
 SITE_URL = os.getenv("PREVIEW_SITE_URL", "https://www.dunous.com").rstrip("/")
+# Path of the checkout page on the marketing site ("/buy"). When set, the
+# "Make it mine" sheet gets a "Buy it now" button. Leave empty until the site
+# branch with /buy is merged into PUBLISH_BRANCH, or the button would 404.
+CHECKOUT_PATH = os.getenv("PREVIEW_CHECKOUT_PATH", "").strip()
+# Lets the tracker read online orders from <SITE_URL>/api/orders ("Sync payments").
+# Must match ORDERS_API_TOKEN in the site's Cloudflare variables.
+ORDERS_API_TOKEN = os.getenv("ORDERS_API_TOKEN", "").strip()
 PREVIEW_PATH = "/previewsite/"
 BRAND = os.getenv("PREVIEW_BRAND", "DuNous")
 WHATSAPP_DISPLAY = os.getenv("PREVIEW_WHATSAPP_DISPLAY", "(+61) 422 765 361")

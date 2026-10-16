@@ -360,6 +360,11 @@ html[data-type="grotesk"] .quote blockquote { font-size: 1.2rem; font-weight: 50
 .pv-status.err { color: #b42318; }
 .pv-status.ok { color: #067647; font-weight: 600; }
 .pv-alt { text-align: center; font-size: .88rem; color: #6b6760; }
+.pv-buy { display: grid; gap: 8px; text-align: center; }
+.pv-buy-btn { justify-content: center; min-height: 54px; font-size: 1.02rem; background: var(--accent); color: var(--accent-ink); text-decoration: none; }
+.pv-buy p { font-size: .84rem; color: #6b6760; }
+.pv-or { display: flex; align-items: center; gap: 12px; color: #9a958d; font-size: .82rem; }
+.pv-or::before, .pv-or::after { content: ""; flex: 1; height: 1px; background: #e4e0d8; }
 .pv-alt a { color: #161514; font-weight: 600; }
 @media (max-width: 560px) { .pv-sheet { width: 100vw; max-width: 100vw; margin: auto 0 0; border-radius: 26px 26px 0 0; max-height: 92dvh; } }
 

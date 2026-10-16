@@ -191,7 +191,8 @@
     setEditing(false);
     if (typeof sheet.showModal === "function") sheet.showModal(); else sheet.setAttribute("open", "");
     loadTurnstile();
-    setTimeout(function () { el("name").focus(); }, 60);
+    // With a "Buy it now" button, focus that rather than popping up the keyboard.
+    setTimeout(function () { (sheet.querySelector(".pv-buy-btn") || el("name")).focus(); }, 60);
   }
   document.querySelectorAll("[data-open]").forEach(function (b) { b.addEventListener("click", open); });
   sheet.querySelector("[data-close]").addEventListener("click", function () { sheet.close(); });

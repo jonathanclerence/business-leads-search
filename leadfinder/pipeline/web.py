@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 
 from . import config, db
 from . import coverage as cov
-from . import importer, publish
+from . import importer, payments, publish
 
 router = APIRouter()
 UI = Path(__file__).resolve().parent / "ui" / "tracker.html"
@@ -64,7 +64,8 @@ def meta() -> Dict[str, Any]:
         counts = db.stage_counts(con)
     return {"stages": [{"key": k, "label": l, "count": counts[k]} for k, l in db.STAGES],
             "outcomes": db.CALL_OUTCOMES, "regions": regions, "themes": themes, "grades": grades,
-            "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH}
+            "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH,
+            "orders_sync": bool(config.ORDERS_API_TOKEN)}
 
 
 def _where(stage, grade, region, theme, q, mobile, due, queue):
@@ -226,6 +227,16 @@ def run_publish(body: PublishBody):
 def run_verify():
     lines: List[str] = []
     res = publish.verify(log=lines.append)
+    return {**res, "log": lines}
+
+
+@router.post("/pipeline/api/payments/sync")
+def run_payment_sync():
+    lines: List[str] = []
+    try:
+        res = payments.sync(log=lines.append)
+    except payments.SyncError as exc:
+        raise HTTPException(409, str(exc))
     return {**res, "log": lines}
 
 

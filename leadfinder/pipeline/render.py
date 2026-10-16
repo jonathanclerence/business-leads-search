@@ -154,6 +154,9 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
         "brand": config.BRAND,
         "whatsapp_href": config.WHATSAPP_HREF,
         "whatsapp_display": config.WHATSAPP_DISPLAY,
+        "checkout_url": (f"{config.CHECKOUT_PATH}?"
+                         + urllib.parse.urlencode({"site": lead["slug"], "b": lead["name"]})
+                         if config.CHECKOUT_PATH else ""),
     }
 
 

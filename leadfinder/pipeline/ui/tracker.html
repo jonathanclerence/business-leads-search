@@ -73,6 +73,7 @@ dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-r
   </nav>
   <a class="btn sm" href="/">← Lead finder</a>
   <div class="clock"><span class="dot" id="clockDot"></span><span id="clock"></span></div>
+  <button class="btn" id="btnPayments" title="Fetch online orders from dunous.com and mark paid leads">Sync payments</button>
   <button class="btn" id="btnVerify" title="Check which published previews are live">Check live</button>
   <button class="btn primary" id="btnPublish">Publish previews…</button>
 </header>
@@ -128,7 +129,7 @@ const api = async (url, opts = {}) => {
   if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
   return data;
 };
-function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 1800); }
+function toast(msg, ms = 1800) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), ms); }
 async function copy(text, what = "Copied") { try { await navigator.clipboard.writeText(text); toast(what); } catch { prompt("Copy this:", text); } }
 
 let META = null, state = { stage: "", queue: false, due: false, offset: 0, limit: 100 }, LIST = [], CURRENT = null;
@@ -355,6 +356,10 @@ document.addEventListener("click", async (e) => {
         loadMeta(); loadList();
       } catch (err) { log.textContent = "✗ " + err.message; }
       t.disabled = false;
+    } else if (t.id === "btnPayments") {
+      t.disabled = true;
+      try { await syncPayments(false); } catch (err) { toast("✗ " + err.message); }
+      t.disabled = false;
     } else if (t.id === "btnVerify") {
       t.disabled = true; toast("Checking previews…");
       try { const r = await api("/pipeline/api/verify", { method: "POST" }); toast(`${r.live} live · ${r.checked - r.live} not yet`); loadMeta(); loadList(); }
@@ -397,8 +402,16 @@ async function loadPlaybook() {
   $("#tab-playbook").dataset.loaded = "1";
 }
 
+/* ---------- online payments ---------- */
+async function syncPayments(quiet) {
+  const r = await api("/pipeline/api/payments/sync", { method: "POST" });
+  const extra = r.unmatched.length ? ` · ${r.unmatched.length} paid without a preview: ` + r.unmatched.map((o) => `${o.business || o.name} (${o.currency} ${o.total})`).join(", ") : "";
+  if (!quiet || r.paid || r.awaiting) toast(`💰 ${r.paid} newly paid · ${r.awaiting} awaiting payment${extra}`, 6000);
+  if (r.paid || r.awaiting) { await loadMeta(); await loadList(); }
+}
+
 tickClock(); setInterval(tickClock, 30000);
-loadMeta().then(() => loadList());
+loadMeta().then(() => loadList()).then(() => { if (META.orders_sync) syncPayments(true).catch(() => {}); });
 </script>
 </body>
 </html>
