@@ -63,6 +63,13 @@ def _describe(o: Dict[str, Any]) -> str:
     return ", ".join(bits)
 
 
+def _fill_blanks(con, lead: Dict[str, Any], fills: Dict[str, Any]) -> None:
+    """Only fill empty fields — never overwrite what you typed in the tracker."""
+    for col, val in fills.items():
+        if val and not lead.get(col):
+            con.execute(f"UPDATE leads SET {col} = ?, updated_at = ? WHERE slug = ?", (val, db.now(), lead["slug"]))
+
+
 def sync(log: Log = print) -> Dict[str, Any]:
     orders = fetch_orders()
     paid = awaiting = 0
@@ -80,6 +87,9 @@ def sync(log: Log = print) -> Dict[str, Any]:
             marker = f"{ref} {status}"
             if con.execute("SELECT 1 FROM events WHERE slug = ? AND kind = 'payment' AND detail LIKE ?",
                            (slug, marker + "%")).fetchone():
+                # Already logged, but they may have added their wanted domain after paying.
+                _fill_blanks(con, lead, {"domain": o.get("domain"), "email": o.get("email"),
+                                         "contact_name": o.get("name")})
                 continue
 
             label = {"paid": "Paid online", "payment_pending": "Paid online (PayPal reviewing it)",
@@ -95,10 +105,7 @@ def sync(log: Log = print) -> Dict[str, Any]:
                 db.advance(con, slug, "invoice_sent", f"{ref} {label}")
                 awaiting += 1
                 fills = {"email": o.get("email"), "contact_name": o.get("name"), "domain": o.get("domain")}
-            # Only fill blanks — never overwrite what you typed in the tracker.
-            for col, val in fills.items():
-                if val and not lead.get(col):
-                    con.execute(f"UPDATE leads SET {col} = ?, updated_at = ? WHERE slug = ?", (val, db.now(), slug))
+            _fill_blanks(con, lead, fills)
             if o.get("notes") and status == "paid":
                 db.log(con, slug, "note", f"{ref} client notes: {o['notes'][:900]}")
             log(f"{lead['name']}: {note}")
