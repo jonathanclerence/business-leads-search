@@ -15,7 +15,7 @@ from typing import Any, Dict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import config
-from .content import (BOOKING, CTA_BAND, CTA_LABELS, GUESTS, KINDS, THEME_ABOUT, THEME_CINEMA,
+from .content import (BOOKING, CTA_BAND, CTA_LABELS, GUESTS, KIND_ACCENT, KINDS, THEME_ABOUT, THEME_CINEMA,
                       THEME_STATEMENT, THEME_STYLE, booking_mode)
 from .leads import slugify
 
@@ -94,6 +94,7 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
     version = asset_version()
     mode = booking_mode(lead.get("kind") or "local", cta)
     t_accent, t_type, t_paper = THEME_STYLE.get(theme, THEME_STYLE["local"])
+    t_accent = KIND_ACCENT.get(lead.get("kind") or "", t_accent)
     accent = lead.get("accent") if _HEX.match(lead.get("accent") or "") else t_accent
     hours = _json(lead.get("hours_json"))
     # The template adds its own curly quotes, so drop any the reviewer typed.

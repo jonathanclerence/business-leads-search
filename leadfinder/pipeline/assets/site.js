@@ -59,6 +59,17 @@
   }, { passive: true });
   onScroll();
 
+  /* ---- liquid-glass rating lens on the about photo (glass.js) --------- */
+  var lensMedia = document.querySelector("[data-lens]");
+  if (lensMedia && !reduce && "IntersectionObserver" in window) {
+    var lensIO = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      lensIO.disconnect();
+      import(new URL(lensMedia.dataset.lens, document.baseURI).href).then(function (m) { m.attach(lensMedia); }).catch(function () {});
+    }, { rootMargin: "400px 0px" });
+    lensIO.observe(lensMedia);
+  }
+
   /* ---- the video: load and play only while it's on screen ------------- */
   document.querySelectorAll("video.cinema-video").forEach(function (video) {
     if (reduce || !("IntersectionObserver" in window)) return;

@@ -46,7 +46,8 @@
 </header>
 
 <main id="top">
-  <section class="hero" data-scene="{{ scene }}">
+  <section class="hero" data-scene="{{ scene }}" data-kind="{{ lead.kind or 'local' }}" data-name="{{ lead.name }}" data-initials="{{ initials }}" data-suburb="{{ lead.suburb }}"
+           data-hero3d="{{ assets }}/hero3d.js?v={{ version }}">
     <canvas class="hero-fx" aria-hidden="true"></canvas>
     <div class="wrap hero-inner">
       <div class="hero-copy">
@@ -70,7 +71,7 @@
         {% endif %}
       </div>
     </div>
-    <p class="hero-hint" aria-hidden="true"><svg class="ic"><use href="{{ icons }}#i-spark"/></svg>Tap the scene</p>
+    <p class="hero-hint" aria-hidden="true">Tap or drag to play</p>
   </section>
 
   <div class="marquee" aria-hidden="true">
@@ -83,7 +84,6 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <p class="kicker" data-reveal>Services</p>
           <h2 data-reveal style="--d:1" data-edit="services-title">{{ services_title }}</h2>
         </div>
         <p class="section-sub" data-reveal style="--d:2" data-edit="services-sub">Everything you need from a {{ lead.category | lower }}, close to home. Book online in a few taps, or give us a call.</p>
@@ -91,7 +91,6 @@
       <ol class="services">
         {% for title, desc in services %}
         <li class="service" data-reveal style="--d:{{ loop.index0 }}">
-          <span class="service-num">{{ "%02d" | format(loop.index) }}</span>
           <h3 data-edit="service-{{ loop.index }}">{{ title }}</h3>
           <p data-edit="service-{{ loop.index }}-text">{{ desc }}</p>
           <a class="service-book" href="#book" data-pick="{{ title }}" aria-label="Book {{ title }}"><svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
@@ -119,11 +118,10 @@
 
   <section class="section about" id="about">
     <div class="wrap about-grid">
-      <div class="about-media" data-reveal="zoom">
-        <img src="{{ assets }}/img/{{ theme }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async" data-parallax>
+      <div class="about-media" data-reveal="zoom"{% if rated %} data-lens="{{ assets }}/glass.js?v={{ version }}" data-lens-rating="{{ rating }}" data-lens-reviews="{{ reviews_fmt }}"{% endif %}>
+        <img src="{{ assets }}/img/{{ theme }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async"{% if not rated %} data-parallax{% endif %}>
       </div>
       <div class="about-copy">
-        <p class="kicker" data-reveal>About <span data-bizname>{{ lead.name }}</span></p>
         <p class="statement" data-reveal style="--d:1" data-edit="statement">{{ statement | safe }}</p>
         <p class="about-text" data-reveal style="--d:2" data-edit="about">{{ about }}</p>
         <ul class="ticks" data-reveal style="--d:3">
@@ -166,7 +164,6 @@
   <section class="section book" id="book">
     <div class="wrap book-grid">
       <div class="book-intro">
-        <p class="kicker" data-reveal>Online booking</p>
         <h2 data-reveal style="--d:1" data-edit="book-title">{{ booking.heading }}</h2>
         <p class="section-sub" data-reveal style="--d:2" data-edit="book-sub">{{ booking.sub }}</p>
         <ul class="contact-list" data-reveal style="--d:3">

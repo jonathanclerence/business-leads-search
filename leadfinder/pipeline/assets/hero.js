@@ -918,7 +918,7 @@
     loop();
   }
   function loop() {
-    if (!raf && inView && !document.hidden && !reduce && root.dataset.fx !== "off") raf = requestAnimationFrame(frame);
+    if (!raf && inView && !document.hidden && !reduce && root.dataset.fx !== "off" && !hero.classList.contains("has-3d")) raf = requestAnimationFrame(frame);
   }
   function still() {   // one composed frame for reduced motion
     time = 2.3;
@@ -937,6 +937,7 @@
   new MutationObserver(function () {
     readColours();
     canvas.hidden = root.dataset.fx === "off";
+    if (three) three.setActive(inView && !document.hidden && root.dataset.fx !== "off");
     if (reduce) still(); else loop();
   }).observe(root, { attributes: true, attributeFilter: ["style", "data-paper", "data-fx"] });
 
@@ -944,6 +945,7 @@
     var r = hero.getBoundingClientRect();
     P.px = e.clientX - r.left; P.py = e.clientY - r.top;
     P.tx = clamp(P.px / r.width * 2 - 1, -1, 1); P.ty = clamp(P.py / r.height * 2 - 1, -1, 1);
+    if (three) three.pointer(P.tx, P.ty);
   }
   hero.addEventListener("pointermove", setPointer, { passive: true });
   hero.addEventListener("pointerleave", function () { P.tx = 0; P.ty = 0; P.px = P.py = -999; });
@@ -951,5 +953,57 @@
     if (e.target.closest("a, button, input, label")) return;
     setPointer(e);
     if (scene.tap) scene.tap(P.px, P.py);
+    if (three) three.tap();
   });
+  hero.addEventListener("pointerleave", function () { if (three) three.pointer(0, 0); });
+
+  /* ---- the 3D upgrade (React Three Fiber, hero3d.js) ------------------
+     This 2D scene paints instantly; on devices that can afford it, the 3D
+     scene downloads once the page has finished loading and is idle, then
+     cross-fades in. Skipped for reduced motion, data saver, slow networks,
+     low-memory devices and browsers without WebGL 2. */
+  var three = null;
+  function canDo3D() {
+    if (reduce || !hero.dataset.hero3d) return false;
+    var c = navigator.connection || {};
+    if (c.saveData || /(^|-)2g|3g/.test(c.effectiveType || "")) return false;
+    if (navigator.deviceMemory && navigator.deviceMemory < 3) return false;
+    try { if (!document.createElement("canvas").getContext("webgl2")) return false; } catch (e) { return false; }
+    return true;
+  }
+  function start3D() {
+    var holder = document.createElement("div");
+    holder.className = "hero-3d"; holder.setAttribute("aria-hidden", "true");
+    hero.insertBefore(holder, canvas.nextSibling);
+    var cs = getComputedStyle(root);
+    var weak = (navigator.hardwareConcurrency || 4) < 6;
+    import(new URL(hero.dataset.hero3d, document.baseURI).href).then(function (m) {
+      three = m.mount(holder, {
+        kind: hero.dataset.kind, theme: hero.dataset.scene, name: hero.dataset.name, initials: hero.dataset.initials,
+        suburb: hero.dataset.suburb, accent: cs.getPropertyValue("--accent").trim(), dark: root.dataset.paper === "dark",
+        paper: cs.getPropertyValue("--paper").trim(),
+        displayFont: cs.getPropertyValue("--display").trim(), mobile: mobile, lite: mobile && weak,
+        onReady: function () { setTimeout(function () { hero.classList.add("has-3d"); if (raf) { cancelAnimationFrame(raf); raf = 0; } }, 450); }
+      });
+      three.setActive(inView && !document.hidden && root.dataset.fx !== "off");
+      scroll3D();
+    }).catch(function () { holder.remove(); });
+  }
+  var scrollTick = false;
+  function scroll3D() {
+    scrollTick = false;
+    if (!three) return;
+    var r = hero.getBoundingClientRect();
+    three.scroll(clamp(-r.top / Math.max(1, r.height), 0, 1));
+  }
+  window.addEventListener("scroll", function () { if (three && !scrollTick) { scrollTick = true; requestAnimationFrame(scroll3D); } }, { passive: true });
+  if ("IntersectionObserver" in window) new IntersectionObserver(function (es) {
+    if (three) three.setActive(es[0].isIntersecting && !document.hidden && root.dataset.fx !== "off");
+  }).observe(hero);
+  document.addEventListener("visibilitychange", function () { if (three) three.setActive(inView && !document.hidden && root.dataset.fx !== "off"); });
+  if (canDo3D()) {
+    var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 200); };
+    var go = function () { idle(start3D, { timeout: 2500 }); };
+    if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
+  }
 })();

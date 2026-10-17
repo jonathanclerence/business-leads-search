@@ -508,7 +508,7 @@ THEMES = sorted({k["theme"] for k in KINDS.values()})
 # ("light" white, "warm" cream, "dark").
 # The client can change all three in the preview's colour picker.
 THEME_STYLE = {
-    "hair":         ("#9a5b43", "serif",   "warm"),
+    "hair":         ("#4a2c3a", "serif",   "warm"),
     "beauty":       ("#b0546f", "serif",   "warm"),
     "tattoo":       ("#c9a14a", "grotesk", "dark"),
     "wellness":     ("#5f7a62", "serif",   "warm"),
@@ -520,13 +520,16 @@ THEME_STYLE = {
     "cleaning":     ("#138a9e", "grotesk", "warm"),
     "garden":       ("#4c7a3a", "serif",   "warm"),
     "pets":         ("#d9712c", "grotesk", "warm"),
-    "food":         ("#b4532a", "serif",   "warm"),
+    "food":         ("#2f4f3a", "serif",   "warm"),
     "winery":       ("#7a2b3a", "serif",   "warm"),
     "creative":     ("#8a6a4f", "serif",   "warm"),
     "professional": ("#1f3a63", "grotesk", "warm"),
     "tech":         ("#4b46d6", "grotesk", "warm"),
     "local":        ("#2f6f62", "serif",   "warm"),
 }
+
+# Where a kind has a colour of its own: barber poles are red, white and navy.
+KIND_ACCENT = {"barber": "#1f3a5f"}
 
 # One line for the "about" statement; <em> words are set in the accent italic.
 THEME_STATEMENT = {
