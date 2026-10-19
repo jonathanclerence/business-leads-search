@@ -21,6 +21,7 @@ from .leads import slugify
 
 HERE = Path(__file__).resolve().parent
 ASSET_SRC = HERE / "assets"
+INFO_PACK = "dunous-website-pack.pdf"
 
 _env = Environment(loader=FileSystemLoader(HERE / "templates"),
                    autoescape=select_autoescape(["html", "j2"]),
@@ -155,6 +156,8 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
         "brand": config.BRAND,
         "whatsapp_href": config.WHATSAPP_HREF,
         "whatsapp_display": config.WHATSAPP_DISPLAY,
+        # The generic website pack (documents.ensure_generic_pack), shipped with the shared assets.
+        "info_pack": INFO_PACK if (ASSET_SRC / INFO_PACK).exists() else "",
         "checkout_url": (f"{config.CHECKOUT_PATH}?"
                          + urllib.parse.urlencode({"site": lead["slug"], "b": lead["name"]})
                          if config.CHECKOUT_PATH else ""),

@@ -1,0 +1,37 @@
+<section class="page cover" data-page="cover">
+  {% if not shots.phone %}{{ ui.mark("150mm", "light", "cover-mark") }}{% endif %}
+  <div class="cover-inner">
+    <div class="cover-top">
+      <span class="brand">{{ ui.mark("9mm") }}DuNous</span>
+      <span class="site">{{ contact.site_short }}</span>
+    </div>
+
+    <div class="cover-title">
+      <span class="pill light">{{ doc_title }}</span>
+      {% if biz %}
+      <h1 class="{{ title_size }}">{{ biz }}</h1>
+      <span class="serif">Your website is built.<br>Let’s make it yours.</span>
+      <p>A finished website for {{ biz }}, a few simple ways to make it yours, and everything you need to go ahead.</p>
+      {% else %}
+      <h1 class="t-xl">Your new website</h1>
+      <span class="serif">Built first.<br>Yours when you’re ready.</span>
+      <p>Our packages, hosting options, service agreement and onboarding form: everything you need to go ahead, in one place.</p>
+      {% endif %}
+    </div>
+
+    <dl class="cover-meta">
+      {% if biz %}
+      <div><dt>Prepared for</dt><dd>{{ biz }}{% if suburb %}<br>{{ suburb }}{% if state %} {{ state }}{% endif %}{% endif %}</dd></div>
+      <div><dt>Prepared by</dt><dd>DuNous<br>{{ contact.email }}</dd></div>
+      <div><dt>Date</dt><dd>{{ today_str }}</dd></div>
+      <div><dt>Reference</dt><dd>{{ ref }}<br><span style="opacity:.7">Valid until {{ valid_until_str }}</span></dd></div>
+      {% else %}
+      <div><dt>From</dt><dd>DuNous<br>{{ contact.email }}</dd></div>
+      <div><dt>Talk to us</dt><dd>WhatsApp {{ contact.whatsapp_display }}<br>{{ contact.site_short }}</dd></div>
+      {% endif %}
+    </dl>
+  </div>
+  {% if shots.phone %}
+  <div class="cover-phone"><div class="phone"><img src="{{ shots.phone }}" alt=""></div></div>
+  {% endif %}
+</section>

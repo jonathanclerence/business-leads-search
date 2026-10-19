@@ -56,6 +56,8 @@ def _describe(o: Dict[str, Any]) -> str:
     bits = [_money(o)]
     if o.get("package"):
         bits.append(f"{o['package'].title()} package")
+    if o.get("hosting"):
+        bits.append("managed hosting" if o["hosting"] == "managed" else "self-managed hosting")
     if o.get("code"):
         bits.append(f"code {o['code']}")
     if o.get("domain"):
@@ -78,7 +80,7 @@ def sync(log: Log = print) -> Dict[str, Any]:
         for o in orders:
             status, ref, slug = o.get("status"), o.get("ref", ""), o.get("slug") or ""
             if status == "started" or not ref:
-                continue  # opened PayPal but never paid
+                continue  # never finished ordering
             lead = db.get(con, slug) if slug else None
             if not lead:
                 if status in ("paid", "payment_pending"):
@@ -92,8 +94,8 @@ def sync(log: Log = print) -> Dict[str, Any]:
                                          "contact_name": o.get("name")})
                 continue
 
-            label = {"paid": "Paid online", "payment_pending": "Paid online (PayPal reviewing it)",
-                     "awaiting_payment": "Ordered online — check payment / send a link"}.get(status, status)
+            label = {"paid": "Paid online", "payment_pending": "Paid online (payment still clearing)",
+                     "awaiting_payment": "Ordered online — send the bank transfer invoice"}.get(status, status)
             note = f"{label}: {_describe(o)}"
             db.log(con, slug, "payment", f"{marker} — {note}")
             if status == "paid":

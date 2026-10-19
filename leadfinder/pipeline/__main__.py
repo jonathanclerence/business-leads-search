@@ -8,7 +8,7 @@ import sys
 import time
 
 from . import coverage as cov
-from . import db, importer, publish
+from . import db, documents, importer, publish
 
 
 def _list(value: str):
@@ -41,6 +41,12 @@ def main(argv=None) -> int:
 
     ex = sub.add_parser("export-site", help="the finished site for a client, ready to upload to their Cloudflare")
     ex.add_argument("slug")
+
+    dc = sub.add_parser("docs", help="client PDFs: proposal, agreement, onboarding form, or all three as one pack")
+    dc.add_argument("slug", nargs="?", help="the lead (omit with --generic)")
+    dc.add_argument("--kind", default="pack", choices=list(documents.DOCUMENTS) + ["all"])
+    dc.add_argument("--generic", action="store_true",
+                    help="rebuild the generic pack linked from every preview (pipeline/assets/)")
 
     st = sub.add_parser("stage", help="move a lead to a stage")
     st.add_argument("slug")
@@ -88,6 +94,19 @@ def main(argv=None) -> int:
                 print(f"{db.STAGE_LABELS[k]:20} {n:>6}")
     elif a.cmd == "export-site":
         publish.export_site(a.slug)
+    elif a.cmd == "docs":
+        if a.generic:
+            changed = documents.ensure_generic_pack(force=True)
+            print(f"{'Rebuilt' if changed else 'Up to date:'} {documents.GENERIC_PACK}")
+            return 0
+        if not a.slug:
+            p.error("docs needs a lead slug, or --generic")
+        with db.connect() as con:
+            lead = db.get(con, a.slug)
+        if not lead:
+            p.error(f"no lead {a.slug!r}")
+        for kind in documents.DOCUMENTS if a.kind == "all" else [a.kind]:
+            print(documents.save(kind, lead))
     elif a.cmd == "stage":
         with db.connect() as con:
             changed = db.set_stage(con, a.slug, a.stage, a.note)

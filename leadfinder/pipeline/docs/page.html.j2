@@ -1,0 +1,10 @@
+{# Layout for every page except the cover: body + footer with page number. #}
+<section class="page{% block page_class %}{% endblock %}" data-page="{{ page_name }}">
+  <div class="page-body">
+{% block body %}{% endblock %}
+  </div>
+  <footer class="page-foot">
+    <span class="foot-brand">{{ ui.mark("4.4mm") }}<b>DuNous</b><span>{{ section }}{% if biz %} for {{ biz }}{% endif %}</span></span>
+    <span class="foot-page">{{ n }} / {{ total }}</span>
+  </footer>
+</section>

@@ -54,34 +54,61 @@
 <h3>Follow-up rhythm (max 4 tries, then let it go)</h3>
 <p>Day 0 call + SMS · Day 2 call at a different time of day · Day 5 SMS (“did you get a chance to look?”) · Day 10 last call. After that, move to <b>Not interested</b>.</p>
 
-<h2>3 · Pricing — flexible, without leaving money on the table</h2>
+<h2>3 · Packages, hosting and pricing</h2>
+<p class="muted">Prices live in <code>pipeline/offer.py</code>; every PDF and the call script read them from there. If you change them, update this table too.</p>
 <table>
-  <thead><tr><th>Package</th><th>Price (AUD)</th><th>What's in it</th></tr></thead>
+  <thead><tr><th>Package</th><th>Price (AUD)</th><th>What's in it</th><th>Best for</th></tr></thead>
   <tbody>
-    <tr><td>Starter</td><td>$790</td><td>This one page with their details, photos and hours, on their own domain. 1 round of changes.</td></tr>
-    <tr><td><b>Business</b> (lead with this)</td><td><b>$1,290</b></td><td>Up to 5 pages, enquiry/booking form to their phone or email, Google profile linked, 3 rounds of changes, 30 days of free edits.</td></tr>
-    <tr><td>Premium</td><td>$1,990</td><td>Business + online booking set up (Fresha / Square / Calendly), price list or menu, gallery, 90 days of edits.</td></tr>
-    <tr><td>Care plan (optional)</td><td>$39 / month</td><td>Small changes, updates and monitoring. This is your recurring income — offer it to everyone after launch.</td></tr>
+    <tr><td>Foundation</td><td>$649</td><td>The preview as built, finished as one page: their logo, colours, fonts, photos, hours, prices and contact details. 1 round of text changes. Live in 2 business days.</td><td>Likes it exactly as it is</td></tr>
+    <tr><td><b>Growth</b> (lead with this)</td><td><b>$799</b></td><td>Foundation + up to 3 pages, booking or quote form to their phone or email (or Fresha / Square / Calendly connected), basic SEO (titles, Search Console, sitemap), Google profile and socials linked, 2 rounds of design changes, 14 days of free small edits. Live in 3 business days.</td><td>Most local businesses</td></tr>
+    <tr><td>Pro</td><td>$999</td><td>Growth + up to 5 pages with a gallery, copywriting for up to 3 pages, Google Analytics and Meta Pixel, 3 rounds of changes, 30 days of free small edits. Live in 5 business days.</td><td>Ready to advertise and track</td></tr>
+    <tr><td>Enterprise</td><td>from $1,500</td><td>Online shop, logins, booking/CRM/database integrations, multi-location sites, SEO or marketing retainers. Scope it on a call, send a fixed quote.</td><td>Anything bigger</td></tr>
+    <tr><td>Extra work</td><td>$60 / hour</td><td>Anything outside their package, in 30-minute blocks. Always quoted in writing before you start.</td><td></td></tr>
   </tbody>
 </table>
+
+<h3>Hosting and domain: offer option A first (yearly only for now)</h3>
+<table>
+  <thead><tr><th>Option</th><th>Price</th><th>What they get</th><th>For you</th></tr></thead>
+  <tbody>
+    <tr><td><b>A · Managed by DuNous</b> (recommended)</td><td>$390 / year</td><td>Domain registered in their business name and renewed by us, hosting on Cloudflare (your account) with https, backups, and up to 30 minutes of small updates a month.</td><td>Recurring income: 100 clients is $39,000 a year, and each one costs you about $25 a year (the domain).</td></tr>
+    <tr><td>B · Self-managed</td><td>$0 to you (they pay about $20–30 a year for the domain)</td><td>Hosting set up in their own free Cloudflare account and the domain in their own registrar account; you hand over the logins. Changes after their free edit period are $60 / hour.</td><td>Less liability (their outage is their host's problem), but no recurring income.</td></tr>
+  </tbody>
+</table>
+<p class="say">Option A: “We handle everything — servers, security updates, domain renewals. It's completely hands-off for you.”<br>Option B: “You own everything 100% from day one, with no ongoing fees from us.”</p>
+<ul>
+  <li><b>Leaving option A:</b> 30 days' notice and a one-off <b>$149 handover fee</b> (export the files, move them to their host, transfer the domain). Never hold a domain back: a .com.au is registered to their ABN, and auDA rules entitle them to it anyway. The fee pays for your time, not for something they already own.</li>
+  <li><b>Collecting hosting fees:</b> yearly, by bank transfer, in advance. The first year goes on the website invoice; send the next one a year after launch. No monthly option until a card payment provider is set up. The Terms let you pause a site that's 30+ days overdue after two reminders.</li>
+</ul>
+
+<h3>“Can you just change this one thing?”</h3>
+<ul>
+  <li><b>Inside their package</b> (wording, a photo, colours): yes, it's part of a round of changes. Ask for all their changes in one list, because a round is one list.</li>
+  <li><b>Bigger than their package</b> (a new page or a booking system on Foundation, a layout change): <span class="say" style="display:inline">“Absolutely, we can do that. That level of change is in our Growth package, which is $150 more than what you have. Shall I upgrade you?”</span> An upgrade is always just the difference.</li>
+  <li><b>Bigger than any package</b> (a 6th page on Pro, a custom feature): quote it at $60 an hour in 30-minute blocks, in writing, before you start.</li>
+  <li><b>After launch:</b> free small edits during their edit period (Growth 14 days, Pro 30). After that, option A clients have 30 minutes a month; everyone else is $60 an hour.</li>
+</ul>
+
+<h3>Negotiating</h3>
 <ol>
-  <li><b>Say the middle price first, then stop talking.</b> “Most businesses like yours go with the $1,290 package.” Silence does the work.</li>
+  <li><b>Say the middle price first, then stop talking.</b> “Most businesses like yours go with Growth, at $799.” Silence does the work.</li>
   <li><b>If they hesitate, let them name a number:</b> “What did you have in mind?”</li>
-  <li><b>Trade, don't discount.</b> A lower price means less: “For $790 I can do this page as it is — you send me the photos and wording.” Never drop the price for nothing.</li>
-  <li><b>Get something back for any discount:</b> pay today, a Google review, a testimonial, or a referral.</li>
-  <li><b>Make it easy to say yes:</b> “Half to start, half when it's live” or three monthly payments.</li>
-  <li><b>Set your floor before you dial</b> (e.g. $490) and walk away below it. Cheap clients cost the most time.</li>
+  <li><b>Trade, don't discount.</b> A lower price means less: “For $649 I can finish this page as it is: you send me the photos and wording.” Never drop the price for nothing.</li>
+  <li><b>Get something back for any discount:</b> pay today, yearly hosting, a Google review, a testimonial, or a referral.</li>
+  <li><b>Make it easy to say yes:</b> one payment is simplest; the agreement also allows half now, half before launch.</li>
+  <li><b>Set your floor before you dial</b> (e.g. $549) and walk away below it. Cheap clients cost the most time.</li>
   <li><b>Referrals:</b> “If you know another business without a website, I'll give you $100 for each one that signs up.”</li>
 </ol>
 <p class="muted">Only say “launch price for my first 10 clients” if it's true. Record what you quoted and what they agreed in each lead's Details so you learn what actually closes.</p>
 
-<h2>4 · From “yes” to live</h2>
+<h2>4 · From “send me the info” to live</h2>
 <ol>
-  <li><b>Payment link</b> → they can pay themselves from the <b>Buy it now</b> button on their preview (card or PayPal, prices in AUD). To send a link with a package or discount already chosen: <code>https://www.dunous.com/buy?site=&lt;slug&gt;&amp;pkg=business&amp;code=&lt;code&gt;</code> (<code>pkg</code> is starter, business or premium). Discount codes: <b>DN5-CUWW4</b> (5%), <b>DN10-ZH9EW</b> (10%), <b>DN15-75ANK</b> (15%), <b>DN20-QGD2J</b> (20%) — managed in the site's <code>src/lib/server/discounts.ts</code>. For a custom amount use <code>https://www.dunous.com/checkout?amount=950&amp;currency=AUD&amp;ref=&lt;Business&gt;</code>. Stage <b>Invoice sent</b>, fill in “Agreed”. You get a “PAID” email when the money's in.</li>
-  <li><b>Paid</b> → stage <b>Payment received</b>. Ask for: preferred domain, photos, opening hours, prices, logo, and the email that should get enquiries.</li>
-  <li><b>Domain</b> → stage <b>Domain chosen</b>. A <i>.com.au</i> needs the client's ABN and must be registered in their name — use an Australian registrar (e.g. VentraIP or Crazy Domains), then point it at Cloudflare.</li>
-  <li><b>Hosting</b> → on the lead, press <b>Export finished site folder</b> (stage must be Payment received or later). Swap in their photos (<code>assets/img</code>) and details. Create a free Cloudflare account <i>with the client's email</i> (they own it; invite yourself as a member) → Workers &amp; Pages → Create → Pages → <b>Upload assets</b> → drag the folder in → add their custom domain. Stage <b>Site hosted</b>.</li>
-  <li><b>Live</b> → stage <b>Website live</b> (their preview on dunous.com is removed on the next publish). Ask for a Google review and a referral, and offer the care plan.</li>
+  <li><b>“Send me the info”</b> → get their email, then on the lead press <b>⬇ Website pack (PDF)</b> under <i>Send the info</i>. It's one 5-page fillable PDF made for them: cover, their website with screenshots, packages and hosting, a one-page agreement (the full Terms stay on dunous.com/terms) and a one-page onboarding form. <b>Copy email</b>, attach the PDF, send, ideally while you're still on the call. Stage <b>Interested</b>. (A generic version is also on every preview's “Make it mine” sheet, and at <code>/pipeline/api/docs/pack.pdf</code>.)</li>
+  <li><b>They choose</b> (a reply, the signed agreement, or an order on <code>/buy</code>) → send the invoice for bank transfer: the package, plus the first year of hosting if they chose option A. Stage <b>Invoice sent</b>, fill in “Agreed”. There's no card payment yet (PayPal is gone): <code>https://www.dunous.com/buy?site=&lt;slug&gt;&amp;pkg=growth&amp;code=&lt;code&gt;</code> lets them pick a package and hosting and place the order, and you get an email to send the invoice. Packages: <code>foundation</code>, <code>growth</code>, <code>pro</code>. Discount codes: <b>DN5-CUWW4</b> (5%), <b>DN10-ZH9EW</b> (10%), <b>DN15-75ANK</b> (15%), <b>DN20-QGD2J</b> (20%), managed in the site's <code>src/lib/server/discounts.ts</code>.</li>
+  <li><b>Paid</b> (check the bank transfer arrived) → stage <b>Payment received</b>. If they haven't filled in the onboarding form yet, send it on its own (<b>Onboarding form</b> button): domain choices, ABN, hours, services, logo, photos, socials.</li>
+  <li><b>Domain</b> → stage <b>Domain chosen</b>. A <i>.com.au</i> needs their ABN and is registered in their business name either way. Option A: register it in your registrar account (e.g. VentraIP or Crazy Domains) with their business as the registrant. Option B: they register it in their own account; walk them through it.</li>
+  <li><b>Hosting</b> → on the lead, press <b>Export finished site folder</b> (stage Payment received or later) and swap in their photos (<code>assets/img</code>) and details. Option A: Cloudflare (your account) → Workers &amp; Pages → Create → Pages → <b>Upload assets</b> → drag the folder in → add their domain. Option B: the same, but in a free Cloudflare account created <i>with the client's email</i> (invite yourself as a member). Stage <b>Site hosted</b>.</li>
+  <li><b>Live</b> → stage <b>Website live</b> (their preview on dunous.com is removed on the next publish). Option A: note the date — the next hosting invoice is due a year from now. Ask for a Google review and a referral.</li>
 </ol>
 
 <h2>5 · Texting rules (Australia's Spam Act)</h2>

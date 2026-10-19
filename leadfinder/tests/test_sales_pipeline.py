@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from pipeline import db  # noqa: E402
+from pipeline import db, documents, offer  # noqa: E402
 from pipeline.content import KINDS, THEME_ABOUT  # noqa: E402
 from pipeline.importer import dedupe, normalise  # noqa: E402
 from pipeline.leads import (classify, display_phone, is_australian, is_mobile,  # noqa: E402
@@ -143,6 +143,61 @@ def test_render():
     check("no rating → no reviews section", "Google reviews" in unrated, False)
 
 
+def test_documents():
+    print("\nDocuments")
+    lead = {"slug": "urban-trim", "name": "Urban Trim", "category": "Barber shop", "kind": "barber",
+            "theme": "hair", "address": "25 Treloar Ln, Pakenham VIC 3810", "suburb": "Pakenham", "state": "VIC",
+            "phone": "+61410771413", "phone_display": "0410 771 413", "rating": 4.9, "reviews": 434,
+            "contact_name": "Hassan Ali", "email": "hassan@example.com", "notes": "INTERNAL: owner is grumpy",
+            "hours_json": '[["Monday", "9\u202fam\u20137\u202fpm"]]'}
+    pack = documents.html("pack", lead)
+    check("pack is 5 pages: cover, website, packages, agreement, form", pack.count('<section class="page'), 5)
+    check("every price from offer.py", all(offer.money(p["price"]) in pack for p in offer.PACKAGES), True)
+    check("hosting is yearly only", (offer.money(offer.HOSTING["yearly"]) + " a year" in pack, "/month" in pack, "$39<" in pack), (True, False, False))
+    check("personalised: rating, reviews, their suburb", ("434" in pack, "4.9" in pack, "in Pakenham" in pack), (True, True, True))
+    check("agreement points to the Terms on the site", 'href="https://www.dunous.com/terms"' in pack, True)
+    check("bank transfer, no card or PayPal", ("bank transfer" in pack, "PayPal" in pack, "by card" in pack), (True, False, False))
+    check("internal notes never leak into client PDFs", "grumpy" in pack, False)
+    check("hours pre-filled without narrow spaces", 'data-value="Monday: 9 am–7 pm"' in pack, True)
+    names = [m for m in __import__("re").findall(r'data-field="([^"]+)"', pack)]
+    check("form field names unique", len(names), len(set(names)))
+    check("agreement and form are one page each",
+          (documents.html("agreement", lead).count('<section class="page'), documents.html("onboarding", lead).count('<section class="page')), (1, 1))
+    generic = documents.html("pack")
+    check("generic pack skips the website page", generic.count('<section class="page'), 4)
+    check("generic pack has no business details", ("Urban Trim" in generic, "Reference" in generic), (False, False))
+    check("short name drops Google keyword stuffing",
+          documents.short_name("Oxley Landscaping | Gardening | Weed Control | Fencing | Decking | Paving Morwell"),
+          "Oxley Landscaping")
+    check("short name keeps normal names", documents.short_name("Maryborough Veterinary Practice"),
+          "Maryborough Veterinary Practice")
+    check("file name", documents.filename("pack", lead), "DuNous-Website-pack-urban-trim.pdf")
+    if documents.GENERIC_PACK.exists():
+        from pypdf import PdfReader
+        have = (PdfReader(documents.GENERIC_PACK).metadata or {}).get("/DunousSource")
+        check("generic pack is current (python -m pipeline docs --generic)", have, documents.generic_fingerprint())
+        check("previews link the info pack", 'href="/previewsite-assets/dunous-website-pack.pdf?v=' in render(lead), True)
+    try:
+        import playwright  # noqa: F401
+    except ImportError:
+        print("  - skipped PDF build (Playwright not installed)")
+        return
+    from io import BytesIO
+    from pypdf import PdfReader
+    msgs = []
+    pdf = PdfReader(BytesIO(documents.build("agreement", lead, log=msgs.append)))
+    fields = pdf.get_fields()
+    check("agreement PDF: 1 page, nothing overflows", (len(pdf.pages), [m for m in msgs if "overflow" in m]), (1, []))
+    check("agreement PDF: fillable, pre-filled", (fields["agr_business"].get("/V"), fields["agr_abn"].get("/V")),
+          ("Urban Trim", None))
+    check("agreement PDF: package tick boxes", all(fields[f"agr_pkg_{p['id']}"]["/FT"] == "/Btn" for p in offer.PACKAGES), True)
+    long = {**lead, "name": "Oxley Landscaping | Gardening | Weed Control | Fencing | Decking | Pergola | Paving | Lawn care Morwell",
+            "rating": None, "reviews": None, "reviews_json": None, "hours_json": None, "contact_name": None}
+    msgs = []
+    documents.build("pack", long, log=msgs.append)
+    check("pack for a long, unrated name: nothing overflows", [m for m in msgs if "overflow" in m], [])
+
+
 def test_stages():
     print("\nStages")
     check("preview stages are real stages", db.PREVIEW_STAGES <= set(db.STAGE_KEYS), True)
@@ -156,6 +211,7 @@ def main() -> int:
     test_classify()
     test_import()
     test_render()
+    test_documents()
     test_stages()
     print(f"\n{'─' * 62}\n  {len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:

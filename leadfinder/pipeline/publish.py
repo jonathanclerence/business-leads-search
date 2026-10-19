@@ -23,7 +23,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
-from . import config, db
+from . import config, db, documents
 from .render import ASSET_SRC, render
 
 Log = Callable[[str], None]
@@ -65,6 +65,15 @@ def active_leads(con) -> List[Dict[str, Any]]:
     marks = ",".join("?" * len(db.PREVIEW_STAGES))
     rows = con.execute(f"SELECT * FROM leads WHERE stage IN ({marks})", sorted(db.PREVIEW_STAGES))
     return [dict(r) for r in rows]
+
+
+def refresh_info_pack(log: Log) -> None:
+    """Rebuild the generic website pack PDF if prices or wording changed, so the
+    "Prices and info pack" link on every preview is never out of date."""
+    try:
+        documents.ensure_generic_pack(log=log)
+    except Exception as exc:  # noqa: BLE001 — a stale PDF shouldn't stop previews going live
+        log(f"Couldn't rebuild the website pack PDF ({exc}); publishing the one we have.")
 
 
 def write_site_files(site_dir: Path, leads: List[Dict[str, Any]]) -> Dict[str, int]:
@@ -154,6 +163,7 @@ def publish(grades: Sequence[str] = ("Hot",), limit: Optional[int] = None, min_s
     with db.connect() as con:
         fresh = select_new(con, grades, limit, min_score, regions)
         target = config.MARKETING_SITE_DIR if local else prepare_worktree(log)
+        refresh_info_pack(log)
         leads = active_leads(con) + [db.get(con, s) for s in fresh]
         log(f"Rendering {len(leads)} preview pages ({len(fresh)} new)…")
         stats = write_site_files(target, leads)

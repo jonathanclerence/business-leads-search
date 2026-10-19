@@ -1,0 +1,48 @@
+{% extends "page.html.j2" %}
+{% block body %}
+<div class="head">
+  <p class="kicker">Your website</p>
+  <h1>It’s already built. <em>Have a look around.</em></h1>
+  <p class="lede">When someone in {{ suburb or "your area" }} searches for {{ category_a }}, Google shows them {{ biz }}. But there’s no website where they can {{ payoff }}, so we built one from your Google listing. The photos and wording are placeholders: we swap in your own.</p>
+  {% if rated %}
+  <div class="facts">
+    <span class="pill">{{ ui.icon("star") }}{{ rating }} on Google</span>
+    <span class="pill">{{ reviews_fmt }} reviews</span>
+    <span class="pill dark">No website yet</span>
+  </div>
+  {% endif %}
+</div>
+
+{% if shots.desktop %}
+<div class="showcase">
+  <div class="browser">
+    <div class="browser-bar"><i></i><i></i><i></i><span>{{ preview_short }}</span></div>
+    <img src="{{ shots.desktop }}" alt="">
+  </div>
+  {% if shots.phone %}<div class="phone"><img src="{{ shots.phone }}" alt=""></div>{% endif %}
+</div>
+{% endif %}
+
+<div class="spacer"></div>
+
+<div class="website-foot">
+  <div class="card navy">
+    <h3 style="margin-bottom: 4mm">What it does for you</h3>
+    {{ ui.ticks([
+      booking.title ~ " online, any time",
+      "Tap to call, message or get directions",
+      "Your hours, services and prices",
+      "Your best Google reviews on your own page" if rated else "Your photos and your story",
+      "Fast and clear on every phone",
+      "Built so Google can find it",
+    ]) }}
+  </div>
+  <div class="card open">
+    {% if qr %}<div class="qr">{{ qr | safe }}</div>{% endif %}
+    <h3>Open it on your phone</h3>
+    {% set where, slug = preview_short.rsplit("/", 1) %}
+    <a class="link" href="{{ preview_url }}">{{ where }}/<br>{{ slug }}</a>
+    <p class="small">Tap <b>Customise</b> to try your own colours and wording.</p>
+  </div>
+</div>
+{% endblock %}

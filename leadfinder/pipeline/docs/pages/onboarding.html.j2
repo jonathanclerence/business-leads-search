@@ -1,0 +1,64 @@
+{% extends "page.html.j2" %}
+{% block body %}
+<header class="doc-head">
+  <div>
+    <span class="brand">{{ ui.mark("7.5mm") }}DuNous</span>
+    <h1>Onboarding form <em>Let’s make it yours.</em></h1>
+  </div>
+  <dl>
+    {% if biz %}<dt>For</dt><dd>{{ biz }}</dd>{% endif %}
+    <dt>Takes</dt><dd>about 10 minutes</dd>
+    <dt>Send to</dt><dd>{{ contact.email }}</dd>
+  </dl>
+</header>
+
+<p class="intro">Everything we need to finish your website.{% if biz %} We’ve filled in what we already know, so just check it.{% endif %} Leave anything you’re unsure about blank, and email it back with your logo and photos.</p>
+
+<div class="section">
+  <h2>Your business</h2>
+  <div class="fields c4">
+    {{ ui.field("ob_business", "Business name, as it should appear", prefill.business, "", "8mm", false, "span-2") }}
+    {{ ui.field("ob_contact", "Your name", prefill.contact) }}
+    {{ ui.field("ob_phone", "Phone to show", prefill.phone) }}
+    {{ ui.field("ob_email", "Email for enquiries and bookings", prefill.email, "", "8mm", false, "span-2") }}
+    {{ ui.field("ob_abn", "ABN", prefill.abn, "(for .com.au)") }}
+    {{ ui.field("ob_domain", "Web address you’d like", prefill.domain) }}
+    {{ ui.field("ob_address", "Address to show, or the area you service", prefill.address, "", "8mm", false, "span-all") }}
+  </div>
+</div>
+
+<div class="section">
+  <div class="fields c2">
+    {{ ui.field("ob_hours", "Opening hours", prefill.hours, "", "30mm", true) }}
+    {{ ui.field("ob_services", "Services and prices", prefill.services, "(one per line)", "30mm", true) }}
+    {{ ui.field("ob_about", "About you and your team", "", "(your story, names, what makes you different)", "17mm", true, "span-all") }}
+  </div>
+</div>
+
+<div class="section">
+  <h2>Logo, look and photos</h2>
+  <div class="choices c4" style="margin-bottom: 3.2mm">
+    {{ ui.check("ob_logo_send", "I’ll send my logo") }}
+    {{ ui.check("ob_logo_none", "I don’t have one") }}
+    {{ ui.check("ob_look_keep", "Keep the preview’s look") }}
+    {{ ui.check("ob_look_change", "Change the look") }}
+  </div>
+  <div class="fields c2">
+    {{ ui.field("ob_colours", "Colours and style", prefill.colours, "(e.g. navy and gold)") }}
+    {{ ui.field("ob_photos", "Link to your photos", "", "(or attach them to your email)") }}
+  </div>
+</div>
+
+<div class="section">
+  <h2>Online</h2>
+  <div class="fields c3">
+    {{ ui.field("ob_facebook", "Facebook") }}
+    {{ ui.field("ob_instagram", "Instagram") }}
+    {{ ui.field("ob_booking", "Booking app or other link") }}
+  </div>
+</div>
+
+<div class="fields">
+  {{ ui.field("ob_notes", "Anything else? Changes from the preview, wording you’d like, things to avoid", "", "", "15mm", true) }}
+</div>
+{% endblock %}

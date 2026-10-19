@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 
 from . import config, db
 from . import coverage as cov
-from . import importer, payments, publish
+from . import documents, importer, offer, payments, publish
 
 router = APIRouter()
 UI = Path(__file__).resolve().parent / "ui" / "tracker.html"
@@ -65,7 +65,10 @@ def meta() -> Dict[str, Any]:
     return {"stages": [{"key": k, "label": l, "count": counts[k]} for k, l in db.STAGES],
             "outcomes": db.CALL_OUTCOMES, "regions": regions, "themes": themes, "grades": grades,
             "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH,
-            "orders_sync": bool(config.ORDERS_API_TOKEN)}
+            "orders_sync": bool(config.ORDERS_API_TOKEN),
+            "offer": {"packages": [{k: p[k] for k in ("id", "name", "price", "launch_days")} for p in offer.PACKAGES],
+                      "recommended": offer.recommended()["id"], "hosting_yearly": offer.HOSTING["yearly"],
+                      "hourly": offer.HOURLY_RATE}}
 
 
 def _where(stage, grade, region, theme, q, mobile, due, queue):
@@ -147,6 +150,7 @@ def lead_detail(slug: str):
         lead["history"] = db.history(con, slug)
     lead["preview_url"] = config.preview_url(slug)
     lead["stage_label"] = db.STAGE_LABELS[lead["stage"]]
+    lead["short_name"] = documents.short_name(lead["name"])
     return lead
 
 
@@ -238,6 +242,35 @@ def run_payment_sync():
     except payments.SyncError as exc:
         raise HTTPException(409, str(exc))
     return {**res, "log": lines}
+
+
+def _pdf(kind: str, lead: Optional[Dict[str, Any]]) -> Response:
+    if kind not in documents.DOCUMENTS:
+        raise HTTPException(404, f"Documents: {', '.join(documents.DOCUMENTS)}")
+    try:
+        pdf = documents.build(kind, lead)
+    except Exception as exc:  # noqa: BLE001 — show why in the browser rather than a bare 500
+        raise HTTPException(500, f"Couldn't build the PDF: {exc}")
+    return Response(pdf, media_type="application/pdf", headers={
+        "Content-Disposition": f'attachment; filename="{documents.filename(kind, lead)}"',
+        "Cache-Control": "no-store"})
+
+
+@router.get("/pipeline/api/leads/{slug}/docs/{kind}.pdf")
+def lead_document(slug: str, kind: str):
+    """The proposal, agreement, onboarding form or all three (pack), made for this lead."""
+    with db.connect() as con:
+        lead = _lead_or_404(con, slug)
+    res = _pdf(kind, lead)
+    with db.connect() as con:
+        db.log(con, slug, "docs", f"{documents.DOCUMENTS[kind]['title']} PDF made")
+    return res
+
+
+@router.get("/pipeline/api/docs/{kind}.pdf")
+def generic_document(kind: str):
+    """The same documents with no business filled in."""
+    return _pdf(kind, None)
 
 
 @router.post("/pipeline/api/leads/{slug}/export")

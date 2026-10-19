@@ -373,6 +373,11 @@ html[data-type="grotesk"] .quote blockquote { font-size: 1.2rem; font-weight: 50
 .pv-or { display: flex; align-items: center; gap: 12px; color: #9a958d; font-size: .82rem; }
 .pv-or::before, .pv-or::after { content: ""; flex: 1; height: 1px; background: #e4e0d8; }
 .pv-alt a { color: #161514; font-weight: 600; }
+.pv-pack { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: #f6f4f0; color: #161514; text-decoration: none; font-size: .9rem; line-height: 1.35; }
+.pv-pack .ic { width: 22px; height: 22px; flex: none; color: #6b6760; }
+.pv-pack span { display: grid; }
+.pv-pack small { color: #6b6760; font-size: .8rem; }
+.pv-pack:hover { background: #efece6; }
 @media (max-width: 560px) { .pv-sheet { width: 100vw; max-width: 100vw; margin: auto 0 0; border-radius: 26px 26px 0 0; max-height: 92dvh; } }
 
 @media (prefers-reduced-motion: reduce) {

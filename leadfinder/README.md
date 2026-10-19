@@ -256,6 +256,20 @@ every lead from *New* to *Website live*.
 - **Stages:** New → Preview created → Preview live → Contacted → Follow up →
   Interested → Invoice sent → Payment received → Domain chosen → Site hosted →
   Website live (plus Not interested / Do not contact).
+- **Client documents:** when a lead says “send me the info”, press **⬇ Website
+  pack (PDF)** in the lead's *Send the info* box (or
+  `python -m pipeline docs <slug> [--kind pack|proposal|agreement|onboarding|all]`,
+  saved to `exports/docs/<slug>/`). One branded 5-page PDF made for that
+  business: cover, their website (screenshots and a QR code), packages and
+  hosting, a one-page service agreement (the full Terms stay on
+  dunous.com/terms) and a one-page onboarding form — the last two are
+  fillable, so clients tick, type and sign on screen. The box also has a ready
+  email to paste. Prices and terms come from `pipeline/offer.py`; page designs
+  are `pipeline/docs/pages/*.html.j2`. A generic copy
+  (`pipeline/assets/dunous-website-pack.pdf`) is linked from every preview's
+  “Make it mine” sheet and rebuilt by `publish` whenever prices or wording
+  change (`python -m pipeline docs --generic` to do it by hand). Set
+  `DOCS_SIGNATORY` in `.env` to pre-fill DuNous's signature block.
 - **Handover:** `python -m pipeline export-site <slug>` writes the finished site
   (no preview bar) to `exports/sites/<slug>/`, ready to upload to the client's
   own Cloudflare Pages.

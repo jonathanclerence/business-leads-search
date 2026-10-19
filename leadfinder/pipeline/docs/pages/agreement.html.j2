@@ -1,0 +1,78 @@
+{% extends "page.html.j2" %}
+{% block body %}
+<header class="doc-head">
+  <div>
+    <span class="brand">{{ ui.mark("7.5mm") }}DuNous</span>
+    <h1>Service agreement</h1>
+  </div>
+  <dl>
+    {% if biz %}<dt>Reference</dt><dd>{{ ref }}</dd><dt>Date</dt><dd>{{ today_str }}</dd>{% endif %}
+    <dt>Send to</dt><dd>{{ contact.email }}</dd>
+  </dl>
+</header>
+
+<p class="intro">Tick your choices, fill in your details and sign. It’s a fillable PDF: type straight into it, save it and email it back.</p>
+
+<div class="section">
+  <h2>Your details</h2>
+  <div class="fields c2">
+    {{ ui.field("agr_business", "Business name", prefill.business) }}
+    {{ ui.field("agr_abn", "ABN", prefill.abn) }}
+    {{ ui.field("agr_contact", "Your name", prefill.contact) }}
+    {{ ui.field("agr_phone", "Phone", prefill.phone) }}
+    {{ ui.field("agr_email", "Email", prefill.email) }}
+    {{ ui.field("agr_address", "Business address", prefill.address) }}
+  </div>
+</div>
+
+<div class="section">
+  <h2>Your package <small>Tick one</small></h2>
+  <div class="choices c4">
+    {% for p in packages %}
+    {{ ui.check("agr_pkg_" ~ p.id, p.name ~ " · " ~ (p.price | money), p.revisions ~ ", live in " ~ p.launch_days ~ " business days") }}
+    {% endfor %}
+    {{ ui.check("agr_pkg_enterprise", enterprise.name, "As quoted to you") }}
+  </div>
+</div>
+
+<div class="section">
+  <h2>Hosting <small>Tick one</small></h2>
+  <div class="choices c2">
+    {{ ui.check("agr_host_managed", "A · Managed by DuNous · " ~ (hosting.yearly | money) ~ " a year", "Domain, hosting, renewals, backups and small updates, billed yearly") }}
+    {{ ui.check("agr_host_self", "B · Self-managed · $0 to us", "Set up in your own accounts; you pay the domain yourself") }}
+  </div>
+</div>
+
+<div class="section">
+  <h2>The main points</h2>
+  <ul class="points">
+    <li><b>Payment.</b> One payment by bank transfer before we start, due within {{ payment_due_days }} days of your invoice. Prefer to split it? Half to start, half before launch.</li>
+    <li><b>Changes.</b> Your package includes the rounds listed above; a round is one list of changes. Anything extra is {{ rate | money }} an hour or an upgrade, always quoted first.</li>
+    <li><b>Timeline.</b> Live within the days listed above, counted from when we have your onboarding form, logo, photos and domain choice.</li>
+    <li><b>Ownership.</b> Once paid in full, your website’s design, wording and files are yours, and your domain is registered in your business name.</li>
+    <li><b>Hosting.</b> Managed hosting is billed yearly in advance. Cancel with {{ hosting.notice_days }} days’ notice; a {{ hosting.handover_fee | money }} handover fee covers moving your site and domain to you. We never hold your domain back.</li>
+    <li><b>Everything else</b>, including refunds and your rights under the Australian Consumer Law, is in our Terms &amp; Conditions at <a href="{{ terms_url }}">{{ terms_short }}</a>, which form part of this agreement.</li>
+  </ul>
+</div>
+
+<div class="spacer"></div>
+
+<div class="sign-row">
+  <div class="sign-card">
+    <h3>For the client</h3>
+    <div class="sign-box"><span>Signature</span></div>
+    <div class="fields c2">
+      {{ ui.field("agr_sign_name", "Full name", prefill.contact) }}
+      {{ ui.field("agr_sign_date", "Date") }}
+    </div>
+  </div>
+  <div class="sign-card">
+    <h3>For DuNous</h3>
+    <div class="sign-box"><span>Signature</span></div>
+    <div class="fields c2">
+      {{ ui.field("dn_sign_name", "Full name", signatory) }}
+      {{ ui.field("dn_sign_date", "Date") }}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<title>{{ meta_title }}</title>
+<style>
+{% for f in fonts %}
+@font-face { font-family: "{{ f.family }}"; src: url({{ f.uri }}) format("woff2"); font-weight: {{ f.weight }}; font-style: {{ f.style }}; }
+{% endfor %}
+{{ css | safe }}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="dn-tile" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b6f95"/><stop offset="1" stop-color="#173f62"/></linearGradient>
+</defs></svg>
+{{ pages | safe }}
+</body>
+</html>

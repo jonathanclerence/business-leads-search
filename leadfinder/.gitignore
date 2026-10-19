@@ -6,6 +6,8 @@ exports/*.png
 exports/*.html
 # Finished client sites from `python -m pipeline export-site`
 exports/sites/
+# Client PDFs from `python -m pipeline docs <slug>`
+exports/docs/
 
 # Batch output. These are your leads — delete this line if you'd rather
 # version them (they're plain text and diff fine, just potentially large).

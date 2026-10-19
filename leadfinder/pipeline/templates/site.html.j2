@@ -312,11 +312,14 @@
     <p class="pv-sub">This is a first draft we made for <b data-bizname>{{ lead.name }}</b>. We'll finish it with your photos, prices and details and put it live on your own web address (like {{ domain_hint }}).</p>
     <div class="pv-buy">
       <a class="pv-btn pv-buy-btn" href="{{ checkout_url }}">Buy it now<svg class="ic"><use href="{{ icons }}#i-arrow"/></svg></a>
-      <p>Choose a package and pay securely by card or PayPal. Usually live within 1–2 days.</p>
+      <p>Choose a package and place your order. We email your invoice to pay by bank transfer.</p>
     </div>
     <p class="pv-or"><span>or send us a question first</span></p>
     {% else %}
     <p class="pv-sub">This is a first draft we made for <b data-bizname>{{ lead.name }}</b>. Tell us what you'd like changed and we'll build the finished version — on your own web address (like {{ domain_hint }}), with your photos, prices and real online bookings.</p>
+    {% endif %}
+    {% if info_pack %}
+    <a class="pv-pack" href="{{ assets }}/{{ info_pack }}?v={{ version }}" target="_blank" rel="noopener"><svg class="ic"><use href="{{ icons }}#i-doc"/></svg><span><b>Prices and info pack</b><small>Packages, hosting options, our agreement and the onboarding form (PDF)</small></span></a>
     {% endif %}
     <p class="pv-look" hidden></p>
     <input type="hidden" name="intent" value="buy">

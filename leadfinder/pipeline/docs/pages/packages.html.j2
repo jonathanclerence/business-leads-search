@@ -1,0 +1,43 @@
+{% extends "page.html.j2" %}
+{% block body %}
+<div class="head" style="margin-bottom: 7mm">
+  <p class="kicker">Packages and hosting</p>
+  <h1>Simple pricing. <em>One payment, no surprises.</em></h1>
+  <p class="lede">Every package includes your own web address, a mobile-first design, https security and tap-to-call. Prices are in Australian dollars.</p>
+</div>
+
+<div class="tiers">
+  {% for p in packages %}
+  <div class="tier{{ ' rec' if p.recommended }}">
+    <div class="tier-top"><h2>{{ p.name }}</h2>{% if p.recommended %}<span class="pill solid">Most popular</span>{% endif %}</div>
+    <div class="price"><b>{{ p.price | money }}</b><span>one-off</span></div>
+    <p class="tagline">{{ p.tagline }}</p>
+    {{ ui.ticks(p.features) }}
+    <p class="tier-foot"><b>Live in {{ p.launch_days }} business days</b></p>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card enterprise">
+  <h3>{{ enterprise.name }} <span>from {{ enterprise.price_from | money }}</span></h3>
+  <p>{{ enterprise.tagline }}</p>
+</div>
+
+<h2 style="margin: 9mm 0 4mm">Hosting and your domain</h2>
+<div class="options">
+  <div class="option rec">
+    <div class="tier-top"><h3>A · Managed by DuNous</h3><span class="pill solid">Recommended</span></div>
+    <div class="price"><b>{{ hosting.yearly | money }}</b><span>a year</span></div>
+    <p class="pitch">We handle everything: domain renewals, hosting, security and backups, plus up to {{ hosting.edit_minutes }} minutes of small updates a month.</p>
+  </div>
+  <div class="option">
+    <div class="tier-top"><h3>B · Self-managed</h3></div>
+    <div class="price"><b>$0</b><span>a year to us</span></div>
+    <p class="pitch">We set it up in your own accounts and hand you the logins. You pay the domain yourself, about $20 to $30 a year.</p>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<p class="fine">Your domain is always registered in your business name. Extra changes are {{ rate | money }} an hour, quoted first, or upgrade and pay the difference. Leaving managed hosting: {{ hosting.notice_days }} days’ notice and a {{ hosting.handover_fee | money }} handover fee to move everything to you.</p>
+{% endblock %}

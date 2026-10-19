@@ -176,8 +176,38 @@ function smsText(l) {
   const hi = l.contact_name ? `Hi ${firstName(l.contact_name)}, it's` : "Hi, it's";
   return `${hi} ${me() || "[your name]"} from DuNous — here's the website I built for ${l.name}: ${l.preview_url}\n\nIf you like it, it can be live on your own web address this week. Reply STOP to opt out.`;
 }
+const money = (n) => "$" + Number(n).toLocaleString("en-AU");
+function offerOf() {
+  const o = META.offer, pk = o.packages;
+  return { o, pk, rec: pk.find((p) => p.id === o.recommended) || pk[0], low: pk[0] };
+}
+function emailSubject(l) { return `Your new website for ${l.short_name} — proposal and next steps`; }
+function emailText(l) {
+  const { o, pk } = offerOf();
+  const hi = l.contact_name ? `Hi ${firstName(l.contact_name)},` : "Hi there,";
+  const days = `${Math.min(...pk.map((p) => p.launch_days))}–${Math.max(...pk.map((p) => p.launch_days))}`;
+  return `${hi}
+
+Thanks for your time today. As promised, attached is everything for ${l.short_name}'s new website in one short PDF:
+
+• the website we've already built for you
+• our packages: ${pk.map((p) => `${p.name} ${money(p.price)}`).join(", ")}
+• hosting: we look after everything for ${money(o.hosting_yearly)} a year, or you host it yourself
+• a one-page agreement: tick your package and sign
+• a one-page form for your logo, photos and details
+
+You can see your website any time here:
+${l.preview_url}
+
+To go ahead, just reply with the package you'd like (or send back the signed agreement) and I'll send your invoice — payment is by bank transfer. Once your photos and details are in, it's live within ${days} business days.
+
+Cheers,
+${me() || "[your name]"}
+DuNous · info@dunous.com · WhatsApp (+61) 422 765 361`;
+}
 function scriptHtml(l) {
   const name = esc(l.name), owner = l.contact_name ? esc(firstName(l.contact_name)) : "the owner";
+  const { rec, low } = offerOf();
   return `
   <p class="muted">Don't introduce yourself first. Lead with <b>their</b> problem and the fact the site already exists. Smile — they can hear it.</p>
   <p class="branch">1 · Opener (whoever answers)</p>
@@ -191,8 +221,11 @@ function scriptHtml(l) {
   <p class="say">“No worries — what's their first name? I'll put it on the text so they know it's not spam.” → text the link → “When's the best time to catch them? I'll give them a quick ring then.”</p>
   <p class="muted">Log “Spoke to staff”, save the owner's name, set a call-back.</p>
   <p class="branch">3 · Price (only when they ask)</p>
-  <p class="say">“The one you're looking at is ready to go. Most businesses like yours take the package at <b>$1,290</b> — your own web address, your photos and prices, a booking or quote form straight to your phone, live this week. Does that work for you?”</p>
-  <p class="muted">Then stop talking. If they hesitate: “What did you have in mind?” Lower the price only by removing something (see Playbook → Pricing). Never below your floor.</p>
+  <p class="say">“The one you're looking at is ready to go. Most businesses like yours take our ${esc(rec.name)} package at <b>${money(rec.price)}</b> — your own web address, your photos and prices, a booking or quote form straight to your phone, live within a few days of getting your photos. Does that work for you?”</p>
+  <p class="muted">Then stop talking. If they hesitate: “What did you have in mind?” — and offer ${esc(low.name)} at ${money(low.price)} (the site as it is, one round of text changes). Never discount for nothing (Playbook → Pricing).</p>
+  <p class="branch">4 · “Send me the info”</p>
+  <p class="say">“Of course — I'll email you one PDF with everything: the packages, hosting, our agreement and a short form for your photos. What's the best email?”</p>
+  <p class="muted">Save the email, then use <b>Send the info</b> above: download the website pack, copy the email, attach, send — while you're still on the phone if you can.</p>
   <details><summary>Objections</summary>
     <p><b>“Not interested.”</b> “Totally fair — is that because you're flat out already, or you've had a bad run with web people?” Busy → “That's exactly why — the site takes the enquiries while you're working. I'll text the link, look whenever.” Firm no → “No worries, I'll take it down. Have a good one.” (log Not interested)</p>
     <p><b>“All our work is word of mouth.”</b> “Makes sense — that's why you've got the reviews. The site catches the people who hear about you, then Google you before calling.”</p>
@@ -273,6 +306,19 @@ function renderDetail() {
       <textarea class="sms" id="sms">${esc(smsText(l))}</textarea>
       <div class="row-btns"><button class="btn sm" id="copySms">Copy SMS</button><label class="muted">Your first name <input id="me" value="${esc(me())}" style="width:120px"></label></div>
     </section>
+    <section class="box"><h3>Send the info</h3>
+      <p class="muted" style="margin:0 0 4px">When they say “send me the info”: one 5-page PDF made for ${esc(l.short_name)} — cover, their website (screenshots + QR), packages and hosting, a one-page agreement and a one-page onboarding form. Fillable, so they can tick, sign and send it back. Takes a few seconds to build.</p>
+      <div class="row-btns">
+        <a class="btn primary" data-doc href="/pipeline/api/leads/${encodeURIComponent(l.slug)}/docs/pack.pdf">⬇ Website pack (PDF)</a>
+        <a class="btn sm" data-doc href="/pipeline/api/leads/${encodeURIComponent(l.slug)}/docs/proposal.pdf">Proposal</a>
+        <a class="btn sm" data-doc href="/pipeline/api/leads/${encodeURIComponent(l.slug)}/docs/agreement.pdf">Agreement</a>
+        <a class="btn sm" data-doc href="/pipeline/api/leads/${encodeURIComponent(l.slug)}/docs/onboarding.pdf">Onboarding form</a>
+      </div>
+      <label class="full">Email subject<input id="emailSubject" style="font-weight:400" value="${esc(emailSubject(l))}"></label>
+      <label class="full">Email<textarea class="sms" id="emailText" style="min-height:220px;font-weight:400">${esc(emailText(l))}</textarea></label>
+      <div class="row-btns"><button class="btn sm" id="copyEmail">Copy email</button><button class="btn sm" id="copySubject">Copy subject</button>
+        ${l.email ? `<a class="btn sm" id="mailDraft" href="#">Open in Mail ↗</a>` : `<span class="muted">Add their email in Details to open a draft in Mail.</span>`}</div>
+    </section>
     <section class="box script"><h3>Call script</h3>${scriptHtml(l)}</section>
     <section class="box"><h3>Stage</h3>
       <div class="grid2"><label>Move to<select id="stageSel">${META.stages.map((s) => `<option value="${s.key}" ${s.key === l.stage ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></label>
@@ -308,9 +354,16 @@ function nextLead() {
 
 /* ---------- events ---------- */
 document.addEventListener("click", async (e) => {
-  const t = e.target.closest("button, .chip, tr.row, [data-tab]");
+  const t = e.target.closest("button, .chip, tr.row, [data-tab], [data-doc], #mailDraft");
   if (!t) return;
   try {
+    if (t.matches("[data-doc]")) { toast("Building the PDF — it downloads in a few seconds…", 5000); return; }
+    if (t.id === "mailDraft") {
+      e.preventDefault();
+      location.href = `mailto:${encodeURIComponent(CURRENT.email)}?subject=${encodeURIComponent($("#emailSubject").value)}&body=${encodeURIComponent($("#emailText").value)}`;
+      toast("Draft opened — attach the website pack before sending", 4000);
+      return;
+    }
     if (t.matches("[data-tab]")) {
       $$("[data-tab]").forEach((b) => b.classList.toggle("on", b === t));
       ["leads", "coverage", "playbook"].forEach((n) => ($("#tab-" + n).hidden = n !== t.dataset.tab));
@@ -327,6 +380,10 @@ document.addEventListener("click", async (e) => {
       copy(t.dataset.copy, "Number copied");
     } else if (t.id === "copySms") {
       copy($("#sms").value, "SMS copied");
+    } else if (t.id === "copyEmail") {
+      copy($("#emailText").value, "Email copied — attach the website pack");
+    } else if (t.id === "copySubject") {
+      copy($("#emailSubject").value, "Subject copied");
     } else if (t.dataset.cb) {
       $("#callBack").value = daysFromNowMelb(+t.dataset.cb);
     } else if (t.dataset.outcome) {
