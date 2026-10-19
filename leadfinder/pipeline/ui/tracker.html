@@ -73,6 +73,7 @@ dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-r
   </nav>
   <a class="btn sm" href="/">← Lead finder</a>
   <div class="clock"><span class="dot" id="clockDot"></span><span id="clock"></span></div>
+  <button class="btn" id="btnDncr" title="Wash your call list against the Do Not Call Register">Do Not Call Register</button>
   <button class="btn" id="btnPayments" title="Fetch online orders from dunous.com and mark paid leads">Sync payments</button>
   <button class="btn" id="btnVerify" title="Check which published previews are live">Check live</button>
   <button class="btn primary" id="btnPublish">Publish previews…</button>
@@ -113,6 +114,18 @@ dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-r
   </div>
   <pre class="log" id="pubLog" hidden></pre>
   <div class="row-btns" style="justify-content:flex-end"><button class="btn" id="pubCancel">Close</button><button class="btn primary" id="pubGo">Publish</button></div>
+</dialog>
+
+<dialog id="dncrDlg">
+  <h3 style="margin-top:0">Do Not Call Register</h3>
+  <p class="muted">Australian law: before a telemarketing call, the number must have been washed against the register in the last 30 days — calls from Sri Lanka included. Business lines can't be registered, but many sole traders use a personal mobile that is. Numbers on the register move to <b>Do not contact</b> (no calls, preview removed).</p>
+  <ol style="padding-left:18px;display:grid;gap:10px">
+    <li><b>Download the numbers to wash</b><div class="row-btns" style="margin:6px 0 0"><select id="dncrScope"><option value="calling">Leads you're calling</option><option value="next">Next 100 to publish</option><option value="all">All open leads (8,000+)</option></select><button class="btn sm primary" id="dncrDownload">Download wash file</button></div></li>
+    <li><b>Wash it</b> at <a href="https://www.donotcall.gov.au/industry/" target="_blank" rel="noopener">donotcall.gov.au → Industry</a>: create a washing account (subscription type A is free for 500 numbers a year; type B covers 20,000 for about $126), upload the file, and download the results as the <i>full list with a Y / N / I indicator</i>.</li>
+    <li><b>Import the results</b><div class="row-btns" style="margin:6px 0 0"><input type="file" id="dncrFile" accept=".csv,.txt,.dat"><button class="btn sm primary" id="dncrImport">Import</button></div><label class="muted"><input type="checkbox" id="dncrRegOnly"> The file lists only numbers that are on the register</label></li>
+  </ol>
+  <pre class="log" id="dncrLog" hidden></pre>
+  <div class="row-btns" style="justify-content:flex-end"><button class="btn" id="dncrClose">Close</button></div>
 </dialog>
 
 <div class="toast" id="toast"></div>
@@ -250,6 +263,9 @@ async function loadMeta() {
     ...META.stages.map((s) => `<span class="chip ${state.stage === s.key ? "on" : ""}" data-stage="${s.key}">${esc(s.label)} <b>${s.count.toLocaleString()}</b></span>`),
   ];
   $("#stages").innerHTML = chips.join("");
+  const d = $("#btnDncr");
+  d.textContent = META.dncr_due ? `⚠ Wash ${META.dncr_due} numbers` : "Do Not Call Register ✓";
+  d.style.borderColor = META.dncr_due ? "var(--warn)" : "";
 }
 function query() {
   const p = new URLSearchParams({ q: $("#q").value, grade: $("#grade").value, region: $("#region").value, theme: $("#theme").value, sort: $("#sort").value, limit: state.limit, offset: state.offset });
@@ -287,6 +303,7 @@ function renderDetail() {
   el.innerHTML = `
     <h2>${esc(l.name)}</h2>
     <p class="sub">${esc(l.category)} · ${esc(l.suburb)} ${esc(l.state || "")} · <span class="badge g-${esc(l.grade)}">${esc(l.grade)} ${l.score}</span> · <span class="badge">${esc(l.stage_label)}</span>${l.rating ? ` · ${l.rating}★ (${l.reviews})` : ""}</p>
+    ${dncrNote(l)}
     <div class="row-btns">
       <a class="btn good call" href="sip:${esc(national(l.phone))}" title="Dial with Zoiper (sip: link)">📞 ${esc(l.phone_display)}</a>
       <a class="btn" href="tel:${esc(l.phone)}" title="Dial with your Mac's default phone app (FaceTime / iPhone)">tel:</a>
@@ -342,6 +359,13 @@ function renderDetail() {
       <p class="muted" style="margin:6px 0 0">${esc(l.address || "")} · Lead id <code>${esc(l.slug)}</code> · Tries: ${l.attempts}${l.last_contact ? " · Last: " + esc(l.last_contact.slice(0, 16).replace("T", " ")) + " UTC" : ""}</p>
     </section>
     <section class="box"><h3>History</h3><ul class="hist">${l.history.map((h) => `<li><time>${esc(h.at.slice(0, 16).replace("T", " "))}</time>${esc(h.detail || h.kind)}</li>`).join("")}</ul></section>`;
+}
+function dncrNote(l) {
+  if (l.dncr === "Y") return `<p class="sub" style="color:var(--bad);font-weight:700">⛔ On the Do Not Call Register (washed ${esc(l.dncr_at)}) — don't call.</p>`;
+  const age = l.dncr_at ? (Date.now() - new Date(l.dncr_at + "T00:00:00").getTime()) / 864e5 : Infinity;
+  if (l.dncr === "N" && age < 30) return `<p class="sub" style="color:var(--good)">✓ Not on the Do Not Call Register (washed ${esc(l.dncr_at)})</p>`;
+  if (["live", "not_interested", "do_not_contact"].includes(l.stage)) return "";
+  return `<p class="sub" style="color:var(--warn)">⚠ Not washed against the Do Not Call Register in the last 30 days — wash before calling (button top-right).</p>`;
 }
 function daysFromNowMelb(n) {
   const d = new Date(Date.now() + n * 864e5);
@@ -413,6 +437,28 @@ document.addEventListener("click", async (e) => {
         loadMeta(); loadList();
       } catch (err) { log.textContent = "✗ " + err.message; }
       t.disabled = false;
+    } else if (t.id === "btnDncr") {
+      $("#dncrLog").hidden = true; $("#dncrDlg").showModal();
+    } else if (t.id === "dncrClose") {
+      $("#dncrDlg").close();
+    } else if (t.id === "dncrDownload") {
+      const r = await fetch("/pipeline/api/dncr/wash.txt?scope=" + $("#dncrScope").value);
+      if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.detail || `HTTP ${r.status}`); }
+      const text = await r.text(), a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+      a.download = (r.headers.get("Content-Disposition") || "").match(/filename="([^"]+)"/)?.[1] || "wash.txt";
+      a.click(); URL.revokeObjectURL(a.href);
+      toast(`${text.split("\n").filter(Boolean).length} numbers to wash — downloaded`, 3000);
+    } else if (t.id === "dncrImport") {
+      const f = $("#dncrFile").files[0];
+      if (!f) throw new Error("Choose the results file first");
+      const fd = new FormData(); fd.append("file", f); fd.append("registered_only", $("#dncrRegOnly").checked);
+      const r = await fetch("/pipeline/api/dncr/import", { method: "POST", body: fd });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
+      const log = $("#dncrLog"); log.hidden = false;
+      log.textContent = `${data.numbers} numbers in the file\n${data.clear} not on the register — OK to call for 30 days\n${data.on_register} ON the register — moved to Do not contact\n${data.invalid} invalid\n${data.unmatched} not in the tracker` + (data.registered.length ? `\n\nOn the register: ${data.registered.join(", ")}` : "");
+      await loadMeta(); await loadList(); if (CURRENT) openLead(CURRENT.slug);
     } else if (t.id === "btnPayments") {
       t.disabled = true;
       try { await syncPayments(false); } catch (err) { toast("✗ " + err.message); }

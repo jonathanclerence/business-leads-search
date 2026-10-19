@@ -3,6 +3,7 @@
 
 <h2>1 · The daily routine</h2>
 <ol>
+  <li><b>Wash first.</b> <b>Do Not Call Register</b> (top-right) → <i>Next 100 to publish</i> → wash it on donotcall.gov.au → import the results. Numbers on the register drop out before you build them a preview. Re-wash the leads you're calling every 30 days — the button turns orange when some are due.</li>
   <li><b>Publish</b> a batch of previews (button top-right, start with ~100 Hot), wait 2–3 minutes, press <b>Check live</b>.</li>
   <li>Click <b>📞 Call queue</b>. It lists live previews, best leads first, skipping anyone who's had 4 tries or has a call-back that isn't due yet.</li>
   <li>Call → log the outcome with one click → it jumps to the next lead. Text the link after every conversation or voicemail (copy-SMS button).</li>
@@ -111,7 +112,16 @@
   <li><b>Live</b> → stage <b>Website live</b> (their preview on dunous.com is removed on the next publish). Option A: note the date — the next hosting invoice is due a year from now. Ask for a Google review and a referral.</li>
 </ol>
 
-<h2>5 · Texting rules (Australia's Spam Act)</h2>
+<h2>5 · Calling and texting rules</h2>
+<h3>Do Not Call Register</h3>
+<ul>
+  <li>The Do Not Call Register Act covers telemarketing calls to Australian numbers <b>wherever you call from</b>. A wash protects you for 30 days: only call numbers that were washed in the last 30 days and came back <b>N</b> (each lead shows its status above the call button).</li>
+  <li>Business lines can't be on the register, but many sole traders' mobiles are, so the wash does catch some leads. Anything that comes back <b>Y</b> is moved to <b>Do not contact</b> and its preview comes down on the next publish.</li>
+  <li>You need your own washing account at <a href="https://www.donotcall.gov.au/industry/" target="_blank" rel="noopener">donotcall.gov.au → Industry</a>. Subscription type A is free for 500 numbers a year (fine for the leads you call now); type B is about $126 a year for 20,000, which covers the whole list. Help desk: 1300 792 958.</li>
+  <li>Download the results as the <i>full list with a Y / N / I indicator</i>. If you only download “numbers on the register”, tick that box when importing.</li>
+  <li>Terminal version: <code>.venv/bin/python -m pipeline dncr export --scope next</code>, then <code>.venv/bin/python -m pipeline dncr import results.csv</code>.</li>
+</ul>
+<h3>Texting (Australia's Spam Act)</h3>
 <ul>
   <li>Every SMS must say who you are (your name + DuNous) and include an opt-out — the template already ends with “Reply STOP to opt out”.</li>
   <li>Honour STOP / “don't contact me” immediately: set the lead to <b>Do not contact</b> (also removes the preview).</li>

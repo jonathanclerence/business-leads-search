@@ -198,6 +198,38 @@ def test_documents():
     check("pack for a long, unrated name: nothing overflows", [m for m in msgs if "overflow" in m], [])
 
 
+def test_dncr():
+    print("\nDo Not Call Register")
+    import tempfile
+    from pipeline import dncr
+    check("wash format: mobile, landline, 1300, 13", [dncr.wash_number(n) for n in
+          ("+61412345678", "+61352211234", "+611300123456", "+61131450", "+18175399484")],
+          ["0412345678", "0352211234", "1300123456", "131450", ""])
+    parsed = dncr.parse_results("Number,Status\r\n1,0412 345 678,Y\r\n2,(03) 5221 1234,N\r\n3,61400111222, I \r\n")
+    check("results: Y/N/I per number, row numbers ignored", parsed,
+          {"+61412345678": "Y", "+61352211234": "N", "+61400111222": "I"})
+    check("registered-only list", dncr.parse_results("0412345678\n0352211234\n", registered_only=True),
+          {"+61412345678": "Y", "+61352211234": "Y"})
+    try:
+        dncr.parse_results("0412345678\n0352211234\n")
+        check("a list without indicators isn't read as all clear", "no error", "WashError")
+    except dncr.WashError:
+        check("a list without indicators isn't read as all clear", "WashError", "WashError")
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "t.db"
+        with db.connect(path) as con:
+            for slug, phone, stage in (("a", "+61412345678", "preview_hosted"), ("b", "+61352211234", "preview_hosted")):
+                con.execute("INSERT INTO leads (slug, key, name, phone, stage, created_at, updated_at, score) "
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, 90)", (slug, slug, slug.upper(), phone, stage, db.now(), db.now()))
+            check("both need a wash", len(dncr.due(con, "calling")), 2)
+        res = dncr.load_results("0412345678,Y\n0352211234,N\n0499999999,N\n", path=path)
+        check("import counts", (res["on_register"], res["clear"], res["unmatched"]), (1, 1, 1))
+        with db.connect(path) as con:
+            check("on the register → do not contact", db.get(con, "a")["stage"], "do_not_contact")
+            check("clear stays callable", (db.get(con, "b")["stage"], db.get(con, "b")["dncr"]), ("preview_hosted", "N"))
+            check("washed today → nothing due", len(dncr.due(con, "calling")), 0)
+
+
 def test_stages():
     print("\nStages")
     check("preview stages are real stages", db.PREVIEW_STAGES <= set(db.STAGE_KEYS), True)
@@ -212,6 +244,7 @@ def main() -> int:
     test_import()
     test_render()
     test_documents()
+    test_dncr()
     test_stages()
     print(f"\n{'─' * 62}\n  {len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:

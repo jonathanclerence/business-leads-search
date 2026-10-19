@@ -4,16 +4,17 @@ from __future__ import annotations
 
 import csv
 import io
+from datetime import date
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from pydantic import BaseModel, Field
 
 from . import config, db
 from . import coverage as cov
-from . import documents, importer, offer, payments, publish
+from . import dncr, documents, importer, offer, payments, publish
 
 router = APIRouter()
 UI = Path(__file__).resolve().parent / "ui" / "tracker.html"
@@ -62,10 +63,11 @@ def meta() -> Dict[str, Any]:
         due = con.execute("SELECT COUNT(*) FROM leads WHERE follow_up IS NOT NULL AND follow_up <= date('now', '+11 hours') "
                           "AND stage NOT IN ('not_interested','do_not_contact','live')").fetchone()[0]
         counts = db.stage_counts(con)
+        dncr_due = len(dncr.due(con, "calling"))
     return {"stages": [{"key": k, "label": l, "count": counts[k]} for k, l in db.STAGES],
             "outcomes": db.CALL_OUTCOMES, "regions": regions, "themes": themes, "grades": grades,
             "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH,
-            "orders_sync": bool(config.ORDERS_API_TOKEN),
+            "orders_sync": bool(config.ORDERS_API_TOKEN), "dncr_due": dncr_due,
             "offer": {"packages": [{k: p[k] for k in ("id", "name", "price", "launch_days")} for p in offer.PACKAGES],
                       "recommended": offer.recommended()["id"], "hosting_yearly": offer.HOSTING["yearly"],
                       "hourly": offer.HOURLY_RATE}}
@@ -75,9 +77,9 @@ def _where(stage, grade, region, theme, q, mobile, due, queue):
     sql, args = [], []
     if queue:
         # Rapid-fire call list: preview is live, not closed, fewer than 4 tries,
-        # and not waiting on a call-back that isn't due yet.
+        # not waiting on a call-back that isn't due yet, not on the Do Not Call Register.
         sql.append("stage IN ('preview_hosted','contacted','follow_up') AND attempts < 4 "
-                   "AND (follow_up IS NULL OR follow_up <= date('now', '+11 hours'))")
+                   "AND (follow_up IS NULL OR follow_up <= date('now', '+11 hours')) AND (dncr IS NULL OR dncr != 'Y')")
     if stage:
         keys = [s for s in stage.split(",") if s in db.STAGE_LABELS]
         if keys:
@@ -271,6 +273,32 @@ def lead_document(slug: str, kind: str):
 def generic_document(kind: str):
     """The same documents with no business filled in."""
     return _pdf(kind, None)
+
+
+@router.get("/pipeline/api/dncr/wash.txt")
+def dncr_wash_file(scope: str = "calling", limit: Optional[int] = Query(None, ge=1, le=20000)):
+    """Numbers to upload at donotcall.gov.au (not washed in the last 30 days)."""
+    try:
+        with db.connect() as con:
+            text = dncr.wash_file(con, scope, limit)
+    except dncr.WashError as exc:
+        raise HTTPException(400, str(exc))
+    if not text:
+        raise HTTPException(404, "Nothing to wash: every number was washed in the last 30 days.")
+    name = f"wash_{date.today():%Y%m%d}_{scope}.txt"
+    return Response(text, media_type="text/plain",
+                    headers={"Content-Disposition": f'attachment; filename="{name}"', "Cache-Control": "no-store"})
+
+
+@router.post("/pipeline/api/dncr/import")
+async def dncr_import(file: UploadFile = File(...), registered_only: bool = Form(False)):
+    raw = await file.read()
+    if len(raw) > 20_000_000:
+        raise HTTPException(413, "That file is too big.")
+    try:
+        return dncr.load_results(raw.decode("utf-8-sig", errors="replace"), registered_only)
+    except dncr.WashError as exc:
+        raise HTTPException(400, str(exc))
 
 
 @router.post("/pipeline/api/leads/{slug}/export")

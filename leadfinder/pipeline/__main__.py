@@ -8,7 +8,7 @@ import sys
 import time
 
 from . import coverage as cov
-from . import db, documents, importer, publish
+from . import db, dncr, documents, importer, publish
 
 
 def _list(value: str):
@@ -47,6 +47,15 @@ def main(argv=None) -> int:
     dc.add_argument("--kind", default="pack", choices=list(documents.DOCUMENTS) + ["all"])
     dc.add_argument("--generic", action="store_true",
                     help="rebuild the generic pack linked from every preview (pipeline/assets/)")
+
+    dn = sub.add_parser("dncr", help="Do Not Call Register: export numbers to wash, import the results")
+    dn.add_argument("action", choices=["export", "import"])
+    dn.add_argument("file", nargs="?", help="import: the results file from donotcall.gov.au")
+    dn.add_argument("--scope", default="calling", choices=dncr.SCOPES,
+                    help="export: calling (live previews, default), next (the next leads publish will pick) or all")
+    dn.add_argument("--limit", type=int, help="export: at most this many leads")
+    dn.add_argument("--registered-only", action="store_true",
+                    help="import: the file lists only numbers that ARE on the register (no Y/N/I column)")
 
     st = sub.add_parser("stage", help="move a lead to a stage")
     st.add_argument("slug")
@@ -107,6 +116,16 @@ def main(argv=None) -> int:
             p.error(f"no lead {a.slug!r}")
         for kind in documents.DOCUMENTS if a.kind == "all" else [a.kind]:
             print(documents.save(kind, lead))
+    elif a.cmd == "dncr":
+        if a.action == "export":
+            out = dncr.export(a.scope, a.limit)
+            n = out.read_text().count("\n")
+            print(f"{n} numbers to wash → {out}" if n else "Nothing to wash: every number was washed in the last 30 days.")
+        else:
+            if not a.file:
+                p.error("dncr import needs the results file")
+            with open(a.file, encoding="utf-8-sig", errors="replace") as f:
+                print(json.dumps(dncr.load_results(f.read(), a.registered_only), indent=2))
     elif a.cmd == "stage":
         with db.connect() as con:
             changed = db.set_stage(con, a.slug, a.stage, a.note)

@@ -270,6 +270,13 @@ every lead from *New* to *Website live*.
   “Make it mine” sheet and rebuilt by `publish` whenever prices or wording
   change (`python -m pipeline docs --generic` to do it by hand). Set
   `DOCS_SIGNATORY` in `.env` to pre-fill DuNous's signature block.
+- **Do Not Call Register:** calls to Australian numbers must be washed against
+  the register within the previous 30 days. The tracker's **Do Not Call
+  Register** button (or `python -m pipeline dncr export --scope calling|next|all`)
+  writes the file to upload at donotcall.gov.au; importing the results
+  (`python -m pipeline dncr import <file>`) records each lead's status, moves
+  numbers on the register to *Do not contact* and keeps them out of the call
+  queue.
 - **Handover:** `python -m pipeline export-site <slug>` writes the finished site
   (no preview bar) to `exports/sites/<slug>/`, ready to upload to the client's
   own Cloudflare Pages.

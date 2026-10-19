@@ -145,6 +145,8 @@ LATE_COLUMNS = {
     "type_style": "TEXT",      # "serif" | "grotesk" | "sans" (else the theme's)
     "paper": "TEXT",           # "light" | "warm" | "dark" (else the theme's)
     "corners": "TEXT",         # "sharp" | "soft" | "round" (default round)
+    "dncr": "TEXT",            # Do Not Call Register wash: "Y" on it | "N" not | "I" invalid
+    "dncr_at": "TEXT",         # date of that wash (YYYY-MM-DD); good for 30 days
 }
 
 
