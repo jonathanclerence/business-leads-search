@@ -328,20 +328,28 @@ caffeinate -is ./run.sh                                                   # the 
 cloudflared tunnel --config ~/.cloudflared/salespipeline.yml run          # the tunnel, in a second terminal
 ```
 
-To keep both running without a terminal (they start at login and restart if
-they crash), install the two launchd agents in `deploy/`:
+To keep it running without a terminal (it starts at login and restarts if it
+crashes), install the three launchd agents in `deploy/`: the app, the tunnel,
+and `caffeinate -is` to stop idle sleep. Closing the lid still sleeps the Mac.
 
 ```bash
 cp deploy/com.dunous.*.plist ~/Library/LaunchAgents/
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dunous.leadfinder.plist
-launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dunous.salespipeline-tunnel.plist
+for a in leadfinder leadfinder-awake salespipeline-tunnel; do
+  launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dunous.$a.plist; done
 launchctl kickstart -k gui/$(id -u)/com.dunous.leadfinder     # restart the app after changing code
-# stop for good: launchctl bootout gui/$(id -u)/com.dunous.leadfinder (and …salespipeline-tunnel), then delete the plists
+# stop for good: launchctl bootout gui/$(id -u)/com.dunous.<name> for each, then delete the plists
 ```
 
+**One-time macOS permission.** The project is in `~/Documents`, which macOS
+keeps from background programs. Command-line programs never get an "Allow"
+prompt; until you grant access, the app agent fails with `Operation not
+permitted` in its log. Open System Settings → Privacy & Security → Full Disk
+Access, press +, press ⌘⇧G, add
+`/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9`
+and turn it on. The agent picks it up within 10 seconds.
+
 Logs: `~/Library/Logs/leadfinder.log` and `~/Library/Logs/salespipeline-tunnel.log`.
-If macOS asks whether Python may access your Documents folder, click Allow:
-the project lives there.
+Don't also run `./run.sh` while the agent is running: port 5000 is already taken.
 
 ## Lead scoring
 

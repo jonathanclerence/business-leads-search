@@ -2,11 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <!-- Lead finder + sales tracker on 127.0.0.1:5000, always running; caffeinate keeps the Mac awake for the reps. -->
+  <!-- Lead finder + sales tracker on 127.0.0.1:5000, always running.
+       Python runs directly (not under caffeinate) so it's the program macOS asks about:
+       it needs Full Disk Access because the project lives in ~/Documents. -->
   <key>Label</key><string>com.dunous.leadfinder</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/bin/caffeinate</string><string>-is</string>
     <string>/Users/hc/Documents/Dunous/Search-business-leads 2/leadfinder/.venv/bin/python</string><string>app.py</string>
   </array>
   <key>WorkingDirectory</key><string>/Users/hc/Documents/Dunous/Search-business-leads 2/leadfinder</string>
