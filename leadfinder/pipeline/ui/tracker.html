@@ -60,6 +60,9 @@ section.box h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spa
 dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);padding:18px;width:min(520px,94vw)}
 dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-radius:8px;padding:10px;max-height:240px;overflow:auto;white-space:pre-wrap;font-size:12px}
 .muted{color:var(--muted)}.right{margin-left:auto}
+section.box.mine{border-color:var(--good);background:color-mix(in srgb,var(--good) 7%,var(--panel))}
+/* Sales reps see the tracker only; admin tools stay hidden until we know who's signed in. */
+body.rep [data-admin],body:not(.ready) [data-admin]{display:none!important}
 @media (max-width:900px){main{flex-direction:column}aside{width:100%;border-left:0;border-top:1px solid var(--line)}}
 </style>
 </head>
@@ -68,15 +71,16 @@ dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-r
   <h1>Pipeline</h1>
   <nav class="tabs">
     <button data-tab="leads" class="on">Leads</button>
-    <button data-tab="coverage">Coverage</button>
+    <button data-tab="coverage" data-admin>Coverage</button>
     <button data-tab="playbook">Playbook</button>
   </nav>
-  <a class="btn sm" href="/">← Lead finder</a>
+  <a class="btn sm" href="/" data-admin>← Lead finder</a>
   <div class="clock"><span class="dot" id="clockDot"></span><span id="clock"></span></div>
-  <button class="btn" id="btnDncr" title="Wash your call list against the Do Not Call Register">Do Not Call Register</button>
-  <button class="btn" id="btnPayments" title="Fetch online orders from dunous.com and mark paid leads">Sync payments</button>
-  <button class="btn" id="btnVerify" title="Check which published previews are live">Check live</button>
-  <button class="btn primary" id="btnPublish">Publish previews…</button>
+  <button class="btn" id="btnDncr" data-admin title="Wash your call list against the Do Not Call Register">Do Not Call Register</button>
+  <button class="btn" id="btnPayments" data-admin title="Fetch online orders from dunous.com and mark paid leads">Sync payments</button>
+  <button class="btn" id="btnVerify" data-admin title="Check which published previews are live">Check live</button>
+  <button class="btn primary" id="btnPublish" data-admin>Publish previews…</button>
+  <span id="who" class="muted" hidden></span>
 </header>
 
 <div id="tab-leads" style="display:flex;flex-direction:column;flex:1;min-height:0">
@@ -86,14 +90,15 @@ dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-r
     <select id="grade"><option value="">All grades</option><option>Hot</option><option>Warm</option><option>Cool</option><option>Cold</option></select>
     <select id="region"><option value="">All regions</option></select>
     <select id="theme"><option value="">All types</option></select>
+    <select id="owner" data-admin><option value="">Everyone's leads</option></select>
     <label><input type="checkbox" id="mobile"> Mobiles only</label>
     <select id="sort"><option value="score">Best score</option><option value="reviews">Most reviews</option><option value="recent">Recently updated</option><option value="follow_up">Follow-up date</option><option value="name">Name</option></select>
-    <label class="right"><input type="checkbox" id="autonext" checked> Jump to next lead after logging a call</label>
-    <a class="btn sm" id="csv" href="#">Export CSV</a>
+    <label class="right" data-admin><input type="checkbox" id="autonext" checked> Jump to next lead after logging a call</label>
+    <a class="btn sm" id="csv" href="#" data-admin>Export CSV</a>
   </div>
   <main>
     <div class="list">
-      <table><thead><tr><th>Business</th><th>Grade</th><th>Category</th><th>Suburb</th><th>Phone</th><th>Reviews</th><th>Stage</th><th>Tries</th><th>Follow up</th></tr></thead><tbody id="rows"></tbody></table>
+      <table><thead><tr><th>Business</th><th>Grade</th><th>Category</th><th>Suburb</th><th>Phone</th><th>Reviews</th><th>Stage</th><th>Owner</th><th>Tries</th><th>Follow up</th></tr></thead><tbody id="rows"></tbody></table>
       <div class="pager"><button class="btn sm" id="prev">‹ Prev</button><span id="pageInfo"></span><button class="btn sm" id="next">Next ›</button></div>
     </div>
     <aside id="detail" class="empty">Pick a lead — or click “Call queue” to start dialling.</aside>
@@ -138,6 +143,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":
 const store = { get(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
 const api = async (url, opts = {}) => {
   const r = await fetch(url, { headers: { "Content-Type": "application/json" }, ...opts });
+  if (r.status === 401) { location.href = "/login?next=" + encodeURIComponent(location.pathname); throw new Error("Signed out"); }
   const data = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
   return data;
@@ -145,7 +151,9 @@ const api = async (url, opts = {}) => {
 function toast(msg, ms = 1800) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), ms); }
 async function copy(text, what = "Copied") { try { await navigator.clipboard.writeText(text); toast(what); } catch { prompt("Copy this:", text); } }
 
-let META = null, state = { stage: "", queue: false, due: false, offset: 0, limit: 100 }, LIST = [], CURRENT = null;
+let META = null, state = { stage: "", queue: false, due: false, mine: false, offset: 0, limit: 100 }, LIST = [], CURRENT = null;
+/** A sales rep: sees only what's free to take and their own leads, and works one at a time. */
+const IS_REP = () => META?.user.role === "rep";
 
 /* ---------- Melbourne clock + legal calling window ---------- */
 function melbourneNow() {
@@ -165,7 +173,7 @@ function tickClock() {
 }
 
 /* ---------- personalised script + SMS ---------- */
-const me = () => store.get("pv-me", "");
+const me = () => store.get("pv-me", "") || firstName(META?.user.name);
 /** +61352211234 → 0352211234 (13/1300/1800 numbers have no leading 0) — how Crazytel dials. */
 function national(e164) {
   if (!e164 || !e164.startsWith("+61")) return (e164 || "").replace(/[^0-9+]/g, "");
@@ -256,16 +264,41 @@ async function loadMeta() {
   META = await api("/pipeline/api/meta");
   const fill = (sel, items, label) => { const cur = sel.value; sel.innerHTML = `<option value="">${label}</option>` + items.map((v) => `<option>${esc(v)}</option>`).join(""); sel.value = cur; };
   fill($("#region"), META.regions, "All regions"); fill($("#pubRegion"), META.regions, "All regions"); fill($("#theme"), META.themes, "All types");
-  const chips = [
+  const own = $("#owner"), ownCur = own.value;
+  own.innerHTML = `<option value="">Everyone's leads</option><option value="none">Not taken</option>` + META.team.map((m) => `<option value="${esc(m.username)}">${esc(m.name)}'s</option>`).join("");
+  own.value = ownCur;
+  document.body.classList.toggle("rep", IS_REP()); document.body.classList.add("ready");
+  $("#who").hidden = !META.signed_in;
+  $("#who").innerHTML = `${esc(META.user.name)} · <a href="/logout">Sign out</a>`;
+  const chips = IS_REP() ? repChips() : [
     `<span class="chip hot ${state.queue ? "on" : ""}" data-queue>📞 Call queue</span>`,
     `<span class="chip ${state.due ? "on" : ""}" data-due>⏰ Follow-ups due <b>${META.follow_ups_due}</b></span>`,
     `<span class="chip ${!state.stage && !state.queue && !state.due ? "on" : ""}" data-stage="">All <b>${META.stages.reduce((a, s) => a + s.count, 0).toLocaleString()}</b></span>`,
     ...META.stages.map((s) => `<span class="chip ${state.stage === s.key ? "on" : ""}" data-stage="${s.key}">${esc(s.label)} <b>${s.count.toLocaleString()}</b></span>`),
   ];
   $("#stages").innerHTML = chips.join("");
+  $(".filters").style.display = IS_REP() && META.working ? "none" : "";
   const d = $("#btnDncr");
   d.textContent = META.dncr_due ? `⚠ Wash ${META.dncr_due} numbers` : "Do Not Call Register ✓";
   d.style.borderColor = META.dncr_due ? "var(--warn)" : "";
+}
+function repChips() {
+  if (META.working) return [`<span class="chip on" data-working>🎯 Your company: <b>${esc(META.working.name)}</b></span>`];
+  return [
+    `<span class="chip hot ${state.mine ? "" : "on"}" data-pool>📞 Free to take <b>${META.available}</b></span>`,
+    `<span class="chip ${state.mine ? "on" : ""}" data-mine>⭐ My leads <b>${META.mine}</b></span>`,
+    META.follow_ups_due ? `<span class="muted" style="align-self:center">⏰ ${META.follow_ups_due} of your call-backs ${META.follow_ups_due === 1 ? "is" : "are"} due — under My leads</span>` : "",
+  ];
+}
+function resetDetail() {
+  const el = $("#detail");
+  el.className = "empty";
+  el.textContent = IS_REP() ? "Pick a company and press “Take it”. It's yours until you mark it done — one at a time." : "Pick a lead — or click “Call queue” to start dialling.";
+}
+/** Reload everything; a rep who's working on a lead always lands on it. */
+async function refresh() {
+  await loadMeta(); await loadList();
+  if (IS_REP() && META.working && CURRENT?.slug !== META.working.slug) await openLead(META.working.slug);
 }
 function query() {
   const p = new URLSearchParams({ q: $("#q").value, grade: $("#grade").value, region: $("#region").value, theme: $("#theme").value, sort: $("#sort").value, limit: state.limit, offset: state.offset });
@@ -273,7 +306,14 @@ function query() {
   if ($("#mobile").checked) p.set("mobile", "true");
   if (state.queue) p.set("queue", "true");
   if (state.due) p.set("due", "true");
+  if (state.mine) p.set("mine", "true");
+  if ($("#owner").value) p.set("owner", $("#owner").value);
   return p;
+}
+function ownerName(u) {
+  if (!u) return "";
+  if (u === META.user.username) return "You";
+  return META.team.find((m) => m.username === u)?.name || u;
 }
 async function loadList(keepSel = true) {
   const p = query();
@@ -284,9 +324,9 @@ async function loadList(keepSel = true) {
   const stageLabel = Object.fromEntries(META.stages.map((s) => [s.key, s.label]));
   $("#rows").innerHTML = LIST.map((l) => `<tr class="row ${CURRENT && CURRENT.slug === l.slug ? "sel" : ""}" data-slug="${l.slug}">
     <td class="name" title="${esc(l.name)}">${esc(l.name)}</td><td><span class="badge g-${esc(l.grade)}">${esc(l.grade)} ${l.score}</span></td>
-    <td>${esc(l.category)}</td><td>${esc(l.suburb)}</td><td>${esc(l.phone_display)}${l.mobile ? " 📱" : ""}</td>
+    <td>${esc(l.category)}</td><td>${esc(l.suburb)}</td><td>${l.phone_display ? esc(l.phone_display) : IS_REP() ? `<span class="muted">once you take it</span>` : ""}${l.mobile ? " 📱" : ""}</td>
     <td>${l.reviews ?? ""}${l.rating ? ` · ${l.rating}★` : ""}</td><td><span class="badge">${esc(stageLabel[l.stage])}</span></td>
-    <td>${l.attempts || ""}</td><td>${esc(l.follow_up || "")}</td></tr>`).join("");
+    <td>${l.working_since ? "🎯 " : ""}${esc(ownerName(l.owner))}</td><td>${l.attempts || ""}</td><td>${esc(l.follow_up || "")}</td></tr>`).join("");
   if (!keepSel && LIST[0]) openLead(LIST[0].slug);
 }
 
@@ -296,13 +336,38 @@ async function openLead(slug) {
   $$("tr.row").forEach((r) => r.classList.toggle("sel", r.dataset.slug === slug));
   renderDetail();
 }
+/** A rep looking at a company they haven't taken: enough to choose, but no number until it's theirs. */
+function renderPick(l) {
+  CURRENT = null;
+  $$("tr.row").forEach((r) => r.classList.toggle("sel", r.dataset.slug === l.slug));
+  const el = $("#detail"), stage = META.stages.find((s) => s.key === l.stage)?.label || l.stage;
+  el.classList.remove("empty");
+  el.innerHTML = `
+    <h2>${esc(l.name)}</h2>
+    <p class="sub">${esc(l.category)} · ${esc(l.suburb)} ${esc(l.state || "")} · <span class="badge g-${esc(l.grade)}">${esc(l.grade)} ${l.score}</span>${l.rating ? ` · ${l.rating}★ (${l.reviews})` : ""}</p>
+    <p class="sub">${esc(stage)}${l.attempts ? ` · tried ${l.attempts}×` : ""}${l.follow_up ? ` · call back ${esc(l.follow_up)}` : ""} · ${l.mobile ? "📱 mobile" : "landline"}</p>
+    <section class="box"><h3>Take this company?</h3>
+      <p style="margin:0 0 10px">It becomes yours: nobody else will call it, and you get the number, the script and the website pack. You work on one company at a time — log the call, then press <b>Done</b> to pick the next.</p>
+      <button class="btn primary call" data-claim="${esc(l.slug)}">Take it</button>
+    </section>`;
+}
+function workBox(l) {
+  if (IS_REP()) return `<section class="box mine"><h3>Your company</h3>
+      <p style="margin:0 0 8px">Call, log what happened below, then mark it done to get your next company. It stays yours — call-backs come back to you under <b>My leads</b>.</p>
+      <button class="btn good" id="doneBtn">✓ Done — next company</button></section>`;
+  if (!META.signed_in) return "";
+  const opts = META.team.map((m) => `<option value="${esc(m.username)}" ${m.username === l.owner ? "selected" : ""}>${esc(m.name)}${m.role === "admin" ? " (admin)" : ""}</option>`).join("");
+  return `<p class="sub">Owner <select id="ownerSel"><option value="">Nobody — free to take</option>${opts}</select>${l.working_since ? ` · <b>working on it now</b> (since ${esc(l.working_since.slice(11, 16))} UTC)` : ""}</p>`;
+}
 function renderDetail() {
   const l = CURRENT, el = $("#detail");
   el.classList.remove("empty");
   const live = ["preview_hosted","contacted","follow_up","interested","invoice_sent","paid","domain_selected","site_hosted"].includes(l.stage);
+  const stages = IS_REP() ? META.stages.filter((s) => META.rep_stages.includes(s.key) || s.key === l.stage) : META.stages;
   el.innerHTML = `
     <h2>${esc(l.name)}</h2>
     <p class="sub">${esc(l.category)} · ${esc(l.suburb)} ${esc(l.state || "")} · <span class="badge g-${esc(l.grade)}">${esc(l.grade)} ${l.score}</span> · <span class="badge">${esc(l.stage_label)}</span>${l.rating ? ` · ${l.rating}★ (${l.reviews})` : ""}</p>
+    ${workBox(l)}
     ${dncrNote(l)}
     <div class="row-btns">
       <a class="btn good call" href="sip:${esc(national(l.phone))}" title="Dial with Zoiper (sip: link)">📞 ${esc(l.phone_display)}</a>
@@ -338,10 +403,10 @@ function renderDetail() {
     </section>
     <section class="box script"><h3>Call script</h3>${scriptHtml(l)}</section>
     <section class="box"><h3>Stage</h3>
-      <div class="grid2"><label>Move to<select id="stageSel">${META.stages.map((s) => `<option value="${s.key}" ${s.key === l.stage ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></label>
+      <div class="grid2"><label>Move to<select id="stageSel">${stages.map((s) => `<option value="${s.key}" ${s.key === l.stage ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></label>
       <label>Note<input id="stageNote" placeholder="optional"></label></div>
       <div class="row-btns"><button class="btn sm primary" id="stageGo">Update stage</button>
-      ${["paid","domain_selected","site_hosted","live"].includes(l.stage) ? `<button class="btn sm" id="exportSite">Export finished site folder</button>` : ""}</div>
+      ${!IS_REP() && ["paid","domain_selected","site_hosted","live"].includes(l.stage) ? `<button class="btn sm" id="exportSite">Export finished site folder</button>` : ""}</div>
     </section>
     <section class="box"><h3>Details</h3>
       <div class="grid2">
@@ -358,14 +423,14 @@ function renderDetail() {
       <label class="full">Notes<textarea data-f="notes">${esc(l.notes || "")}</textarea></label>
       <p class="muted" style="margin:6px 0 0">${esc(l.address || "")} · Lead id <code>${esc(l.slug)}</code> · Tries: ${l.attempts}${l.last_contact ? " · Last: " + esc(l.last_contact.slice(0, 16).replace("T", " ")) + " UTC" : ""}</p>
     </section>
-    <section class="box"><h3>History</h3><ul class="hist">${l.history.map((h) => `<li><time>${esc(h.at.slice(0, 16).replace("T", " "))}</time>${esc(h.detail || h.kind)}</li>`).join("")}</ul></section>`;
+    <section class="box"><h3>History</h3><ul class="hist">${l.history.map((h) => `<li><time>${esc(h.at.slice(0, 16).replace("T", " "))}</time>${esc(h.detail || h.kind)}${h.by ? ` <span class="muted">— ${esc(h.by)}</span>` : ""}</li>`).join("")}</ul></section>`;
 }
 function dncrNote(l) {
   if (l.dncr === "Y") return `<p class="sub" style="color:var(--bad);font-weight:700">⛔ On the Do Not Call Register (washed ${esc(l.dncr_at)}) — don't call.</p>`;
   const age = l.dncr_at ? (Date.now() - new Date(l.dncr_at + "T00:00:00").getTime()) / 864e5 : Infinity;
   if (l.dncr === "N" && age < 30) return `<p class="sub" style="color:var(--good)">✓ Not on the Do Not Call Register (washed ${esc(l.dncr_at)})</p>`;
   if (["live", "not_interested", "do_not_contact"].includes(l.stage)) return "";
-  return `<p class="sub" style="color:var(--warn)">⚠ Not washed against the Do Not Call Register in the last 30 days — wash before calling (button top-right).</p>`;
+  return `<p class="sub" style="color:var(--warn)">⚠ Not washed against the Do Not Call Register in the last 30 days — ${IS_REP() ? "ask an admin to wash it before you call" : "wash before calling (button top-right)"}.</p>`;
 }
 function daysFromNowMelb(n) {
   const d = new Date(Date.now() + n * 864e5);
@@ -394,12 +459,27 @@ document.addEventListener("click", async (e) => {
       $("#tab-leads").style.display = t.dataset.tab === "leads" ? "flex" : "none";
       if (t.dataset.tab === "coverage") loadCoverage();
       if (t.dataset.tab === "playbook") loadPlaybook();
+    } else if (t.matches("[data-working]")) {
+      await openLead(META.working.slug);
+    } else if (t.matches("[data-pool], [data-mine]")) {
+      state = { ...state, mine: t.hasAttribute("data-mine"), offset: 0 };
+      resetDetail(); await loadMeta(); await loadList();
     } else if (t.matches(".chip")) {
       state = { ...state, stage: t.dataset.stage ?? "", queue: t.hasAttribute("data-queue") ? !state.queue : false, due: t.hasAttribute("data-due") ? !state.due : false, offset: 0 };
       if (state.queue) $("#sort").value = "score";
       await loadMeta(); await loadList(!state.queue);
     } else if (t.matches("tr.row")) {
-      openLead(t.dataset.slug);
+      if (IS_REP() && !META.working) renderPick(LIST.find((l) => l.slug === t.dataset.slug));
+      else openLead(t.dataset.slug);
+    } else if (t.dataset.claim) {
+      await api(`/pipeline/api/leads/${encodeURIComponent(t.dataset.claim)}/claim`, { method: "POST" });
+      toast("It's yours — good luck!");
+      await refresh();
+    } else if (t.id === "doneBtn") {
+      await api(`/pipeline/api/leads/${encodeURIComponent(CURRENT.slug)}/done`, { method: "POST" });
+      toast("Done — pick your next company", 2500);
+      CURRENT = null; state = { ...state, mine: false, offset: 0 };
+      resetDetail(); await refresh();
     } else if (t.dataset.copy) {
       copy(t.dataset.copy, "Number copied");
     } else if (t.id === "copySms") {
@@ -415,7 +495,7 @@ document.addEventListener("click", async (e) => {
       const body = { outcome: t.dataset.outcome, note: $("#callNote").value, follow_up: $("#callBack").value || null };
       await api(`/pipeline/api/leads/${slug}/call`, { method: "POST", body: JSON.stringify(body) });
       toast(META.outcomes[t.dataset.outcome] + " — logged");
-      const nxt = $("#autonext").checked ? nextLead() : null;
+      const nxt = !IS_REP() && $("#autonext").checked ? nextLead() : null;
       await loadMeta(); await loadList();
       await openLead(nxt || slug);
     } else if (t.id === "stageGo") {
@@ -476,8 +556,13 @@ document.addEventListener("change", async (e) => {
   if (t.dataset.f && CURRENT) {
     try { CURRENT = await api(`/pipeline/api/leads/${CURRENT.slug}`, { method: "PATCH", body: JSON.stringify({ [t.dataset.f]: t.value }) }); toast("Saved"); if (t.dataset.f === "contact_name") renderDetail(); }
     catch (err) { toast("✗ " + err.message); }
+  } else if (t.id === "ownerSel" && CURRENT) {
+    try {
+      CURRENT = await api(`/pipeline/api/leads/${CURRENT.slug}/owner`, { method: "POST", body: JSON.stringify({ owner: t.value || null }) });
+      toast(t.value ? `Now ${ownerName(t.value) === "You" ? "yours" : ownerName(t.value) + "'s"}` : "Back in the pool for anyone"); renderDetail(); loadList();
+    } catch (err) { toast("✗ " + err.message); }
   } else if (t.id === "me") { store.set("pv-me", t.value.trim()); renderDetail(); }
-  else if (["grade", "region", "theme", "mobile", "sort"].includes(t.id)) { state.offset = 0; loadList(); }
+  else if (["grade", "region", "theme", "owner", "mobile", "sort"].includes(t.id)) { state.offset = 0; loadList(); }
 });
 let qTimer; $("#q").addEventListener("input", () => { clearTimeout(qTimer); qTimer = setTimeout(() => { state.offset = 0; loadList(); }, 250); });
 document.addEventListener("keydown", (e) => {
@@ -514,7 +599,7 @@ async function syncPayments(quiet) {
 }
 
 tickClock(); setInterval(tickClock, 30000);
-loadMeta().then(() => loadList()).then(() => { if (META.orders_sync) syncPayments(true).catch(() => {}); });
+refresh().then(() => { if (!CURRENT) resetDetail(); if (META.orders_sync) syncPayments(true).catch(() => {}); });
 </script>
 </body>
 </html>

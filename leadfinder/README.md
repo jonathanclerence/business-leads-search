@@ -283,6 +283,66 @@ every lead from *New* to *Website live*.
 
 `python tests/test_sales_pipeline.py` runs the offline tests.
 
+### Team access: sales reps on the tracker
+
+The tracker can be shared with a few sales reps. Each rep signs in, takes a
+company from the call list and works **one at a time**. While a rep has a
+company, it's the only one they can see, and nobody else can take it. They
+log the call (or change the stage), press **✓ Done — next company**, and pick
+the next one. The company stays theirs, so call-backs come back to the same
+person under **My leads**.
+
+```bash
+.venv/bin/python -m pipeline users add <you> --name "<Your name>" --admin   # first: sign-in turns on
+.venv/bin/python -m pipeline users add sam --name Sam                       # a rep; prints their password
+.venv/bin/python -m pipeline users list                                     # who's working on what
+.venv/bin/python -m pipeline users password sam                             # new password, signs them out
+.venv/bin/python -m pipeline users rename sam --name "Sam P"                # the name in history and the call scripts
+.venv/bin/python -m pipeline users remove sam                               # their open leads go back to the pool
+```
+
+- **Admins** see and do everything, as before: the lead finder, publishing,
+  payments, the Do Not Call Register and every lead. Each lead shows an
+  **Owner** you can change, and the list filters by owner. If you log a call
+  on a lead nobody owns, it becomes yours, so a rep won't ring it next.
+- **Reps** see only the tracker and the playbook. Their list is the call
+  queue's leads that nobody owns yet (no phone numbers until they take one),
+  plus their own. They can move a lead to Contacted, Follow up, Interested,
+  Invoice sent, Not interested or Do not contact. The other stages are yours.
+- History shows who did what. Sessions last 30 days. A password change or
+  removal signs that person out everywhere.
+- With no users, sign-in is off and the app works as before on your own
+  machine. Any request that comes through a tunnel or proxy is refused, so
+  the app never goes online without a login.
+
+**Hosting (free):** the reps use **https://salespipeline.dunous.com**, a
+Cloudflare Tunnel to the app on your Mac. The tunnel is called
+`salespipeline`, and its config is `~/.cloudflared/salespipeline.yml`
+(→ `http://127.0.0.1:5000`; use 127.0.0.1, not localhost, because macOS
+AirPlay Receiver also listens on port 5000). The reps can only use it while
+your Mac is awake and both of these are running. PDFs are built on your Mac,
+the same as now.
+
+```bash
+caffeinate -is ./run.sh                                                   # the app; caffeinate stops idle sleep
+cloudflared tunnel --config ~/.cloudflared/salespipeline.yml run          # the tunnel, in a second terminal
+```
+
+To keep both running without a terminal (they start at login and restart if
+they crash), install the two launchd agents in `deploy/`:
+
+```bash
+cp deploy/com.dunous.*.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dunous.leadfinder.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dunous.salespipeline-tunnel.plist
+launchctl kickstart -k gui/$(id -u)/com.dunous.leadfinder     # restart the app after changing code
+# stop for good: launchctl bootout gui/$(id -u)/com.dunous.leadfinder (and …salespipeline-tunnel), then delete the plists
+```
+
+Logs: `~/Library/Logs/leadfinder.log` and `~/Library/Logs/salespipeline-tunnel.log`.
+If macOS asks whether Python may access your Documents folder, click Allow:
+the project lives there.
+
 ## Lead scoring
 
 Every lead gets a **0-100 booking-fit score** and a grade — Hot, Warm, Cool,

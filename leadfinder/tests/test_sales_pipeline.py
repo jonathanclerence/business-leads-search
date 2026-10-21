@@ -237,6 +237,87 @@ def test_stages():
           {"new", "not_interested", "do_not_contact", "live"} & db.PREVIEW_STAGES, set())
 
 
+def test_team():
+    print("\nTeam: sign-in, one lead at a time")
+    import tempfile
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from pipeline import auth, web
+    app = FastAPI()
+    app.include_router(web.router)
+    auth.install(app)
+    saved = db.DB_PATH
+    with tempfile.TemporaryDirectory() as tmp:
+        db.DB_PATH = Path(tmp) / "t.db"
+        try:
+            with db.connect() as con:
+                for slug, stage in (("a", "preview_hosted"), ("b", "preview_hosted"), ("c", "contacted"), ("d", "new")):
+                    con.execute("INSERT INTO leads (slug, key, name, phone, phone_display, stage, created_at, updated_at, score) "
+                                "VALUES (?, ?, ?, '+61412345678', '0412 345 678', ?, ?, ?, 90)",
+                                (slug, slug, slug.upper(), stage, db.now(), db.now()))
+            check("no users, own machine: open as before",
+                  TestClient(app, base_url="http://localhost").get("/pipeline/api/leads").json()["total"], 4)
+            check("no users, through a tunnel: refused", TestClient(app).get("/pipeline/api/leads").status_code, 403)
+
+            with db.connect() as con:
+                for username, name, role in (("boss", "Boss", "admin"), ("sam", "Sam", "rep"), ("ana", "Ana", "rep")):
+                    con.execute("INSERT INTO users (username, name, role, pw_hash, created_at) VALUES (?, ?, ?, ?, ?)",
+                                (username, name, role, auth.hash_password("pw-" + username), db.now()))
+            anon = TestClient(app)
+            check("signed out: API says 401", anon.get("/pipeline/api/leads").status_code, 401)
+            r = anon.get("/pipeline", follow_redirects=False)
+            check("signed out: page goes to sign-in", (r.status_code, r.headers["location"]), (303, "/login?next=/pipeline"))
+            r = anon.post("/login", data={"username": "sam", "password": "nope"}, follow_redirects=False)
+            check("wrong password: no session", (r.status_code, auth.COOKIE in r.cookies), (200, False))
+
+            def signin(username):
+                c = TestClient(app)
+                c.post("/login", data={"username": username, "password": "pw-" + username}, follow_redirects=False)
+                return c
+            sam, ana, boss = signin("sam"), signin("ana"), signin("boss")
+            free = sam.get("/pipeline/api/leads").json()["leads"]
+            check("rep sees the free, callable leads", sorted(l["slug"] for l in free), ["a", "b", "c"])
+            check("…without phone numbers", {l["phone"] for l in free}, {""})
+            check("rep can't open a lead they haven't taken", sam.get("/pipeline/api/leads/a").status_code, 403)
+            check("rep can't publish", sam.post("/pipeline/api/publish", json={}).status_code, 403)
+            check("rep can't use the lead finder", sam.get("/api/health").status_code, 403)
+
+            check("take a lead", sam.post("/pipeline/api/leads/a/claim").json()["owner"], "sam")
+            mine = sam.get("/pipeline/api/leads").json()["leads"]
+            check("while working: that lead and nothing else, with its number",
+                  [(l["slug"], l["phone"]) for l in mine], [("a", "+61412345678")])
+            check("can't take a second", sam.post("/pipeline/api/leads/b/claim").status_code, 409)
+            check("other reps don't see it", sorted(l["slug"] for l in ana.get("/pipeline/api/leads").json()["leads"]), ["b", "c"])
+            check("…or take it", ana.post("/pipeline/api/leads/a/claim").status_code, 409)
+            check("done needs a logged call first", sam.post("/pipeline/api/leads/a/done").status_code, 409)
+            check("rep can't mark it paid", sam.post("/pipeline/api/leads/a/stage", json={"stage": "paid"}).status_code, 403)
+            lead = sam.post("/pipeline/api/leads/a/call", json={"outcome": "no_answer"}).json()
+            check("call logged under the rep's name", (lead["stage"], lead["history"][0]["by"]), ("contacted", "Sam"))
+            check("done", sam.post("/pipeline/api/leads/a/done").status_code, 200)
+            check("next: free leads again", sorted(l["slug"] for l in sam.get("/pipeline/api/leads").json()["leads"]), ["b", "c"])
+            check("…and it stays theirs", [l["slug"] for l in sam.get("/pipeline/api/leads?mine=true").json()["leads"]], ["a"])
+            check("not open once done", sam.get("/pipeline/api/leads/a").status_code, 403)
+
+            check("admin sees everything", boss.get("/pipeline/api/leads").json()["total"], 4)
+            check("admin filters by owner", [l["slug"] for l in boss.get("/pipeline/api/leads?owner=sam").json()["leads"]], ["a"])
+            check("admin reassigns", boss.post("/pipeline/api/leads/a/owner", json={"owner": "ana"}).json()["owner_name"], "Ana")
+            check("rep can't reassign", sam.post("/pipeline/api/leads/b/owner", json={"owner": "sam"}).status_code, 403)
+            check("admin calling a free lead makes it theirs",
+                  boss.post("/pipeline/api/leads/b/call", json={"outcome": "voicemail"}).json()["owner"], "boss")
+
+            with db.connect() as con:
+                db.claim(con, "c", "ana", "Ana", web.QUEUE_SQL)
+                try:
+                    con.execute("UPDATE leads SET owner = 'ana', working_since = ? WHERE slug = 'a'", (db.now(),))
+                    check("database refuses two at once", "allowed", "IntegrityError")
+                except Exception as exc:  # noqa: BLE001
+                    check("database refuses two at once", type(exc).__name__, "IntegrityError")
+                con.execute("UPDATE users SET pw_hash = ? WHERE username = 'sam'", (auth.hash_password("new"),))
+            check("new password signs them out", sam.get("/pipeline/api/leads").status_code, 401)
+        finally:
+            db.DB_PATH = saved
+
+
 def main() -> int:
     test_phones()
     test_location()
@@ -246,6 +327,7 @@ def main() -> int:
     test_documents()
     test_dncr()
     test_stages()
+    test_team()
     print(f"\n{'─' * 62}\n  {len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         print("  failed: " + ", ".join(FAIL))

@@ -165,7 +165,8 @@ def test_http() -> None:
     import app as app_module
 
     print("\nHTTP endpoints")
-    client = TestClient(app_module.app)
+    # As your own browser on this machine (no users set up, so no sign-in).
+    client = TestClient(app_module.app, base_url="http://localhost")
 
     check("health", client.get("/api/health").json()["ok"], True)
     check("index renders", client.get("/").status_code, 200)

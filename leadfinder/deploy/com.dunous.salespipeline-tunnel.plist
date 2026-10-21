@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Cloudflare Tunnel: https://salespipeline.dunous.com → 127.0.0.1:5000 (config in ~/.cloudflared/salespipeline.yml). -->
+  <key>Label</key><string>com.dunous.salespipeline-tunnel</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/cloudflared</string><string>tunnel</string><string>--no-autoupdate</string>
+    <string>--config</string><string>/Users/hc/.cloudflared/salespipeline.yml</string><string>run</string>
+  </array>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>StandardOutPath</key><string>/Users/hc/Library/Logs/salespipeline-tunnel.log</string>
+  <key>StandardErrorPath</key><string>/Users/hc/Library/Logs/salespipeline-tunnel.log</string>
+</dict>
+</plist>

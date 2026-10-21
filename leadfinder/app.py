@@ -41,6 +41,7 @@ from leadfinder.models import Business, SearchRequest
 from leadfinder.places_api import PlacesAPIError, search_places
 from leadfinder.scraper import GoogleMapsScraper
 from leadfinder.store import SALES_HEADERS, BatchStore, list_batches
+from pipeline import auth
 from pipeline.web import router as pipeline_router
 
 logging.basicConfig(
@@ -61,6 +62,8 @@ templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 # Sales tracker: previews, call queue, stages → http://localhost:5000/pipeline
 app.include_router(pipeline_router)
+# Sign-in for the team (off until `python -m pipeline users add <you> --admin`)
+auth.install(app)
 
 
 # ---------------------------------------------------------------------------

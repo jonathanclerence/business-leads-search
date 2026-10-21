@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Lead finder + sales tracker on 127.0.0.1:5000, always running; caffeinate keeps the Mac awake for the reps. -->
+  <key>Label</key><string>com.dunous.leadfinder</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/caffeinate</string><string>-is</string>
+    <string>/Users/hc/Documents/Dunous/Search-business-leads 2/leadfinder/.venv/bin/python</string><string>app.py</string>
+  </array>
+  <key>WorkingDirectory</key><string>/Users/hc/Documents/Dunous/Search-business-leads 2/leadfinder</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key><string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>PYTHONUNBUFFERED</key><string>1</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <key>ThrottleInterval</key><integer>10</integer>
+  <key>StandardOutPath</key><string>/Users/hc/Library/Logs/leadfinder.log</string>
+  <key>StandardErrorPath</key><string>/Users/hc/Library/Logs/leadfinder.log</string>
+</dict>
+</plist>
