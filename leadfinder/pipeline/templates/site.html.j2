@@ -336,7 +336,7 @@
     <div class="pv-ts"></div>
     <p class="pv-status" role="status" aria-live="polite"></p>
     <button class="pv-btn pv-submit" type="submit">{{ "Send" if checkout_url else "Finish my website" }}</button>
-    <p class="pv-alt">Prefer to chat? <a href="{{ whatsapp_href }}" target="_blank" rel="noopener">WhatsApp {{ whatsapp_display }}</a> · <a href="{{ brand_url }}" target="_blank" rel="noopener">About {{ brand }}</a></p>
+    <p class="pv-alt">Prefer to talk? Call <a href="{{ phone_href }}">{{ phone_display }}</a> or <a href="{{ whatsapp_href }}" target="_blank" rel="noopener">WhatsApp {{ whatsapp_display }}</a> · <a href="{{ brand_url }}" target="_blank" rel="noopener">About {{ brand }}</a></p>
   </form>
 </dialog>
 <script src="{{ assets }}/preview.js?v={{ version }}" defer></script>

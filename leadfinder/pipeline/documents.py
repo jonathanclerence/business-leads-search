@@ -149,7 +149,7 @@ def context(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[da
         "terms_url": offer.TERMS_URL,
         "terms_short": offer.TERMS_URL.split("//", 1)[-1].replace("www.", ""),
         "contact": dict(email="info@dunous.com", site_short=config.SITE_URL.split("//", 1)[-1],
-                        whatsapp_display=config.WHATSAPP_DISPLAY),
+                        phone_display=config.PHONE_DISPLAY, whatsapp_display=config.WHATSAPP_DISPLAY),
         "signatory": os.getenv("DOCS_SIGNATORY", "").strip(),
         "shots": shots or {},
         "biz": None, "suburb": "", "state": "", "rated": False, "prefill": {}, "qr": "",

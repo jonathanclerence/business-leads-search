@@ -22,12 +22,12 @@
     <dl class="cover-meta">
       {% if biz %}
       <div><dt>Prepared for</dt><dd>{{ biz }}{% if suburb %}<br>{{ suburb }}{% if state %} {{ state }}{% endif %}{% endif %}</dd></div>
-      <div><dt>Prepared by</dt><dd>DuNous<br>{{ contact.email }}</dd></div>
+      <div><dt>Prepared by</dt><dd>DuNous · {{ contact.phone_display }}<br>{{ contact.email }}</dd></div>
       <div><dt>Date</dt><dd>{{ today_str }}</dd></div>
       <div><dt>Reference</dt><dd>{{ ref }}<br><span style="opacity:.7">Valid until {{ valid_until_str }}</span></dd></div>
       {% else %}
       <div><dt>From</dt><dd>DuNous<br>{{ contact.email }}</dd></div>
-      <div><dt>Talk to us</dt><dd>WhatsApp {{ contact.whatsapp_display }}<br>{{ contact.site_short }}</dd></div>
+      <div><dt>Talk to us</dt><dd>Call {{ contact.phone_display }}<br>WhatsApp {{ contact.whatsapp_display }}</dd></div>
       {% endif %}
     </dl>
   </div>

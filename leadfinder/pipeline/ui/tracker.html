@@ -224,7 +224,7 @@ To go ahead, just reply with the package you'd like (or send back the signed agr
 
 Cheers,
 ${me() || "[your name]"}
-DuNous · info@dunous.com · WhatsApp (+61) 422 765 361`;
+DuNous · ${META.contact.phone} · info@dunous.com · WhatsApp ${META.contact.whatsapp}`;
 }
 function scriptHtml(l) {
   const name = esc(l.name), owner = l.contact_name ? esc(firstName(l.contact_name)) : "the owner";

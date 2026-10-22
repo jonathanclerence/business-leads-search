@@ -154,6 +154,8 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
         "domain_hint": f"{slugify(lead['name'], 30).replace('-', '')}.com.au",
         "year": date.today().year,
         "brand": config.BRAND,
+        "phone_href": config.PHONE_HREF,
+        "phone_display": config.PHONE_DISPLAY,
         "whatsapp_href": config.WHATSAPP_HREF,
         "whatsapp_display": config.WHATSAPP_DISPLAY,
         # The generic website pack (documents.ensure_generic_pack), shipped with the shared assets.

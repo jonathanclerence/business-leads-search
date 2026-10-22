@@ -88,6 +88,7 @@ def meta(request: Request) -> Dict[str, Any]:
             "outcomes": db.CALL_OUTCOMES, "regions": regions, "themes": themes, "grades": grades,
             "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH,
             "orders_sync": bool(config.ORDERS_API_TOKEN) and not rep, "dncr_due": dncr_due,
+            "contact": {"phone": config.PHONE_DISPLAY, "whatsapp": config.WHATSAPP_DISPLAY},
             "user": {k: u[k] for k in ("username", "name", "role")}, "signed_in": bool(u["username"]),
             "working": {"slug": current["slug"], "name": current["name"]} if current else None,
             "rep_stages": sorted(db.REP_STAGES), "team": [] if rep else auth.team(), **pool,

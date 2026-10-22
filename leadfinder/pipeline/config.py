@@ -31,6 +31,10 @@ CHECKOUT_PATH = os.getenv("PREVIEW_CHECKOUT_PATH", "").strip()
 ORDERS_API_TOKEN = os.getenv("ORDERS_API_TOKEN", "").strip()
 PREVIEW_PATH = "/previewsite/"
 BRAND = os.getenv("PREVIEW_BRAND", "DuNous")
+# The Australian number the sales team calls from, on every preview and PDF so
+# a business that gets a call can check it's really us (it's on dunous.com too).
+PHONE_DISPLAY = os.getenv("PREVIEW_PHONE_DISPLAY", "(02) 7249 3420")
+PHONE_HREF = os.getenv("PREVIEW_PHONE_HREF", "tel:+61272493420")
 WHATSAPP_DISPLAY = os.getenv("PREVIEW_WHATSAPP_DISPLAY", "(+61) 422 765 361")
 WHATSAPP_HREF = os.getenv("PREVIEW_WHATSAPP_HREF", "https://wa.me/61422765361")
 
