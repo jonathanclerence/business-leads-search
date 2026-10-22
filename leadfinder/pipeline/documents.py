@@ -386,19 +386,42 @@ def _bytes(writer) -> bytes:
 
 # ------------------------------------------------------------------ build
 
+def _remote(kind: str, lead: Optional[Dict[str, Any]], today: Optional[date], shoot: bool) -> Dict[str, Any]:
+    """Screenshots and printing on the Chromium function (Vercel's Python has no
+    browser). It takes the screenshots of the finished site first and drops
+    them into the document where the placeholders are."""
+    import httpx
+    shots = {k: f"__SHOT_{k}__" for k in ("desktop", "phone")} if shoot else {}
+    body = {"html": html(kind, lead, today, shots), "measure": _MEASURE}
+    if shoot:
+        body.update(site=render(lead, final=True), assets_origin=config.SITE_URL)
+    try:
+        r = httpx.post(config.CHROMIUM_URL, json=body, timeout=55,
+                       headers={"x-internal-token": config.INTERNAL_TOKEN})
+    except httpx.HTTPError as exc:
+        raise DocumentError(f"the PDF printer didn't answer ({exc})")
+    if r.status_code != 200:
+        raise DocumentError(f"the PDF printer said {r.status_code}: {r.text[:200]}")
+    data = r.json()
+    return {"pdf": base64.b64decode(data["pdf"]), "overflow": data["overflow"], "fields": data["fields"]}
+
+
 def build(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[date] = None,
           log: Log = print, fingerprint: str = "") -> bytes:
     """One document as PDF bytes. kind: pack | proposal | agreement | onboarding."""
-    from playwright.sync_api import sync_playwright
-
     ctx = context(kind, lead, today)
-    with sync_playwright() as pw:
-        browser = _launch(pw)
-        try:
-            shots = _screenshots(browser, lead, log) if lead and "website" in ctx["pages"] else {}
-            out = _print(browser, html(kind, lead, today, shots))
-        finally:
-            browser.close()
+    shoot = bool(lead and "website" in ctx["pages"])
+    if config.CHROMIUM_URL:
+        out = _remote(kind, lead, today, shoot)
+    else:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            browser = _launch(pw)
+            try:
+                shots = _screenshots(browser, lead, log) if shoot else {}
+                out = _print(browser, html(kind, lead, today, shots))
+            finally:
+                browser.close()
     if out["overflow"]:
         log(f"Warning: page(s) {out['overflow']} of the {kind} overflow — shorten the text on them.")
     info = {"/Title": ctx["meta_title"], "/Author": "DuNous", "/Creator": "DuNous lead pipeline",

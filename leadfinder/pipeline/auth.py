@@ -30,7 +30,7 @@ from fastapi import FastAPI, Form, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from starlette.requests import HTTPConnection
 
-from . import db
+from . import config, db
 
 COOKIE = "lf_session"
 SESSION_DAYS = 30
@@ -65,9 +65,17 @@ def valid_username(username: str) -> bool:
 
 # ---- Users --------------------------------------------------------------------
 
+_enabled = False
+
+
 def enabled() -> bool:
-    with db.connect() as con:
-        return con.execute("SELECT 1 FROM users LIMIT 1").fetchone() is not None
+    """Sign-in is on once anyone has an account. Remembered once true: every
+    request asks, and on the shared database each question is a round trip."""
+    global _enabled
+    if not _enabled:
+        with db.connect() as con:
+            _enabled = con.execute("SELECT 1 FROM users LIMIT 1").fetchone() is not None
+    return _enabled
 
 
 def get_user(username: str) -> Optional[Dict[str, Any]]:
@@ -102,6 +110,8 @@ def _secret() -> bytes:
     env = os.getenv("SESSION_SECRET", "").strip()
     if env:
         return env.encode()
+    if config.CLOUD:  # no disk to keep one on, and every instance must agree
+        raise RuntimeError("Set SESSION_SECRET in the Vercel project's environment variables.")
     path = db.DB_PATH.parent / ".session_secret"
     if not path.exists():
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -147,7 +157,8 @@ def _throttled(key: str) -> bool:
 
 
 def _client_ip(conn: HTTPConnection) -> str:
-    return conn.headers.get("cf-connecting-ip") or (conn.client.host if conn.client else "")
+    return (conn.headers.get("cf-connecting-ip") or conn.headers.get("x-real-ip")
+            or (conn.client.host if conn.client else ""))
 
 
 def _proxied(conn: HTTPConnection) -> bool:

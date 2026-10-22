@@ -10,6 +10,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+# Never the real pipeline or the shared database in .env (DATABASE_URL): a throwaway SQLite file.
+import os, tempfile  # noqa: E401,E402
+os.environ["PIPELINE_DB"] = os.path.join(tempfile.mkdtemp(), "pipeline.db")
 
 from pipeline.enrich import (MAX_CHARS, fallback_url, first_name, name_words, norm_ws,  # noqa: E402
                              parse_hours, parse_stars, pick_reviews, same_place, snippet_problem,

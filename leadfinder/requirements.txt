@@ -10,6 +10,11 @@ python-dotenv==1.0.1
 # Harmless on 3.10+; keep it if you're unsure which version you're running.
 eval-type-backport==0.2.2
 
+# ---- Shared database (Postgres on Neon, used by the tracker on Vercel) -------
+# Only used when DATABASE_URL is set in .env; otherwise batches/pipeline.db.
+psycopg[binary]==3.2.13
+psycopg-pool==3.2.8
+
 # ---- Scraper engine (required for the Playwright provider) -----------------
 playwright==1.49.1
 

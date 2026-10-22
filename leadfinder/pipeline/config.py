@@ -29,6 +29,15 @@ CHECKOUT_PATH = os.getenv("PREVIEW_CHECKOUT_PATH", "").strip()
 # Lets the tracker read online orders from <SITE_URL>/api/orders ("Sync payments").
 # Must match ORDERS_API_TOKEN in the site's Cloudflare variables.
 ORDERS_API_TOKEN = os.getenv("ORDERS_API_TOKEN", "").strip()
+# On Vercel the tracker runs without your Mac: scraping, publishing and site
+# exports stay on the Mac (they need the marketing-site checkout), and PDFs are
+# printed by the Chromium function deployed beside it (cloud/api/chromium.mjs).
+CLOUD = bool(os.getenv("VERCEL"))
+_PRODUCTION_HOST = os.getenv("VERCEL_PROJECT_PRODUCTION_URL", "").strip()
+CHROMIUM_URL = os.getenv("CHROMIUM_URL", "").strip() or (f"https://{_PRODUCTION_HOST}/api/chromium" if CLOUD and _PRODUCTION_HOST else "")
+# Shared secret between the tracker and its Chromium function, so nobody else can use it.
+INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "").strip()
+
 PREVIEW_PATH = "/previewsite/"
 BRAND = os.getenv("PREVIEW_BRAND", "DuNous")
 # The Australian number the sales team calls from, on every preview and PDF so

@@ -88,7 +88,7 @@ def meta(request: Request) -> Dict[str, Any]:
             "outcomes": db.CALL_OUTCOMES, "regions": regions, "themes": themes, "grades": grades,
             "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH,
             "orders_sync": bool(config.ORDERS_API_TOKEN) and not rep, "dncr_due": dncr_due,
-            "contact": {"phone": config.PHONE_DISPLAY, "whatsapp": config.WHATSAPP_DISPLAY},
+            "contact": {"phone": config.PHONE_DISPLAY, "whatsapp": config.WHATSAPP_DISPLAY}, "cloud": config.CLOUD,
             "user": {k: u[k] for k in ("username", "name", "role")}, "signed_in": bool(u["username"]),
             "working": {"slug": current["slug"], "name": current["name"]} if current else None,
             "rep_stages": sorted(db.REP_STAGES), "team": [] if rep else auth.team(), **pool,
@@ -176,6 +176,12 @@ def leads_csv(stage: str = "", grade: str = "", region: str = "", theme: str = "
         w.writerow([r[c] if c != "stage" else db.STAGE_LABELS[r[c]] for c in cols] + [config.preview_url(r["slug"])])
     return Response("﻿" + buf.getvalue(), media_type="text/csv",
                     headers={"Content-Disposition": 'attachment; filename="pipeline.csv"'})
+
+
+def _mac_only() -> None:
+    if config.CLOUD:
+        raise HTTPException(400, "That runs on your Mac (it needs the marketing-site checkout): "
+                                 "./run.sh there, or the python -m pipeline command.")
 
 
 def _lead_or_404(con, slug: str, u: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -305,16 +311,19 @@ def edit_lead(slug: str, body: Dict[str, Any], request: Request):
 
 @router.get("/pipeline/api/coverage", dependencies=ADMIN)
 def coverage():
+    _mac_only()
     return cov.coverage()
 
 
 @router.post("/pipeline/api/import", dependencies=ADMIN)
 def run_import():
+    _mac_only()
     return importer.run()
 
 
 @router.post("/pipeline/api/publish", dependencies=ADMIN)
 def run_publish(body: PublishBody):
+    _mac_only()
     lines: List[str] = []
     try:
         res = publish.publish(grades=body.grades, limit=body.limit, regions=body.regions,
@@ -399,6 +408,7 @@ async def dncr_import(file: UploadFile = File(...), registered_only: bool = Form
 
 @router.post("/pipeline/api/leads/{slug}/export", dependencies=ADMIN)
 def run_export(slug: str):
+    _mac_only()
     try:
         out = publish.export_site(slug, log=lambda _m: None)
     except publish.PublishError as exc:

@@ -18,6 +18,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+# Never the real pipeline or the shared database in .env (DATABASE_URL): a throwaway SQLite file.
+import os, tempfile  # noqa: E401,E402
+os.environ["PIPELINE_DB"] = os.path.join(tempfile.mkdtemp(), "pipeline.db")
 
 from leadfinder.exporters import to_csv_string  # noqa: E402
 from leadfinder.models import CSV_HEADERS, Business, SearchRequest  # noqa: E402

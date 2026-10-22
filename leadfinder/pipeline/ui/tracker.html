@@ -63,6 +63,8 @@ dialog::backdrop{background:rgba(0,0,0,.4)}pre.log{background:var(--bg);border-r
 section.box.mine{border-color:var(--good);background:color-mix(in srgb,var(--good) 7%,var(--panel))}
 /* Sales reps see the tracker only; admin tools stay hidden until we know who's signed in. */
 body.rep [data-admin],body:not(.ready) [data-admin]{display:none!important}
+/* On Vercel: scraping, publishing and site exports happen on the Mac. */
+body.cloud [data-mac]{display:none!important}
 @media (max-width:900px){main{flex-direction:column}aside{width:100%;border-left:0;border-top:1px solid var(--line)}}
 </style>
 </head>
@@ -71,15 +73,15 @@ body.rep [data-admin],body:not(.ready) [data-admin]{display:none!important}
   <h1>Pipeline</h1>
   <nav class="tabs">
     <button data-tab="leads" class="on">Leads</button>
-    <button data-tab="coverage" data-admin>Coverage</button>
+    <button data-tab="coverage" data-admin data-mac>Coverage</button>
     <button data-tab="playbook">Playbook</button>
   </nav>
-  <a class="btn sm" href="/" data-admin>← Lead finder</a>
+  <a class="btn sm" href="/" data-admin data-mac>← Lead finder</a>
   <div class="clock"><span class="dot" id="clockDot"></span><span id="clock"></span></div>
   <button class="btn" id="btnDncr" data-admin title="Wash your call list against the Do Not Call Register">Do Not Call Register</button>
   <button class="btn" id="btnPayments" data-admin title="Fetch online orders from dunous.com and mark paid leads">Sync payments</button>
   <button class="btn" id="btnVerify" data-admin title="Check which published previews are live">Check live</button>
-  <button class="btn primary" id="btnPublish" data-admin>Publish previews…</button>
+  <button class="btn primary" id="btnPublish" data-admin data-mac>Publish previews…</button>
   <span id="who" class="muted" hidden></span>
 </header>
 
@@ -267,7 +269,7 @@ async function loadMeta() {
   const own = $("#owner"), ownCur = own.value;
   own.innerHTML = `<option value="">Everyone's leads</option><option value="none">Not taken</option>` + META.team.map((m) => `<option value="${esc(m.username)}">${esc(m.name)}'s</option>`).join("");
   own.value = ownCur;
-  document.body.classList.toggle("rep", IS_REP()); document.body.classList.add("ready");
+  document.body.classList.toggle("rep", IS_REP()); document.body.classList.toggle("cloud", META.cloud); document.body.classList.add("ready");
   $("#who").hidden = !META.signed_in;
   $("#who").innerHTML = `${esc(META.user.name)} · <a href="/logout">Sign out</a>`;
   const chips = IS_REP() ? repChips() : [
@@ -406,7 +408,7 @@ function renderDetail() {
       <div class="grid2"><label>Move to<select id="stageSel">${stages.map((s) => `<option value="${s.key}" ${s.key === l.stage ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></label>
       <label>Note<input id="stageNote" placeholder="optional"></label></div>
       <div class="row-btns"><button class="btn sm primary" id="stageGo">Update stage</button>
-      ${!IS_REP() && ["paid","domain_selected","site_hosted","live"].includes(l.stage) ? `<button class="btn sm" id="exportSite">Export finished site folder</button>` : ""}</div>
+      ${!IS_REP() && !META.cloud && ["paid","domain_selected","site_hosted","live"].includes(l.stage) ? `<button class="btn sm" id="exportSite">Export finished site folder</button>` : ""}</div>
     </section>
     <section class="box"><h3>Details</h3>
       <div class="grid2">
@@ -423,7 +425,7 @@ function renderDetail() {
       <label class="full">Notes<textarea data-f="notes">${esc(l.notes || "")}</textarea></label>
       <p class="muted" style="margin:6px 0 0">${esc(l.address || "")} · Lead id <code>${esc(l.slug)}</code> · Tries: ${l.attempts}${l.last_contact ? " · Last: " + esc(l.last_contact.slice(0, 16).replace("T", " ")) + " UTC" : ""}</p>
     </section>
-    <section class="box"><h3>History</h3><ul class="hist">${l.history.map((h) => `<li><time>${esc(h.at.slice(0, 16).replace("T", " "))}</time>${esc(h.detail || h.kind)}${h.by ? ` <span class="muted">— ${esc(h.by)}</span>` : ""}</li>`).join("")}</ul></section>`;
+    <section class="box"><h3>History</h3><ul class="hist">${l.history.map((h) => `<li><time>${esc(h.at.slice(0, 16).replace("T", " "))}</time>${esc(h.detail || h.kind)}${h.who ? ` <span class="muted">— ${esc(h.who)}</span>` : ""}</li>`).join("")}</ul></section>`;
 }
 function dncrNote(l) {
   if (l.dncr === "Y") return `<p class="sub" style="color:var(--bad);font-weight:700">⛔ On the Do Not Call Register (washed ${esc(l.dncr_at)}) — don't call.</p>`;

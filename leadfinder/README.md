@@ -315,41 +315,41 @@ person under **My leads**.
   machine. Any request that comes through a tunnel or proxy is refused, so
   the app never goes online without a login.
 
-**Hosting (free):** the reps use **https://salespipeline.dunous.com**, a
-Cloudflare Tunnel to the app on your Mac. The tunnel is called
-`salespipeline`, and its config is `~/.cloudflared/salespipeline.yml`
-(→ `http://127.0.0.1:5000`; use 127.0.0.1, not localhost, because macOS
-AirPlay Receiver also listens on port 5000). The reps can only use it while
-your Mac is awake and both of these are running. PDFs are built on your Mac,
-the same as now.
+### Hosting: Vercel + a shared database
 
-```bash
-caffeinate -is ./run.sh                                                   # the app; caffeinate stops idle sleep
-cloudflared tunnel --config ~/.cloudflared/salespipeline.yml run          # the tunnel, in a second terminal
+The reps use **https://salespipeline.dunous.com**: the tracker on Vercel
+(project `salespipeline`, team Nivasa, region Singapore) with its data in a
+Postgres database on Neon. Your Mac doesn't need to be on.
+
+```
+Vercel ─ api/index.py ──── the tracker (pipeline/web.py), sign-in, leads ─┐
+       └ api/chromium.mjs  prints the website-pack PDFs (headless Chrome) │
+                                                                          ▼
+Your Mac ─ python -m pipeline import / enrich / publish / dncr … ───► Neon Postgres
+           ./run.sh (the lead finder)                                (DATABASE_URL)
 ```
 
-To keep it running without a terminal (it starts at login and restarts if it
-crashes), install the three launchd agents in `deploy/`: the app, the tunnel,
-and `caffeinate -is` to stop idle sleep. Closing the lid still sleeps the Mac.
-
-```bash
-cp deploy/com.dunous.*.plist ~/Library/LaunchAgents/
-for a in leadfinder leadfinder-awake salespipeline-tunnel; do
-  launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.dunous.$a.plist; done
-launchctl kickstart -k gui/$(id -u)/com.dunous.leadfinder     # restart the app after changing code
-# stop for good: launchctl bootout gui/$(id -u)/com.dunous.<name> for each, then delete the plists
-```
-
-**One-time macOS permission.** The project is in `~/Documents`, which macOS
-keeps from background programs. Command-line programs never get an "Allow"
-prompt; until you grant access, the app agent fails with `Operation not
-permitted` in its log. Open System Settings → Privacy & Security → Full Disk
-Access, press +, press ⌘⇧G, add
-`/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9`
-and turn it on. The agent picks it up within 10 seconds.
-
-Logs: `~/Library/Logs/leadfinder.log` and `~/Library/Logs/salespipeline-tunnel.log`.
-Don't also run `./run.sh` while the agent is running: port 5000 is already taken.
+- **One database for everything.** Put the same `DATABASE_URL` in `.env` on
+  your Mac and every command (import, enrich, publish, the Do Not Call
+  Register, `users`) works on the team's live data. Without it, the pipeline
+  uses `batches/pipeline.db` as before. `PIPELINE_DB` still points a command
+  at a scratch SQLite file, and the tests always use one.
+- **What stays on the Mac:** the lead finder (scraping), publishing previews
+  and exporting a client's site. They need the marketing-site checkout, so in
+  the cloud tracker those buttons are hidden. Checking live previews, syncing
+  payments, the Do Not Call Register and every PDF work in the cloud.
+- **Deploying a change:** `deploy/vercel.sh` (or `--preview` to try one
+  first). It uploads `cloud/` and `pipeline/` only, never `.env` or the
+  leads.
+- **Settings on Vercel** (Project → Settings → Environment Variables):
+  `DATABASE_URL` (from the Neon integration), `SESSION_SECRET` (signs
+  sign-ins; changing it signs everyone out), `INTERNAL_TOKEN` (lets the
+  tracker use its Chromium function), `CHROMIUM_URL`, `ORDERS_API_TOKEN`.
+- `python -m pipeline copy-to-cloud` was the one-off move from
+  `batches/pipeline.db` into the shared database. It refuses to run again
+  over live data unless you pass `--replace`.
+- Vercel's Hobby plan is for personal, non-commercial use. A company sales
+  tool belongs on Pro.
 
 ## Lead scoring
 

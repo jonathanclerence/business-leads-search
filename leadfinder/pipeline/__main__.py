@@ -67,6 +67,9 @@ def main(argv=None) -> int:
     us.add_argument("--admin", action="store_true", help="add: full access (lead finder, publishing, every lead)")
     us.add_argument("--ask", action="store_true", help="add/password: type the password instead of generating one")
 
+    cp = sub.add_parser("copy-to-cloud", help="one-off: copy batches/pipeline.db into the shared database (DATABASE_URL)")
+    cp.add_argument("--replace", action="store_true", help="empty the shared database first (it already has leads)")
+
     st = sub.add_parser("stage", help="move a lead to a stage")
     st.add_argument("slug")
     st.add_argument("stage", choices=db.STAGE_KEYS)
@@ -138,6 +141,8 @@ def main(argv=None) -> int:
                 print(json.dumps(dncr.load_results(f.read(), a.registered_only), indent=2))
     elif a.cmd == "users":
         return _users(p, a)
+    elif a.cmd == "copy-to-cloud":
+        return _copy_to_cloud(p, a)
     elif a.cmd == "stage":
         with db.connect() as con:
             changed = db.set_stage(con, a.slug, a.stage, a.note)
@@ -158,14 +163,14 @@ def _users(p, a) -> int:
     if a.action == "list":
         with db.connect() as con:
             rows = con.execute(
-                "SELECT u.username, u.name, u.role, w.name working, "
-                f"(SELECT COUNT(*) FROM leads l WHERE l.owner = u.username AND l.stage NOT IN {db.CLOSED_STAGES}) open "
+                "SELECT u.username, u.name, u.role, w.name AS working, "
+                f"(SELECT COUNT(*) FROM leads l WHERE l.owner = u.username AND l.stage NOT IN {db.CLOSED_STAGES}) AS open_leads "
                 "FROM users u LEFT JOIN leads w ON w.owner = u.username AND w.working_since IS NOT NULL "
                 "ORDER BY u.role, u.name").fetchall()
         if not rows:
             print("No users yet: sign-in is off. Start with: python -m pipeline users add <you> --admin")
         for r in rows:
-            print(f"{r['username']:16} {r['name']:20} {r['role']:6} {r['open']:>4} open leads"
+            print(f"{r['username']:16} {r['name']:20} {r['role']:6} {r['open_leads']:>4} open leads"
                   + (f" · working on {r['working']}" if r["working"] else ""))
         return 0
     if not a.username:
@@ -209,6 +214,28 @@ def _users(p, a) -> int:
             return 0
     if a.action in ("add", "password") and not a.ask:
         print(f"Password: {pw}")
+    return 0
+
+
+def _copy_to_cloud(p, a) -> int:
+    """Users, leads and their whole history from the SQLite file into Postgres, as they are."""
+    if not db.DATABASE_URL:
+        p.error("set DATABASE_URL (in .env) to the shared database first")
+    with db.connect(db.DB_PATH) as src:   # by path: always the SQLite file
+        tables = {t: [dict(r) for r in src.execute(f"SELECT * FROM {t} ORDER BY rowid")]
+                  for t in ("users", "leads", "events")}
+    with db.connect() as dst:
+        if dst.execute("SELECT COUNT(*) FROM leads").fetchone()[0] and not a.replace:
+            p.error("the shared database already has leads; --replace empties it first")
+        dst.execute("TRUNCATE events, leads, users RESTART IDENTITY")
+        for table, rows in tables.items():
+            if rows:
+                cols = list(rows[0])
+                dst.executemany(f"INSERT INTO {table} ({', '.join(cols)}) VALUES ({', '.join('?' * len(cols))})",
+                                [[r[c] for c in cols] for r in rows])
+        # New history continues after the copied rows' ids.
+        dst.execute("SELECT setval(pg_get_serial_sequence('events', 'id'), (SELECT COALESCE(MAX(id), 1) FROM events))")
+    print("Copied " + ", ".join(f"{len(rows):,} {t}" for t, rows in tables.items()) + f" from {db.DB_PATH.name}.")
     return 0
 
 
