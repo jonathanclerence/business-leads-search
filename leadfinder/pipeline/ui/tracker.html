@@ -200,14 +200,17 @@ function proof(l) {
   return `you're on Google Maps but there's no website`;
 }
 const siteHost = () => META.site_url.replace(/^https?:\/\/(www\.)?/, "");
-/** The preview, sent by the rep: from someone they just spoke to, with a way to see it without trusting a link. */
+/** The preview email to the business, with a way to see it without trusting a link. Customer
+ *  emails only ever come from DuNous: a rep asks sales@ to send it (previewRequest), an admin sends it. */
 function previewSubject(l) { return `The website we made for ${l.short_name}`; }
 function previewEmail(l) {
   const hi = l.contact_name ? `Hi ${firstName(l.contact_name)},` : "Hi,";
   const code = l.code ? `\n\nRather not click a link in an email? Fair enough. Go to ${siteHost()}, press "Preview your site" at the top and type your code: ${l.code}` : "";
+  const intro = IS_REP() ? `Thanks for talking with ${me() || "[your name]"} from our team just now.`
+                         : `It's ${me() || "[your name]"} from DuNous. Thanks for talking with me just now.`;
   return `${hi}
 
-It's ${me() || "[your name]"} from DuNous. Thanks for talking with me just now.
+${intro}
 
 As promised, here's the website we've built for ${l.short_name}. It's free to look at: no sign-up, no payment details, nothing to download.
 
@@ -215,9 +218,28 @@ ${l.preview_url}${code}
 
 If you like it, just reply and we'll make it yours. If it's not for you, no problem at all.
 
-${me() || "[your name]"}
+${IS_REP() ? "The DuNous team" : me() || "[your name]"}
 DuNous · ${siteHost()}
-${META.contact.phone} · info@dunous.com`;
+${META.contact.phone} · ${META.sales_email}`;
+}
+function previewRequestSubject(l, to) { return `Please email the preview: ${l.short_name} → ${to}`; }
+function previewRequest(l, to, subject, body) {
+  return `Hi DuNous,
+
+Please email ${l.name} their preview. I spoke to ${l.contact_name ? firstName(l.contact_name) : "them"} just now.
+
+Send to: ${to}
+Contact: ${l.contact_name || "-"}
+Phone: ${l.phone_display}${l.code ? `\nTheir code: ${l.code}` : ""}
+In the tracker: ${location.origin}/pipeline?lead=${encodeURIComponent(l.slug)}
+
+Ready to send (the subject, then the email):
+
+${subject}
+
+${body}
+
+${me() || "[your name]"}`;
 }
 function smsText(l) {
   const hi = l.contact_name ? `Hi ${firstName(l.contact_name)}, it's` : "Hi, it's";
@@ -281,15 +303,15 @@ function scriptHtml(l) {
   <p class="muted">Don't introduce yourself first. Lead with <b>their</b> problem and the fact the site already exists. Smile — they can hear it.</p>
   <p class="branch">1 · Opener (whoever answers)</p>
   <p class="say">“Hi! Quick one — I was looking at <b>${name}</b> on Google Maps: ${esc(proof(l))}. So people who find you can't ${esc(payoff(l))}, and some just ring the next place that has one.<br><br>I've actually already built you a website — it's finished and free to look at. What's the best email to send it to?”</p>
-  <p class="muted">That last question does the “who am I talking to” job for you: owners say “send it to me”, staff say “that'd be the owner”. Email beats a text: people trust it more.</p>
+  <p class="muted">That last question does the “who am I talking to” job for you: owners say “send it to me”, staff say “that'd be the owner”. Email beats a text: people trust it more.${IS_REP() ? ` Then press <b>Ask DuNous to email it</b>: it comes from ${esc(META.sales_email)}, not from you.` : ""}</p>
   ${l.code ? `<p class="say">“Or see it right now: go to <b>${esc(siteHost())}</b>, press <b>Preview your site</b> at the top and type <b>${esc(l.code)}</b>.”</p>
   <p class="muted">No link to click and it's on our own website, so it can't be a scam. Great with anyone sceptical.</p>` : ""}
   <p class="branch">2a · “Send it to me” — probably the owner</p>
-  <p class="say">“Sending it now — it's from DuNous, D-U-N-O-U-S… Got it? Have a quick look while I'm on the line — takes 20 seconds.”<br>…<br>“What do you think? Anything you'd change — colours, photos, wording?”</p>
+  <p class="say">“It's on its way from DuNous, D-U-N-O-U-S. ${l.code ? `Or have a look right now while I'm on the line: go to ${esc(siteHost())}, press Preview your site and type ${esc(l.code)} — takes 20 seconds.` : "Have a look when it lands — takes 20 seconds."}”<br>…<br>“What do you think? Anything you'd change — colours, photos, wording?”</p>
   <p class="muted">Let them suggest changes — once they're designing it, it's theirs. Then:</p>
   <p class="say">“If you like it, I'll put it on your own address — something like <b>${esc(l.name.toLowerCase().replace(/[^a-z0-9]+/g, ""))}.com.au</b> — with your photos, hours and prices, live this week. Want me to set that up?”</p>
   <p class="branch">2b · Staff / “the owner's not here”</p>
-  <p class="say">“No worries — what's their first name and email? I'll put their name on it so they know it's not spam.” → email the preview → “When's the best time to catch them? I'll give them a quick ring then.”</p>
+  <p class="say">“No worries — what's their first name and email? We'll put their name on it so they know it's not spam.” → send the preview (box above) → “When's the best time to catch them? I'll give them a quick ring then.”</p>
   <p class="muted">Log “Spoke to staff”, save the owner's name, set a call-back.</p>
   <p class="branch">3 · Price (only when they ask)</p>
   <p class="say">“The one you're looking at is ready to go. Most businesses like yours take our ${esc(rec.name)} package at <b>${money(rec.price)}</b> — your own web address, your photos and prices, a booking or quote form straight to your phone, live within a few days of getting your photos. Does that work for you?”</p>
@@ -479,12 +501,13 @@ function previewBox(l) {
         <label>Their email<input data-f="email" id="pvEmail" type="email" value="${esc(l.email || "")}" placeholder="email is what they'll trust most"></label>
         <label>Their first name<input data-f="contact_name" value="${esc(l.contact_name || "")}"></label>
       </div>
+      ${IS_REP() ? `<p class="muted" style="margin:8px 0 0">Emails to customers come from <b>${esc(META.sales_email)}</b>, not from you: this opens an email to DuNous with everything, and we send it to them.</p>` : ""}
       <div class="row-btns">
-        <button class="btn primary" id="sendEmail">✉ Email the preview</button>
+        <button class="btn primary" id="sendEmail">${IS_REP() ? "✉ Ask DuNous to email it" : "✉ Email the preview"}</button>
         <button class="btn" id="sendSms" ${l.mobile ? "" : `title="This number is a landline: texts won't arrive"`}>💬 Text it${l.mobile ? "" : " (landline!)"}</button>
         <label class="muted">Your first name <input id="me" value="${esc(me())}" style="width:120px"></label>
       </div>
-      <details><summary class="muted">See or change the email and the text</summary>
+      <details><summary class="muted">${IS_REP() ? "See or change what DuNous will send, and the text" : "See or change the email and the text"}</summary>
         <label class="full">Email subject<input id="pvSubject" style="font-weight:400" value="${esc(previewSubject(l))}"></label>
         <label class="full">Email<textarea class="sms" id="pvBody" style="min-height:250px;font-weight:400">${esc(previewEmail(l))}</textarea></label>
         <label class="full">Text<textarea class="sms" id="sms" style="font-weight:400">${esc(smsText(l))}</textarea></label>
@@ -569,9 +592,17 @@ document.addEventListener("click", async (e) => {
     } else if (t.id === "sendEmail") {
       const to = mailAddress($("#pvEmail").value.trim());
       if (!to.includes("@")) throw new Error("Add their email first");
-      location.href = `mailto:${to}?subject=${encodeURIComponent($("#pvSubject").value)}&body=${encodeURIComponent($("#pvBody").value)}`;
-      await api(`/pipeline/api/leads/${CURRENT.slug}/sent`, { method: "POST", body: JSON.stringify({ via: "email", to }) });
-      toast("Email opened in your mail app — press Send", 4000);
+      const subject = $("#pvSubject").value, body = $("#pvBody").value;
+      if (IS_REP()) {
+        // Reps never email customers themselves: DuNous sends it from sales@.
+        location.href = `mailto:${mailAddress(META.sales_email)}?subject=${encodeURIComponent(previewRequestSubject(CURRENT, to))}&body=${encodeURIComponent(previewRequest(CURRENT, to, subject, body))}`;
+        await api(`/pipeline/api/leads/${CURRENT.slug}/sent`, { method: "POST", body: JSON.stringify({ via: "request", to }) });
+        toast(`Email to ${META.sales_email} opened — press Send. DuNous emails them the preview.`, 5000);
+      } else {
+        location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        await api(`/pipeline/api/leads/${CURRENT.slug}/sent`, { method: "POST", body: JSON.stringify({ via: "email", to }) });
+        toast("Email opened in your mail app — press Send", 4000);
+      }
     } else if (t.id === "sendSms") {
       const text = $("#sms").value;
       await copy(text, "Text copied too, in case Messages doesn't open");

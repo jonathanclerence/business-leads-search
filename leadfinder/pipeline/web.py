@@ -44,7 +44,7 @@ class CallBody(BaseModel):
 
 
 class SentBody(BaseModel):
-    via: str = Field(..., pattern="^(email|sms)$")
+    via: str = Field(..., pattern="^(email|sms|request)$")   # request: a rep asking sales@ to email it
     to: str = Field("", max_length=200)
 
 
@@ -304,10 +304,13 @@ def log_call(slug: str, body: CallBody, request: Request):
 def preview_sent(slug: str, body: SentBody, request: Request):
     """The rep opened an email or a text with the preview link (we can't see it go)."""
     u = auth.user(request)
+    if body.via == "email" and auth.is_rep(u):
+        raise HTTPException(403, f"Customer emails come from {config.SALES_EMAIL}: ask DuNous to email it.")
+    what = {"email": "Preview link emailed", "sms": "Preview link texted",
+            "request": f"Asked {config.SALES_EMAIL} to email the preview"}[body.via]
     with db.connect() as con:
         _lead_or_404(con, slug, u)
-        db.log(con, slug, "sent", ("Preview link emailed" if body.via == "email" else "Preview link texted")
-               + (f" to {body.to}" if body.to else ""), u["username"])
+        db.log(con, slug, "sent", what + (f" to {body.to}" if body.to else ""), u["username"])
         return _detail(con, slug)
 
 

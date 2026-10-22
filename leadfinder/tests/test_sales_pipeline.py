@@ -360,8 +360,10 @@ def _team_checks():
     except db.IntegrityError:
         check("database refuses two at once", "refused", "refused")
     # Sending the preview, and handing an interested business to sales@.
-    lead = ana.post("/pipeline/api/leads/c/sent", json={"via": "email", "to": "owner@c.com.au"}).json()
-    check("preview email logged", lead["history"][0]["detail"], "Preview link emailed to owner@c.com.au")
+    check("rep can't email a customer", ana.post("/pipeline/api/leads/c/sent", json={"via": "email", "to": "x@y.au"}).status_code, 403)
+    lead = ana.post("/pipeline/api/leads/c/sent", json={"via": "request", "to": "owner@c.com.au"}).json()
+    check("preview email asked of sales@", lead["history"][0]["detail"],
+          "Asked sales@dunous.com to email the preview to owner@c.com.au")
     check("rep can't download the website pack", ana.get("/pipeline/api/leads/c/docs/pack.pdf").status_code, 403)
     check("hand-over needs the customer's email", ana.post("/pipeline/api/leads/c/handover", json={"email": ""}).status_code, 400)
     lead = ana.post("/pipeline/api/leads/c/handover", json={"email": "owner@c.com.au", "package": "Starter"}).json()
