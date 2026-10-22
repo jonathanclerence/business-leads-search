@@ -285,7 +285,7 @@ def _use_postgres(url):
     if url:
         import psycopg
         with psycopg.connect(url, autocommit=True) as c:
-            c.execute("DROP TABLE IF EXISTS events, leads, users CASCADE")
+            c.execute("DROP TABLE IF EXISTS texts, events, leads, users CASCADE")
 
 
 def _team_checks():
@@ -372,6 +372,28 @@ def _team_checks():
     check("hand-over logged for sales@",
           any(h["kind"] == "handover" and "sales@dunous.com" in h["detail"] and h["who"] == "Ana" for h in lead["history"]), True)
     check("rep can't mark an invoice sent", ana.post("/pipeline/api/leads/c/stage", json={"stage": "invoice_sent"}).status_code, 403)
+
+    # Texts: the rep asks, someone with the DuNous phone sends.
+    with db.connect() as con:
+        con.execute("UPDATE leads SET mobile = 1 WHERE slug = 'c'")
+        con.execute("INSERT INTO users (username, name, role, pw_hash, created_at) VALUES ('oz', 'Oz', 'texter', ?, ?)",
+                    (auth.hash_password("pw-oz"), db.now()))
+    oz = signin("oz")
+    text = {"body": "Hi, it's Ana from DuNous (we just spoke). Here's your website."}
+    check("text needs their yes", ana.post("/pipeline/api/leads/c/text", json=text).status_code, 400)
+    check("text queued", ana.post("/pipeline/api/leads/c/text", json={**text, "consent": True}).status_code, 200)
+    check("not twice", ana.post("/pipeline/api/leads/c/text", json={**text, "consent": True}).status_code, 409)
+    check("reps can't see the texts", ana.get("/pipeline/api/texts").status_code, 403)
+    queue = oz.get("/pipeline/api/texts").json()["texts"]
+    check("texter sees it, with the rep's name", [(t["business"], t["rep"], t["status"]) for t in queue], [("C", "Ana", "pending")])
+    check("texter can't see leads", oz.get("/pipeline/api/leads").status_code, 403)
+    r = oz.get("/pipeline", follow_redirects=False)
+    check("texter's home is the texts page", (r.status_code, r.headers.get("location")), (303, "/pipeline/texts"))
+    check("sent", oz.post(f"/pipeline/api/texts/{queue[0]['id']}/sent").status_code, 200)
+    check("only once", oz.post(f"/pipeline/api/texts/{queue[0]['id']}/sent").status_code, 409)
+    oz.post(f"/pipeline/api/texts/{queue[0]['id']}/stop")
+    with db.connect() as con:
+        check("STOP → do not contact", db.get(con, "c")["stage"], "do_not_contact")
 
     with db.connect() as con:
         con.execute("UPDATE users SET pw_hash = ? WHERE username = 'sam'", (auth.hash_password("new"),))

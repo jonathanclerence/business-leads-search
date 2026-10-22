@@ -65,6 +65,8 @@ def main(argv=None) -> int:
     us.add_argument("username", nargs="?", help="lowercase letters, digits, - or _, e.g. sam")
     us.add_argument("--name", help="add/rename: the name history and the call scripts use (default: the username, capitalised)")
     us.add_argument("--admin", action="store_true", help="add: full access (lead finder, publishing, every lead)")
+    us.add_argument("--texter", action="store_true",
+                    help="add: sends the reps' texts from their phone (sees only the texts page)")
     us.add_argument("--ask", action="store_true", help="add/password: type the password instead of generating one")
 
     cp = sub.add_parser("copy-to-cloud", help="one-off: copy batches/pipeline.db into the shared database (DATABASE_URL)")
@@ -186,10 +188,11 @@ def _users(p, a) -> int:
             if not con.execute("SELECT 1 FROM users WHERE role = 'admin'").fetchone() and not a.admin:
                 p.error("the first user must be you, with --admin (once sign-in is on, everyone needs an account)")
             pw = _password(a)
+            role = "admin" if a.admin else "texter" if a.texter else "rep"
             con.execute("INSERT INTO users (username, name, role, pw_hash, created_at) VALUES (?, ?, ?, ?, ?)",
                         (username, (a.name or "").strip()[:40] or username.capitalize(),
-                         "admin" if a.admin else "rep", auth.hash_password(pw), db.now()))
-            print(f"Added {username} ({'admin' if a.admin else 'rep'}).")
+                         role, auth.hash_password(pw), db.now()))
+            print(f"Added {username} ({role}).")
         elif not existing:
             p.error(f"no user {username!r}")
         elif a.action == "password":

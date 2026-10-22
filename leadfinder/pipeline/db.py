@@ -125,10 +125,22 @@ CREATE INDEX IF NOT EXISTS events_slug ON events(slug, at);
 CREATE TABLE IF NOT EXISTS users (
     username   TEXT PRIMARY KEY,             -- what they sign in with
     name       TEXT NOT NULL,                -- shown in the tracker and history
-    role       TEXT NOT NULL DEFAULT 'rep',  -- rep | admin
+    role       TEXT NOT NULL DEFAULT 'rep',  -- rep | admin | texter
     pw_hash    TEXT NOT NULL,
     created_at TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS texts (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug         TEXT NOT NULL REFERENCES leads(slug),
+    phone        TEXT NOT NULL,                -- E.164
+    body         TEXT NOT NULL,
+    requested_by TEXT NOT NULL,                -- username of the rep who asked
+    requested_at TEXT NOT NULL,
+    status       TEXT NOT NULL DEFAULT 'pending',  -- pending | sent | skipped
+    done_by      TEXT,
+    done_at      TEXT
+);
+CREATE INDEX IF NOT EXISTS texts_status ON texts(status, id);
 """
 
 # Stages a sales rep may move their lead to. The rest are set by the pipeline

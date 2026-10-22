@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Texts to send</title>
+<style>
+:root{--bg:#f5f5f3;--panel:#fff;--ink:#16181c;--muted:#6b7079;--line:#e4e4e0;--accent:#1f5eff;--good:#0f8a4f;--bad:#c23030;--chip:#efefec}
+@media (prefers-color-scheme:dark){:root{--bg:#121316;--panel:#1b1d21;--ink:#ececee;--muted:#9a9ea7;--line:#2b2e34;--chip:#25282d;--accent:#6b93ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px 16px 48px}
+main{max-width:560px;margin:0 auto}
+header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{font-size:22px;margin:0}h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:28px 0 8px}
+.muted{color:var(--muted)}.who{margin-left:auto;font-size:14px}
+a{color:var(--accent)}
+.how{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;margin:14px 0 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.card h3{margin:0;font-size:17px}.card .sub{font-size:14px;color:var(--muted);margin:2px 0 10px}
+.msg{white-space:pre-wrap;background:var(--chip);border-radius:12px;padding:10px 12px;font-size:15px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--panel);color:inherit;border-radius:10px;padding:11px 14px;text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;flex:1;text-align:center}
+.btn.good{background:var(--good);border-color:var(--good);color:#fff}
+.done{font-size:14px;padding:10px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px;align-items:center}
+.done span{flex:1}.btn.sm{padding:5px 9px;font-size:13px}
+.empty{color:var(--muted);text-align:center;padding:28px 0}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<main>
+  <header><h1>Texts to send</h1><span class="who muted" id="who"></span></header>
+  <p class="how">The reps ask for these after a call, and the business said yes to a text. Tap <b>Open in Messages</b>, press send, then come back and tap <b>Sent</b>. If they have an iPhone it goes as an iMessage by itself. If someone replies <b>STOP</b>, tap <b>Replied STOP</b> under Done and nobody contacts them again.</p>
+  <h2>Waiting <span id="count"></span></h2>
+  <div id="pending"></div>
+  <h2>Done</h2>
+  <div id="done"></div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+"use strict";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 2200); }
+async function api(url, opts = {}) {
+  const r = await fetch(url, opts);
+  if (r.status === 401) { location.href = "/login?next=/pipeline/texts"; throw new Error("Signed out"); }
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.detail || `HTTP ${r.status}`);
+  return data;
+}
+// iPhones and Macs take "sms:number&body=", Android "sms:number?body=".
+const apple = /iPhone|iPad|Macintosh/.test(navigator.userAgent);
+const smsLink = (t) => `sms:${t.phone}${apple ? "&" : "?"}body=${encodeURIComponent(t.body)}`;
+const when = (iso) => new Date(iso).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" });
+
+async function load() {
+  const data = await api("/pipeline/api/texts");
+  $("#who").innerHTML = `${esc(data.me)} · <a href="/logout">Sign out</a>`;
+  const pending = data.texts.filter((t) => t.status === "pending"), done = data.texts.filter((t) => t.status !== "pending");
+  $("#count").textContent = pending.length ? `(${pending.length})` : "";
+  document.title = pending.length ? `(${pending.length}) Texts to send` : "Texts to send";
+  $("#pending").innerHTML = pending.length ? pending.map((t) => `
+    <div class="card">
+      <h3>${esc(t.business)}</h3>
+      <p class="sub">${esc(t.phone_display)} · asked by ${esc(t.rep)} · ${esc(when(t.requested_at))}</p>
+      <div class="msg">${esc(t.body)}</div>
+      <div class="btns">
+        <a class="btn primary" href="${esc(smsLink(t))}">Open in Messages</a>
+        <button class="btn good" data-id="${t.id}" data-act="sent">Sent ✓</button>
+        <button class="btn" data-id="${t.id}" data-act="skipped">Skip</button>
+      </div>
+    </div>`).join("") : `<p class="empty">Nothing to send right now. This page checks again every 20 seconds.</p>`;
+  $("#done").innerHTML = done.map((t) => `
+    <div class="done"><span><b>${esc(t.business)}</b> · ${t.status === "sent" ? "sent" : "skipped"} by ${esc(t.sender || "")} · ${esc(when(t.done_at))}</span>
+      ${t.status === "sent" ? `<button class="btn sm" data-id="${t.id}" data-act="stop">Replied STOP</button>` : ""}</div>`).join("") || `<p class="muted">None yet.</p>`;
+}
+
+document.addEventListener("click", async (e) => {
+  const b = e.target.closest("button[data-act]");
+  if (!b) return;
+  const act = b.dataset.act;
+  if (act === "stop" && !confirm("They replied STOP? Nobody will contact them again.")) return;
+  try {
+    await api(`/pipeline/api/texts/${b.dataset.id}/${act}`, { method: "POST" });
+    toast(act === "sent" ? "Marked as sent" : act === "stop" ? "Done: they won't be contacted again" : "Skipped");
+    await load();
+  } catch (err) { toast("✗ " + err.message); }
+});
+
+load().catch((err) => toast("✗ " + err.message));
+setInterval(() => { if (!document.hidden) load().catch(() => {}); }, 20000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) load().catch(() => {}); });
+</script>
+</body>
+</html>

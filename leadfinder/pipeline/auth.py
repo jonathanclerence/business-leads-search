@@ -98,6 +98,20 @@ def is_rep(u: Dict[str, Any]) -> bool:
     return u["role"] != "admin"
 
 
+# A texter (someone in Australia with the phone) only sees the texts to send.
+TEXTER_PATHS = ("/pipeline/texts", "/pipeline/api/texts")
+
+
+def home(u: Dict[str, Any]) -> str:
+    return "/pipeline/texts" if u["role"] == "texter" else "/pipeline"
+
+
+def can_text(request: Request) -> None:
+    """FastAPI dependency: the texts queue is for admins and texters."""
+    if user(request)["role"] not in ("admin", "texter"):
+        raise HTTPException(403, "Only DuNous sends texts.")
+
+
 def admin_only(request: Request) -> None:
     """FastAPI dependency for endpoints reps mustn't use."""
     if is_rep(user(request)):
@@ -195,9 +209,11 @@ class AuthMiddleware:
                 nxt = path + (f"?{scope['query_string'].decode()}" if scope.get("query_string") else "")
                 return await RedirectResponse(f"/login?next={quote(nxt)}", 303)(scope, receive, send)
             return await _deny(scope, receive, send, 401, "Please sign in again.")
-        if is_rep(u) and not (path == "/pipeline" or path.startswith("/pipeline/")):
+        allowed = (path.startswith(TEXTER_PATHS) if u["role"] == "texter"
+                   else not is_rep(u) or path == "/pipeline" or path.startswith("/pipeline/"))
+        if not allowed:
             if scope["type"] == "http" and scope.get("method") == "GET" and "/api/" not in path:
-                return await RedirectResponse("/pipeline", 303)(scope, receive, send)
+                return await RedirectResponse(home(u), 303)(scope, receive, send)
             return await _deny(scope, receive, send, 403, "Only an admin can do that.")
         scope.setdefault("state", {})["user"] = u
         return await self.app(scope, receive, send)
@@ -255,7 +271,7 @@ def install(app: FastAPI) -> None:
             for k in keys:
                 _FAILS[k].append(time.time())
             return _login_page(nxt, "Wrong username or password.")
-        res = RedirectResponse(nxt if u["role"] == "admin" else "/pipeline", 303)
+        res = RedirectResponse(nxt if u["role"] == "admin" else home(u), 303)
         res.set_cookie(COOKIE, make_cookie(u), max_age=SESSION_DAYS * 86400, httponly=True, samesite="lax",
                        secure=request.url.scheme == "https")
         return res

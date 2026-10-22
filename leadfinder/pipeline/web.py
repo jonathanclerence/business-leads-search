@@ -18,6 +18,7 @@ from . import dncr, documents, importer, offer, payments, publish
 
 router = APIRouter()
 UI = Path(__file__).resolve().parent / "ui" / "tracker.html"
+TEXTS_UI = UI.with_name("texts.html")
 PLAYBOOK = UI.with_name("playbook.html")
 
 LIST_COLUMNS = ("slug, name, category, kind, theme, suburb, state, region, phone, phone_display, mobile, "
@@ -53,6 +54,11 @@ class HandoverBody(BaseModel):
     contact_name: str = Field("", max_length=100)
     package: str = Field("", max_length=60)
     note: str = Field("", max_length=1000)
+
+
+class TextBody(BaseModel):
+    body: str = Field(..., min_length=10, max_length=600)
+    consent: bool = False
 
 
 class OwnerBody(BaseModel):
@@ -101,6 +107,7 @@ def meta(request: Request) -> Dict[str, Any]:
             "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH,
             "orders_sync": config.ONLINE_PAYMENTS and bool(config.ORDERS_API_TOKEN) and not rep, "dncr_due": dncr_due,
             "sales_email": config.SALES_EMAIL, "site_url": config.SITE_URL,
+            "texts_waiting": 0 if rep else _texts_waiting(),
             "contact": {"phone": config.PHONE_DISPLAY, "whatsapp": config.WHATSAPP_DISPLAY}, "cloud": config.CLOUD,
             "user": {k: u[k] for k in ("username", "name", "role")}, "signed_in": bool(u["username"]),
             "working": {"slug": current["slug"], "name": current["name"]} if current else None,
@@ -108,6 +115,11 @@ def meta(request: Request) -> Dict[str, Any]:
             "offer": {"packages": [{k: p[k] for k in ("id", "name", "price", "launch_days")} for p in offer.PACKAGES],
                       "recommended": offer.recommended()["id"], "hosting_yearly": offer.HOSTING["yearly"],
                       "hourly": offer.HOURLY_RATE}}
+
+
+def _texts_waiting() -> int:
+    with db.connect() as con:
+        return con.execute("SELECT COUNT(*) FROM texts WHERE status = 'pending'").fetchone()[0]
 
 
 def _where(stage, grade, region, theme, q, mobile, due, queue, owner="", u=None, mine=False):
@@ -333,6 +345,70 @@ def handover(slug: str, body: HandoverBody, request: Request):
                u["username"])
         db.advance(con, slug, "interested", f"handed to {config.SALES_EMAIL}", u["username"])
         return _detail(con, slug)
+
+
+# ---- Texts: reps ask, someone with the DuNous phone sends -------------------
+# No SMS service yet: a rep queues the text and a "texter" (or an admin) sends
+# it from their phone with one tap on /pipeline/texts. An iPhone sends it as
+# iMessage when the business has an iPhone, as a normal text otherwise.
+
+@router.post("/pipeline/api/leads/{slug}/text")
+def queue_text(slug: str, body: TextBody, request: Request):
+    u = auth.user(request)
+    if not body.consent:
+        raise HTTPException(400, "Only text people who said yes to a text (the Spam Act).")
+    with db.connect() as con:
+        lead = _lead_or_404(con, slug, u)
+        if not lead["mobile"]:
+            raise HTTPException(400, "That's a landline — it can't get texts. Ask DuNous to email it instead.")
+        if lead["dncr"] == "Y" or lead["stage"] == "do_not_contact":
+            raise HTTPException(400, "This business asked not to be contacted.")
+        if con.execute("SELECT 1 FROM texts WHERE slug = ? AND status = 'pending'", (slug,)).fetchone():
+            raise HTTPException(409, "A text to them is already waiting to be sent.")
+        con.execute("INSERT INTO texts (slug, phone, body, requested_by, requested_at) VALUES (?, ?, ?, ?, ?)",
+                    (slug, lead["phone"], body.body.strip(), u["username"], db.now()))
+        db.log(con, slug, "sent", "Text queued for DuNous to send (they said yes to a text)", u["username"])
+        return _detail(con, slug)
+
+
+@router.get("/pipeline/texts", include_in_schema=False, dependencies=[Depends(auth.can_text)])
+def texts_page():
+    return FileResponse(TEXTS_UI, headers={"Cache-Control": "no-store"})
+
+
+@router.get("/pipeline/api/texts", dependencies=[Depends(auth.can_text)])
+def texts(request: Request):
+    with db.connect() as con:
+        rows = con.execute(
+            "SELECT t.*, l.name AS business, l.phone_display, COALESCE(u.name, t.requested_by) AS rep, "
+            "COALESCE(d.name, t.done_by) AS sender FROM texts t JOIN leads l ON l.slug = t.slug "
+            "LEFT JOIN users u ON u.username = t.requested_by LEFT JOIN users d ON d.username = t.done_by "
+            "WHERE t.status = 'pending' OR t.id IN (SELECT id FROM texts WHERE status != 'pending' ORDER BY id DESC LIMIT 20) "
+            "ORDER BY t.status != 'pending', t.id DESC").fetchall()
+    return {"me": auth.user(request)["name"], "texts": [dict(r) for r in rows]}
+
+
+@router.post("/pipeline/api/texts/{text_id}/{action}", dependencies=[Depends(auth.can_text)])
+def text_done(text_id: int, action: str, request: Request):
+    """sent: they sent it · skipped: not sending it · stop: they replied STOP."""
+    if action not in ("sent", "skipped", "stop"):
+        raise HTTPException(404, "Use sent, skipped or stop")
+    u = auth.user(request)
+    with db.connect() as con:
+        t = con.execute("SELECT * FROM texts WHERE id = ?", (text_id,)).fetchone()
+        if not t:
+            raise HTTPException(404, "No such text")
+        if action == "stop":
+            # Spam Act: an unsubscribe request is honoured, so no more contact at all.
+            db.set_stage(con, t["slug"], "do_not_contact", "replied STOP to our text", u["username"])
+            return {"ok": True}
+        if t["status"] != "pending":
+            raise HTTPException(409, "Someone already dealt with that one.")
+        con.execute("UPDATE texts SET status = ?, done_by = ?, done_at = ? WHERE id = ?",
+                    (action, u["username"], db.now(), text_id))
+        db.log(con, t["slug"], "sent", "Preview texted from the DuNous phone" if action == "sent"
+               else "Text not sent (skipped)", u["username"])
+    return {"ok": True}
 
 
 @router.patch("/pipeline/api/leads/{slug}")
