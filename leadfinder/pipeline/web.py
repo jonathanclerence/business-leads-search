@@ -43,6 +43,18 @@ class CallBody(BaseModel):
     follow_up: Optional[str] = Field(None, max_length=10)
 
 
+class SentBody(BaseModel):
+    via: str = Field(..., pattern="^(email|sms)$")
+    to: str = Field("", max_length=200)
+
+
+class HandoverBody(BaseModel):
+    email: str = Field(..., max_length=200)
+    contact_name: str = Field("", max_length=100)
+    package: str = Field("", max_length=60)
+    note: str = Field("", max_length=1000)
+
+
 class OwnerBody(BaseModel):
     owner: Optional[str] = Field(None, max_length=32)
 
@@ -87,7 +99,8 @@ def meta(request: Request) -> Dict[str, Any]:
     return {"stages": [{"key": k, "label": l, "count": counts[k]} for k, l in db.STAGES],
             "outcomes": db.CALL_OUTCOMES, "regions": regions, "themes": themes, "grades": grades,
             "follow_ups_due": due, "preview_base": config.SITE_URL + config.PREVIEW_PATH,
-            "orders_sync": bool(config.ORDERS_API_TOKEN) and not rep, "dncr_due": dncr_due,
+            "orders_sync": config.ONLINE_PAYMENTS and bool(config.ORDERS_API_TOKEN) and not rep, "dncr_due": dncr_due,
+            "sales_email": config.SALES_EMAIL, "site_url": config.SITE_URL,
             "contact": {"phone": config.PHONE_DISPLAY, "whatsapp": config.WHATSAPP_DISPLAY}, "cloud": config.CLOUD,
             "user": {k: u[k] for k in ("username", "name", "role")}, "signed_in": bool(u["username"]),
             "working": {"slug": current["slug"], "name": current["name"]} if current else None,
@@ -287,6 +300,38 @@ def log_call(slug: str, body: CallBody, request: Request):
         return _detail(con, slug)
 
 
+@router.post("/pipeline/api/leads/{slug}/sent")
+def preview_sent(slug: str, body: SentBody, request: Request):
+    """The rep opened an email or a text with the preview link (we can't see it go)."""
+    u = auth.user(request)
+    with db.connect() as con:
+        _lead_or_404(con, slug, u)
+        db.log(con, slug, "sent", ("Preview link emailed" if body.via == "email" else "Preview link texted")
+               + (f" to {body.to}" if body.to else ""), u["username"])
+        return _detail(con, slug)
+
+
+@router.post("/pipeline/api/leads/{slug}/handover")
+def handover(slug: str, body: HandoverBody, request: Request):
+    """They're interested: the rep emails the details to sales@, who sends the
+    website pack and the invoice and talks to the customer from here on."""
+    u = auth.user(request)
+    email = body.email.strip()
+    if "@" not in email or "." not in email.split("@")[-1]:
+        raise HTTPException(400, "Add the customer's email first — that's where the website pack goes.")
+    with db.connect() as con:
+        _lead_or_404(con, slug, u)
+        fields = {"email": email, **({"contact_name": body.contact_name.strip()} if body.contact_name.strip() else {})}
+        con.execute(f"UPDATE leads SET {', '.join(f'{k} = ?' for k in fields)}, updated_at = ? WHERE slug = ?",
+                    list(fields.values()) + [db.now(), slug])
+        wants = f" — wants {body.package}" if body.package else ""
+        db.log(con, slug, "handover", f"Handed to {config.SALES_EMAIL} for the website pack and invoice "
+                                      f"(customer: {email}){wants}" + (f" · {body.note}" if body.note else ""),
+               u["username"])
+        db.advance(con, slug, "interested", f"handed to {config.SALES_EMAIL}", u["username"])
+        return _detail(con, slug)
+
+
 @router.patch("/pipeline/api/leads/{slug}")
 def edit_lead(slug: str, body: Dict[str, Any], request: Request):
     u = auth.user(request)
@@ -366,6 +411,8 @@ def _pdf(kind: str, lead: Optional[Dict[str, Any]]) -> Response:
 def lead_document(slug: str, kind: str, request: Request):
     """The proposal, agreement, onboarding form or all three (pack), made for this lead."""
     u = auth.user(request)
+    if auth.is_rep(u):
+        raise HTTPException(403, f"The website pack goes out from {config.SALES_EMAIL}: use “Hand it to DuNous”.")
     with db.connect() as con:
         lead = _lead_or_404(con, slug, u)
     res = _pdf(kind, lead)

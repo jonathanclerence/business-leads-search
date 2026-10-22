@@ -38,6 +38,13 @@ CHROMIUM_URL = os.getenv("CHROMIUM_URL", "").strip() or (f"https://{_PRODUCTION_
 # Shared secret between the tracker and its Chromium function, so nobody else can use it.
 INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "").strip()
 
+# Where reps hand interested businesses over: the website pack and the invoice
+# go out from here, not from the rep.
+SALES_EMAIL = os.getenv("SALES_EMAIL", "sales@dunous.com").strip()
+# Online orders (dunous.com/buy) are off: invoices are emailed instead. "1"
+# brings back the tracker's "Sync payments".
+ONLINE_PAYMENTS = os.getenv("ONLINE_PAYMENTS", "").strip() == "1"
+
 PREVIEW_PATH = "/previewsite/"
 BRAND = os.getenv("PREVIEW_BRAND", "DuNous")
 # The Australian number the sales team calls from, on every preview and PDF so
@@ -50,6 +57,9 @@ WHATSAPP_HREF = os.getenv("PREVIEW_WHATSAPP_HREF", "https://wa.me/61422765361")
 # Inside the marketing site
 PAGES_DIR = "public/previewsite-pages"     # one file per lead (served by the route)
 ASSETS_DIR = "public/previewsite-assets"   # shared css/js/photos
+# code → slug for "Preview your site". Server-side only (read by the site's
+# /api/preview-code), so the list of businesses we've built for isn't public.
+CODES_FILE = "src/content/preview-codes.json"
 
 EXPORT_DIR = ROOT / "exports" / "sites"
 

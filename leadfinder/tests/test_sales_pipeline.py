@@ -241,6 +241,18 @@ def test_stages():
           {"new", "not_interested", "do_not_contact", "live"} & db.PREVIEW_STAGES, set())
 
 
+def test_codes():
+    print("\nPreview codes")
+    from pipeline.leads import preview_code
+    check("first word", preview_code("Reddis"), "reddis")
+    check("first word of a long name", preview_code("Muscletek Handyman Services"), "muscletek")
+    check("short first word grows", preview_code("Got You Nails & Beauty"), "gotyou")
+    check("a trade word alone isn't a code", preview_code("Barber One Shop"), "barberone")
+    check("taken → add the next word", preview_code("Urban Barber Co.", {"urban"}), "urbanbarber")
+    check("every word taken → numbered", preview_code("Urban", {"urban"}), "urban2")
+    check("lowercase letters and digits only", preview_code("Café O'Brien's & Co"), "cafeobriens")
+
+
 def test_team():
     print("\nTeam: sign-in, one lead at a time")
     import tempfile
@@ -347,6 +359,18 @@ def _team_checks():
         check("database refuses two at once", "allowed", "refused")
     except db.IntegrityError:
         check("database refuses two at once", "refused", "refused")
+    # Sending the preview, and handing an interested business to sales@.
+    lead = ana.post("/pipeline/api/leads/c/sent", json={"via": "email", "to": "owner@c.com.au"}).json()
+    check("preview email logged", lead["history"][0]["detail"], "Preview link emailed to owner@c.com.au")
+    check("rep can't download the website pack", ana.get("/pipeline/api/leads/c/docs/pack.pdf").status_code, 403)
+    check("hand-over needs the customer's email", ana.post("/pipeline/api/leads/c/handover", json={"email": ""}).status_code, 400)
+    lead = ana.post("/pipeline/api/leads/c/handover", json={"email": "owner@c.com.au", "package": "Starter"}).json()
+    check("hand-over: email saved, now interested",
+          (lead["email"], lead["stage"]), ("owner@c.com.au", "interested"))
+    check("hand-over logged for sales@",
+          any(h["kind"] == "handover" and "sales@dunous.com" in h["detail"] and h["who"] == "Ana" for h in lead["history"]), True)
+    check("rep can't mark an invoice sent", ana.post("/pipeline/api/leads/c/stage", json={"stage": "invoice_sent"}).status_code, 403)
+
     with db.connect() as con:
         con.execute("UPDATE users SET pw_hash = ? WHERE username = 'sam'", (auth.hash_password("new"),))
     check("new password signs them out", sam.get("/pipeline/api/leads").status_code, 401)
@@ -361,6 +385,7 @@ def main() -> int:
     test_documents()
     test_dncr()
     test_stages()
+    test_codes()
     test_team()
     print(f"\n{'─' * 62}\n  {len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:

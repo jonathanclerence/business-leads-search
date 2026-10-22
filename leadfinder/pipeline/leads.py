@@ -90,6 +90,35 @@ def slugify(text: str, maxlen: int = 48) -> str:
     return t or "business"
 
 
+# Small words that never identify a business, and trade words that don't on
+# their own ("Barber One Shop" → barberone, not barber).
+_CODE_SKIP = {"the", "and", "a", "an", "of", "in", "on", "at", "by", "my"}
+_CODE_GENERIC = {"barber", "barbers", "barbershop", "beauty", "hair", "hairdresser", "nail", "nails", "salon",
+                 "spa", "studio", "tattoo", "tattoos", "pet", "pets", "dog", "dogs", "cafe", "auto", "mobile",
+                 "plumbing", "plumber", "electrical", "electrician", "cleaning", "garden", "gardening", "fitness",
+                 "gym", "massage", "dental", "vet", "clinic", "shop", "house", "home", "best", "top"}
+
+
+def preview_code(name: str, taken=frozenset()) -> str:
+    """The short code a business types at dunous.com → "Preview your site".
+
+    Its first word ("Reddis Plumbing" → reddis), with the next words added
+    while it's under 5 letters ("Got You Nails" → gotyou) or someone else
+    has it ("Urban Barber Co." after "Urban Trim" → urbanbarber); numbered
+    only as a last resort. Lowercase letters and digits, so nothing to mistype.
+    """
+    words = [w for w in slugify(name, 80).split("-") if w not in _CODE_SKIP] or ["site"]
+    code = ""
+    for word in words:
+        code = (code + word)[:20]
+        if len(code) >= 5 and code not in taken and code not in _CODE_GENERIC:
+            return code
+    n = 2
+    while f"{code}{n}" in taken:
+        n += 1
+    return f"{code}{n}"
+
+
 def place_id(maps_url: str) -> str:
     """The ChIJ… place id buried in a Google Maps place URL, if present."""
     m = re.search(r"!19s(ChIJ[\w-]+)", maps_url or "")

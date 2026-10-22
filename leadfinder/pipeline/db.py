@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 # Stages a sales rep may move their lead to. The rest are set by the pipeline
 # itself (previews, payments) or by an admin (domain, hosting, live).
-REP_STAGES = {"contacted", "follow_up", "interested", "invoice_sent", "not_interested", "do_not_contact"}
+REP_STAGES = {"contacted", "follow_up", "interested", "not_interested", "do_not_contact"}
 CLOSED_STAGES = ("not_interested", "do_not_contact", "live")
 
 # Fields the tracker UI may edit directly.
@@ -186,11 +186,13 @@ LATE_COLUMNS = {
     "dncr_at": "TEXT",         # date of that wash (YYYY-MM-DD); good for 30 days
     "owner": "TEXT",           # username of the rep it belongs to (NULL = anyone can take it)
     "working_since": "TEXT",   # set while the owner is working it; a rep has at most one
+    "code": "TEXT",            # what they type at dunous.com → "Preview your site" (set when published)
 }
 
 
 # One lead at a time: the database itself refuses a second one per rep.
 ONE_AT_A_TIME = "CREATE UNIQUE INDEX IF NOT EXISTS leads_working ON leads(owner) WHERE working_since IS NOT NULL"
+UNIQUE_CODES = "CREATE UNIQUE INDEX IF NOT EXISTS leads_code ON leads(code) WHERE code IS NOT NULL"
 
 
 def _migrate(con: sqlite3.Connection) -> None:
@@ -204,6 +206,7 @@ def _migrate(con: sqlite3.Connection) -> None:
     elif "actor" not in events:
         con.execute("ALTER TABLE events ADD COLUMN actor TEXT")
     con.execute(ONE_AT_A_TIME)
+    con.execute(UNIQUE_CODES)
 
 
 # ---- Postgres ---------------------------------------------------------------
@@ -270,7 +273,7 @@ def _pg_schema() -> List[str]:
     ddl = SCHEMA.replace("INTEGER PRIMARY KEY AUTOINCREMENT", "BIGSERIAL PRIMARY KEY").replace(" REAL,", " DOUBLE PRECISION,")
     statements = [s.strip() for s in ddl.split(";") if s.strip()]
     statements += [f"ALTER TABLE leads ADD COLUMN IF NOT EXISTS {c} {k}" for c, k in LATE_COLUMNS.items()]
-    return statements + ["ALTER TABLE events ADD COLUMN IF NOT EXISTS actor TEXT", ONE_AT_A_TIME]
+    return statements + ["ALTER TABLE events ADD COLUMN IF NOT EXISTS actor TEXT", ONE_AT_A_TIME, UNIQUE_CODES]
 
 
 @contextmanager

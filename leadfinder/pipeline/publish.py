@@ -17,6 +17,7 @@ verify() then checks each published URL and moves the ones that load to
 from __future__ import annotations
 
 import concurrent.futures
+import json
 import shutil
 import subprocess
 import urllib.request
@@ -24,6 +25,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
 from . import config, db, documents
+from .leads import preview_code
 from .render import ASSET_SRC, render
 
 Log = Callable[[str], None]
@@ -76,8 +78,23 @@ def refresh_info_pack(log: Log) -> None:
         log(f"Couldn't rebuild the website pack PDF ({exc}); publishing the one we have.")
 
 
+def assign_codes(con, slugs: Sequence[str]) -> None:
+    """Give each of these leads its preview code, best lead first (shortest
+    codes). Once given, a code never changes: they may have been told it."""
+    if not slugs:
+        return
+    taken = {r["code"] for r in con.execute("SELECT code FROM leads WHERE code IS NOT NULL")}
+    marks = ",".join("?" * len(slugs))
+    for r in con.execute(f"SELECT slug, name FROM leads WHERE code IS NULL AND slug IN ({marks}) "
+                         "ORDER BY score DESC, reviews DESC, slug", list(slugs)).fetchall():
+        code = preview_code(r["name"], taken)
+        taken.add(code)
+        con.execute("UPDATE leads SET code = ? WHERE slug = ?", (code, r["slug"]))
+
+
 def write_site_files(site_dir: Path, leads: List[Dict[str, Any]]) -> Dict[str, int]:
-    """Render pages into <site>/public/previewsite-pages and sync the shared css/js."""
+    """Render pages into <site>/public/previewsite-pages, sync the shared css/js,
+    and write the code → page list for "Preview your site"."""
     pages = site_dir / config.PAGES_DIR
     pages.mkdir(parents=True, exist_ok=True)
     assets = site_dir / config.ASSETS_DIR
@@ -99,6 +116,10 @@ def write_site_files(site_dir: Path, leads: List[Dict[str, Any]]) -> Dict[str, i
         if f.is_file() and f.name not in wanted and not f.name.startswith("."):
             f.unlink()
             removed += 1
+    codes = site_dir / config.CODES_FILE
+    codes.parent.mkdir(parents=True, exist_ok=True)
+    codes.write_text(json.dumps({l["code"]: l["slug"] for l in sorted(leads, key=lambda l: l["code"]) if l.get("code")},
+                                indent=1) + "\n", encoding="utf-8")
     return {"pages": len(wanted), "written": written, "removed": removed}
 
 
@@ -128,8 +149,8 @@ def prepare_worktree(log: Log) -> Path:
 def commit_and_push(wt: Path, message: str, push: bool, log: Log) -> bool:
     # -f: the pages folder is gitignored in the site repo so nobody commits
     # previews by hand on a feature branch; only this publisher adds them.
-    _git(wt, "add", "-A", "-f", "--", config.PAGES_DIR, config.ASSETS_DIR)
-    if not _git(wt, "status", "--porcelain", "--", config.PAGES_DIR, config.ASSETS_DIR):
+    _git(wt, "add", "-A", "-f", "--", config.PAGES_DIR, config.ASSETS_DIR, config.CODES_FILE)
+    if not _git(wt, "status", "--porcelain", "--", config.PAGES_DIR, config.ASSETS_DIR, config.CODES_FILE):
         log("No changes — dunous.com already has these previews.")
         return False
     _git(wt, "commit", "-q", "-m", message)
@@ -164,6 +185,7 @@ def publish(grades: Sequence[str] = ("Hot",), limit: Optional[int] = None, min_s
         fresh = select_new(con, grades, limit, min_score, regions)
         target = config.MARKETING_SITE_DIR if local else prepare_worktree(log)
         refresh_info_pack(log)
+        assign_codes(con, [l["slug"] for l in active_leads(con)] + fresh)
         leads = active_leads(con) + [db.get(con, s) for s in fresh]
         log(f"Rendering {len(leads)} preview pages ({len(fresh)} new)…")
         stats = write_site_files(target, leads)

@@ -65,6 +65,10 @@ section.box.mine{border-color:var(--good);background:color-mix(in srgb,var(--goo
 body.rep [data-admin],body:not(.ready) [data-admin]{display:none!important}
 /* On Vercel: scraping, publishing and site exports happen on the Mac. */
 body.cloud [data-mac]{display:none!important}
+/* Online payments are off (invoices are emailed); ONLINE_PAYMENTS=1 brings "Sync payments" back. */
+body:not(.pay) [data-pay]{display:none!important}
+.pcode{margin:0 0 10px}.pcode>b{font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--chip);padding:2px 9px;border-radius:7px;letter-spacing:.02em}
+details summary{cursor:pointer}
 @media (max-width:900px){main{flex-direction:column}aside{width:100%;border-left:0;border-top:1px solid var(--line)}}
 </style>
 </head>
@@ -79,7 +83,7 @@ body.cloud [data-mac]{display:none!important}
   <a class="btn sm" href="/" data-admin data-mac>← Lead finder</a>
   <div class="clock"><span class="dot" id="clockDot"></span><span id="clock"></span></div>
   <button class="btn" id="btnDncr" data-admin title="Wash your call list against the Do Not Call Register">Do Not Call Register</button>
-  <button class="btn" id="btnPayments" data-admin title="Fetch online orders from dunous.com and mark paid leads">Sync payments</button>
+  <button class="btn" id="btnPayments" data-admin data-pay title="Fetch online orders from dunous.com and mark paid leads">Sync payments</button>
   <button class="btn" id="btnVerify" data-admin title="Check which published previews are live">Check live</button>
   <button class="btn primary" id="btnPublish" data-admin data-mac>Publish previews…</button>
   <span id="who" class="muted" hidden></span>
@@ -195,10 +199,52 @@ function proof(l) {
   if (l.reviews >= 1) return `you've got Google reviews but no website`;
   return `you're on Google Maps but there's no website`;
 }
+const siteHost = () => META.site_url.replace(/^https?:\/\/(www\.)?/, "");
+/** The preview, sent by the rep: from someone they just spoke to, with a way to see it without trusting a link. */
+function previewSubject(l) { return `The website we made for ${l.short_name}`; }
+function previewEmail(l) {
+  const hi = l.contact_name ? `Hi ${firstName(l.contact_name)},` : "Hi,";
+  const code = l.code ? `\n\nRather not click a link in an email? Fair enough. Go to ${siteHost()}, press "Preview your site" at the top and type your code: ${l.code}` : "";
+  return `${hi}
+
+It's ${me() || "[your name]"} from DuNous. Thanks for talking with me just now.
+
+As promised, here's the website we've built for ${l.short_name}. It's free to look at: no sign-up, no payment details, nothing to download.
+
+${l.preview_url}${code}
+
+If you like it, just reply and we'll make it yours. If it's not for you, no problem at all.
+
+${me() || "[your name]"}
+DuNous · ${siteHost()}
+${META.contact.phone} · info@dunous.com`;
+}
 function smsText(l) {
   const hi = l.contact_name ? `Hi ${firstName(l.contact_name)}, it's` : "Hi, it's";
-  return `${hi} ${me() || "[your name]"} from DuNous — here's the website I built for ${l.name}: ${l.preview_url}\n\nIf you like it, it can be live on your own web address this week. Reply STOP to opt out.`;
+  const code = l.code ? ` Or go to ${siteHost()}, tap "Preview your site" and type ${l.code}.` : "";
+  return `${hi} ${me() || "[your name]"} from DuNous (we just spoke). Here's the free website we made for ${l.short_name}: ${l.preview_url}${code}\n\nReply STOP to opt out.`;
 }
+/** Interested: everything sales@ needs to send the website pack and the invoice. */
+function handoverSubject(l, pkg) { return `Website pack + invoice: ${l.short_name}${pkg ? ` (${pkg})` : ""}`; }
+function handoverEmail(l, f) {
+  return `Hi DuNous,
+
+${l.name} is interested. Please send them the website pack and the invoice.
+
+Customer email: ${f.email}
+Contact: ${f.contact_name || "-"}
+Phone: ${l.phone_display}
+Address: ${l.address || "-"}
+Package: ${f.package || "not sure yet"}${l.price_quoted ? `\nQuoted: ${money(l.price_quoted)}` : ""}
+Notes: ${f.note || "-"}
+
+Their preview: ${l.preview_url}${l.code ? ` (code ${l.code})` : ""}
+Website pack (PDF): ${location.origin}/pipeline/api/leads/${encodeURIComponent(l.slug)}/docs/pack.pdf
+In the tracker: ${location.origin}/pipeline?lead=${encodeURIComponent(l.slug)}
+
+${me() || "[your name]"}`;
+}
+const mailAddress = (s) => s.replace(/[^\w.@+-]/g, "");
 const money = (n) => "$" + Number(n).toLocaleString("en-AU");
 function offerOf() {
   const o = META.offer, pk = o.packages;
@@ -234,31 +280,33 @@ function scriptHtml(l) {
   return `
   <p class="muted">Don't introduce yourself first. Lead with <b>their</b> problem and the fact the site already exists. Smile — they can hear it.</p>
   <p class="branch">1 · Opener (whoever answers)</p>
-  <p class="say">“Hi! Quick one — I was looking at <b>${name}</b> on Google Maps: ${esc(proof(l))}. So people who find you can't ${esc(payoff(l))}, and some just ring the next place that has one.<br><br>I've actually already built you a website — it's finished and free to look at. What's the best mobile to text the link to?”</p>
-  <p class="muted">That last question does the “who am I talking to” job for you: owners say “send it to me”, staff say “that'd be the owner”.</p>
+  <p class="say">“Hi! Quick one — I was looking at <b>${name}</b> on Google Maps: ${esc(proof(l))}. So people who find you can't ${esc(payoff(l))}, and some just ring the next place that has one.<br><br>I've actually already built you a website — it's finished and free to look at. What's the best email to send it to?”</p>
+  <p class="muted">That last question does the “who am I talking to” job for you: owners say “send it to me”, staff say “that'd be the owner”. Email beats a text: people trust it more.</p>
+  ${l.code ? `<p class="say">“Or see it right now: go to <b>${esc(siteHost())}</b>, press <b>Preview your site</b> at the top and type <b>${esc(l.code)}</b>.”</p>
+  <p class="muted">No link to click and it's on our own website, so it can't be a scam. Great with anyone sceptical.</p>` : ""}
   <p class="branch">2a · “Send it to me” — probably the owner</p>
-  <p class="say">“Sending it now, it'll come from this number… Got it? Have a quick look while I'm on the line — takes 20 seconds.”<br>…<br>“What do you think? Anything you'd change — colours, photos, wording?”</p>
+  <p class="say">“Sending it now — it's from DuNous, D-U-N-O-U-S… Got it? Have a quick look while I'm on the line — takes 20 seconds.”<br>…<br>“What do you think? Anything you'd change — colours, photos, wording?”</p>
   <p class="muted">Let them suggest changes — once they're designing it, it's theirs. Then:</p>
   <p class="say">“If you like it, I'll put it on your own address — something like <b>${esc(l.name.toLowerCase().replace(/[^a-z0-9]+/g, ""))}.com.au</b> — with your photos, hours and prices, live this week. Want me to set that up?”</p>
   <p class="branch">2b · Staff / “the owner's not here”</p>
-  <p class="say">“No worries — what's their first name? I'll put it on the text so they know it's not spam.” → text the link → “When's the best time to catch them? I'll give them a quick ring then.”</p>
+  <p class="say">“No worries — what's their first name and email? I'll put their name on it so they know it's not spam.” → email the preview → “When's the best time to catch them? I'll give them a quick ring then.”</p>
   <p class="muted">Log “Spoke to staff”, save the owner's name, set a call-back.</p>
   <p class="branch">3 · Price (only when they ask)</p>
   <p class="say">“The one you're looking at is ready to go. Most businesses like yours take our ${esc(rec.name)} package at <b>${money(rec.price)}</b> — your own web address, your photos and prices, a booking or quote form straight to your phone, live within a few days of getting your photos. Does that work for you?”</p>
   <p class="muted">Then stop talking. If they hesitate: “What did you have in mind?” — and offer ${esc(low.name)} at ${money(low.price)} (the site as it is, one round of text changes). Never discount for nothing (Playbook → Pricing).</p>
   <p class="branch">4 · “Send me the info”</p>
-  <p class="say">“Of course — I'll email you one PDF with everything: the packages, hosting, our agreement and a short form for your photos. What's the best email?”</p>
-  <p class="muted">Save the email, then use <b>Send the info</b> above: download the website pack, copy the email, attach, send — while you're still on the phone if you can.</p>
+  <p class="say">“Of course — our team will email you one PDF with everything: the packages, hosting, our agreement and a short form for your photos, and the invoice when you're ready. What's the best email?”</p>
+  <p class="muted">${IS_REP() ? `Then <b>Hand it to DuNous</b> above: the website pack and the invoice come from ${esc(META.sales_email)}, and DuNous takes it from there.` : `Save the email, then use <b>Send the info</b> above: download the website pack, copy the email, attach, send — while you're still on the phone if you can.`}</p>
   <details><summary>Objections</summary>
-    <p><b>“Not interested.”</b> “Totally fair — is that because you're flat out already, or you've had a bad run with web people?” Busy → “That's exactly why — the site takes the enquiries while you're working. I'll text the link, look whenever.” Firm no → “No worries, I'll take it down. Have a good one.” (log Not interested)</p>
+    <p><b>“Not interested.”</b> “Totally fair — is that because you're flat out already, or you've had a bad run with web people?” Busy → “That's exactly why — the site takes the enquiries while you're working. I'll email you the link, look whenever.” Firm no → “No worries, I'll take it down. Have a good one.” (log Not interested)</p>
     <p><b>“All our work is word of mouth.”</b> “Makes sense — that's why you've got the reviews. The site catches the people who hear about you, then Google you before calling.”</p>
-    <p><b>“Are you from Google? Is this a scam?”</b> “No — I'm not Google and I don't want any money up front. I'm a web designer; I made you a preview to look at for free. You only pay if you want it live.”</p>
+    <p><b>“Are you from Google? Is this a scam?”</b> “No — I'm not Google and I don't want any money up front. We're DuNous, a web company; I made you a preview to look at for free. You only pay if you want it live.${l.code ? ` Don't click anything from me — go to ${esc(siteHost())} yourself, our number ${esc(META.contact.phone)} is on there, press Preview your site and type ${esc(l.code)}.` : ""}”</p>
     <p><b>“Where are you based?”</b> Be honest: “I work online with Aussie businesses — I'm based in Sri Lanka with an Australian number. You only pay once you're happy with it.”</p>
-    <p><b>“Email it to me.”</b> “Sure — what's the email? I'll text it too so you can see it on your phone now.” (save the email)</p>
+    <p><b>“Text it to me.”</b> “Sure — and what's the email? I'll send it there too so you've got it on your computer.”</p>
     <p><b>“Call me later.”</b> “Sure — tomorrow morning or afternoon better?” (set a follow-up)</p>
   </details>
   <p class="branch">Voicemail (≤15 seconds)</p>
-  <p class="say">“Hi, it's ${esc(me() || "[your name]")} — I've built a free website preview for ${name}. I'll text you the link from this number. Have a look when you get a sec. Cheers!”</p>`;
+  <p class="say">“Hi, it's ${esc(me() || "[your name]")} from DuNous — I've built a free website preview for ${name}. ${l.code ? `Go to ${esc(siteHost())}, press Preview your site and type ${esc(l.code)} — or I'll send you the link.` : "I'll send you the link."} Have a look when you get a sec. Cheers!”</p>`;
 }
 
 /* ---------- data ---------- */
@@ -269,7 +317,7 @@ async function loadMeta() {
   const own = $("#owner"), ownCur = own.value;
   own.innerHTML = `<option value="">Everyone's leads</option><option value="none">Not taken</option>` + META.team.map((m) => `<option value="${esc(m.username)}">${esc(m.name)}'s</option>`).join("");
   own.value = ownCur;
-  document.body.classList.toggle("rep", IS_REP()); document.body.classList.toggle("cloud", META.cloud); document.body.classList.add("ready");
+  document.body.classList.toggle("rep", IS_REP()); document.body.classList.toggle("cloud", META.cloud); document.body.classList.toggle("pay", META.orders_sync); document.body.classList.add("ready");
   $("#who").hidden = !META.signed_in;
   $("#who").innerHTML = `${esc(META.user.name)} · <a href="/logout">Sign out</a>`;
   const chips = IS_REP() ? repChips() : [
@@ -386,11 +434,8 @@ function renderDetail() {
       </div>
       <div class="row-btns"><button class="btn sm" data-cb="1">Tomorrow</button><button class="btn sm" data-cb="2">In 2 days</button><button class="btn sm" data-cb="7">Next week</button></div>
     </section>
-    <section class="box"><h3>Text message ${l.mobile ? "" : "· <span style='color:var(--warn)'>landline — can't receive SMS</span>"}</h3>
-      <textarea class="sms" id="sms">${esc(smsText(l))}</textarea>
-      <div class="row-btns"><button class="btn sm" id="copySms">Copy SMS</button><label class="muted">Your first name <input id="me" value="${esc(me())}" style="width:120px"></label></div>
-    </section>
-    <section class="box"><h3>Send the info</h3>
+    ${previewBox(l)}
+    ${IS_REP() ? handoverBox(l) : `<section class="box"><h3>Send the info</h3>
       <p class="muted" style="margin:0 0 4px">When they say “send me the info”: one 5-page PDF made for ${esc(l.short_name)} — cover, their website (screenshots + QR), packages and hosting, a one-page agreement and a one-page onboarding form. Fillable, so they can tick, sign and send it back. Takes a few seconds to build.</p>
       <div class="row-btns">
         <a class="btn primary" data-doc href="/pipeline/api/leads/${encodeURIComponent(l.slug)}/docs/pack.pdf">⬇ Website pack (PDF)</a>
@@ -402,7 +447,7 @@ function renderDetail() {
       <label class="full">Email<textarea class="sms" id="emailText" style="min-height:220px;font-weight:400">${esc(emailText(l))}</textarea></label>
       <div class="row-btns"><button class="btn sm" id="copyEmail">Copy email</button><button class="btn sm" id="copySubject">Copy subject</button>
         ${l.email ? `<a class="btn sm" id="mailDraft" href="#">Open in Mail ↗</a>` : `<span class="muted">Add their email in Details to open a draft in Mail.</span>`}</div>
-    </section>
+    </section>`}
     <section class="box script"><h3>Call script</h3>${scriptHtml(l)}</section>
     <section class="box"><h3>Stage</h3>
       <div class="grid2"><label>Move to<select id="stageSel">${stages.map((s) => `<option value="${s.key}" ${s.key === l.stage ? "selected" : ""}>${esc(s.label)}</option>`).join("")}</select></label>
@@ -426,6 +471,39 @@ function renderDetail() {
       <p class="muted" style="margin:6px 0 0">${esc(l.address || "")} · Lead id <code>${esc(l.slug)}</code> · Tries: ${l.attempts}${l.last_contact ? " · Last: " + esc(l.last_contact.slice(0, 16).replace("T", " ")) + " UTC" : ""}</p>
     </section>
     <section class="box"><h3>History</h3><ul class="hist">${l.history.map((h) => `<li><time>${esc(h.at.slice(0, 16).replace("T", " "))}</time>${esc(h.detail || h.kind)}${h.who ? ` <span class="muted">— ${esc(h.who)}</span>` : ""}</li>`).join("")}</ul></section>`;
+}
+function previewBox(l) {
+  return `<section class="box"><h3>Send them their website</h3>
+      ${l.code ? `<p class="pcode">Their code: <b>${esc(l.code)}</b> <span class="muted">— at ${esc(siteHost())} they press <b>Preview your site</b> and type it. Nothing to click if they're wary of links.</span></p>` : ""}
+      <div class="grid2">
+        <label>Their email<input data-f="email" id="pvEmail" type="email" value="${esc(l.email || "")}" placeholder="email is what they'll trust most"></label>
+        <label>Their first name<input data-f="contact_name" value="${esc(l.contact_name || "")}"></label>
+      </div>
+      <div class="row-btns">
+        <button class="btn primary" id="sendEmail">✉ Email the preview</button>
+        <button class="btn" id="sendSms" ${l.mobile ? "" : `title="This number is a landline: texts won't arrive"`}>💬 Text it${l.mobile ? "" : " (landline!)"}</button>
+        <label class="muted">Your first name <input id="me" value="${esc(me())}" style="width:120px"></label>
+      </div>
+      <details><summary class="muted">See or change the email and the text</summary>
+        <label class="full">Email subject<input id="pvSubject" style="font-weight:400" value="${esc(previewSubject(l))}"></label>
+        <label class="full">Email<textarea class="sms" id="pvBody" style="min-height:250px;font-weight:400">${esc(previewEmail(l))}</textarea></label>
+        <label class="full">Text<textarea class="sms" id="sms" style="font-weight:400">${esc(smsText(l))}</textarea></label>
+        <div class="row-btns"><button class="btn sm" id="copyPvEmail">Copy email</button><button class="btn sm" id="copySms">Copy text</button></div>
+      </details>
+    </section>`;
+}
+function handoverBox(l) {
+  const { pk } = offerOf();
+  return `<section class="box"><h3>Interested? Hand it to DuNous</h3>
+      <p class="muted" style="margin:0 0 8px">The website pack and the invoice come from <b>${esc(META.sales_email)}</b>, not from you. Add their email, press the button and send the email that opens — DuNous talks to them from there.</p>
+      <div class="grid2">
+        <label>Their email (needed)<input id="hoEmail" type="email" value="${esc(l.email || "")}" placeholder="owner@theirbusiness.com.au"></label>
+        <label>Their name<input id="hoContact" value="${esc(l.contact_name || "")}"></label>
+        <label>Package they like<select id="hoPkg"><option value="">Not sure yet</option>${pk.map((p) => `<option>${esc(p.name)} (${money(p.price)})</option>`).join("")}</select></label>
+      </div>
+      <label class="full">Anything DuNous should know<textarea id="hoNote" placeholder="Changes they asked for, best time to reach them…"></textarea></label>
+      <div class="row-btns"><button class="btn primary" id="handover">✉ Email ${esc(META.sales_email)}</button></div>
+    </section>`;
 }
 function dncrNote(l) {
   if (l.dncr === "Y") return `<p class="sub" style="color:var(--bad);font-weight:700">⛔ On the Do Not Call Register (washed ${esc(l.dncr_at)}) — don't call.</p>`;
@@ -485,7 +563,26 @@ document.addEventListener("click", async (e) => {
     } else if (t.dataset.copy) {
       copy(t.dataset.copy, "Number copied");
     } else if (t.id === "copySms") {
-      copy($("#sms").value, "SMS copied");
+      copy($("#sms").value, "Text copied");
+    } else if (t.id === "copyPvEmail") {
+      copy($("#pvBody").value, "Email copied");
+    } else if (t.id === "sendEmail") {
+      const to = mailAddress($("#pvEmail").value.trim());
+      if (!to.includes("@")) throw new Error("Add their email first");
+      location.href = `mailto:${to}?subject=${encodeURIComponent($("#pvSubject").value)}&body=${encodeURIComponent($("#pvBody").value)}`;
+      await api(`/pipeline/api/leads/${CURRENT.slug}/sent`, { method: "POST", body: JSON.stringify({ via: "email", to }) });
+      toast("Email opened in your mail app — press Send", 4000);
+    } else if (t.id === "sendSms") {
+      const text = $("#sms").value;
+      await copy(text, "Text copied too, in case Messages doesn't open");
+      location.href = `sms:${CURRENT.phone}&body=${encodeURIComponent(text)}`;
+      await api(`/pipeline/api/leads/${CURRENT.slug}/sent`, { method: "POST", body: JSON.stringify({ via: "sms", to: CURRENT.phone_display }) });
+    } else if (t.id === "handover") {
+      const f = { email: $("#hoEmail").value.trim(), contact_name: $("#hoContact").value.trim(), package: $("#hoPkg").value, note: $("#hoNote").value.trim() };
+      CURRENT = await api(`/pipeline/api/leads/${CURRENT.slug}/handover`, { method: "POST", body: JSON.stringify(f) });
+      location.href = `mailto:${mailAddress(META.sales_email)}?subject=${encodeURIComponent(handoverSubject(CURRENT, f.package))}&body=${encodeURIComponent(handoverEmail(CURRENT, f))}`;
+      toast(`Email to ${META.sales_email} opened — press Send. DuNous takes it from here.`, 6000);
+      renderDetail(); loadMeta(); loadList();
     } else if (t.id === "copyEmail") {
       copy($("#emailText").value, "Email copied — attach the website pack");
     } else if (t.id === "copySubject") {
@@ -601,7 +698,13 @@ async function syncPayments(quiet) {
 }
 
 tickClock(); setInterval(tickClock, 30000);
-refresh().then(() => { if (!CURRENT) resetDetail(); if (META.orders_sync) syncPayments(true).catch(() => {}); });
+refresh().then(() => {
+  if (!CURRENT) resetDetail();
+  // ?lead=<slug>: straight to that lead (the link in a hand-over email).
+  const want = new URLSearchParams(location.search).get("lead");
+  if (want && !IS_REP()) openLead(want).catch((err) => toast("✗ " + err.message));
+  if (META.orders_sync) syncPayments(true).catch(() => {});
+});
 </script>
 </body>
 </html>
