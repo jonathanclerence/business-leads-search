@@ -160,6 +160,8 @@ is not a plan; it's a warning the tool will show you.
 | `data/towns_victoria.csv` | 156 Victorian towns and suburbs — regional centres, their suburbs, coastal and rural towns. Has a `priority` column controlling run order and a `region` column for your own slicing. |
 | `data/business_types.csv` | 73 business types ranked by how well they fit a website-plus-booking pitch. Priority 1 is where the money is. |
 | `data/starter_geelong.csv` | 8 hand-picked pairs. Run this first. |
+| `data/towns_australia.csv` | 1,207 search centres across every state and territory, biggest first. See [Whole of Australia, fast](#whole-of-australia-fast---provider-fast). |
+| `data/business_types_australia.csv` | 44 types ranked by measured no-website rate, trades first. |
 
 The parser is deliberately forgiving: header row or no header row, any of
 `town` / `suburb` / `location` / `city` (or `business_type` / `type` /
@@ -224,6 +226,52 @@ first-class outcome rather than grinding out hundreds of empty results:
 
 To go faster or further: raise `--pace`, lower `--max-results`, split across
 nights, or set `SCRAPER_PROXY` in `.env`.
+
+### Whole of Australia, fast (`--provider fast`)
+
+The browser engine opens every listing one by one: ~30 s per search, which is
+why the Victoria sweep took four days. The Maps web app fills its results list
+from a single request whose response already holds every field we need (phone,
+website, rating, reviews, address, coordinates, hours, whether the listing is
+claimed). `leadfinder/fastmaps.py` makes that request directly over HTTP: one
+call per 20 businesses, ~0.7 s, no browser. Roughly 30× faster.
+
+```bash
+python batch_cli.py run --provider fast --name australia \
+    --towns data/towns_australia.csv --types data/business_types_australia.csv
+python batch_cli.py resume latest --rate 1      # gentler after a block
+python batch_cli.py database latest 20260820-1857-batch    # → exports/australia/
+```
+
+- **3 searches at a time under one shared cap** (`--concurrency 3 --rate 2`
+  requests/s by default). A block stops every worker, backs off 5 → 15 → 30
+  min and comes back at a lower rate.
+- **Smart paging.** A search fetches its next page (up to `--max-results 60`)
+  only while a page still turns up ≥ `--more-if-no-site 3` businesses with no
+  website and a phone. Businesses without websites rank lower on Maps, so
+  that's where the later pages pay off.
+- `data/towns_australia.csv`: **1,207 search centres** covering every state,
+  built by `data/make_towns_australia.py` from every gazetted locality with
+  its population: the biggest place first, the next one only if it's more than
+  3.5 km (capital-city suburbs) or 12 km (regional) from a centre already
+  picked. Towns the Victoria sweep did are left out.
+- `data/business_types_australia.csv`: 44 types ranked by the measured
+  no-website rate in the Victoria data (mobile mechanic, handyman and mechanic
+  ~35%), trades first, plus sole-trader trades that weren't searched before
+  (concreter, fencing, tiler, plasterer, bricklayer…). ~15 min per type for
+  the whole country at 1.5 requests/s.
+- Mobile and home-based businesses have no street address on Google, only a
+  pin; `leadfinder/geo.py` labels them with the nearest locality, state,
+  postcode and ABS region from `data/au_localities.csv`.
+
+**`batch_cli.py database`** merges any batches into
+`exports/australia/au_leads.db` (SQLite, table `leads`, view `call_list`) and
+`au-no-website-leads.csv` (plus `by-state/*.csv`): every business with a phone
+and no website of its own, merged by place id and phone, re-scored, with
+chains and 3+-branch businesses set aside and the leads the tracker already has
+marked (`batches/pipeline.db` is opened read-only). Leads on free Wix/Square
+subdomains go in `au-weak-website-leads.csv` as upgrade leads. Wash the numbers
+against the Do Not Call Register before reps call them.
 
 ---
 
@@ -409,14 +457,24 @@ would outrank a hair salon. That's exactly backwards — the pitch doesn't apply
 to a supermarket at all.
 
 ```
-score = opportunity × fit   (max 45)   no website, AND the pitch applies
-      + contactability      (max 20)   is there a phone number to ring
-      + credibility         (max 20)   reviews + rating: real, busy, solvent
-      + booking bonus × fit (max 15)   appointment-driven verticals
+score = opportunity × fit   (max 40)   no website of their own, AND the pitch applies
+      + contactability      (max 18)   is there a phone number to ring
+      + credibility         (max 18)   reviews + rating: real, busy, solvent
+      + booking bonus × fit (max 12)   appointment-driven verticals
+      + needs-a-site signals (max 12)  social page only +4, mobile +3,
+                                       claimed listing +3, hours listed +2
 
       ...then ×0.8 with no phone, because a lead your rep can't dial
          is barely a lead
 ```
+
+**"No website" means no site of their own** (`leadfinder/websites.py`). A
+Facebook or Instagram page, a Linktree, a Fresha/Timely booking link, a Yellow
+Pages listing or a dead `business.site` link in Google's Website box all count
+as no website: in the Victoria sweep 2,165 "websites" were Facebook pages.
+Social-only businesses score highest of all: they already market online and
+have nowhere of their own to send people. A free Wix/Square/GoDaddy subdomain
+counts as a weak website (partial opportunity).
 
 `fit` runs from **1.00** (hair salon — the appointment book *is* the business)
 through **0.85** (mechanic, plumber — books jobs) and **0.45** (café —
@@ -745,6 +803,7 @@ source .venv/bin/activate
 python tests/test_extraction.py    # parsing, CSV shape, HTTP contract
 python tests/test_pipeline.py      # full scrape against a fake Maps server
 python tests/test_batch.py         # crash/resume, dedupe, scoring, sales CSV
+python tests/test_fastmaps.py      # fast engine parser, website status, geo, lead database
 ```
 
 **143 checks, all offline, no Google quota.** `test_pipeline.py` and

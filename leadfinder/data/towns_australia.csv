@@ -1,0 +1,1208 @@
+town,region,state,priority,population,lat,lng,metro
+"Reservoir, VIC",Melbourne - North East,VIC,1,50474,-37.71239,145.00557,metro
+"Craigieburn, VIC",Melbourne - North West,VIC,2,50347,-37.58137,144.92254,metro
+"Point Cook, VIC",Melbourne - West,VIC,3,49929,-37.90542,144.74287,metro
+"Melbourne, VIC",Melbourne - Inner,VIC,4,47285,-37.82744,144.97142,metro
+"Blacktown, NSW",Sydney - South West,NSW,5,47176,-33.77655,150.90338,metro
+"Port Macquarie, NSW",Mid North Coast,NSW,6,44830,-31.46015,152.89249,regional
+"Werribee, VIC",Melbourne - West,VIC,7,40345,-37.90788,144.64562,metro
+"Glen Waverley, VIC",Melbourne - South East,VIC,8,40327,-37.88232,145.17162,metro
+"Castle Hill, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,9,39594,-33.72933,150.99777,metro
+"Dubbo, NSW",Far West and Orana,NSW,10,38943,-32.28141,148.60433,regional
+"Hoppers Crossing, VIC",Melbourne - West,VIC,11,38701,-37.86897,144.70068,metro
+"Orange, NSW",Central West,NSW,12,38097,-33.25104,149.06176,regional
+"Auburn, NSW",Sydney - Parramatta,NSW,13,37366,-33.85787,151.02827,metro
+"St Albans, VIC",Melbourne - West,VIC,14,37309,-37.74814,144.80519,metro
+"Frankston, VIC",Mornington Peninsula,VIC,15,36097,-38.15088,145.14145,metro
+"Tarneit, VIC",Melbourne - West,VIC,16,34562,-37.83638,144.66432,metro
+"Rowville, VIC",Melbourne - Outer East,VIC,17,33672,-37.92589,145.24318,metro
+"Mount Waverley, VIC",Melbourne - South East,VIC,18,33611,-37.87838,145.12845,metro
+"Canning Vale, WA",Perth - South West,WA,19,33059,-32.08471,115.91799,metro
+"Epping, VIC",Melbourne - North East,VIC,20,32395,-37.64299,145.01026,metro
+"Bankstown, NSW",Sydney - Inner South West,NSW,21,32113,-33.91991,151.03125,metro
+"Southport, QLD",Gold Coast,QLD,22,31908,-27.97618,153.39856,regional
+"Baldivis, WA",Perth - South West,WA,23,31653,-32.33104,115.83324,metro
+"Noble Park, VIC",Melbourne - South East,VIC,24,30998,-37.96599,145.17767,metro
+"Maroubra, NSW",Sydney - Eastern Suburbs,NSW,25,30688,-33.94543,151.24625,metro
+"Narre Warren South, VIC",Melbourne - South East,VIC,26,30319,-38.04961,145.30798,metro
+"Dandenong, VIC",Melbourne - South East,VIC,27,29906,-37.98531,145.21389,metro
+"Hurstville, NSW",Sydney - Inner South West,NSW,28,29822,-33.96268,151.1006,metro
+"Mill Park, VIC",Melbourne - North East,VIC,29,29710,-37.66409,145.06521,metro
+"Merrylands, NSW",Sydney - Parramatta,NSW,30,29653,-33.83511,150.98511,metro
+"Buderim, QLD",Sunshine Coast,QLD,31,29355,-26.68758,153.06191,regional
+"Bundoora, VIC",Melbourne - North East,VIC,32,28653,-37.70282,145.06449,metro
+"Mosman, NSW",Sydney - North Sydney and Hornsby,NSW,33,28475,-33.82846,151.24866,metro
+"Doncaster East, VIC",Melbourne - Outer East,VIC,34,28360,-37.77523,145.16444,metro
+"Kellyville, NSW",Sydney - Blacktown,NSW,35,27971,-33.69583,150.95622,metro
+"Bentleigh East, VIC",Melbourne - Inner South,VIC,36,27635,-37.9222,145.06678,metro
+"Liverpool, NSW",Sydney - South West,NSW,37,27084,-33.92148,150.91654,metro
+"Quakers Hill, NSW",Sydney - Blacktown,NSW,38,27080,-33.72826,150.88995,metro
+"Croydon, VIC",Melbourne - Outer East,VIC,39,26946,-37.79134,145.2815,metro
+"Marrickville, NSW",Sydney - Inner West,NSW,40,26592,-33.91228,151.15592,metro
+"Ryde, NSW",Sydney - Ryde,NSW,41,26499,-33.8078,151.11399,metro
+"Caboolture, QLD",Moreton Bay - North,QLD,42,26433,-27.06604,152.96865,metro
+"Ferntree Gully, VIC",Melbourne - South East,VIC,43,26428,-37.88618,145.28207,metro
+"Coburg, VIC",Melbourne - North West,VIC,44,26185,-37.74493,144.9645,metro
+"Strathfield, NSW",Sydney - Inner West,NSW,45,25813,-33.87913,151.08118,metro
+"Keysborough, VIC",Melbourne - South East,VIC,46,25785,-38.00638,145.166,metro
+"Coffs Harbour, NSW",Coffs Harbour - Grafton,NSW,47,25752,-30.30894,153.09979,regional
+"Hampton Park, VIC",Melbourne - South East,VIC,48,25530,-38.0423,145.26757,metro
+"Mount Gambier, SA",South Australia - South East,SA,49,25512,-37.82633,140.78064,regional
+"Upper Coomera, QLD",Gold Coast,QLD,50,25276,-27.87814,153.28283,regional
+"Glen Iris, VIC",Melbourne - Inner South,VIC,51,25268,-37.85619,145.06763,metro
+"Chatswood, NSW",Sydney - North Sydney and Hornsby,NSW,52,24913,-33.7958,151.18087,metro
+"Kew, VIC",Melbourne - Inner East,VIC,53,24605,-37.80148,145.03089,metro
+"Northcote, VIC",Melbourne - Inner,VIC,54,24561,-37.77226,144.99937,metro
+"Campsie, NSW",Sydney - Inner West,NSW,55,24541,-33.91457,151.10339,metro
+"Carlingford, NSW",Sydney - Ryde,NSW,56,24394,-33.77523,151.0454,metro
+"Endeavour Hills, VIC",Melbourne - South East,VIC,57,24294,-37.9689,145.25585,metro
+"Caroline Springs, VIC",Melbourne - West,VIC,58,24205,-37.73137,144.73717,metro
+"Ashfield, NSW",Sydney - Inner West,NSW,59,23841,-33.88947,151.12753,metro
+"Dianella, WA",Perth - North West,WA,60,23486,-31.88901,115.87147,metro
+"Armidale, NSW",New England and North West,NSW,61,23352,-30.50195,151.66739,regional
+"Wyndham Vale, VIC",Melbourne - West,VIC,62,23273,-37.85891,144.60343,metro
+"Brighton, VIC",Melbourne - Inner South,VIC,63,23253,-37.90784,144.99604,metro
+"Thornlie, WA",Perth - South East,WA,64,23153,-32.06138,115.95424,metro
+"Morphett Vale, SA",Adelaide - South,SA,65,23140,-35.12083,138.52719,metro
+"Glenmore Park, NSW",Sydney - South West,NSW,66,23004,-33.79317,150.68049,metro
+"Forest Lake, QLD",Ipswich,QLD,67,22904,-27.62095,152.96355,metro
+"Greystanes, NSW",Sydney - Parramatta,NSW,68,22802,-33.82378,150.93855,metro
+"Ellenbrook, WA",Perth - North East,WA,69,22681,-31.76808,115.98899,metro
+"Langwarrin, VIC",Mornington Peninsula,VIC,70,22588,-38.15424,145.19549,metro
+"Goulburn, NSW",Sydney - Outer West and Blue Mountains,NSW,71,22419,-34.7447,149.72375,regional
+"Cheltenham, VIC",Melbourne - Inner South,VIC,72,22291,-37.96196,145.06012,metro
+"Glenroy, VIC",Melbourne - North West,VIC,73,22245,-37.70422,144.92838,metro
+"Boronia, VIC",Melbourne - Outer East,VIC,74,22195,-37.85382,145.28417,metro
+"Hornsby, NSW",Sydney - North Sydney and Hornsby,NSW,75,22168,-33.69724,151.10055,metro
+"Mooroolbark, VIC",Melbourne - Outer East,VIC,76,21967,-37.78059,145.32583,metro
+"Roxburgh Park, VIC",Melbourne - North West,VIC,77,21817,-37.62575,144.92544,metro
+"North Lakes, QLD",Moreton Bay - South,QLD,78,21671,-27.22452,153.01398,metro
+"Dee Why, NSW",Sydney - Northern Beaches,NSW,79,21518,-33.75117,151.29037,metro
+"Kirwan, QLD",Townsville,QLD,80,21418,-19.30338,146.72495,regional
+"Morayfield, QLD",Moreton Bay - North,QLD,81,21394,-27.13374,152.94921,metro
+"Doreen, VIC",Melbourne - North East,VIC,82,21298,-37.59818,145.14482,metro
+"Doncaster, VIC",Melbourne - Inner East,VIC,83,20946,-37.78284,145.12239,metro
+"Carrum Downs, VIC",Mornington Peninsula,VIC,84,20711,-38.09708,145.17456,metro
+"Truganina, VIC",Melbourne - West,VIC,85,20687,-37.80787,144.72344,metro
+"Essendon, VIC",Melbourne - North West,VIC,86,20596,-37.74923,144.91226,metro
+"Gosnells, WA",Perth - South East,WA,87,20293,-32.08756,115.99499,metro
+"St Kilda, VIC",Melbourne - Inner,VIC,88,20230,-37.86423,144.98148,metro
+"St Clair, NSW 2759",Sydney - Outer West and Blue Mountains,NSW,89,19897,-33.79794,150.78794,metro
+"Deception Bay, QLD",Moreton Bay - North,QLD,90,19850,-27.18195,153.01323,metro
+"Mulgrave, VIC",Melbourne - South East,VIC,91,19368,-37.92029,145.17259,metro
+"Clayton, VIC",Melbourne - South East,VIC,92,19358,-37.91526,145.12899,metro
+"Seven Hills, NSW",Sydney - Blacktown,NSW,93,19326,-33.77743,150.94272,metro
+"Redbank Plains, QLD",Ipswich,QLD,94,19299,-27.65187,152.84809,metro
+"Wantirna South, VIC",Melbourne - Outer East,VIC,95,19271,-37.8709,145.2227,metro
+"Altona Meadows, VIC",Melbourne - West,VIC,96,19160,-37.88002,144.7811,metro
+"Cherrybrook, NSW",Sydney - Ryde,NSW,97,18765,-33.72178,151.04593,metro
+"Ballajura, WA",Perth - North East,WA,98,18704,-31.83838,115.89717,metro
+"Sunshine West, VIC",Melbourne - West,VIC,99,18580,-37.79922,144.8113,metro
+"Narangba, QLD",Moreton Bay - North,QLD,100,18573,-27.18697,152.9286,metro
+"Mount Martha, VIC",Mornington Peninsula,VIC,101,18548,-38.27378,145.03085,metro
+"Wollongong, NSW",Illawarra,NSW,102,18442,-34.42826,150.89296,regional
+"Eltham, VIC",Melbourne - North East,VIC,103,18314,-37.71466,145.1633,metro
+"Griffith, NSW",Riverina,NSW,104,18196,-34.27539,146.04315,regional
+"Willetton, WA",Perth - South West,WA,105,18187,-32.05398,115.88783,metro
+"Sunnybank Hills, QLD",Brisbane - South,QLD,106,18085,-27.59357,153.05187,metro
+"Fairfield, NSW",Sydney - South West,NSW,107,18081,-33.86904,150.95102,metro
+"Cronulla, NSW",Sydney - Sutherland,NSW,108,18070,-34.05635,151.15411,metro
+"Mount Eliza, VIC",Mornington Peninsula,VIC,109,17888,-38.19365,145.09499,metro
+"Broken Hill, NSW",Far West and Orana,NSW,110,17814,-32.35272,141.62697,regional
+"Melton West, VIC",Melbourne - West,VIC,111,17589,-37.66274,144.54411,metro
+"Ringwood, VIC",Melbourne - Outer East,VIC,112,17471,-37.80992,145.23887,metro
+"Engadine, NSW",Sydney - Sutherland,NSW,113,17375,-34.05778,151.01793,metro
+"Capalaba, QLD",Brisbane - East,QLD,114,17333,-27.5409,153.2035,metro
+"St Ives, NSW",Sydney - North Sydney and Hornsby,NSW,115,17300,-33.72491,151.16978,metro
+"Sydney, NSW",Sydney - City and Inner South,NSW,116,17252,-33.86794,151.20998,metro
+"Hillside, VIC 3037",Melbourne - West,VIC,117,17056,-37.69102,144.74154,metro
+"Parafield Gardens, SA",Adelaide - North,SA,118,16945,-34.78359,138.613,metro
+"Bracken Ridge, QLD",Brisbane - North,QLD,119,16936,-27.31731,153.03267,metro
+"Umina Beach, NSW",Central Coast,NSW,120,16733,-33.5194,151.31264,metro
+"Mount Druitt, NSW",Sydney - Blacktown,NSW,121,16726,-33.76791,150.8136,metro
+"The Gap, QLD 4061",Brisbane Inner City,QLD,122,16692,-27.44511,152.94376,metro
+"Mernda, VIC",Melbourne - North East,VIC,123,16458,-37.59224,145.08163,metro
+"Footscray, VIC",Melbourne - West,VIC,124,16345,-37.80083,144.89789,metro
+"Coorparoo, QLD",Brisbane Inner City,QLD,125,16282,-27.49793,153.06172,metro
+"Taree, NSW",Mid North Coast,NSW,126,16197,-31.89169,152.45546,regional
+"Port Melbourne, VIC",Melbourne - West,VIC,127,16175,-37.83478,144.92342,metro
+"Banora Point, NSW",Richmond - Tweed,NSW,128,16167,-28.22439,153.53469,regional
+"Mitcham, VIC",Melbourne - Outer East,VIC,129,16148,-37.81695,145.199,metro
+"Glenwood, NSW",Sydney - Blacktown,NSW,130,16130,-33.73755,150.93545,metro
+"Manly, NSW",Sydney - Northern Beaches,NSW,131,15866,-33.80338,151.29117,metro
+"Albany Creek, QLD",Moreton Bay - South,QLD,132,15769,-27.35367,152.96824,metro
+"Cranebrook, NSW",Sydney - Outer West and Blue Mountains,NSW,133,15759,-33.70698,150.70828,metro
+"Carindale, QLD",Brisbane Inner City,QLD,134,15740,-27.51143,153.11168,metro
+"Casula, NSW",Sydney - South West,NSW,135,15662,-33.95198,150.89671,metro
+"Rockdale, NSW",Sydney - Inner South West,NSW,136,15534,-33.95426,151.1404,metro
+"Taylors Lakes, VIC",Melbourne - West,VIC,137,15519,-37.69664,144.78896,metro
+"Scarborough, WA",Perth - North West,WA,138,15467,-31.89585,115.76528,metro
+"Greenvale, VIC",Melbourne - North West,VIC,139,15466,-37.63489,144.87453,metro
+"Maryborough, QLD",Wide Bay,QLD,140,15406,-25.52538,152.69701,regional
+"Eight Mile Plains, QLD",Brisbane - South,QLD,141,15322,-27.57884,153.09148,metro
+"Springfield Lakes, QLD",Ipswich,QLD,142,15318,-27.68293,152.91296,metro
+"Rochedale South, QLD",Logan - Beaudesert,QLD,143,15317,-27.59893,153.12964,metro
+"Miranda, NSW",Sydney - Sutherland,NSW,144,15284,-34.03262,151.10521,metro
+"Caulfield North, VIC",Melbourne - Inner South,VIC,145,15269,-37.87081,145.02366,metro
+"Duncraig, WA",Perth - North West,WA,146,15268,-31.83122,115.77859,metro
+"Cessnock, NSW",Hunter Valley exc Newcastle,NSW,147,15177,-32.83348,151.36699,regional
+"Adelaide, SA",Adelaide - Central and Hills,SA,148,15115,-34.92576,138.60075,metro
+"Ingleburn, NSW",Sydney - Outer South West,NSW,149,15039,-34.0051,150.8581,metro
+"Varsity Lakes, QLD",Gold Coast,QLD,150,15026,-28.08795,153.40944,regional
+"Victoria Point, QLD",Brisbane - East,QLD,151,15020,-27.58482,153.28682,metro
+"Burwood, VIC",Melbourne - South East,VIC,152,15019,-37.84873,145.11361,metro
+"Kensington, NSW",Sydney - Eastern Suburbs,NSW,153,15004,-33.91291,151.22388,metro
+"Redland Bay, QLD",Brisbane - East,QLD,154,14958,-27.65029,153.28999,metro
+"North Melbourne, VIC",Melbourne - Inner,VIC,155,14940,-37.79688,144.94694,metro
+"Byford, WA",Perth - South East,WA,156,14908,-32.22056,115.99916,metro
+"Kambah, ACT",Australian Capital Territory,ACT,157,14900,-35.38641,149.06101,metro
+"Cleveland, QLD",Brisbane - East,QLD,158,14801,-27.52929,153.26646,metro
+"Mascot, NSW",Sydney - City and Inner South,NSW,159,14772,-33.9466,151.18371,metro
+"Bossley Park, NSW",Sydney - South West,NSW,160,14585,-33.86202,150.88392,metro
+"Murray Bridge, SA",South Australia - South East,SA,161,14560,-35.12941,139.26648,regional
+"Australind, WA",Bunbury,WA,162,14539,-33.28287,115.71898,regional
+"Keilor East, VIC",Melbourne - West,VIC,163,14514,-37.73872,144.85603,metro
+"Birkdale, QLD",Brisbane - East,QLD,164,14497,-27.49921,153.20736,metro
+"Bayswater, WA",Perth - North East,WA,165,14432,-31.91421,115.91609,metro
+"Rockingham, WA",Perth - South West,WA,166,14428,-32.2799,115.74367,metro
+"Emerald, QLD",Fitzroy,QLD,167,14356,-23.53024,148.18091,regional
+"Revesby, NSW",Sydney - Inner South West,NSW,168,14176,-33.94767,151.01233,metro
+"Como, WA",Perth - South East,WA,169,14138,-32.00279,115.87028,metro
+"Port Lincoln, SA",South Australia - Outback,SA,170,14120,-34.73343,135.85209,regional
+"Marsden, QLD",Logan - Beaudesert,QLD,171,14071,-27.67336,153.09877,metro
+"Williamstown, VIC",Melbourne - West,VIC,172,13969,-37.86101,144.88365,metro
+"Blackburn, VIC",Melbourne - Inner East,VIC,173,13940,-37.82155,145.15203,metro
+"Halls Head, WA",Mandurah,WA,174,13870,-32.54178,115.69258,metro
+"Mount Barker, SA",Adelaide - Central and Hills,SA,175,13842,-35.08176,138.86599,metro
+"Port Kennedy, WA",Perth - South West,WA,176,13777,-32.3712,115.74555,metro
+"Devonport, TAS",West and North West,TAS,177,13759,-41.17544,146.34405,regional
+"Forster, NSW",Mid North Coast,NSW,178,13740,-32.23377,152.53287,regional
+"Armadale, WA",Perth - South East,WA,179,13619,-32.15444,116.00529,metro
+"Frenchs Forest, NSW",Sydney - Northern Beaches,NSW,180,13473,-33.75137,151.22303,metro
+"Hampton, VIC",Melbourne - Inner South,VIC,181,13391,-37.93771,145.00868,metro
+"Eagleby, QLD",Logan - Beaudesert,QLD,182,13326,-27.70297,153.21999,metro
+"Albion Park, NSW",Southern Highlands and Shoalhaven,NSW,183,13316,-34.58251,150.77615,regional
+"Balwyn, VIC",Melbourne - Inner East,VIC,184,13312,-37.80995,145.08311,metro
+"Penrith, NSW",Sydney - Outer West and Blue Mountains,NSW,185,13295,-33.74515,150.68955,metro
+"Prospect, SA",Adelaide - West,SA,186,13280,-34.8832,138.59209,metro
+"Butler, WA",Perth - North West,WA,187,13278,-31.64415,115.70456,metro
+"North Parramatta, NSW",Sydney - Parramatta,NSW,188,13248,-33.79411,151.0117,metro
+"Jimboomba, QLD",Logan - Beaudesert,QLD,189,13201,-27.83896,153.00573,metro
+"Ashgrove, QLD",Brisbane Inner City,QLD,190,13039,-27.44296,152.98443,metro
+"Clarkson, WA",Perth - North West,WA,191,12967,-31.68632,115.72626,metro
+"Wynnum, QLD",Brisbane - East,QLD,192,12915,-27.43765,153.16691,metro
+"Charlestown, NSW",Newcastle and Lake Macquarie,NSW,193,12912,-32.96828,151.69409,regional
+"Goonellabah, NSW",Richmond - Tweed,NSW,194,12900,-28.82911,153.33393,regional
+"Raymond Terrace, NSW",Mid North Coast,NSW,195,12820,-32.75535,151.76648,regional
+"Chester Hill, NSW",Sydney - Parramatta,NSW,196,12814,-33.88004,150.99733,metro
+"Dalby, QLD",Wide Bay,QLD,197,12719,-27.1411,151.26347,regional
+"Forrestfield, WA",Perth - South East,WA,198,12690,-31.98209,116.01025,metro
+"Balga, WA",Perth - North West,WA,199,12685,-31.85398,115.83921,metro
+"Woodridge, QLD",Logan - Beaudesert,QLD,200,12579,-27.62863,153.10501,metro
+"St Lucia, QLD",Brisbane - West,QLD,201,12574,-27.4997,153.00438,metro
+"Campbelltown, NSW",Sydney - Outer South West,NSW,202,12566,-34.06338,150.80766,metro
+"New Farm, QLD",Brisbane Inner City,QLD,203,12542,-27.46588,153.04593,metro
+"Green Valley, NSW",Sydney - South West,NSW,204,12516,-33.90263,150.86967,metro
+"Waikiki, WA",Perth - South West,WA,205,12396,-32.31503,115.76683,metro
+"Wellington Point, QLD",Brisbane - East,QLD,206,12350,-27.49097,153.2426,metro
+"High Wycombe, WA",Perth - South East,WA,207,12308,-31.94505,115.99971,metro
+"Hallett Cove, SA",Adelaide - South,SA,208,12301,-35.0741,138.51048,metro
+"Warwick, QLD",Darling Downs - Maranoa,QLD,209,12222,-28.21595,152.02157,regional
+"Landsdale, WA",Perth - North West,WA,210,12206,-31.80758,115.85667,metro
+"St Marys, NSW",Sydney - Outer West and Blue Mountains,NSW,211,12195,-33.75951,150.77085,metro
+"Ivanhoe, VIC",Melbourne - North East,VIC,212,12171,-37.76811,145.04575,metro
+"Altona North, VIC",Melbourne - West,VIC,213,12152,-37.83848,144.82824,metro
+"Bateau Bay, NSW",Central Coast,NSW,214,12146,-33.38486,151.47128,metro
+"Nundah, QLD",Brisbane Inner City,QLD,215,12141,-27.40042,153.06312,metro
+"Aspley, QLD",Brisbane - North,QLD,216,12108,-27.36569,153.01859,metro
+"Muswellbrook, NSW",Hunter Valley exc Newcastle,NSW,217,12075,-32.31053,150.89316,regional
+"Secret Harbour, WA",Perth - South West,WA,218,12073,-32.40648,115.75623,metro
+"Wanneroo, WA",Perth - North West,WA,219,12067,-31.75294,115.81028,metro
+"Drummoyne, NSW",Sydney - Inner West,NSW,220,11950,-33.85205,151.15424,metro
+"Sandy Bay, TAS",Hobart,TAS,221,11927,-42.91042,147.33945,metro
+"Turramurra, NSW",Sydney - Ryde,NSW,222,11919,-33.73444,151.12793,metro
+"Rutherford, NSW",Hunter Valley exc Newcastle,NSW,223,11884,-32.71157,151.51425,regional
+"Shailer Park, QLD",Logan - Beaudesert,QLD,224,11759,-27.65065,153.1754,metro
+"Parkdale, VIC",Melbourne - Inner South,VIC,225,11746,-37.99391,145.08148,metro
+"Mount Annan, NSW",Sydney - Outer South West,NSW,226,11703,-34.06403,150.76318,metro
+"Inverell, NSW",New England and North West,NSW,227,11660,-29.7651,151.11271,regional
+"Bondi Beach, NSW",Sydney - Eastern Suburbs,NSW,228,11656,-33.89095,151.27247,metro
+"Melton South, VIC",Melbourne - West,VIC,229,11517,-37.72095,144.57848,metro
+"Perth, WA",Perth - Inner,WA,230,11425,-31.94953,115.86127,metro
+"Warner, QLD",Moreton Bay - South,QLD,231,11411,-27.31312,152.94964,metro
+"Parkes, NSW",Central West,NSW,232,11408,-33.11749,148.25544,regional
+"Maddington, WA",Perth - South East,WA,233,11371,-32.04458,115.99315,metro
+"Terrigal, NSW",Central Coast,NSW,234,11349,-33.44581,151.42873,metro
+"Somerville, VIC",Mornington Peninsula,VIC,235,11336,-38.23152,145.20366,metro
+"Gracemere, QLD",Fitzroy,QLD,236,11315,-23.45787,150.45721,regional
+"Wembley, WA",Perth - North West,WA,237,11301,-31.93238,115.81876,metro
+"Happy Valley, SA",Adelaide - South,SA,238,11219,-35.07355,138.57777,metro
+"Nambour, QLD",Sunshine Coast,QLD,239,11187,-26.62786,152.95567,regional
+"Woodcroft, SA",Adelaide - South,SA,240,11156,-35.10838,138.56623,metro
+"Mareeba, QLD",Queensland - Outback,QLD,241,11079,-17.04547,145.5037,regional
+"Regents Park, QLD",Logan - Beaudesert,QLD,242,10962,-27.67677,153.04201,metro
+"Mudgee, NSW",Hunter Valley exc Newcastle,NSW,243,10923,-32.60918,149.57141,regional
+"Tewantin, QLD",Sunshine Coast,QLD,244,10920,-26.39127,153.01835,regional
+"Casino, NSW",Richmond - Tweed,NSW,245,10914,-28.84265,153.03274,regional
+"Brassall, QLD",Ipswich,QLD,246,10898,-27.59169,152.73531,metro
+"Craigmore, SA",Barossa - Yorke - Mid North,SA,247,10895,-34.70112,138.70869,metro
+"Kilsyth, VIC",Melbourne - Outer East,VIC,248,10891,-37.81918,145.31819,metro
+"Parkinson, QLD",Brisbane - South,QLD,249,10878,-27.64335,153.03079,metro
+"Bulleen, VIC",Melbourne - North East,VIC,250,10873,-37.76699,145.08593,metro
+"Hallam, VIC",Melbourne - South East,VIC,251,10852,-38.00672,145.26929,metro
+"Glenorchy, TAS",Hobart,TAS,252,10828,-42.84412,147.26637,metro
+"Sutherland, NSW",Sydney - Sutherland,NSW,253,10816,-34.03269,151.0552,metro
+"Hillarys, WA",Perth - North West,WA,254,10808,-31.81104,115.74383,metro
+"Gympie, QLD",Wide Bay,QLD,255,10803,-26.1835,152.66392,regional
+"Tarragindi, QLD",Brisbane - South,QLD,256,10779,-27.52619,153.04517,metro
+"Edmonton, QLD",Cairns,QLD,257,10753,-17.01296,145.73737,regional
+"Ermington, NSW",Sydney - Parramatta,NSW,258,10737,-33.8105,151.06162,metro
+"Murrumba Downs, QLD",Moreton Bay - South,QLD,259,10681,-27.26995,153.00922,metro
+"Mona Vale, NSW",Sydney - Northern Beaches,NSW,260,10670,-33.67706,151.30276,metro
+"Harrington Park, NSW",Sydney - Outer South West,NSW,261,10663,-34.02561,150.73523,metro
+"Killara, NSW",Sydney - North Sydney and Hornsby,NSW,262,10574,-33.76899,151.15799,metro
+"Aldinga Beach, SA",Adelaide - South,SA,263,10557,-35.29353,138.45806,metro
+"Peakhurst, NSW",Sydney - Inner South West,NSW,264,10539,-33.96181,151.05799,metro
+"Ngunnawal, ACT",Australian Capital Territory,ACT,265,10486,-35.17136,149.11337,metro
+"Kelmscott, WA",Western Australia - Wheat Belt,WA,266,10462,-32.11521,116.02434,metro
+"Goodna, QLD",Ipswich,QLD,267,10461,-27.60885,152.8978,metro
+"Slacks Creek, QLD",Logan - Beaudesert,QLD,268,10432,-27.64072,153.14104,metro
+"Kingston, TAS",Hobart,TAS,269,10409,-42.96458,147.28991,metro
+"Grafton, NSW",New England and North West,NSW,270,10408,-29.67476,152.92977,regional
+"Hamilton Hill, WA",Perth - South West,WA,271,10387,-32.08452,115.77982,metro
+"Bowen, QLD",Mackay,QLD,272,10377,-20.13228,148.05628,regional
+"Redcliffe, QLD",Moreton Bay - North,QLD,273,10373,-27.22639,153.10652,metro
+"Rivervale, WA",Perth - South East,WA,274,10366,-31.9615,115.91366,metro
+"Seaton, SA",Adelaide - West,SA,275,10365,-34.89312,138.51365,metro
+"Southern River, WA",Perth - South East,WA,276,10350,-32.10697,115.95742,metro
+"Bowral, NSW",Southern Highlands and Shoalhaven,NSW,277,10335,-34.48386,150.43001,regional
+"Dingley Village, VIC",Melbourne - South East,VIC,278,10320,-37.97417,145.12758,metro
+"Sans Souci, NSW",Sydney - Inner South West,NSW,279,10304,-33.99452,151.13524,metro
+"Menai, NSW",Sydney - Sutherland,NSW,280,10304,-34.0025,151.00275,metro
+"Young, NSW",Riverina,NSW,281,10295,-34.29908,148.3363,regional
+"Golden Grove, SA",Adelaide - North,SA,282,10235,-34.76942,138.72871,metro
+"Nedlands, WA",Perth - Inner,WA,283,10194,-31.97867,115.80332,metro
+"Success, WA",Perth - South West,WA,284,10148,-32.14279,115.84833,metro
+"Wyoming, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,285,10134,-33.40534,151.3625,metro
+"Chapel Hill, QLD",Ipswich,QLD,286,10113,-27.49945,152.94894,metro
+"Cowra, NSW",Central West,NSW,287,10063,-33.85029,148.63514,regional
+"Kingaroy, QLD",Wide Bay,QLD,288,10020,-26.52536,151.83197,regional
+"West Hoxton, NSW",Sydney - South West,NSW,289,10012,-33.93142,150.83406,metro
+"Norman Gardens, QLD",Fitzroy,QLD,290,9944,-23.32687,150.53894,regional
+"Avalon Beach, NSW",Sydney - Northern Beaches,NSW,291,9905,-33.62899,151.32686,metro
+"Salisbury North, SA",Adelaide - North,SA,292,9891,-34.74422,138.62743,metro
+"Chirnside Park, VIC",Melbourne - Outer East,VIC,293,9872,-37.74195,145.31482,metro
+"Greenfields, WA",Mandurah,WA,294,9855,-32.526,115.76224,metro
+"Urangan, QLD",Wide Bay,QLD,295,9764,-25.30353,152.89142,regional
+"Gunnedah, NSW",New England and North West,NSW,296,9726,-31.00269,150.22115,regional
+"Raceview, QLD",Ipswich,QLD,297,9721,-27.63807,152.77744,metro
+"Stirling, WA",Perth - North West,WA,298,9676,-31.88407,115.81212,metro
+"Newtown, QLD 4350",Toowoomba,QLD,299,9596,-27.55428,151.93076,regional
+"Jerrabomberra, NSW",Capital Region,NSW,300,9508,-35.38446,149.19905,regional
+"Strathpine, QLD",Moreton Bay - South,QLD,301,9503,-27.30195,152.98891,metro
+"South Hedland, WA",Western Australia - Outback,WA,302,9471,-20.40482,118.60036,regional
+"Tapping, WA",Perth - North West,WA,303,9464,-31.71795,115.79321,metro
+"Andergrove, QLD",Mackay,QLD,304,9419,-21.09266,149.18381,regional
+"Vaucluse, NSW",Sydney - Eastern Suburbs,NSW,305,9337,-33.85577,151.27607,metro
+"Moree, NSW",New England and North West,NSW,306,9311,-29.3171,149.7641,regional
+"Kingswood, NSW 2747",Sydney - Outer West and Blue Mountains,NSW,307,9301,-33.76129,150.72784,metro
+"Woodvale, WA",Perth - North West,WA,308,9276,-31.78859,115.79824,metro
+"Boondall, QLD",Brisbane - North,QLD,309,9217,-27.34824,153.07163,metro
+"Brookfield, VIC",Melbourne - West,VIC,310,9216,-37.70129,144.5408,metro
+"Braybrook, VIC",Melbourne - West,VIC,311,9195,-37.78489,144.85386,metro
+"Nowra, NSW",Southern Highlands and Shoalhaven,NSW,312,9193,-34.88089,150.60607,regional
+"Athelstone, SA",Adelaide - North,SA,313,9152,-34.87187,138.70748,metro
+"Piara Waters, WA",Perth - South East,WA,314,9116,-32.1315,115.91603,metro
+"Wellard, WA",Perth - South West,WA,315,9096,-32.26948,115.84879,metro
+"Beechboro, WA",Perth - North East,WA,316,9061,-31.86762,115.93616,metro
+"Wollert, VIC",Melbourne - North East,VIC,317,9060,-37.59088,145.00394,metro
+"Chipping Norton, NSW",Sydney - South West,NSW,318,9001,-33.91492,150.95681,metro
+"Dalyellup, WA",Bunbury,WA,319,8998,-33.4108,115.61584,regional
+"Salisbury East, SA",Adelaide - North,SA,320,8972,-34.78106,138.67229,metro
+"Kelso, NSW",Central West,NSW,321,8968,-33.4286,149.62263,regional
+"Montmorency, VIC",Melbourne - North East,VIC,322,8960,-37.72058,145.12406,metro
+"Wattle Grove, NSW",Sydney - South West,NSW,323,8952,-33.95266,150.93951,metro
+"Yanchep, WA",Perth - North West,WA,324,8868,-31.53624,115.72501,metro
+"Everton Park, QLD",Moreton Bay - South,QLD,325,8862,-27.39961,152.98696,metro
+"Magill, SA",Adelaide - Central and Hills,SA,326,8861,-34.90813,138.67558,metro
+"Ingle Farm, SA",Adelaide - North,SA,327,8825,-34.82613,138.64419,metro
+"Bentley, WA",Perth - South East,WA,328,8782,-32.00503,115.9103,metro
+"Mosman Park, WA",Perth - Inner,WA,329,8757,-32.01422,115.76613,metro
+"Ferny Hills, QLD",Moreton Bay - South,QLD,330,8739,-27.39171,152.92575,metro
+"Ayr, QLD",Townsville,QLD,331,8738,-19.56268,147.4073,regional
+"Moranbah, QLD",Mackay,QLD,332,8735,-21.94047,147.88088,regional
+"Kardinya, WA",Perth - South West,WA,333,8730,-32.06675,115.81616,metro
+"Howrah, TAS",Hobart,TAS,334,8690,-42.88598,147.40798,metro
+"Thurgoona, NSW",Hume,NSW,335,8656,-36.05481,146.98849,regional
+"Ballina, NSW",Richmond - Tweed,NSW,336,8655,-28.83481,153.55796,regional
+"Leeton, NSW",Riverina,NSW,337,8623,-34.48607,146.39711,regional
+"West Busselton, WA",Bunbury,WA,338,8517,-33.65798,115.32267,regional
+"Coolum Beach, QLD",Sunshine Coast,QLD,339,8497,-26.5325,153.06928,regional
+"Springwood, NSW",Sydney - Outer West and Blue Mountains,NSW,340,8475,-33.69209,150.57478,metro
+"Wakerley, QLD",Brisbane - East,QLD,341,8445,-27.48314,153.15867,metro
+"Lesmurdie, WA",Perth - South East,WA,342,8437,-32.00772,116.04514,metro
+"Mango Hill, QLD",Moreton Bay - South,QLD,343,8434,-27.24108,153.04774,metro
+"Forbes, NSW",Central West,NSW,344,8432,-33.38993,148.02223,regional
+"Rye, VIC",Mornington Peninsula,VIC,345,8416,-38.387,144.81247,metro
+"Darley, VIC",Melbourne - West,VIC,346,8372,-37.63646,144.42412,metro
+"Gorokan, NSW",Central Coast,NSW,347,8367,-33.25377,151.50567,metro
+"Berkeley Vale, NSW",Central Coast,NSW,348,8355,-33.34073,151.42855,metro
+"Oxley, QLD",Ipswich,QLD,349,8336,-27.56203,152.97625,metro
+"Wollstonecraft, NSW",Sydney - North Sydney and Hornsby,NSW,350,8323,-33.83315,151.19595,metro
+"Fremantle, WA",Perth - South West,WA,351,8211,-32.05257,115.75588,metro
+"Narrabeen, NSW",Sydney - Northern Beaches,NSW,352,8207,-33.71505,151.29588,metro
+"Meadow Springs, WA",Mandurah,WA,353,8195,-32.49383,115.753,metro
+"Clyde North, VIC",Melbourne - South East,VIC,354,8156,-38.10008,145.3588,metro
+"Thornton, NSW",Newcastle and Lake Macquarie,NSW,355,8062,-32.78553,151.63809,regional
+"Andrews Farm, SA",Barossa - Yorke - Mid North,SA,356,8043,-34.67488,138.6592,metro
+"Rouse Hill, NSW",Sydney - Blacktown,NSW,357,7965,-33.67757,150.91278,metro
+"Katoomba, NSW",Sydney - Outer West and Blue Mountains,NSW,358,7964,-33.7057,150.29458,metro
+"Swan View, WA",Perth - South East,WA,359,7907,-31.8822,116.05209,metro
+"Rosemeadow, NSW",Sydney - Outer South West,NSW,360,7862,-34.10624,150.79181,metro
+"Deniliquin, NSW",Riverina,NSW,361,7862,-35.54781,144.88599,regional
+"Ocean Reef, WA",Perth - North West,WA,362,7840,-31.75918,115.73743,metro
+"Chelsea, VIC",Melbourne - Inner South,VIC,363,7773,-38.04966,145.12154,metro
+"Claremont, TAS",Hobart,TAS,364,7750,-42.7854,147.2297,metro
+"Greenbank, QLD",Logan - Beaudesert,QLD,365,7694,-27.69126,152.95595,metro
+"Harrison, ACT",Australian Capital Territory,ACT,366,7687,-35.19722,149.15632,metro
+"Narre Warren North, VIC",Melbourne - South East,VIC,367,7674,-37.98391,145.31811,metro
+"Margaret River, WA",Bunbury,WA,368,7654,-33.96666,115.0529,regional
+"Gordon, ACT",Australian Capital Territory,ACT,369,7611,-35.45645,149.08276,metro
+"Narrabri, NSW",New England and North West,NSW,370,7606,-30.22649,149.77645,regional
+"Collie, WA",Western Australia - Wheat Belt,WA,371,7587,-33.35974,116.14715,regional
+"Dural, NSW 2158",Sydney - Baulkham Hills and Hawkesbury,NSW,372,7570,-33.68508,151.04147,metro
+"Beckenham, WA",Perth - South East,WA,373,7518,-32.02374,115.95917,metro
+"Bargara, QLD",Wide Bay,QLD,374,7485,-24.82614,152.46151,regional
+"Clarinda, VIC",Melbourne - South East,VIC,375,7481,-37.94195,145.10672,metro
+"Yangebup, WA",Perth - South West,WA,376,7479,-32.11797,115.81299,metro
+"Blaxland, NSW",Sydney - Outer West and Blue Mountains,NSW,377,7451,-33.74507,150.61818,metro
+"Camira, QLD",Ipswich,QLD,378,7414,-27.6349,152.92012,metro
+"Safety Bay, WA",Perth - South West,WA,379,7407,-32.30828,115.72732,metro
+"Atherton, QLD",Cairns,QLD,380,7331,-17.27015,145.48085,regional
+"Cornubia, QLD",Logan - Beaudesert,QLD,381,7317,-27.66009,153.21243,metro
+"Kaleen, ACT",Australian Capital Territory,ACT,382,7271,-35.22669,149.10856,metro
+"Riverstone, NSW",Sydney - Outer West and Blue Mountains,NSW,383,7247,-33.66886,150.85969,metro
+"Newman, WA",Western Australia - Outback,WA,384,7238,-23.02411,119.86403,regional
+"Kooringal, NSW",Riverina,NSW,385,7227,-35.13761,147.37414,regional
+"Sanctuary Point, NSW",Other Territories,NSW,386,7225,-35.10281,150.62596,regional
+"Dunlop, ACT",Australian Capital Territory,ACT,387,7197,-35.19488,149.02017,metro
+"Blackmans Bay, TAS",Hobart,TAS,388,7145,-43.0075,147.3167,metro
+"Seaforth, NSW",Sydney - Northern Beaches,NSW,389,7139,-33.79114,151.2431,metro
+"Gatton, QLD",Toowoomba,QLD,390,7101,-27.5658,152.27279,regional
+"Mount Colah, NSW",Sydney - North Sydney and Hornsby,NSW,391,7095,-33.66638,151.12988,metro
+"Kincumber, NSW",Central Coast,NSW,392,7093,-33.47252,151.40208,metro
+"Murwillumbah, NSW",Gold Coast,NSW,393,7032,-28.32976,153.38212,regional
+"Windsor, QLD",Brisbane Inner City,QLD,394,7013,-27.43469,153.03084,metro
+"Hamilton, QLD",Brisbane Inner City,QLD,395,6995,-27.43835,153.06858,metro
+"Kalamunda, WA",Perth - South East,WA,396,6970,-31.97406,116.05765,metro
+"Oakhurst, NSW",Sydney - Blacktown,NSW,397,6955,-33.73724,150.83862,metro
+"Bongaree, QLD",Moreton Bay - North,QLD,398,6947,-27.07994,153.16484,metro
+"Aspendale, VIC",Melbourne - Inner South,VIC,399,6940,-38.02208,145.10147,metro
+"Kewdale, WA",Perth - South East,WA,400,6891,-31.9805,115.9525,metro
+"Kinross, WA",Perth - North West,WA,401,6890,-31.71944,115.73686,metro
+"Roma, QLD",Darling Downs - Maranoa,QLD,402,6848,-26.56182,148.80387,regional
+"Griffin, QLD",Moreton Bay - South,QLD,403,6839,-27.27353,153.0482,metro
+"Mount Cotton, QLD",Brisbane - East,QLD,404,6835,-27.61962,153.21817,metro
+"Dallas, VIC",Melbourne - North West,VIC,405,6810,-37.67261,144.93662,metro
+"Keperra, QLD",Moreton Bay - South,QLD,406,6807,-27.41297,152.95239,metro
+"Cootamundra, NSW",Riverina,NSW,407,6782,-34.63486,148.03302,regional
+"Beerwah, QLD",Sunshine Coast,QLD,408,6769,-26.85723,152.95959,regional
+"Whyalla Stuart, SA",South Australia - Outback,SA,409,6748,-33.03095,137.51665,regional
+"Lyndhurst, VIC",Melbourne - South East,VIC,410,6725,-38.06492,145.22978,metro
+"Pottsville, NSW",Richmond - Tweed,NSW,411,6704,-28.38758,153.55761,regional
+"Cooma, NSW",Capital Region,NSW,412,6681,-36.2482,149.11265,regional
+"Lysterfield, VIC",Melbourne - South East,VIC,413,6663,-37.93408,145.30083,metro
+"Belconnen, ACT",Australian Capital Territory,ACT,414,6657,-35.23607,149.06827,metro
+"Upwey, VIC",Melbourne - Outer East,VIC,415,6652,-37.90475,145.32731,metro
+"Williams Landing, VIC",Melbourne - West,VIC,416,6646,-37.86309,144.74422,metro
+"Roleystone, WA",Western Australia - Wheat Belt,WA,417,6634,-32.12345,116.08064,metro
+"Ulladulla, NSW",Southern Highlands and Shoalhaven,NSW,418,6615,-35.35754,150.46411,regional
+"Chinchilla, QLD",Darling Downs - Maranoa,QLD,419,6612,-26.75021,150.62734,regional
+"City Beach, WA",Perth - North West,WA,420,6609,-31.93378,115.76907,metro
+"Tullamarine, VIC",Melbourne - North West,VIC,421,6605,-37.69765,144.86944,metro
+"South Tamworth, NSW",New England and North West,NSW,422,6565,-31.11315,150.92041,regional
+"Port Augusta, SA",South Australia - Outback,SA,423,6562,-32.49528,137.78833,regional
+"Wamberal, NSW",Central Coast,NSW,424,6550,-33.41339,151.43838,metro
+"Northam, WA",Western Australia - Wheat Belt,WA,425,6548,-31.65235,116.66214,regional
+"Bundamba, QLD",Ipswich,QLD,426,6514,-27.60443,152.80913,metro
+"Yass, NSW",Riverina,NSW,427,6506,-34.82289,148.91137,regional
+"Strathalbyn, SA",South Australia - South East,SA,428,6504,-35.25047,138.8682,regional
+"Riverside, TAS",Launceston and North East,TAS,429,6472,-41.42127,147.04801,regional
+"Ulverstone, TAS",West and North West,TAS,430,6465,-41.17496,146.18531,regional
+"Darwin City, NT",Darwin,NT,431,6464,-12.463,130.84262,metro
+"Burpengary East, QLD",Moreton Bay - North,QLD,432,6433,-27.14078,153.00994,metro
+"Beaudesert, QLD",Logan - Beaudesert,QLD,433,6395,-27.98902,152.99554,metro
+"Kariong, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,434,6385,-33.45559,151.27311,metro
+"Helensburgh, NSW",Illawarra,NSW,435,6383,-34.18122,150.98305,regional
+"Blue Haven, NSW",Central Coast,NSW,436,6378,-33.21142,151.50349,metro
+"Bligh Park, NSW",Sydney - Outer West and Blue Mountains,NSW,437,6366,-33.63844,150.80041,metro
+"Goondiwindi, QLD",Darling Downs - Maranoa,QLD,438,6355,-28.41764,150.35456,regional
+"Attadale, WA",Perth - South West,WA,439,6335,-32.02416,115.80396,metro
+"Yeppoon, QLD",Fitzroy,QLD,440,6334,-23.12561,150.73482,regional
+"Nambucca Heads, NSW",Mid North Coast,NSW,441,6327,-30.64142,152.98474,regional
+"Nuriootpa, SA",Barossa - Yorke - Mid North,SA,442,6314,-34.46734,138.98413,regional
+"Wauchope, NSW",Mid North Coast,NSW,443,6312,-31.47679,152.73256,regional
+"Loganholme, QLD",Logan - Beaudesert,QLD,444,6303,-27.68301,153.18598,metro
+"Caloundra West, QLD",Sunshine Coast,QLD,445,6297,-26.80626,153.10106,regional
+"Alkimos, WA",Perth - North West,WA,446,6269,-31.61433,115.68457,metro
+"Glenelg North, SA",Adelaide - West,SA,447,6254,-34.96742,138.5192,metro
+"Dudley Park, WA",Mandurah,WA,448,6240,-32.55363,115.73033,metro
+"Tumut, NSW",Riverina,NSW,449,6230,-35.32243,148.23072,regional
+"Northgate, SA",Adelaide - North,SA,450,6226,-34.85628,138.62917,metro
+"Winmalee, NSW",Sydney - Outer West and Blue Mountains,NSW,451,6202,-33.67971,150.61119,metro
+"Bushland Beach, QLD",Townsville,QLD,452,6181,-19.19905,146.68541,regional
+"Lindisfarne, TAS",Hobart,TAS,453,6179,-42.84189,147.36376,metro
+"Ropes Crossing, NSW",Sydney - Outer West and Blue Mountains,NSW,454,6171,-33.72757,150.77848,metro
+"Moama, NSW",Shepparton,NSW,455,6162,-36.00509,144.73222,regional
+"Black Rock, VIC",Melbourne - Inner South,VIC,456,6159,-37.97356,145.02278,metro
+"Glen Innes, NSW",New England and North West,NSW,457,6155,-29.71897,151.69467,regional
+"New Town, TAS",Hobart,TAS,458,6122,-42.85618,147.30932,metro
+"Seaford Rise, SA",Adelaide - South,SA,459,6098,-35.20411,138.48487,metro
+"Thirroul, NSW",Illawarra,NSW,460,6083,-34.31413,150.91402,regional
+"Wentworth Falls, NSW",Sydney - Outer West and Blue Mountains,NSW,461,6076,-33.72838,150.3799,metro
+"Yamba, NSW",Coffs Harbour - Grafton,NSW,462,6076,-29.43373,153.34213,regional
+"Elderslie, NSW 2570",Sydney - South West,NSW,463,6005,-34.0577,150.71508,metro
+"Wynyard, TAS",West and North West,TAS,464,6001,-41.01685,145.71454,regional
+"Banksia Beach, QLD",Moreton Bay - North,QLD,465,5995,-27.03423,153.16314,metro
+"Midland, WA",Perth - South East,WA,466,5972,-31.89122,116.00973,metro
+"Naracoorte, SA",South Australia - South East,SA,467,5960,-36.94565,140.75139,regional
+"Narrabundah, ACT",Australian Capital Territory,ACT,468,5960,-35.33512,149.14908,metro
+"Raby, NSW",Sydney - Outer South West,NSW,469,5944,-34.02019,150.81645,metro
+"Clinton, QLD",Fitzroy,QLD,470,5921,-23.87737,151.22033,regional
+"Concord West, NSW",Sydney - Inner West,NSW,471,5914,-33.8435,151.092,metro
+"Bellmere, QLD",Moreton Bay - North,QLD,472,5863,-27.07905,152.88966,metro
+"Watson, ACT",Australian Capital Territory,ACT,473,5862,-35.23478,149.15821,metro
+"Keilor, VIC",Melbourne - West,VIC,474,5853,-37.70944,144.82628,metro
+"Dawesville, WA",Mandurah,WA,475,5824,-32.62951,115.635,metro
+"Nelson Bay, NSW",Hunter Valley exc Newcastle,NSW,476,5820,-32.73678,152.13887,regional
+"Biloela, QLD",Fitzroy,QLD,477,5758,-24.39018,150.51919,regional
+"Cannonvale, QLD",Mackay,QLD,478,5716,-20.28519,148.69049,regional
+"Kewarra Beach, QLD",Cairns,QLD,479,5652,-16.78909,145.67772,regional
+"Lockleys, SA",Adelaide - West,SA,480,5628,-34.92474,138.53091,metro
+"Scone, NSW",Mid North Coast,NSW,481,5624,-32.0584,150.84641,regional
+"North Haven, SA",Adelaide - West,SA,482,5567,-34.78675,138.48971,metro
+"Cannon Hill, QLD",Brisbane Inner City,QLD,483,5533,-27.47237,153.09587,metro
+"Sarina, QLD",Mackay,QLD,484,5522,-21.43576,149.18187,regional
+"Byron Bay, NSW",Richmond - Tweed,NSW,485,5521,-28.6469,153.60284,regional
+"Warrandyte, VIC",Melbourne - Outer East,VIC,486,5502,-37.75106,145.21011,metro
+"Braddon, ACT",Australian Capital Territory,ACT,487,5500,-35.26984,149.13669,metro
+"Oyster Bay, NSW",Sydney - Sutherland,NSW,488,5488,-34.0069,151.08096,metro
+"Waterford, QLD",Logan - Beaudesert,QLD,489,5484,-27.70695,153.14023,metro
+"Corowa, NSW",Murray,NSW,490,5482,-35.99338,146.36285,regional
+"Richmond, NSW",Sydney - Outer West and Blue Mountains,NSW,491,5482,-33.60517,150.75869,metro
+"Holsworthy, NSW",Sydney - South West,NSW,492,5476,-34.06831,150.9054,metro
+"Mitchell Park, SA",Adelaide - South,SA,493,5465,-35.0052,138.56228,metro
+"Bellbowrie, QLD",Ipswich,QLD,494,5462,-27.55836,152.88342,metro
+"Bundaberg North, QLD",Wide Bay,QLD,495,5451,-24.84516,152.34154,regional
+"Cooranbong, NSW",Newcastle and Lake Macquarie,NSW,496,5449,-33.05252,151.46763,regional
+"Christies Beach, SA",Adelaide - South,SA,497,5445,-35.13412,138.47699,metro
+"Cable Beach, WA",Western Australia - Outback,WA,498,5436,-17.94893,122.2079,regional
+"New Norfolk, TAS",West and North West,TAS,499,5432,-42.78152,147.06066,metro
+"Monash, ACT",Australian Capital Territory,ACT,500,5431,-35.41526,149.089,metro
+"Redwood Park, SA",Adelaide - North,SA,501,5421,-34.81143,138.70606,metro
+"Stanthorpe, QLD",Darling Downs - Maranoa,QLD,502,5406,-28.66219,151.93549,regional
+"Brinsmead, QLD",Cairns,QLD,503,5362,-16.89988,145.71587,regional
+"Gawler East, SA",Adelaide - North,SA,504,5338,-34.60181,138.76676,metro
+"Jindalee, QLD",Ipswich,QLD,505,5320,-27.5356,152.93889,metro
+"Dunsborough, WA",Bunbury,WA,506,5320,-33.61007,115.09291,regional
+"Sherwood, QLD",Ipswich,QLD,507,5313,-27.53034,152.98267,metro
+"South Hobart, TAS",Hobart,TAS,508,5313,-42.89807,147.29144,metro
+"Kununurra, WA",Western Australia - Outback,WA,509,5308,-15.58281,128.82768,regional
+"Caboolture South, QLD",Moreton Bay - North,QLD,510,5300,-27.09632,152.94886,metro
+"Woolgoolga, NSW",Coffs Harbour - Grafton,NSW,511,5290,-30.09434,153.16451,regional
+"Berowra Heights, NSW",Sydney - North Sydney and Hornsby,NSW,512,5264,-33.60156,151.136,metro
+"Lake Munmorah, NSW",Newcastle and Lake Macquarie,NSW,513,5248,-33.19331,151.5733,metro
+"Curtin, ACT",Australian Capital Territory,ACT,514,5238,-35.32547,149.07747,metro
+"Lithgow, NSW",Sydney - Outer West and Blue Mountains,NSW,515,5201,-33.48004,150.15399,regional
+"Bullsbrook, WA",Western Australia - Wheat Belt,WA,516,5185,-31.67278,116.01609,metro
+"Falcon, WA",Mandurah,WA,517,5164,-32.58137,115.66142,metro
+"Tannum Sands, QLD",Fitzroy,QLD,518,5145,-23.99403,151.3766,regional
+"Ocean Shores, NSW",Richmond - Tweed,NSW,519,5137,-28.50893,153.53202,regional
+"Howard Springs, NT",Darwin,NT,520,5132,-12.46721,131.06207,metro
+"Millicent, SA",South Australia - South East,SA,521,5109,-37.60433,140.33426,regional
+"Tumbi Umbi, NSW",Central Coast,NSW,522,5108,-33.37857,151.42921,metro
+"Calliope, QLD",Fitzroy,QLD,523,5101,-24.04543,151.19927,regional
+"Tahmoor, NSW",Sydney - Outer South West,NSW,524,5067,-34.22924,150.59106,metro
+"Red Cliffs, VIC",North West,VIC,525,5060,-34.33713,142.25189,regional
+"Swansea, NSW",Newcastle and Lake Macquarie,NSW,526,5058,-33.09024,151.63546,regional
+"Nairne, SA",South Australia - South East,SA,527,5042,-35.03367,138.90918,metro
+"Kenthurst, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,528,5037,-33.6385,150.9735,metro
+"Singleton, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,529,5000,-32.56595,151.17499,regional
+"Gregory Hills, NSW",Sydney - South West,NSW,530,4985,-34.02724,150.77608,metro
+"North Richmond, NSW",Sydney - Outer West and Blue Mountains,NSW,531,4977,-33.56711,150.72199,metro
+"Hazelbrook, NSW",Sydney - Outer West and Blue Mountains,NSW,532,4974,-33.72807,150.45754,metro
+"Redcliffe, WA",Perth - South East,WA,533,4969,-31.93913,115.94495,metro
+"Karama, NT",Darwin,NT,534,4944,-12.40033,130.91554,metro
+"Rosebud West, VIC",Mornington Peninsula,VIC,535,4930,-38.3729,144.8736,metro
+"Junee, NSW",Riverina,NSW,536,4922,-34.8638,147.57961,regional
+"South Kalgoorlie, WA",Western Australia - Outback,WA,537,4921,-30.76294,121.4796,regional
+"Cashmere, QLD",Moreton Bay - South,QLD,538,4920,-27.29331,152.90318,metro
+"West Kempsey, NSW",New England and North West,NSW,539,4919,-31.0606,152.83292,regional
+"Pinjarra, WA",Mandurah,WA,540,4910,-32.61582,115.87122,metro
+"Yamanto, QLD",Ipswich,QLD,541,4906,-27.648,152.74025,metro
+"Encounter Bay, SA",South Australia - South East,SA,542,4901,-35.57111,138.59613,regional
+"Augustine Heights, QLD",Ipswich,QLD,543,4880,-27.6616,152.8825,metro
+"Picton, NSW",Sydney - Outer South West,NSW,544,4816,-34.17555,150.60061,metro
+"Erina, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,545,4774,-33.43758,151.38853,metro
+"Oran Park, NSW",Sydney - South West,NSW,546,4765,-33.99074,150.74247,metro
+"Blackwater, QLD",Fitzroy,QLD,547,4749,-23.47451,148.77965,regional
+"Prospect, NSW",Sydney - South West,NSW,548,4716,-33.81244,150.90067,metro
+"Oakey, QLD",Darling Downs - Maranoa,QLD,549,4705,-27.45071,151.7056,regional
+"Orelia, WA",Perth - South West,WA,550,4701,-32.23362,115.82625,metro
+"Temora, NSW",Riverina,NSW,551,4693,-34.44733,147.52322,regional
+"Narromine, NSW",Far West and Orana,NSW,552,4689,-32.26024,148.05604,regional
+"Ningi, QLD",Moreton Bay - North,QLD,553,4675,-27.06776,153.07173,metro
+"Bega, NSW",Capital Region,NSW,554,4668,-36.6858,149.84245,regional
+"Leura, NSW",Sydney - Outer West and Blue Mountains,NSW,555,4644,-33.70979,150.33888,metro
+"Renmark, SA",South Australia - South East,SA,556,4634,-34.16293,140.74996,regional
+"Nickol, WA",Western Australia - Outback,WA,557,4624,-20.73859,116.80234,regional
+"Hillbank, SA",Adelaide - North,SA,558,4610,-34.7376,138.68806,metro
+"South West Rocks, NSW",Mid North Coast,NSW,559,4603,-30.89522,153.04052,regional
+"Coogee, WA",Perth - South West,WA,560,4597,-32.12161,115.76057,metro
+"Loxton, SA",South Australia - South East,SA,561,4568,-34.471,140.57518,regional
+"Toukley, NSW",Central Coast,NSW,562,4550,-33.25799,151.54324,metro
+"North Epping, NSW",Sydney - Ryde,NSW,563,4526,-33.75872,151.09416,metro
+"Little Bay, NSW",Sydney - Eastern Suburbs,NSW,564,4477,-33.98343,151.24666,metro
+"Ingham, QLD",Townsville,QLD,565,4426,-18.6535,146.15491,regional
+"Logan Village, QLD",Logan - Beaudesert,QLD,566,4417,-27.78929,153.11538,metro
+"Belair, SA",Adelaide - South,SA,567,4411,-35.00744,138.64105,metro
+"Blackheath, NSW",Sydney - Outer West and Blue Mountains,NSW,568,4396,-33.63908,150.28442,metro
+"Old Bar, NSW",Mid North Coast,NSW,569,4389,-31.96234,152.56466,regional
+"Humpty Doo, NT",Darwin,NT,570,4380,-12.58412,131.12589,metro
+"Narrandera, NSW",Riverina,NSW,571,4375,-34.67446,146.59985,regional
+"Karalee, QLD",Wide Bay,QLD,572,4352,-27.55867,152.82137,metro
+"Manjimup, WA",Western Australia - Wheat Belt,WA,573,4349,-34.24773,116.1464,regional
+"George Town, TAS",Launceston and North East,TAS,574,4347,-41.09108,146.8932,regional
+"Stretton, QLD",Brisbane - South,QLD,575,4334,-27.62666,153.06615,metro
+"Wyong, NSW",Newcastle and Lake Macquarie,NSW,576,4326,-33.27889,151.43056,metro
+"Plumpton, VIC",Melbourne - West,VIC,577,4324,-37.68704,144.69488,metro
+"Semaphore Park, SA",Adelaide - West,SA,578,4298,-34.85718,138.48828,metro
+"Evanston Park, SA",Adelaide - North,SA,579,4279,-34.62967,138.7461,metro
+"Gillen, NT",Northern Territory - Outback,NT,580,4278,-23.71094,133.86592,regional
+"Narrogin, WA",Western Australia - Wheat Belt,WA,581,4274,-32.93756,117.17167,regional
+"Cockatoo, VIC",Melbourne - South East,VIC,582,4256,-37.92643,145.50901,metro
+"Fullarton, SA",Adelaide - Central and Hills,SA,583,4241,-34.95285,138.62718,metro
+"Rosebery, NT",Darwin,NT,584,4218,-12.50817,130.99125,metro
+"Upper Caboolture, QLD",Moreton Bay - North,QLD,585,4214,-27.11658,152.90146,metro
+"Coromandel Valley, SA",Adelaide - South,SA,586,4201,-35.0455,138.62325,metro
+"Mansfield Park, SA",Adelaide - West,SA,587,4193,-34.85663,138.55178,metro
+"Bungendore, NSW",Capital Region,NSW,588,4178,-35.29602,149.46964,regional
+"South Plympton, SA",Adelaide - West,SA,589,4174,-34.9728,138.56008,metro
+"Wandina, WA",Western Australia - Outback,WA,590,4164,-28.82088,114.63331,regional
+"Stockton, NSW",Newcastle and Lake Macquarie,NSW,591,4160,-32.89695,151.79118,regional
+"Lowood, QLD",Toowoomba,QLD,592,4159,-27.4685,152.57029,metro
+"Beachmere, QLD",Moreton Bay - North,QLD,593,4112,-27.11584,153.0465,metro
+"Berri, SA",South Australia - South East,SA,594,4088,-34.27533,140.6041,regional
+"Brighton, TAS",South East,TAS,595,4086,-42.69715,147.22195,metro
+"New Beith, QLD",Logan - Beaudesert,QLD,596,4081,-27.76653,152.94121,metro
+"Wellington, NSW",Far West and Orana,NSW,597,4077,-32.5661,148.96052,regional
+"Tenterfield, NSW",Darling Downs - Maranoa,NSW,598,4066,-29.08021,152.03409,regional
+"Swanbourne, WA",Perth - Inner,WA,599,4059,-31.96801,115.76581,metro
+"Youngtown, TAS",Launceston and North East,TAS,600,4053,-41.4843,147.17,regional
+"Thirlmere, NSW",Sydney - Outer South West,NSW,601,4046,-34.20701,150.5499,metro
+"Bridgewater, TAS",South East,TAS,602,4045,-42.72872,147.22807,metro
+"Huntfield Heights, SA",Adelaide - South,SA,603,4042,-35.15558,138.5155,metro
+"The Entrance, NSW",Central Coast,NSW,604,4006,-33.34383,151.4961,metro
+"Castletown, WA",Western Australia - Outback,WA,605,4001,-33.83382,121.90682,regional
+"Cobar, NSW",Far West and Orana,NSW,606,3990,-31.48432,145.79439,regional
+"Moruya, NSW",Capital Region,NSW,607,3982,-35.90796,150.09408,regional
+"Gerringong, NSW",Illawarra,NSW,608,3966,-34.73354,150.82395,regional
+"Elimbah, QLD",Moreton Bay - North,QLD,609,3963,-26.99961,152.96125,metro
+"Ourimbah, NSW",Central Coast,NSW,610,3951,-33.31517,151.32611,metro
+"Tamborine, QLD",Logan - Beaudesert,QLD,611,3950,-27.86807,153.13093,metro
+"Riddells Creek, VIC",Melbourne - North West,VIC,612,3947,-37.44672,144.68295,metro
+"Port Pirie South, SA",Barossa - Yorke - Mid North,SA,613,3939,-33.20976,138.02646,regional
+"Saratoga, NSW",Central Coast,NSW,614,3938,-33.47576,151.3525,metro
+"Margate, TAS",South East,TAS,615,3920,-43.02597,147.23086,metro
+"Londonderry, NSW",Sydney - Outer West and Blue Mountains,NSW,616,3906,-33.654,150.74113,metro
+"Marian, QLD",Mackay,QLD,617,3903,-21.16516,148.94875,regional
+"Roxby Downs, SA",South Australia - Outback,SA,618,3884,-30.54892,136.88377,regional
+"Smithton, TAS",West and North West,TAS,619,3881,-40.84538,145.13653,regional
+"Longford, TAS",Launceston and North East,TAS,620,3863,-41.59547,147.12734,regional
+"Nightcliff, NT",Darwin,NT,621,3853,-12.38276,130.84857,metro
+"McLaren Vale, SA",Adelaide - South,SA,622,3842,-35.20531,138.5522,metro
+"Pearcedale, VIC",Mornington Peninsula,VIC,623,3821,-38.19736,145.24176,metro
+"Laidley, QLD",Ipswich,QLD,624,3808,-27.63963,152.4119,metro
+"Wonga Park, VIC",Melbourne - Outer East,VIC,625,3796,-37.73549,145.26584,metro
+"Cooroy, QLD",Wide Bay,QLD,626,3791,-26.42467,152.90232,regional
+"Bellingen, NSW",Coffs Harbour - Grafton,NSW,627,3779,-30.45402,152.89238,regional
+"Old Beach, TAS",South East,TAS,628,3779,-42.7585,147.29423,metro
+"Singleton, WA",Perth - South West,WA,629,3752,-32.44471,115.7591,metro
+"Maleny, QLD",Sunshine Coast,QLD,630,3734,-26.7558,152.85271,regional
+"Point Clare, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,631,3731,-33.44017,151.31715,metro
+"Bittern, VIC",Mornington Peninsula,VIC,632,3705,-38.33841,145.17921,metro
+"Katanning, WA",Western Australia - Wheat Belt,WA,633,3687,-33.68433,117.5683,regional
+"Helena Valley, WA",Perth - South East,WA,634,3683,-31.9202,116.04092,metro
+"Silverdale, NSW",Sydney - South West,NSW,635,3682,-33.92489,150.58457,metro
+"Darlington, WA",Perth - North East,WA,636,3656,-31.9244,116.08105,metro
+"Largs North, SA",Adelaide - West,SA,637,3651,-34.81711,138.50017,metro
+"Nanango, QLD",Wide Bay,QLD,638,3599,-26.6762,151.98517,regional
+"Richlands, QLD",Ipswich,QLD,639,3598,-27.58898,152.95187,metro
+"Monbulk, VIC",Melbourne - Outer East,VIC,640,3577,-37.87427,145.42274,metro
+"Brighton, SA",Adelaide - South,SA,641,3564,-35.01776,138.52275,metro
+"Proserpine, QLD",Mackay,QLD,642,3562,-20.41038,148.56755,regional
+"Bridgewater, SA",Adelaide - Central and Hills,SA,643,3558,-35.01458,138.76985,metro
+"Merimbula, NSW",Capital Region,NSW,644,3544,-36.89614,149.90424,regional
+"Durack, NT",Darwin,NT,645,3537,-12.47257,130.97222,metro
+"Brookfield, QLD",Ipswich,QLD,646,3524,-27.48879,152.90114,metro
+"Derby, WA",Western Australia - Outback,WA,647,3511,-17.34336,123.64753,regional
+"Port Douglas, QLD",Cairns,QLD,648,3504,-16.50357,145.45931,regional
+"Leppington, NSW",Sydney - South West,NSW,649,3498,-33.97634,150.79898,metro
+"Glenorie, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,650,3497,-33.57079,150.98602,metro
+"Condobolin, NSW",Far West and Orana,NSW,651,3486,-32.90509,146.96764,regional
+"Wallaroo, SA",Barossa - Yorke - Mid North,SA,652,3481,-33.94035,137.62095,regional
+"Woodford, QLD",Moreton Bay - North,QLD,653,3458,-26.93838,152.80385,metro
+"Maddingley, VIC",Melbourne - West,VIC,654,3453,-37.70107,144.4165,metro
+"McKail, WA",Western Australia - Wheat Belt,WA,655,3445,-34.98249,117.83461,regional
+"Quirindi, NSW",New England and North West,NSW,656,3444,-31.49945,150.62589,regional
+"Attwood, VIC",Melbourne - North West,VIC,657,3419,-37.66714,144.88338,metro
+"North Beach, WA",Perth - North West,WA,658,3410,-31.8608,115.76027,metro
+"Walkerston, QLD",Mackay,QLD,659,3403,-21.15814,149.06599,regional
+"Blayney, NSW",Central West,NSW,660,3378,-33.53741,149.25456,regional
+"Tyabb, VIC",Mornington Peninsula,VIC,661,3338,-38.26631,145.19745,metro
+"Charleville, QLD",Queensland - Outback,QLD,662,3335,-26.38728,146.27782,regional
+"Harvey, WA",Bunbury,WA,663,3315,-33.07436,115.91655,regional
+"South Guildford, WA",Perth - South East,WA,664,3312,-31.90941,115.97285,metro
+"Brabham, WA",Perth - South East,WA,665,3307,-31.82949,115.97385,metro
+"Leda, WA",Perth - South West,WA,666,3297,-32.26832,115.79905,metro
+"Holden Hill, SA",Adelaide - North,SA,667,3296,-34.85132,138.67043,metro
+"Pittsworth, QLD",Darling Downs - Maranoa,QLD,668,3294,-27.74425,151.63431,regional
+"Coonabarabran, NSW",Far West and Orana,NSW,669,3290,-31.26238,149.21737,regional
+"Gwandalan, NSW",Newcastle and Lake Macquarie,NSW,670,3273,-33.13958,151.58181,metro
+"Oberon, NSW",Sydney - Outer West and Blue Mountains,NSW,671,3256,-33.69645,149.85491,regional
+"Mawson, ACT",Australian Capital Territory,ACT,672,3252,-35.36253,149.10015,metro
+"Nhulunbuy, NT",Northern Territory - Outback,NT,673,3240,-12.20386,136.76702,regional
+"Murrumbateman, NSW",Riverina,NSW,674,3219,-34.97446,149.02562,regional
+"Fernvale, QLD",Wide Bay,QLD,675,3209,-27.4562,152.66878,metro
+"Wamuran, QLD",Moreton Bay - North,QLD,676,3196,-27.02617,152.8635,metro
+"Rivett, ACT",Australian Capital Territory,ACT,677,3193,-35.34769,149.03877,metro
+"Mount Helena, WA",Perth - North East,WA,678,3185,-31.85801,116.21384,metro
+"Pullenvale, QLD",Ipswich,QLD,679,3179,-27.51939,152.88306,metro
+"Clare, SA",Barossa - Yorke - Mid North,SA,680,3160,-33.84143,138.6125,regional
+"Tanilba Bay, NSW",Hunter Valley exc Newcastle,NSW,681,3156,-32.74285,151.98644,regional
+"Eden, NSW",Capital Region,NSW,682,3151,-37.01948,149.89459,regional
+"Mickleham, VIC",Melbourne - North West,VIC,683,3142,-37.54663,144.89917,metro
+"West Wyalong, NSW",Central West,NSW,684,3141,-33.87275,147.11118,regional
+"Galston, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,685,3139,-33.64833,151.07023,metro
+"Gilgandra, NSW",Far West and Orana,NSW,686,3126,-31.71245,148.61837,regional
+"South Yunderup, WA",Mandurah,WA,687,3114,-32.60756,115.78733,metro
+"Katherine East, NT",Northern Territory - Outback,NT,688,3114,-14.46403,132.28744,regional
+"Talandji, WA",Western Australia - Outback,WA,689,3106,-21.97328,114.95296,regional
+"Lewiston, SA",Barossa - Yorke - Mid North,SA,690,3084,-34.6094,138.5884,metro
+"Wilton, NSW",Sydney - Outer South West,NSW,691,3080,-34.25985,150.68187,metro
+"Higgins, ACT",Australian Capital Territory,ACT,692,3073,-35.23318,149.02582,metro
+"Taroona, TAS",Hobart,TAS,693,3070,-42.94584,147.34516,metro
+"Samford Valley, QLD",Moreton Bay - South,QLD,694,3068,-27.37049,152.86908,metro
+"Kurrajong, NSW",Sydney - Outer West and Blue Mountains,NSW,695,3062,-33.51212,150.70091,metro
+"Shoalhaven Heads, NSW",Southern Highlands and Shoalhaven,NSW,696,3059,-34.85013,150.74115,regional
+"Wandin North, VIC",Melbourne - South East,VIC,697,3051,-37.77942,145.42959,metro
+"St George, QLD",Darling Downs - Maranoa,QLD,698,3048,-28.0642,148.56617,regional
+"Littlehampton, SA",Adelaide - Central and Hills,SA,699,3044,-35.04181,138.86536,metro
+"Terrey Hills, NSW",Sydney - Northern Beaches,NSW,700,3041,-33.69099,151.21565,metro
+"Mundaring, WA",Perth - North East,WA,701,3041,-31.92042,116.16714,metro
+"Harrington, NSW",Mid North Coast,NSW,702,3033,-31.8568,152.67618,regional
+"Pitt Town, NSW",Sydney - Outer West and Blue Mountains,NSW,703,3033,-33.58415,150.8703,metro
+"Clermont, QLD",Mackay,QLD,704,3031,-22.73713,147.43767,regional
+"Wilberforce, NSW",Sydney - Outer West and Blue Mountains,NSW,705,3007,-33.55262,150.85304,metro
+"Tom Price, WA",Western Australia - Outback,WA,706,3005,-22.69602,117.79715,regional
+"Dysart, QLD",Mackay,QLD,707,2991,-22.52562,148.32963,regional
+"Tennant Creek, NT",Northern Territory - Outback,NT,708,2991,-19.65906,134.19074,regional
+"Two Rocks, WA",Perth - North West,WA,709,2990,-31.49139,115.60796,metro
+"Gloucester, NSW",Mid North Coast,NSW,710,2975,-32.00995,151.96371,regional
+"Bonny Hills, NSW",Mid North Coast,NSW,711,2971,-31.57442,152.81764,regional
+"Longreach, QLD",Queensland - Outback,QLD,712,2970,-23.45505,144.22792,regional
+"Stirling, SA",Adelaide - South,SA,713,2966,-35.00237,138.72385,metro
+"Barmera, SA",South Australia - South East,SA,714,2954,-34.23263,140.47374,regional
+"Bordertown, SA",South Australia - South East,SA,715,2953,-36.32089,140.78488,regional
+"Thursday Island, QLD",Queensland - Outback,QLD,716,2938,-10.57909,142.21951,regional
+"Waroona, WA",Western Australia - Wheat Belt,WA,717,2934,-32.83325,115.8714,regional
+"Burnside, SA",Adelaide - Central and Hills,SA,718,2930,-34.94156,138.66712,metro
+"Angle Vale, SA",Adelaide - North,SA,719,2923,-34.63732,138.65059,metro
+"Kapunda, SA",Barossa - Yorke - Mid North,SA,720,2917,-34.31847,138.91484,regional
+"Woori Yallock, VIC",Melbourne - South East,VIC,721,2913,-37.7795,145.54168,metro
+"Sorell, TAS",South East,TAS,722,2907,-42.77652,147.58551,metro
+"Tea Gardens, NSW",Mid North Coast,NSW,723,2884,-32.62549,152.15769,regional
+"Risdon Vale, TAS",Hobart,TAS,724,2872,-42.80762,147.37004,metro
+"Munruben, QLD",Logan - Beaudesert,QLD,725,2871,-27.75302,153.03431,metro
+"Beaconsfield Upper, VIC",Melbourne - South East,VIC,726,2861,-37.99855,145.42478,metro
+"Midway Point, TAS",Hobart,TAS,727,2859,-42.79816,147.52966,metro
+"Wandi, WA",Perth - South West,WA,728,2854,-32.19557,115.87539,metro
+"Bedfordale, WA",Perth - South East,WA,729,2852,-32.173,116.07599,metro
+"Merredin, WA",Western Australia - Wheat Belt,WA,730,2850,-31.47285,118.29607,regional
+"Deloraine, TAS",West and North West,TAS,731,2848,-41.53689,146.65977,regional
+"Evans Head, NSW",Richmond - Tweed,NSW,732,2847,-29.11426,153.42336,regional
+"Middle Swan, WA",Perth - South East,WA,733,2845,-31.86161,116.02263,metro
+"Russell Island, QLD",Brisbane - East,QLD,734,2836,-27.67179,153.39046,metro
+"Rosewood, QLD",Ipswich,QLD,735,2834,-27.64014,152.59929,metro
+"Joyner, QLD",Moreton Bay - South,QLD,736,2833,-27.27408,152.94361,metro
+"Greta, NSW",Hunter Valley exc Newcastle,NSW,737,2830,-32.69162,151.3859,regional
+"Glossodia, NSW",Sydney - Outer West and Blue Mountains,NSW,738,2828,-33.53144,150.78782,metro
+"Windaroo, QLD",Logan - Beaudesert,QLD,739,2827,-27.74566,153.19367,metro
+"Donnybrook, WA",Bunbury,WA,740,2824,-33.55106,115.81388,regional
+"Bridgetown, WA",Bunbury,WA,741,2812,-33.95502,116.1285,regional
+"Cedar Vale, QLD",Logan - Beaudesert,QLD,742,2792,-27.87981,153.01606,metro
+"Howlong, NSW",Murray,NSW,743,2777,-35.95995,146.61425,regional
+"Diggers Rest, VIC",Melbourne - West,VIC,744,2763,-37.61387,144.70123,metro
+"Williamstown, SA",Barossa - Yorke - Mid North,SA,745,2755,-34.67028,138.89139,regional
+"Coonamble, NSW",Far West and Orana,NSW,746,2750,-30.94718,148.30585,regional
+"Gilmore, ACT",Australian Capital Territory,ACT,747,2750,-35.41507,149.13614,metro
+"Uralla, NSW",New England and North West,NSW,748,2743,-30.66657,151.51873,regional
+"Gidgegannup, WA",Western Australia - Wheat Belt,WA,749,2743,-31.75447,116.18727,metro
+"Mount Barker, WA",Western Australia - Wheat Belt,WA,750,2741,-34.62314,117.63778,regional
+"Bundanoon, NSW",Southern Highlands and Shoalhaven,NSW,751,2729,-34.67127,150.28656,regional
+"Cloncurry, QLD",Queensland - Outback,QLD,752,2719,-20.50889,140.40297,regional
+"Huonville, TAS",South East,TAS,753,2714,-43.03043,147.05441,regional
+"Zilzie, QLD",Fitzroy,QLD,754,2713,-23.28867,150.80041,regional
+"Waikerie, SA",South Australia - South East,SA,755,2684,-34.21554,139.9771,regional
+"Tocumwal, NSW",Shepparton,NSW,756,2682,-35.79102,145.5083,regional
+"Macleay Island, QLD",Brisbane - East,QLD,757,2681,-27.60518,153.36114,metro
+"Hill Top, NSW 2575",Southern Highlands and Shoalhaven,NSW,758,2674,-34.34396,150.47816,regional
+"Hahndorf, SA",Adelaide - Central and Hills,SA,759,2670,-35.03285,138.81193,metro
+"Jandakot, WA",Perth - South West,WA,760,2657,-32.10494,115.87459,metro
+"Moore Park Beach, QLD",Wide Bay,QLD,761,2650,-24.7031,152.23783,regional
+"Mannum, SA",South Australia - South East,SA,762,2644,-34.85499,139.33099,regional
+"Wooroloo, WA",Western Australia - Wheat Belt,WA,763,2642,-31.80853,116.32633,metro
+"Crookwell, NSW",Central West,NSW,764,2641,-34.44934,149.45076,regional
+"Bungarribee, NSW",Sydney - Blacktown,NSW,765,2638,-33.77976,150.86393,metro
+"Denmark, WA",Western Australia - Wheat Belt,WA,766,2637,-34.96822,117.34875,regional
+"Appin, NSW",Sydney - Outer South West,NSW,767,2633,-34.21184,150.80857,metro
+"Cooloola Cove, QLD",Wide Bay,QLD,768,2633,-25.98692,152.99304,regional
+"Oakford, WA",Perth - South East,WA,769,2632,-32.20852,115.92797,metro
+"Cooktown, QLD",Queensland - Outback,QLD,770,2631,-15.37212,145.00491,regional
+"Jindabyne, NSW",Riverina,NSW,771,2629,-36.43869,148.61954,regional
+"Maclean, NSW",Coffs Harbour - Grafton,NSW,772,2628,-29.45104,153.21732,regional
+"Fannie Bay, NT",Darwin,NT,773,2624,-12.42756,130.84006,metro
+"Sellicks Beach, SA",South Australia - South East,SA,774,2616,-35.33347,138.45876,metro
+"Woodside, SA",South Australia - South East,SA,775,2608,-34.95403,138.90468,metro
+"Narooma, NSW",Capital Region,NSW,776,2605,-36.24236,150.09467,regional
+"Spence, ACT",Australian Capital Territory,ACT,777,2585,-35.19885,149.06548,metro
+"Molong, NSW",Far West and Orana,NSW,778,2577,-33.11538,148.8671,regional
+"Eynesbury, VIC",Melbourne - West,VIC,779,2577,-37.79118,144.53318,metro
+"Grenfell, NSW",Central West,NSW,780,2573,-33.93344,148.19253,regional
+"Tiwi, NT",Darwin,NT,781,2562,-12.3575,130.87607,metro
+"Yarrabah, QLD",Queensland - Outback,QLD,782,2559,-17.01625,145.89571,regional
+"Walcha, NSW",New England and North West,NSW,783,2553,-31.10448,151.79961,regional
+"McGraths Hill, NSW",Sydney - Outer West and Blue Mountains,NSW,784,2552,-33.61305,150.84178,metro
+"Two Wells, SA",Barossa - Yorke - Mid North,SA,785,2552,-34.60565,138.52601,metro
+"Manilla, NSW",New England and North West,NSW,786,2550,-30.73472,150.72994,regional
+"Yarra Junction, VIC",Melbourne - Outer East,VIC,787,2549,-37.79672,145.62598,metro
+"York, WA",Western Australia - Wheat Belt,WA,788,2535,-31.87175,116.77639,regional
+"Forestdale, QLD",Logan - Beaudesert,QLD,789,2531,-27.66379,153.0015,metro
+"Lobethal, SA",Adelaide - Central and Hills,SA,790,2527,-34.9008,138.87597,metro
+"The Oaks, NSW",Sydney - South West,NSW,791,2525,-34.09513,150.56498,metro
+"Gulgong, NSW",Far West and Orana,NSW,792,2521,-32.37508,149.51809,regional
+"Finley, NSW",Murray,NSW,793,2519,-35.59323,145.57945,regional
+"Leonay, NSW",Sydney - Outer West and Blue Mountains,NSW,794,2518,-33.76836,150.64974,metro
+"Exmouth, WA",Western Australia - Outback,WA,795,2514,-21.95343,114.11445,regional
+"Capel, WA",Bunbury,WA,796,2509,-33.55955,115.56821,regional
+"Bringelly, NSW",Sydney - South West,NSW,797,2507,-33.94576,150.72523,metro
+"Park Ridge, QLD",Logan - Beaudesert,QLD,798,2503,-27.70426,153.06331,metro
+"Richmond Hill, QLD",Townsville,QLD,799,2488,-20.0638,146.27064,regional
+"Boonah, QLD",Ipswich,QLD,800,2484,-27.99154,152.68452,metro
+"Mannering Park, NSW",Newcastle and Lake Macquarie,NSW,801,2472,-33.16376,151.5404,metro
+"Bunyip, VIC",Melbourne - South East,VIC,802,2468,-38.10205,145.7225,metro
+"Dodges Ferry, TAS",Hobart,TAS,803,2467,-42.85434,147.62468,metro
+"Lancefield, VIC",Melbourne - North West,VIC,804,2455,-37.26426,144.69073,metro
+"Palm Island, QLD",Townsville,QLD,805,2455,-18.6934,146.5878,regional
+"Stoneville, WA",Perth - North East,WA,806,2433,-31.86598,116.16131,metro
+"Portland, NSW",Central West,NSW,807,2424,-33.35632,149.97464,regional
+"Lauderdale, TAS",Hobart,TAS,808,2411,-42.90974,147.48564,metro
+"Hay, NSW",Riverina,NSW,809,2406,-34.37832,144.83833,regional
+"Tully, QLD",Cairns,QLD,810,2390,-17.94186,145.92161,regional
+"New Gisborne, VIC",Melbourne - North West,VIC,811,2387,-37.45032,144.61574,metro
+"Hemmant, QLD",Brisbane - East,QLD,812,2385,-27.44546,153.12756,metro
+"Park Grove, TAS",West and North West,TAS,813,2385,-41.05483,145.88316,regional
+"Seville, VIC",Melbourne - South East,VIC,814,2378,-37.79813,145.47412,metro
+"Murgon, QLD",Wide Bay,QLD,815,2378,-26.24471,151.94168,regional
+"Waggrakine, WA",Western Australia - Outback,WA,816,2373,-28.69273,114.66721,regional
+"Scottsdale, TAS",Launceston and North East,TAS,817,2373,-41.16947,147.52183,regional
+"Moore Creek, NSW",New England and North West,NSW,818,2368,-30.99203,150.93883,regional
+"Plenty, VIC",Melbourne - North East,VIC,819,2364,-37.66546,145.11095,metro
+"South Townsville, QLD",Townsville,QLD,820,2353,-19.26001,146.83226,regional
+"Gembrook, VIC",Melbourne - South East,VIC,821,2350,-37.94035,145.63822,metro
+"Goolwa, SA",South Australia - South East,SA,822,2350,-35.48913,138.7699,regional
+"Moonta Bay, SA",Barossa - Yorke - Mid North,SA,823,2344,-34.05418,137.57032,regional
+"Catalina, NSW",Southern Highlands and Shoalhaven,NSW,824,2334,-35.72985,150.18541,regional
+"Chambers Flat, QLD",Logan - Beaudesert,QLD,825,2331,-27.74523,153.08066,metro
+"Beveridge, VIC",Melbourne - North East,VIC,826,2330,-37.47561,144.96796,metro
+"Serpentine, WA",Perth - South East,WA,827,2317,-32.38619,116.00967,metro
+"Blairgowrie, VIC",Mornington Peninsula,VIC,828,2313,-38.37085,144.76982,metro
+"Marden, SA",Adelaide - North,SA,829,2309,-34.8925,138.63376,metro
+"Willunga, SA",South Australia - South East,SA,830,2308,-35.26858,138.56588,metro
+"Maningrida, NT",Northern Territory - Outback,NT,831,2308,-12.05737,134.23578,regional
+"Regency Downs, QLD",Ipswich,QLD,832,2306,-27.5299,152.44156,metro
+"Tara, QLD",Darling Downs - Maranoa,QLD,833,2297,-27.24908,150.44763,regional
+"Wickham, WA",Western Australia - Outback,WA,834,2295,-20.67489,117.14818,regional
+"Rossmore, NSW",Sydney - South West,NSW,835,2286,-33.93653,150.77346,metro
+"Lightning Ridge, NSW",Far West and Orana,NSW,836,2284,-29.33136,147.99513,regional
+"Wadeye, NT",Northern Territory - Outback,NT,837,2280,-14.24781,129.51776,regional
+"Edmondson Park, NSW",Sydney - South West,NSW,838,2271,-33.96407,150.85104,metro
+"Balnarring, VIC",Mornington Peninsula,VIC,839,2270,-38.36069,145.12367,metro
+"Whitsundays, QLD",Mackay,QLD,840,2269,-20.31751,148.8558,regional
+"Kemps Creek, NSW",Sydney - South West,NSW,841,2268,-33.8692,150.78938,metro
+"Kurnell, NSW",Sydney - Sutherland,NSW,842,2267,-34.02098,151.18685,metro
+"Canowindra, NSW",Central West,NSW,843,2258,-33.53379,148.64101,regional
+"Chuwar, QLD",Wide Bay,QLD,844,2244,-27.5545,152.7761,metro
+"Tin Can Bay, QLD",Wide Bay,QLD,845,2242,-25.88338,152.9362,regional
+"Tuross Head, NSW",Capital Region,NSW,846,2241,-36.03509,150.11673,regional
+"West Wallsend, NSW",Newcastle and Lake Macquarie,NSW,847,2240,-32.8995,151.56591,regional
+"Camden Park, NSW",Sydney - South West,NSW,848,2238,-34.0946,150.71838,metro
+"Jindera, NSW",Hume,NSW,849,2222,-35.95937,146.88177,regional
+"Freeling, SA",Barossa - Yorke - Mid North,SA,850,2214,-34.44875,138.82648,regional
+"Meringandan West, QLD",Toowoomba,QLD,851,2211,-27.41724,151.88637,regional
+"Agnes Water, QLD",Fitzroy,QLD,852,2210,-24.22447,151.90014,regional
+"Galiwinku, NT",Northern Territory - Outback,NT,853,2206,-11.91475,135.75828,regional
+"Coolamon, NSW",Riverina,NSW,854,2199,-34.79407,147.19863,regional
+"Kyogle, NSW",Richmond - Tweed,NSW,855,2197,-28.6366,153.012,regional
+"Mirboo North, VIC",Latrobe - Gippsland,VIC,856,2197,-38.3942,146.14195,regional
+"Callala Bay, NSW",Other Territories,NSW,857,2196,-34.99397,150.72063,regional
+"Sunset, QLD",Northern Territory - Outback,QLD,858,2188,-20.71313,139.51189,regional
+"Toogoom, QLD",Wide Bay,QLD,859,2178,-25.25789,152.69075,regional
+"Ravenswood, WA",Mandurah,WA,860,2176,-32.57958,115.86089,metro
+"Coldstream, VIC",Melbourne - Outer East,VIC,861,2164,-37.70318,145.40403,metro
+"Baxter, VIC",Mornington Peninsula,VIC,862,2162,-38.19766,145.15309,metro
+"Mulwala, NSW",Murray,NSW,863,2161,-35.91969,146.05748,regional
+"Crows Nest, QLD",Darling Downs - Maranoa,QLD,864,2160,-27.26048,152.07126,regional
+"Nyngan, NSW",Far West and Orana,NSW,865,2159,-31.5438,147.1529,regional
+"Lower Mitcham, SA",Adelaide - South,SA,866,2153,-34.98163,138.6058,metro
+"Walgett, NSW",Far West and Orana,NSW,867,2145,-29.97426,148.00406,regional
+"Berkshire Park, NSW",Sydney - Outer West and Blue Mountains,NSW,868,2134,-33.66843,150.7758,metro
+"Lower Chittering, WA",Western Australia - Wheat Belt,WA,869,2127,-31.54537,116.09187,regional
+"Kootingal, NSW",New England and North West,NSW,870,2126,-31.06293,151.06127,regional
+"Dayboro, QLD",Moreton Bay - South,QLD,871,2119,-27.20172,152.82525,metro
+"Clyde, VIC",Melbourne - South East,VIC,872,2117,-38.15079,145.35357,metro
+"Mackenzie, QLD 4156",Brisbane - South,QLD,873,2094,-27.53956,153.129,metro
+"Aberdeen, NSW",Hunter Valley exc Newcastle,NSW,874,2084,-32.17047,150.89765,regional
+"Wee Waa, NSW",New England and North West,NSW,875,2080,-30.30587,149.3908,regional
+"Acton Park, TAS",Hobart,TAS,876,2078,-42.8701,147.48372,metro
+"St Helens, TAS",Launceston and North East,TAS,877,2070,-41.31335,148.20077,regional
+"Brentwood, WA",Perth - South West,WA,878,2064,-32.04333,115.85283,metro
+"Cobbitty, NSW",Sydney - South West,NSW,879,2063,-33.99798,150.67997,metro
+"Balaklava, SA",Barossa - Yorke - Mid North,SA,880,2048,-34.14402,138.43675,regional
+"Cedar Grove, QLD",Logan - Beaudesert,QLD,881,2041,-27.85987,152.97438,metro
+"Macedon, VIC",Melbourne - North West,VIC,882,2040,-37.42366,144.56118,metro
+"Deebing Heights, QLD",Wide Bay,QLD,883,2039,-27.68757,152.76148,metro
+"Harden, NSW",Capital Region,NSW,884,2030,-34.54657,148.3679,regional
+"Buxton, NSW",Sydney - Outer South West,NSW,885,2028,-34.25586,150.53885,metro
+"Guyra, NSW",New England and North West,NSW,886,2027,-30.21551,151.62542,regional
+"Dungog, NSW",Mid North Coast,NSW,887,2025,-32.40248,151.75277,regional
+"Port Sorell, TAS",West and North West,TAS,888,2022,-41.17016,146.5384,regional
+"Warburton, VIC",Melbourne - Outer East,VIC,889,2012,-37.73452,145.70883,metro
+"Westbury, TAS",Launceston and North East,TAS,890,2006,-41.50047,146.82339,regional
+"Clarence Town, NSW",Hunter Valley exc Newcastle,NSW,891,1994,-32.59227,151.77888,regional
+"Malanda, QLD",Cairns,QLD,892,1985,-17.37338,145.58603,regional
+"Gayndah, QLD",Wide Bay,QLD,893,1981,-25.62578,151.6318,regional
+"Freemans Reach, NSW",Sydney - Outer West and Blue Mountains,NSW,894,1973,-33.5695,150.79358,metro
+"Barrow Island, WA",Western Australia - Outback,WA,895,1965,-20.6715,115.45317,regional
+"Oakville, NSW",Sydney - Outer West and Blue Mountains,NSW,896,1964,-33.62342,150.87753,metro
+"Grasmere, NSW",Sydney - South West,NSW,897,1963,-34.05634,150.6729,metro
+"Mount Morgan, QLD",Fitzroy,QLD,898,1963,-23.64018,150.39597,regional
+"Rocky Point, QLD 4874",Queensland - Outback,QLD,899,1957,-12.61942,141.88531,regional
+"South Kingsville, VIC",Melbourne - West,VIC,900,1947,-37.8295,144.86967,metro
+"Curra, QLD",Wide Bay,QLD,901,1920,-26.07158,152.59503,regional
+"Bourke, NSW",Far West and Orana,NSW,902,1909,-30.19225,145.99276,regional
+"Cowaramup, WA",Bunbury,WA,903,1902,-33.85899,115.09283,regional
+"Mulgoa, NSW",Sydney - South West,NSW,904,1898,-33.81568,150.64142,metro
+"Kilcoy, QLD",Moreton Bay - North,QLD,905,1898,-26.94171,152.56248,metro
+"Sandford, TAS",Hobart,TAS,906,1883,-42.97386,147.49083,metro
+"Orchard Hills, NSW",Sydney - Outer West and Blue Mountains,NSW,907,1877,-33.80669,150.7309,metro
+"Gleneagle, QLD",Logan - Beaudesert,QLD,908,1877,-27.94049,152.96179,metro
+"Robertson, NSW",Southern Highlands and Shoalhaven,NSW,909,1865,-34.62726,150.60898,regional
+"Tumbarumba, NSW",Riverina,NSW,910,1862,-35.72624,148.03742,regional
+"East Innisfail, QLD",Cairns,QLD,911,1855,-17.53203,146.03578,regional
+"Ceduna, SA",South Australia - Outback,SA,912,1850,-32.08556,133.61149,regional
+"Currumbin Valley, QLD",Gold Coast,QLD,913,1849,-28.20437,153.39714,regional
+"Oakdale, NSW",Sydney - South West,NSW,914,1843,-34.07597,150.50569,metro
+"Middlemount, QLD",Mackay,QLD,915,1841,-22.85469,148.66815,regional
+"Cobden, VIC",Warrnambool and South West,VIC,916,1839,-38.33151,143.11382,regional
+"Jacobs Well, QLD",Gold Coast,QLD,917,1839,-27.78313,153.36387,regional
+"Horsley Park, NSW",Sydney - South West,NSW,918,1837,-33.8426,150.84816,metro
+"Virginia, NT",Darwin,NT,919,1836,-12.54469,131.01937,metro
+"Wyreema, QLD",Toowoomba,QLD,920,1834,-27.6571,151.84288,regional
+"Luddenham, NSW",Sydney - South West,NSW,921,1828,-33.87281,150.71825,metro
+"Chidlow, WA",Perth - North East,WA,922,1828,-31.85261,116.27139,metro
+"Kingscote, SA",South Australia - South East,SA,923,1826,-35.65018,137.60668,regional
+"Buccan, QLD",Logan - Beaudesert,QLD,924,1818,-27.7422,153.13532,metro
+"Yackandandah, VIC",Hume,VIC,925,1811,-36.32938,146.87347,regional
+"Holtze, NT",Darwin,NT,926,1810,-12.45538,131.00306,metro
+"Virginia, SA",Adelaide - North,SA,927,1803,-34.66999,138.56845,metro
+"Queenstown, TAS",West and North West,TAS,928,1790,-42.08527,145.54051,regional
+"Denman, NSW",Hunter Valley exc Newcastle,NSW,929,1789,-32.3774,150.70215,regional
+"Kambalda West, WA",Western Australia - Outback,WA,930,1789,-31.1717,121.58568,regional
+"Garfield, VIC",Melbourne - South East,VIC,931,1786,-38.1011,145.66968,metro
+"Moura, QLD",Fitzroy,QLD,932,1786,-24.48759,149.93249,regional
+"Moora, WA",Western Australia - Wheat Belt,WA,933,1773,-30.61198,116.00668,regional
+"Werribee South, VIC",Melbourne - West,VIC,934,1768,-37.94332,144.70014,metro
+"Highvale, QLD",Moreton Bay - South,QLD,935,1766,-27.37352,152.81044,metro
+"Coober Pedy, SA",South Australia - Outback,SA,936,1762,-28.89659,134.79704,regional
+"Merriwa, NSW",Hunter Valley exc Newcastle,NSW,937,1761,-32.11625,150.27748,regional
+"Jurien Bay, WA",Western Australia - Wheat Belt,WA,938,1761,-30.2826,115.10088,regional
+"Miles, QLD",Darling Downs - Maranoa,QLD,939,1746,-26.72156,150.14838,regional
+"Casuarina, WA",Perth - South West,WA,940,1741,-32.23945,115.86795,metro
+"Olinda, VIC",Melbourne - Outer East,VIC,941,1738,-37.85288,145.37679,metro
+"Granton, TAS",South East,TAS,942,1736,-42.76352,147.19149,metro
+"Dimboola, VIC",North West,VIC,943,1730,-36.38619,142.04862,regional
+"Herbert, NT",Darwin,NT,944,1730,-12.52564,131.15959,metro
+"Heywood, VIC",Warrnambool and South West,VIC,945,1726,-38.13312,141.64476,regional
+"Kooralbyn, QLD",Logan - Beaudesert,QLD,946,1725,-28.07248,152.82096,metro
+"Holbrook, NSW",Hume,NSW,947,1715,-35.68363,147.29047,regional
+"Wamboin, NSW",Australian Capital Territory,NSW,948,1708,-35.25464,149.3288,regional
+"Sheldon, QLD",Brisbane - East,QLD,949,1704,-27.58533,153.20357,metro
+"Nullagine, WA",Western Australia - Outback,WA,950,1701,-21.95712,120.2919,regional
+"Tranmere, TAS",Hobart,TAS,951,1701,-42.92146,147.41663,metro
+"Esk, QLD",Ipswich,QLD,952,1698,-27.25917,152.42092,metro
+"Eglinton, WA",Perth - North West,WA,953,1680,-31.58421,115.67091,metro
+"Gundagai, NSW",Riverina,NSW,954,1676,-35.04477,148.09558,regional
+"Tathra, NSW",Capital Region,NSW,955,1675,-36.73733,149.96654,regional
+"Cranbourne South, VIC",Mornington Peninsula,VIC,956,1674,-38.15006,145.26428,metro
+"Somers, VIC",Mornington Peninsula,VIC,957,1667,-38.38073,145.16033,metro
+"Pine Mountain, QLD",Wide Bay,QLD,958,1667,-27.53512,152.71988,metro
+"Tailem Bend, SA",South Australia - South East,SA,959,1665,-35.28111,139.48908,regional
+"Rosedale, VIC",Latrobe - Gippsland,VIC,960,1654,-38.18149,146.85003,regional
+"Millgrove, VIC",Melbourne - Outer East,VIC,961,1653,-37.74406,145.64848,metro
+"Selby, VIC",Melbourne - Outer East,VIC,962,1652,-37.91764,145.37693,metro
+"Braidwood, NSW",Southern Highlands and Shoalhaven,NSW,963,1651,-35.42749,149.80566,regional
+"Jilliby, NSW",Newcastle and Lake Macquarie,NSW,964,1646,-33.21612,151.36175,metro
+"Boorowa, NSW",Capital Region,NSW,965,1641,-34.36158,148.74651,regional
+"Girraween, NT",Darwin,NT,966,1641,-12.52561,131.09629,metro
+"Port Willunga, SA",Adelaide - South,SA,967,1637,-35.25797,138.46143,metro
+"Tumby Bay, SA",South Australia - Outback,SA,968,1631,-34.48926,136.11754,regional
+"Normanville, SA",South Australia - South East,SA,969,1630,-35.46526,138.30408,regional
+"Wallacia, NSW",Sydney - South West,NSW,970,1627,-33.89277,150.64518,metro
+"Cooran, QLD",Sunshine Coast,QLD,971,1624,-26.33805,152.80817,regional
+"Balhannah, SA",Adelaide - Central and Hills,SA,972,1621,-34.99324,138.837,metro
+"Plainland, QLD",Ipswich,QLD,973,1596,-27.5782,152.42,metro
+"Penola, SA",South Australia - South East,SA,974,1592,-37.39426,140.88272,regional
+"Warialda, NSW",New England and North West,NSW,975,1590,-29.39949,150.52265,regional
+"Walloon, QLD",Wide Bay,QLD,976,1588,-27.60606,152.66409,metro
+"Lang Lang, VIC",Melbourne - South East,VIC,977,1585,-38.29871,145.5762,regional
+"Childers, QLD",Wide Bay,QLD,978,1584,-25.24681,152.26916,regional
+"Werris Creek, NSW",New England and North West,NSW,979,1572,-31.34677,150.63003,regional
+"Bowen Mountain, NSW",Sydney - Outer West and Blue Mountains,NSW,980,1571,-33.57877,150.6227,metro
+"Tooradin, VIC",Melbourne - South East,VIC,981,1568,-38.19872,145.38644,metro
+"Bridport, TAS",Launceston and North East,TAS,982,1568,-41.02775,147.41228,regional
+"Millmerran, QLD",Darling Downs - Maranoa,QLD,983,1563,-27.87664,151.26187,regional
+"Wurrumiyanga, NT",Northern Territory - Outback,NT,984,1563,-11.75556,130.62383,regional
+"Jamestown, SA",Barossa - Yorke - Mid North,SA,985,1561,-33.16666,138.59048,regional
+"Kalbarri, WA",Western Australia - Outback,WA,986,1557,-27.68045,114.20205,regional
+"Sheffield, TAS",West and North West,TAS,987,1552,-41.38667,146.33568,regional
+"Mundoolun, QLD",Logan - Beaudesert,QLD,988,1551,-27.8942,153.07111,metro
+"Devon Meadows, VIC",Mornington Peninsula,VIC,989,1548,-38.16995,145.31614,metro
+"Yallourn North, VIC",Latrobe - Gippsland,VIC,990,1545,-38.12892,146.37777,regional
+"Yenda, NSW",Riverina,NSW,991,1537,-34.22789,146.21839,regional
+"McLaren Flat, SA",Adelaide - South,SA,992,1537,-35.19945,138.61202,metro
+"Bermagui, NSW",Capital Region,NSW,993,1536,-36.42695,150.03923,regional
+"Rockbank, VIC",Melbourne - West,VIC,994,1536,-37.73015,144.67036,metro
+"Kinglake, VIC",Melbourne - North East,VIC,995,1536,-37.52,145.3494,metro
+"North Maclean, QLD",Logan - Beaudesert,QLD,996,1536,-27.76653,152.99767,metro
+"Glenwood, QLD",Wide Bay,QLD,997,1535,-25.9306,152.63406,regional
+"West Hindmarsh, SA",Adelaide - West,SA,998,1535,-34.90498,138.56322,metro
+"Crescent Head, NSW",New England and North West,NSW,999,1531,-31.21404,152.92821,regional
+"Martin, WA",Perth - South East,WA,1000,1524,-32.07439,116.04441,metro
+"Hatton Vale, QLD",Ipswich,QLD,1001,1521,-27.56293,152.47815,metro
+"Barham, NSW",North West,NSW,1002,1518,-35.6055,144.19074,regional
+"Crystal Brook, SA",Barossa - Yorke - Mid North,SA,1003,1515,-33.37863,138.18763,regional
+"Maldon, VIC",Bendigo,VIC,1004,1513,-36.99697,144.0776,regional
+"Halls Creek, WA",Western Australia - Outback,WA,1005,1499,-18.22526,127.67261,regional
+"Donald, VIC",North West,VIC,1006,1498,-36.30201,143.00728,regional
+"Longford, VIC",Latrobe - Gippsland,VIC,1007,1497,-38.23786,147.09247,regional
+"Peterborough, SA",Barossa - Yorke - Mid North,SA,1008,1497,-32.96939,138.84885,regional
+"Wagin, WA",Western Australia - Wheat Belt,WA,1009,1495,-33.30369,117.34827,regional
+"Tivoli, QLD",Ipswich,QLD,1010,1487,-27.5864,152.77485,metro
+"Lake Cargelligo, NSW",Far West and Orana,NSW,1011,1479,-33.37763,146.35499,regional
+"Nimbin, NSW",Richmond - Tweed,NSW,1012,1477,-28.58022,153.2404,regional
+"Inverleigh, VIC",Warrnambool and South West,VIC,1013,1474,-38.10844,144.00329,regional
+"Culcairn, NSW",Murray,NSW,1014,1473,-35.68554,147.00136,regional
+"Hillston, NSW",Riverina,NSW,1015,1465,-33.44347,145.39759,regional
+"Richmond, TAS",Hobart,TAS,1016,1464,-42.73637,147.40403,metro
+"Clifton, QLD",Darling Downs - Maranoa,QLD,1017,1456,-27.9375,151.91504,regional
+"The Gemfields, QLD",Fitzroy,QLD,1018,1449,-23.54089,147.8122,regional
+"Chandler, QLD",Brisbane - East,QLD,1019,1442,-27.51684,153.17156,metro
+"Wentworth, NSW",Murray,NSW,1020,1437,-33.86933,142.06173,regional
+"Kurwongbah, QLD",Moreton Bay - South,QLD,1021,1430,-27.22552,152.91941,metro
+"Bingara, NSW",New England and North West,NSW,1022,1428,-29.82476,150.57123,regional
+"Table Top, NSW",Hume,NSW,1023,1425,-35.93717,147.02997,regional
+"Bulahdelah, NSW",Mid North Coast,NSW,1024,1424,-32.38256,152.16355,regional
+"Barcaldine, QLD",Queensland - Outback,QLD,1025,1422,-23.59857,145.30563,regional
+"Blackall, QLD",Queensland - Outback,QLD,1026,1416,-24.65787,145.52415,regional
+"Karuah, NSW",Mid North Coast,NSW,1027,1411,-32.62854,151.95648,regional
+"Barraba, NSW",New England and North West,NSW,1028,1410,-30.38628,150.5729,regional
+"Port Denison, WA",Western Australia - Outback,WA,1029,1410,-29.28446,114.93477,regional
+"Toodyay, WA",Western Australia - Wheat Belt,WA,1030,1408,-31.5713,116.42226,regional
+"Doomadgee, QLD",Queensland - Outback,QLD,1031,1405,-17.74399,138.73972,regional
+"Ravenshoe, QLD",Cairns,QLD,1032,1400,-17.61981,145.50689,regional
+"Kingston Se, SA",South Australia - South East,SA,1033,1393,-36.84164,139.91172,regional
+"Lilli Pilli, NSW 2229",Sydney - Sutherland,NSW,1034,1390,-34.06716,151.11552,metro
+"Warren, NSW",Far West and Orana,NSW,1035,1389,-31.7184,147.8557,regional
+"Bombala, NSW",Capital Region,NSW,1036,1387,-36.88991,149.24766,regional
+"Arcadia, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,1037,1385,-33.60681,151.06974,metro
+"Augusta, WA",Bunbury,WA,1038,1382,-34.30859,115.1382,regional
+"Paraburdoo, WA",Western Australia - Outback,WA,1039,1380,-23.19268,117.69153,regional
+"Streaky Bay, SA",South Australia - Outback,SA,1040,1378,-32.83702,134.22044,regional
+"Mortlake, VIC",Warrnambool and South West,VIC,1041,1372,-38.0585,142.79005,regional
+"Karnup, WA",Perth - South West,WA,1042,1371,-32.41906,115.79869,metro
+"Meadows, SA",South Australia - South East,SA,1043,1369,-35.17307,138.75484,metro
+"Douglas Park, NSW",Sydney - Outer South West,NSW,1044,1362,-34.19364,150.7127,metro
+"Howard, QLD",Wide Bay,QLD,1045,1359,-25.33841,152.54666,regional
+"Keith, SA",South Australia - South East,SA,1046,1355,-36.14341,140.34262,regional
+"Alligator Creek, QLD 4816",Townsville,QLD,1047,1353,-19.41588,146.94726,regional
+"Hay Point, QLD",Mackay,QLD,1048,1348,-21.29825,149.27096,regional
+"Evandale, TAS",Launceston and North East,TAS,1049,1345,-41.56874,147.30939,regional
+"Balranald, NSW",North West,NSW,1050,1343,-34.32979,143.38926,regional
+"Kurrajong Heights, NSW",Sydney - Outer West and Blue Mountains,NSW,1051,1342,-33.51924,150.60872,metro
+"Wandong, VIC",Melbourne - North East,VIC,1052,1340,-37.35628,145.02391,metro
+"Rushworth, VIC",Shepparton,VIC,1053,1335,-36.58621,145.03179,regional
+"Mount Macedon, VIC",Melbourne - North West,VIC,1054,1335,-37.38988,144.59247,metro
+"Coleambally, NSW",Riverina,NSW,1055,1331,-34.80233,145.8475,regional
+"Kandos, NSW",Central West,NSW,1056,1315,-32.86168,149.97075,regional
+"Willowbank, QLD",Wide Bay,QLD,1057,1315,-27.68184,152.67366,metro
+"Batlow, NSW",Riverina,NSW,1058,1313,-35.55716,148.13702,regional
+"Cardwell, QLD",Cairns,QLD,1059,1309,-18.27059,146.00437,regional
+"Neerim South, VIC",Latrobe - Gippsland,VIC,1060,1305,-38.01006,145.98572,regional
+"Geeveston, TAS",South East,TAS,1061,1302,-43.15404,146.86938,regional
+"Birdwood, SA",South Australia - South East,SA,1062,1298,-34.81635,138.98151,metro
+"Kojonup, WA",Western Australia - Wheat Belt,WA,1063,1298,-33.82975,117.17763,regional
+"Beaconsfield, TAS",West and North West,TAS,1064,1298,-41.21142,146.78275,regional
+"Fitzroy Crossing, WA",Western Australia - Outback,WA,1065,1297,-18.18997,125.5753,regional
+"Coolah, NSW",Far West and Orana,NSW,1066,1290,-31.78459,149.79245,regional
+"Seven Mile Beach, TAS",Hobart,TAS,1067,1286,-42.84094,147.54936,metro
+"Tuggerawong, NSW",Newcastle and Lake Macquarie,NSW,1068,1280,-33.28398,151.47386,metro
+"Toogoolawah, QLD",Moreton Bay - North,QLD,1069,1279,-27.09705,152.36986,metro
+"Alton Downs, QLD",Fitzroy,QLD,1070,1278,-23.31383,150.36625,regional
+"Coraki, NSW",Richmond - Tweed,NSW,1071,1277,-28.98707,153.27084,regional
+"Aurukun, QLD",Queensland - Outback,QLD,1072,1269,-13.51284,141.82581,regional
+"Grose Vale, NSW",Sydney - Outer West and Blue Mountains,NSW,1073,1265,-33.58708,150.66056,metro
+"Laidley Heights, QLD",Ipswich,QLD,1074,1263,-27.62962,152.36373,metro
+"Maitland, SA",Barossa - Yorke - Mid North,SA,1075,1263,-34.35284,137.68818,regional
+"Mundubbera, QLD",Wide Bay,QLD,1076,1261,-25.58529,151.30275,regional
+"Berrigan, NSW",Shepparton,NSW,1077,1260,-35.65031,145.82832,regional
+"Binningup, WA",Bunbury,WA,1078,1259,-33.1413,115.72735,regional
+"Normanton, QLD",Queensland - Outback,QLD,1079,1257,-17.90748,140.92787,regional
+"Forrest Beach, QLD",Townsville,QLD,1080,1254,-18.71617,146.27201,regional
+"Babinda, QLD",Cairns,QLD,1081,1253,-17.33403,145.91751,regional
+"Nabiac, NSW",Mid North Coast,NSW,1082,1252,-32.12299,152.37943,regional
+"Blind Bight, VIC",Melbourne - South East,VIC,1083,1251,-38.21453,145.34106,metro
+"Orangeville, NSW",Sydney - South West,NSW,1084,1250,-34.03248,150.60246,metro
+"Rainbow Beach, QLD",Wide Bay,QLD,1085,1249,-25.90546,153.0758,regional
+"Collinsville, QLD",Mackay,QLD,1086,1248,-20.56524,147.81931,regional
+"Silvan, VIC",Melbourne - Outer East,VIC,1087,1246,-37.83201,145.43699,metro
+"Millstream, QLD",Cairns,QLD,1088,1246,-17.62481,145.38151,regional
+"Wongaling Beach, QLD",Cairns,QLD,1089,1245,-17.8988,146.08907,regional
+"Maraylya, NSW",Sydney - Outer West and Blue Mountains,NSW,1090,1244,-33.59439,150.91597,metro
+"Warragamba, NSW",Sydney - South West,NSW,1091,1241,-33.88941,150.59853,metro
+"St George Ranges, WA",Western Australia - Outback,WA,1092,1240,-18.80483,125.06515,regional
+"Kalorama, VIC",Melbourne - Outer East,VIC,1093,1239,-37.81713,145.38208,metro
+"Henty, NSW",Riverina,NSW,1094,1237,-35.52369,147.03511,regional
+"The Rock, NSW",Riverina,NSW,1095,1236,-35.26697,147.11866,regional
+"Smiths Lake, NSW",Mid North Coast,NSW,1096,1235,-32.37847,152.48942,regional
+"Mundijong, WA",Perth - South East,WA,1097,1232,-32.28044,115.98212,metro
+"Bullaburra, NSW",Sydney - Outer West and Blue Mountains,NSW,1098,1230,-33.72779,150.41952,metro
+"Quorn, SA",South Australia - Outback,SA,1099,1230,-32.35503,138.05752,regional
+"Canungra, QLD",Logan - Beaudesert,QLD,1100,1229,-28.03818,153.13592,regional
+"St Andrews, VIC",Melbourne - North East,VIC,1101,1226,-37.57873,145.28774,metro
+"Port Broughton, SA",Barossa - Yorke - Mid North,SA,1102,1225,-33.66268,137.95037,regional
+"Waterloo Corner, SA",Adelaide - North,SA,1103,1225,-34.71524,138.56651,metro
+"Milingimbi, NT",Northern Territory - Outback,NT,1104,1225,-12.10001,134.9052,regional
+"Crafers West, SA",Adelaide - South,SA,1105,1222,-34.99419,138.68167,metro
+"Dunedoo, NSW",Central West,NSW,1106,1221,-32.04171,149.29069,regional
+"Carbrook, QLD",Logan - Beaudesert,QLD,1107,1216,-27.67285,153.25273,metro
+"D'Aguilar, QLD",Moreton Bay - North,QLD,1108,1207,-26.98514,152.80049,metro
+"Eden Park, VIC",Melbourne - North East,VIC,1109,1204,-37.48769,145.07067,metro
+"Minden, QLD",Toowoomba,QLD,1110,1204,-27.54815,152.54555,metro
+"Timboon, VIC",Warrnambool and South West,VIC,1111,1202,-38.48429,142.96131,regional
+"Coominya, QLD",Toowoomba,QLD,1112,1200,-27.37531,152.47334,metro
+"Snug, TAS",South East,TAS,1113,1199,-43.07663,147.21197,metro
+"Boddington, WA",Western Australia - Wheat Belt,WA,1114,1198,-32.82484,116.43421,regional
+"Berridale, NSW",Capital Region,NSW,1115,1197,-36.37827,148.82348,regional
+"Avoca, VIC",Ballarat,VIC,1116,1193,-37.06962,143.47286,regional
+"Jarrahdale, WA",Perth - South East,WA,1117,1192,-32.37027,116.12701,metro
+"Dorrigo, NSW",New England and North West,NSW,1118,1191,-30.32769,152.69235,regional
+"Monto, QLD",Wide Bay,QLD,1119,1189,-24.8388,151.11145,regional
+"Trangie, NSW",Far West and Orana,NSW,1120,1188,-32.06595,147.91146,regional
+"Bindoon, WA",Western Australia - Wheat Belt,WA,1121,1183,-31.34183,116.10646,regional
+"Marulan, NSW",Southern Highlands and Shoalhaven,NSW,1122,1178,-34.7189,149.98914,regional
+"Pakenham Upper, VIC",Melbourne - South East,VIC,1123,1172,-38.00902,145.50432,metro
+"Ardrossan, SA",Barossa - Yorke - Mid North,SA,1124,1167,-34.43828,137.90808,regional
+"Kinglake West, VIC",Melbourne - North East,VIC,1125,1166,-37.47733,145.25078,metro
+"Woodgate, QLD",Wide Bay,QLD,1126,1165,-25.1134,152.51424,regional
+"Bamaga, QLD",Queensland - Outback,QLD,1127,1164,-10.85172,142.42672,regional
+"Beverley, WA",Western Australia - Wheat Belt,WA,1128,1163,-32.09406,116.89557,regional
+"Darlington Point, NSW",Riverina,NSW,1129,1162,-34.57878,145.86835,regional
+"Cambridge, TAS",Hobart,TAS,1130,1161,-42.82444,147.45804,metro
+"Ravenhall, VIC",Melbourne - West,VIC,1131,1157,-37.77334,144.73672,metro
+"Menangle, NSW",Sydney - Outer South West,NSW,1132,1150,-34.13393,150.71836,metro
+"Ngukurr, NT",Northern Territory - Outback,NT,1133,1149,-14.73316,134.74324,regional
+"Gundaroo, NSW",Australian Capital Territory,NSW,1134,1146,-35.0415,149.26661,regional
+"Brewarrina, NSW",Far West and Orana,NSW,1135,1143,-29.99249,146.91251,regional
+"Kendall, NSW",Mid North Coast,NSW,1136,1141,-31.63247,152.68994,regional
+"Cunnamulla, QLD",Queensland - Outback,QLD,1137,1140,-28.01091,145.78892,regional
+"Hughenden, QLD",Queensland - Outback,QLD,1138,1136,-20.85498,144.19002,regional
+"Wellesley Islands, QLD",Queensland - Outback,QLD,1139,1136,-16.50776,139.48182,regional
+"Boggabri, NSW",New England and North West,NSW,1140,1130,-30.70711,150.03657,regional
+"Tieri, QLD",Fitzroy,QLD,1141,1129,-23.03178,148.35342,regional
+"Gnangara, WA",Perth - North West,WA,1142,1124,-31.77556,115.86215,metro
+"Meningie, SA",South Australia - South East,SA,1143,1118,-35.73038,139.33464,regional
+"Bakers Hill, WA",Western Australia - Wheat Belt,WA,1144,1118,-31.73186,116.44977,regional
+"Brunswick, WA",Bunbury,WA,1145,1116,-33.22115,115.84709,regional
+"Gunbalanya, NT",Northern Territory - Outback,NT,1146,1116,-12.35426,133.00479,regional
+"Dampier Peninsula, WA",Western Australia - Outback,WA,1147,1113,-16.7609,122.74413,regional
+"Cressy, TAS",Launceston and North East,TAS,1148,1111,-41.78988,147.08919,regional
+"Cowell, SA",South Australia - Outback,SA,1149,1109,-33.74654,136.84436,regional
+"Echunga, SA",South Australia - South East,SA,1150,1109,-35.09594,138.80339,metro
+"Peak Hill, NSW",Far West and Orana,NSW,1151,1106,-32.68366,148.06746,regional
+"Dampier, WA",Western Australia - Outback,WA,1152,1104,-20.66979,116.71133,regional
+"Springsure, QLD",Fitzroy,QLD,1153,1103,-24.08629,148.06952,regional
+"Burra, SA",Barossa - Yorke - Mid North,SA,1154,1103,-33.68243,138.94151,regional
+"Minlaton, SA",Barossa - Yorke - Mid North,SA,1155,1099,-34.80598,137.5576,regional
+"Yulara, NT",Northern Territory - Outback,NT,1156,1099,-25.20691,130.97005,regional
+"Moorooduc, VIC",Mornington Peninsula,VIC,1157,1098,-38.24437,145.11449,metro
+"Mylor, SA",South Australia - South East,SA,1158,1097,-35.04777,138.75911,metro
+"Kangaroo Ground, VIC",Melbourne - North East,VIC,1159,1095,-37.69117,145.23049,metro
+"One Tree Hill, SA",Barossa - Yorke - Mid North,SA,1160,1095,-34.72144,138.74405,metro
+"Kalbar, QLD",Ipswich,QLD,1161,1093,-27.9387,152.6111,metro
+"Kersbrook, SA",Barossa - Yorke - Mid North,SA,1162,1093,-34.74407,138.86923,metro
+"Julatten, QLD",Queensland - Outback,QLD,1163,1091,-16.57723,145.35904,regional
+"Robe, SA",South Australia - South East,SA,1164,1090,-37.21525,139.81945,regional
+"Glengarry, VIC",Latrobe - Gippsland,VIC,1165,1084,-38.12369,146.63821,regional
+"Razorback, NSW",Sydney - Outer South West,NSW,1166,1082,-34.15978,150.64412,metro
+"Briagolong, VIC",Latrobe - Gippsland,VIC,1167,1081,-37.80907,147.10653,regional
+"Jabiru, NT",Northern Territory - Outback,NT,1168,1081,-12.67105,132.83716,regional
+"Arriga, QLD",Queensland - Outback,QLD,1169,1079,-17.06624,145.27729,regional
+"Puckapunyal, VIC",Hume,VIC,1170,1078,-36.93138,144.94316,regional
+"Somersby, NSW",Sydney - Baulkham Hills and Hawkesbury,NSW,1171,1066,-33.3755,151.28325,metro
+"Mount Sheila, WA",Western Australia - Outback,WA,1172,1065,-22.38444,117.58726,regional
+"Yarraman, QLD",Wide Bay,QLD,1173,1064,-26.82949,151.97979,regional
+"Mallacoota, VIC",Latrobe - Gippsland,VIC,1174,1063,-37.52397,149.82662,regional
+"Panton Hill, VIC",Melbourne - North East,VIC,1175,1062,-37.64068,145.25059,metro
+"Lockhart, NSW",Riverina,NSW,1176,1061,-35.17386,146.75966,regional
+"South Kolan, QLD",Wide Bay,QLD,1177,1061,-24.92825,152.17718,regional
+"Delaneys Creek, QLD",Moreton Bay - North,QLD,1178,1061,-27.01169,152.77016,metro
+"Coutts Crossing, NSW",New England and North West,NSW,1179,1060,-29.85687,152.89291,regional
+"Helidon, QLD",Toowoomba,QLD,1180,1059,-27.52712,152.12968,regional
+"Nana Glen, NSW",Coffs Harbour - Grafton,NSW,1181,1055,-30.13491,153.01178,regional
+"Gin Gin, QLD",Wide Bay,QLD,1182,1053,-24.97698,151.95235,regional
+"Strathmerton, VIC",Shepparton,VIC,1183,1052,-35.9077,145.44076,regional
+"Charlton, VIC",North West,VIC,1184,1050,-36.28025,143.32938,regional
+"Burbank, QLD",Brisbane - South,QLD,1185,1050,-27.56733,153.16194,metro
+"Dimbulah, QLD",Queensland - Outback,QLD,1186,1050,-17.20325,145.09483,regional
+"Primrose Sands, TAS",Hobart,TAS,1187,1050,-42.88988,147.66635,metro
+"Avenel, VIC",Hume,VIC,1188,1048,-36.93038,145.29116,regional
+"Jandowae, QLD",Darling Downs - Maranoa,QLD,1189,1047,-26.727,151.17513,regional
+"Lawrence, NSW",New England and North West,NSW,1190,1046,-29.44243,153.08484,regional
+"Bluewater, QLD",Townsville,QLD,1191,1040,-19.16869,146.5288,regional
+"Murrurundi, NSW",New England and North West,NSW,1192,1038,-31.77671,150.82507,regional
+"Riverton, SA",Barossa - Yorke - Mid North,SA,1193,1036,-34.16705,138.75334,regional
+"Mitchell, QLD",Darling Downs - Maranoa,QLD,1194,1031,-26.46205,147.97726,regional
+"Brockman, WA",Western Australia - Outback,WA,1195,1030,-24.87869,113.6508,regional
+"Jerilderie, NSW",Riverina,NSW,1196,1029,-35.25698,145.77493,regional
+"Coleraine, VIC",Warrnambool and South West,VIC,1197,1029,-37.58971,141.67985,regional
+"Furnissdale, WA",Mandurah,WA,1198,1029,-32.55918,115.77648,metro
+"Goombungee, QLD",Darling Downs - Maranoa,QLD,1199,1026,-27.30302,151.84571,regional
+"Mount Victoria, NSW",Sydney - Outer West and Blue Mountains,NSW,1200,1016,-33.57768,150.24047,metro
+"Hope Vale, QLD",Queensland - Outback,QLD,1201,1015,-15.13687,145.21783,regional
+"Lethbridge, VIC",Geelong,VIC,1202,1014,-37.95034,144.09011,regional
+"Nar Nar Goon, VIC",Melbourne - South East,VIC,1203,1012,-38.11186,145.56549,metro
+"Capella, QLD",Fitzroy,QLD,1204,1010,-23.0844,148.02356,regional
+"Marsden Park, NSW",Sydney - Outer West and Blue Mountains,NSW,1205,1008,-33.69979,150.81845,metro
+"Millfield, NSW",Hunter Valley exc Newcastle,NSW,1206,1006,-32.89371,151.25182,regional
+"East Arnhem, NT",Northern Territory - Outback,NT,1207,1004,-12.66179,135.81387,regional

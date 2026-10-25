@@ -1,0 +1,54 @@
+business_type,priority,notes
+# Business types for the Australia-wide sweep, best first. Ranked by how often
+# the business has NO website of its own, measured on the 66,646 businesses of
+# the August 2026 Victoria sweep (share of each search's businesses with no
+# site and a phone), with trades first because tradies buy websites to win jobs.
+# "new" rows were not in the Victoria sweep: trades that are mostly sole
+# traders with a ute and a mobile, which is the profile of a no-website lead.
+#
+# Type-major order: every town for row 1, then every town for row 2. A stopped
+# run has the whole country covered for the top rows. ~15 min per row.
+mobile mechanic,1,35% no website in VIC
+handyman,1,35%
+mechanic,1,34%
+panel beater,1,33%
+auto electrician,1,30%
+concreter,1,new
+fencing contractor,1,new
+tiler,1,new
+plasterer,1,new
+bricklayer,1,new
+lawn mowing,1,25% and very common
+cleaning service,1,25%
+car detailing,1,26%
+painter and decorator,1,26%
+plumber,1,23%
+electrician,1,22%
+gardening service,1,23%
+appliance repair,1,25%
+hair salon,1,34%
+nail salon,1,33%
+barber shop,1,32%
+beauty salon,1,30%
+massage therapist,1,27%
+phone repair,1,31%
+carpenter,2,new
+roofing contractor,2,new
+rubbish removal,2,new
+pressure cleaning,2,new
+towing service,2,new
+lawn mower repair,2,new: small engine repair
+welding and fabrication,2,new
+upholstery,2,new
+clothing alterations,2,new: tailors
+pet grooming,2,24%
+dog grooming,2,27%
+carpet cleaning,2,20%
+tree removal,2,18%
+car wash,2,19%
+removalist,2,19%
+landscaping,2,18%
+caterer,2,21%
+butcher,3,35% but retail: lower fit
+fish and chips,3,27%
+cafe,3,25%; bookings matter less

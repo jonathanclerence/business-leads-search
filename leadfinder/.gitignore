@@ -8,6 +8,8 @@ exports/*.html
 exports/sites/
 # Client PDFs from `python -m pipeline docs <slug>`
 exports/docs/
+# The Australia-wide lead database from `batch_cli.py database`
+exports/australia/
 
 # Batch output. These are your leads — delete this line if you'd rather
 # version them (they're plain text and diff fine, just potentially large).

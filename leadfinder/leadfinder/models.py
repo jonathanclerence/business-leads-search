@@ -8,6 +8,8 @@ import re
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
+from . import websites
+
 # Column order used by the table, the CSV and the Google Sheet.
 CSV_HEADERS: list[str] = [
     "Business Name",
@@ -34,10 +36,30 @@ class Business:
     maps_url: str = ""
     place_id: str = ""
 
+    # Filled by the fast HTTP engine (fastmaps.py), which gets them for free
+    # in the search response. The Playwright scraper leaves them empty.
+    google_id: str = ""            # ChIJ… place id
+    lat: float | None = None
+    lng: float | None = None
+    suburb: str = ""
+    state: str = ""
+    postcode: str = ""
+    service_area: bool = False     # no street address: works from home / on the road
+    claimed: bool | None = None    # the owner has claimed the Google listing
+    has_hours: bool | None = None  # opening hours are filled in
+    closed: str = ""               # "permanently" / "temporarily" when Google says so
+    categories: list[str] = field(default_factory=list)
+
     # ---------------------------------------------------------------- helpers
     @property
+    def website_status(self) -> str:
+        """none / social / directory / booking / dead / builder / real — see websites.py."""
+        return websites.classify(self.website)
+
+    @property
     def has_website(self) -> bool:
-        return bool(self.website and self.website.strip())
+        """A site of their own. A Facebook page or a Fresha booking link is not one."""
+        return self.website_status not in websites.NO_SITE
 
     @property
     def dedupe_key(self) -> str:
@@ -50,6 +72,7 @@ class Business:
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
         d["has_website"] = self.has_website
+        d["website_status"] = self.website_status
         return d
 
     def to_row(self) -> list[Any]:

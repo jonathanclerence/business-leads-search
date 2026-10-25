@@ -219,7 +219,7 @@ def test_scoring():
           salon["score"] > market["score"], True)
 
     with_site = score_lead(dict(category="Hair salon", phone="03 1",
-                                website="https://x.com", has_website=True,
+                                website="https://snipandstyle.com.au", has_website=True,
                                 reviews=180, rating=4.8))
     check("having a website drops the score hard",
           salon["score"] - with_site["score"] > 25, True)

@@ -25,6 +25,14 @@ you closing the laptop lid.
     # 5. hand off to the sales team
     python batch_cli.py export latest --no-website --min-score 60 -o hot-leads.csv
 
+    # The whole country, fast: plain HTTP instead of a browser, 3 searches at
+    # a time, ~2 requests/s. 1,207 towns per business type, ~15 min per type.
+    python batch_cli.py run --provider fast --towns data/towns_australia.csv \
+                            --types data/business_types_australia.csv --name australia
+
+    # 6. every batch → one Australia-wide no-website database + call list
+    python batch_cli.py database latest 20260820-1857-batch -o exports/australia
+
 Ctrl-C once finishes the search in flight and saves cleanly; twice force-quits.
 """
 
@@ -104,7 +112,8 @@ def make_printer(verbose: bool = True):
                 f"({data.get('found', 0)} found)  "
                 f"total {data.get('leads_total', 0)} "
                 f"| no-site {data.get('leads_no_website', 0)} "
-                f"| hot {grades.get('Hot', 0)}",
+                f"| hot {grades.get('Hot', 0)}"
+                f"  {DIM}[{data.get('done', 0)}/{data.get('total', 0)}] {data.get('query', '')}{RESET}",
                 flush=True,
             )
         elif event == "task_error":
@@ -147,20 +156,28 @@ async def cmd_run(args: argparse.Namespace) -> int:
             print(f"{RED}Empty town or business-type list.{RESET}")
             return 1
 
+    fast = args.provider == "fast"
+
+    def pick(value, fast_default, default):
+        return value if value is not None else (fast_default if fast else default)
+
     cfg = BatchConfig(
         name=args.name,
         towns=towns,
         business_types=types,
         pairs=pairs,
-        max_results=args.max_results,
+        max_results=pick(args.max_results, 60, 20),
         provider=args.provider,
         order=args.order,
-        pace_seconds=args.pace,
-        long_break_every=args.long_break_every,
-        long_break_seconds=args.long_break,
+        pace_seconds=pick(args.pace, 0.0, 8.0),
+        long_break_every=pick(args.long_break_every, 0, 40),
+        long_break_seconds=pick(args.long_break, 120.0, 180.0),
         recycle_every=args.recycle_every,
         state=args.state,
         country=args.country,
+        concurrency=args.concurrency,
+        rate=args.rate,
+        more_if_no_site=args.more_if_no_site,
     )
 
     tasks = cfg.tasks()
@@ -178,12 +195,16 @@ async def cmd_run(args: argparse.Namespace) -> int:
     print(f"  searches         {BOLD}{len(tasks)}{RESET}")
     print(f"  results/search   {cfg.max_results}  {DIM}(up to {len(tasks) * cfg.max_results:,} "
           f"listings read){RESET}")
-    print(f"  pacing           {cfg.pace_seconds}s between, "
-          f"{fmt_duration(cfg.long_break_seconds)} break every {cfg.long_break_every}")
+    if fast:
+        print(f"  engine           fast HTTP · {cfg.concurrency} at a time · ≤{cfg.rate:g} requests/s · "
+              f"next page only if one has ≥{cfg.more_if_no_site} no-website leads")
+    else:
+        print(f"  pacing           {cfg.pace_seconds}s between, "
+              f"{fmt_duration(cfg.long_break_seconds)} break every {cfg.long_break_every}")
     print(f"  estimated time   {BOLD}{fmt_duration(eta)}{RESET}")
     print()
 
-    if eta > 6 * 3600:
+    if eta > 6 * 3600 and not fast:
         print(f"{YELLOW}⚠ That's over 6 hours on a single IP. Google will very likely "
               f"throttle you.{RESET}")
         print(f"{YELLOW}  Trim with --max-towns / --max-types, or set SCRAPER_PROXY "
@@ -217,6 +238,10 @@ async def cmd_resume(args: argparse.Namespace) -> int:
     cfg = BatchConfig.from_dict(store.manifest.get("config", {}))
     if args.pace is not None:
         cfg.pace_seconds = args.pace
+    if args.rate is not None:
+        cfg.rate = args.rate
+    if args.concurrency is not None:
+        cfg.concurrency = args.concurrency
 
     total = len(cfg.tasks())
     done = sum(1 for t in store.done_tasks.values() if t.get("status") == "done")
@@ -333,6 +358,33 @@ def cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_database(args: argparse.Namespace) -> int:
+    from leadfinder.database import build
+
+    dirs = []
+    for ref in args.batches:
+        d = resolve_batch(ref)
+        if not d:
+            print(f"{RED}No batch matching {ref!r}. Try: python batch_cli.py list{RESET}")
+            return 1
+        dirs.append(d)
+    out = Path(args.output)
+    print(f"\n{BOLD}Building the lead database from {len(dirs)} batch(es)…{RESET}")
+    s = build(dirs, out)
+    print(f"\n  businesses read     {s['businesses_read']:,}")
+    print(f"  no own website      {s['kept']:,}  {DIM}(with a phone, in Australia){RESET}")
+    print(f"  already in tracker  {s['already_in_pipeline']:,}")
+    print(f"  chains / branches   {s['chains_or_multi_branch']:,}")
+    print(f"  {BOLD}new call list       {GREEN}{s['call_list']:,}{RESET}  "
+          f"{DIM}+ {s['weak_website']:,} on free-builder sites{RESET}")
+    print(f"  by state            " + "  ".join(f"{k} {v:,}" for k, v in s["call_list_by_state"].items()))
+    print(f"  by grade            " + "  ".join(f"{k} {v:,}" for k, v in s["call_list_by_grade"].items()))
+    print(f"  website status      " + "  ".join(f"{k} {v:,}" for k, v in s["call_list_by_website_status"].items()))
+    print(f"\n  {BOLD}Database:{RESET} {s['files']['db']}")
+    print(f"  {BOLD}Call list:{RESET} {s['files']['csv']}\n")
+    return 0
+
+
 # ---------------------------------------------------------------------------
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
@@ -349,16 +401,22 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--pairs", help="CSV with explicit town+business_type columns "
                                    "(skips the cross product)")
     r.add_argument("--name", default="batch", help="batch name, used in the folder name")
-    r.add_argument("--max-results", type=int, default=20,
-                   help="listings per search (default 20 — plenty for a small town)")
+    r.add_argument("--max-results", type=int, default=None,
+                   help="listings per search (default 20; 60 with --provider fast)")
     r.add_argument("--max-towns", type=int, help="use only the first N towns")
     r.add_argument("--max-types", type=int, help="use only the first N business types")
     r.add_argument("--order", choices=("type", "town"), default="type",
                    help="type = finish each vertical everywhere before moving on (default)")
-    r.add_argument("--provider", choices=("playwright", "places_api"), default="playwright")
-    r.add_argument("--pace", type=float, default=8.0, help="seconds between searches")
-    r.add_argument("--long-break", type=float, default=180.0, help="long break, seconds")
-    r.add_argument("--long-break-every", type=int, default=40)
+    r.add_argument("--provider", choices=("playwright", "places_api", "fast"), default="playwright",
+                   help="fast = plain HTTP, no browser, ~30x quicker (see leadfinder/fastmaps.py)")
+    r.add_argument("--concurrency", type=int, default=3, help="fast: searches in flight at once")
+    r.add_argument("--rate", type=float, default=2.0, help="fast: max requests per second overall")
+    r.add_argument("--more-if-no-site", type=int, default=3,
+                   help="fast: fetch a search's next page only if this page had this many "
+                        "no-website leads with a phone (0 = always page to --max-results)")
+    r.add_argument("--pace", type=float, default=None, help="seconds between searches (default 8; 0 fast)")
+    r.add_argument("--long-break", type=float, default=None, help="long break, seconds")
+    r.add_argument("--long-break-every", type=int, default=None, help="default 40; off with fast")
     r.add_argument("--recycle-every", type=int, default=50, help="relaunch browser every N")
     r.add_argument("--state", default=settings.SEARCH_STATE,
                    help='added to every search, e.g. NSW → "plumber in Albury, NSW, Australia"')
@@ -371,6 +429,8 @@ def build_parser() -> argparse.ArgumentParser:
     rs = sub.add_parser("resume", help="continue an interrupted batch")
     rs.add_argument("batch", nargs="?", default="latest", help="batch id, path, or 'latest'")
     rs.add_argument("--pace", type=float, help="override pacing (raise it if you got blocked)")
+    rs.add_argument("--rate", type=float, help="fast: override requests per second")
+    rs.add_argument("--concurrency", type=int, help="fast: override searches in flight")
     rs.add_argument("--quiet", "-q", action="store_true")
 
     sub.add_parser("list", help="list all batches")
@@ -387,6 +447,11 @@ def build_parser() -> argparse.ArgumentParser:
     e.add_argument("--town", action="append", help="filter by search town (repeatable)")
     e.add_argument("--type", action="append", help="filter by business type (repeatable)")
     e.add_argument("--require-phone", action="store_true", help="drop leads with no phone")
+
+    db = sub.add_parser("database", help="merge batches into one no-website lead database + call list")
+    db.add_argument("batches", nargs="+", help="batch ids, paths, or 'latest'")
+    db.add_argument("-o", "--output", default=str(Path(__file__).resolve().parent / "exports" / "australia"),
+                    help="output folder (default exports/australia)")
     return p
 
 
@@ -405,6 +470,8 @@ def main() -> int:
         return cmd_status(args)
     if args.command == "export":
         return cmd_export(args)
+    if args.command == "database":
+        return cmd_database(args)
     return 1
 
 

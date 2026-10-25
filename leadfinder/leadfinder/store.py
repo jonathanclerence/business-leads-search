@@ -32,6 +32,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
+from . import websites
 from .scoring import apply_score, summarise
 
 # Column order of the sales hand-off CSV. Score first: the whole point is that
@@ -196,6 +197,10 @@ class BatchStore:
             key = row.get("_key") or lead_key(row)
             if key in self._seen:
                 continue
+            # Batches from before websites.py counted a Facebook page as a
+            # website; judge every batch by the same rule.
+            row["has_website"] = websites.has_own_site(row.get("website") or "")
+            row["website_status"] = websites.classify(row.get("website") or "")
             self._seen[key] = len(self.leads)
             self.leads.append(row)
 

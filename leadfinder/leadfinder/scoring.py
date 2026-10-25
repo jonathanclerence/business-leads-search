@@ -13,13 +13,27 @@ lead at all, because the pitch doesn't apply to it. If "no website" were worth
 a flat +40, that supermarket would outrank a hair salon — which is exactly the
 wrong answer.
 
-    score = opportunity x fit   (max 45)  — no website, AND the pitch applies
-          + contactability      (max 20)  — is there a phone number to ring
-          + credibility         (max 20)  — reviews + rating: real, busy, solvent
-          + booking bonus x fit (max 15)  — appointment-driven verticals
+    score = opportunity x fit   (max 40)  — no website of their own, AND the pitch applies
+          + contactability      (max 18)  — is there a phone number to ring
+          + credibility         (max 18)  — reviews + rating: real, busy, solvent
+          + booking bonus x fit (max 12)  — appointment-driven verticals
+          + needs-a-site signals (max 12) — see below
 
     ...then x0.8 if there's no phone number, because a lead your rep cannot
     dial is barely a lead at all.
+
+"No website" means no site *of their own* (``websites.py``): a Facebook page,
+a Fresha booking link or a Yellow Pages listing in Google's Website box all
+count as no website. The needs-a-site signals are the things that say this
+owner would buy one and is reachable:
+
+    social page only  +4  already marketing online, nowhere of their own to send people
+    mobile number     +3  an owner-operator; the decision maker answers
+    claimed listing   +3  the owner looks after their Google profile
+    opening hours     +2  an active, running business
+
+Leads from the Playwright scraper have no claimed/hours data; those score
+half marks rather than nothing.
 
 ``fit`` runs from 1.0 (hair salon — the appointment book *is* the business)
 down to 0.12 (supermarket — a booking system makes no sense). A business that
@@ -31,6 +45,8 @@ from __future__ import annotations
 
 import re
 from typing import Any, Dict, List, Optional, Tuple
+
+from . import websites
 
 # ---------------------------------------------------------------------------
 # Category taxonomy
@@ -64,10 +80,15 @@ BOOKING_BONUS_FIT: Dict[str, float] = {
     TIER_NONE: 0.00,
 }
 
-W_OPPORTUNITY = 45      # no website + the pitch applies
-W_OPPORTUNITY_HAS_SITE = 6   # they already have one; small residual upsell
-W_CONTACT = 20          # a phone number to ring
-W_BOOKING = 15          # appointment-driven vertical
+W_OPPORTUNITY = 40      # no website + the pitch applies
+W_OPPORTUNITY_BUILDER = 16   # a free Wix/Square subdomain: an upgrade sale
+W_OPPORTUNITY_HAS_SITE = 5   # they already have one; small residual upsell
+W_CONTACT = 18          # a phone number to ring
+W_BOOKING = 12          # appointment-driven vertical
+W_SOCIAL_ONLY = 4       # Facebook/Instagram page instead of a website
+W_MOBILE = 3            # owner-operator
+W_CLAIMED = 3           # owner manages the Google listing
+W_HOURS = 2             # opening hours filled in
 NO_PHONE_PENALTY = 0.8  # applied to the whole score
 
 CATEGORY_TIERS: List[Tuple[str, str]] = [
@@ -115,6 +136,13 @@ CATEGORY_TIERS: List[Tuple[str, str]] = [
         "accountant", "bookkeep", "tax", "mortgage broker", "insurance broker",
         "conveyanc", "lawyer", "solicitor", "legal",
         "funeral", "childcare", "day care", "kindergarten",
+        # trades a sole trader runs from a ute: book jobs by phone today
+        "bricklay", "brick", "render", "glazier", "cabinet maker", "floor",
+        "garage door", "gutter", "pressure wash", "rubbish", "waste removal",
+        "junk removal", "towing", "tow truck", "weld", "fabricat", "upholster",
+        "tailor", "alteration", "small engine", "mower", "pool clean",
+        "dog train", "antenna", "excavat", "earthmov", "bobcat", "septic",
+        "drain", "gasfitt", "contractor",
     )],
     # ---- Tier C: reservations, but the business survives without ------------
     *[(k, TIER_C) for k in (
@@ -167,16 +195,16 @@ def category_tier(category: str) -> str:
 
 
 def _review_points(reviews: Optional[int]) -> int:
-    """0-13. A proxy for "real, busy, and can afford to pay you"."""
+    """0-12. A proxy for "real, busy, and can afford to pay you"."""
     n = reviews or 0
     if n >= 200:
-        return 13
+        return 12
     if n >= 100:
-        return 11
+        return 10
     if n >= 50:
-        return 9
+        return 8
     if n >= 20:
-        return 7
+        return 6
     if n >= 5:
         return 4
     if n >= 1:
@@ -185,18 +213,30 @@ def _review_points(reviews: Optional[int]) -> int:
 
 
 def _rating_points(rating: Optional[float]) -> int:
-    """0-7. Unknown scores neutrally rather than badly."""
+    """0-6. Unknown scores neutrally rather than badly."""
     if rating is None:
         return 2
     if rating >= 4.5:
-        return 7
-    if rating >= 4.0:
         return 6
+    if rating >= 4.0:
+        return 5
     if rating >= 3.5:
-        return 4
+        return 3
     if rating >= 3.0:
         return 2
     return 1
+
+
+def _is_mobile(phone: str) -> bool:
+    digits = re.sub(r"\D", "", phone or "")
+    return digits.startswith("04") and len(digits) == 10 or digits.startswith("614") and len(digits) == 11
+
+
+def _flag_points(value: Any, points: float) -> float:
+    """Full points when true, none when false, half when unknown."""
+    if value is None:
+        return points / 2
+    return points if value else 0
 
 
 def grade_for(score: int) -> str:
@@ -212,7 +252,7 @@ def score_lead(lead: Dict[str, Any]) -> Dict[str, Any]:
     Accepts either a ``Business.to_dict()`` or a raw dict with the same keys.
     """
     website = (lead.get("website") or "").strip()
-    has_website = bool(lead.get("has_website", bool(website)))
+    status = websites.classify(website)
     phone = (lead.get("phone") or "").strip()
     category = lead.get("category") or ""
     reviews = lead.get("reviews")
@@ -223,9 +263,14 @@ def score_lead(lead: Dict[str, Any]) -> Dict[str, Any]:
     why: List[str] = []
 
     # 1. The opportunity — but only as far as the pitch actually applies.
-    base = W_OPPORTUNITY if not has_website else W_OPPORTUNITY_HAS_SITE
+    if status in websites.NO_SITE:
+        base = W_OPPORTUNITY
+    elif status == "builder":
+        base = W_OPPORTUNITY_BUILDER
+    else:
+        base = W_OPPORTUNITY_HAS_SITE
     total = base * fit
-    why.append("no website" if not has_website else "has a website")
+    why.append(websites.LABELS[status])
     if tier in (TIER_A, TIER_B):
         why.append(TIER_LABELS[tier])
     elif tier == TIER_NONE:
@@ -252,7 +297,18 @@ def score_lead(lead: Dict[str, Any]) -> Dict[str, Any]:
     # 4. Verticals where online booking is the whole product.
     total += W_BOOKING * BOOKING_BONUS_FIT.get(tier, 0.3)
 
-    # 5. Unreachable leads are barely leads.
+    # 5. Signs this owner needs a site and will pick up.
+    if status == "social":
+        total += W_SOCIAL_ONLY
+    if _is_mobile(phone):
+        total += W_MOBILE
+        why.append("mobile")
+    total += _flag_points(lead.get("claimed"), W_CLAIMED)
+    if lead.get("claimed") is False:
+        why.append("listing unclaimed")
+    total += _flag_points(lead.get("has_hours"), W_HOURS)
+
+    # 6. Unreachable leads are barely leads.
     if not phone:
         total *= NO_PHONE_PENALTY
 

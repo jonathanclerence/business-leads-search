@@ -28,6 +28,13 @@ hundreds of empty results.
 **Pacing.** A jittered delay between searches plus a longer break every N
 searches. The defaults are deliberately unhurried; going faster is how you get
 blocked.
+
+**The fast provider.** ``provider="fast"`` (fastmaps.py) reads the search
+response over plain HTTP instead of driving a browser: one request per 20
+businesses, no detail pages. It runs ``concurrency`` searches at once under one
+shared request-rate cap (``rate`` per second), keeps paging a search while the
+pages keep turning up businesses with no website (``more_if_no_site``), and
+all workers stop together when Google pushes back.
 """
 
 from __future__ import annotations
@@ -41,6 +48,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Dict, List, Optional, Sequence
 
+from collections import deque
+
+from . import geo
 from .config import settings
 from .scraper import BlockedError, GoogleMapsScraper
 from .store import BatchStore, task_key
@@ -154,8 +164,14 @@ class BatchConfig:
     pairs: List[Dict[str, str]] = field(default_factory=list)
 
     max_results: int = 20          # per individual search
-    provider: str = "playwright"   # "playwright" | "places_api"
+    provider: str = "playwright"   # "playwright" | "places_api" | "fast"
     order: str = "type"            # "type" | "town" | "as-listed"
+
+    # fast provider only
+    concurrency: int = 1           # searches in flight at once
+    rate: float = 1.5              # requests per second, across all of them
+    more_if_no_site: int = 3       # fetch the next page only if this page had
+                                   # this many no-website leads with a phone (0 = always)
 
     # pacing — the defaults assume a big overnight run on one IP
     pace_seconds: float = 8.0
@@ -246,6 +262,10 @@ def in_country(lead: Dict[str, Any], country: str) -> bool:
 
 def estimate_seconds(n_tasks: int, cfg: BatchConfig) -> float:
     """Rough wall-clock estimate, used for the ETA in the dashboard."""
+    if cfg.provider == "fast":
+        pages = 1.0 if cfg.max_results <= 20 else 1.4
+        breaks = (n_tasks / cfg.long_break_every) * cfg.long_break_seconds if cfg.long_break_every else 0
+        return n_tasks * pages / max(0.05, cfg.rate) + breaks
     per_search = 12.0 + cfg.max_results * 1.6 / max(1, settings.CONCURRENCY)
     pacing = cfg.pace_seconds
     breaks = (n_tasks / max(1, cfg.long_break_every)) * cfg.long_break_seconds
@@ -265,24 +285,47 @@ class BatchRunner:
         self.store = store
         self.cfg = config
         self.on_progress = on_progress
-        self._scraper: Optional[GoogleMapsScraper] = None
+        self._scraper: Optional[Any] = None   # GoogleMapsScraper or FastMapsClient
+        self._scraper_lock = asyncio.Lock()
         self._since_recycle = 0
         self._consecutive_empty = 0
         self._block_hits = 0
+        self._block_lock = asyncio.Lock()
+        self._last_backoff_end = 0.0
+        self._gate = asyncio.Event()          # cleared while every worker should wait
+        self._gate.set()
         self._durations: List[float] = []
+        self._last_checkpoint = 0.0
+        self._stop: Optional[str] = None      # "paused" | "blocked" once workers should stop
+        self._no_site = sum(1 for l in store.leads if not l.get("has_website"))
+        self._hot = sum(1 for l in store.leads if l.get("grade") == "Hot")
         self.cancelled = False
+
+    @property
+    def _fast(self) -> bool:
+        return self.cfg.provider == "fast"
+
+    @property
+    def _workers(self) -> int:
+        return max(1, self.cfg.concurrency) if self._fast else 1
 
     async def _emit(self, event: str, **data: Any) -> None:
         if self.on_progress:
             await self.on_progress(event, data)
 
     # ------------------------------------------------------------- browser
-    async def _ensure_browser(self) -> GoogleMapsScraper:
-        if self._scraper is None:
-            self._scraper = GoogleMapsScraper(on_progress=None)
-            await self._scraper.__aenter__()
-            self._since_recycle = 0
-        return self._scraper
+    async def _ensure_browser(self) -> Any:
+        async with self._scraper_lock:
+            if self._scraper is None:
+                if self._fast:
+                    from .fastmaps import FastMapsClient
+
+                    self._scraper = FastMapsClient(rate=self.cfg.rate)
+                else:
+                    self._scraper = GoogleMapsScraper(on_progress=None)
+                await self._scraper.__aenter__()
+                self._since_recycle = 0
+            return self._scraper
 
     async def _recycle_browser(self, reason: str = "scheduled") -> None:
         if self._scraper is not None:
@@ -291,17 +334,23 @@ class BatchRunner:
             except Exception:
                 pass
             self._scraper = None
-        await self._emit("status", message=f"Recycled the browser ({reason}).")
+        await self._emit("status", message=f"Recycled the {'HTTP client' if self._fast else 'browser'} "
+                                           f"({reason}).")
         await asyncio.sleep(random.uniform(2.0, 5.0))
+
+    def _checkpoint(self, force: bool = False) -> None:
+        """Manifest + counters. Every search is already fsync-ed to the JSONL
+        files, so with many fast searches a second, re-counting 100k leads
+        after each one is wasted work: at most every 5 seconds."""
+        now = time.monotonic()
+        if force or not self._fast or now - self._last_checkpoint >= 5.0:
+            self.store.checkpoint()
+            self._last_checkpoint = now
 
     # --------------------------------------------------------------- pacing
     async def _pace(self, index: int, total: int) -> None:
         if index >= total - 1:
             return
-        base = self.cfg.pace_seconds
-        jitter = base * self.cfg.pace_jitter
-        delay = max(0.5, random.uniform(base - jitter, base + jitter))
-
         if self.cfg.long_break_every and (index + 1) % self.cfg.long_break_every == 0:
             delay = self.cfg.long_break_seconds * random.uniform(0.85, 1.15)
             await self._emit(
@@ -309,50 +358,78 @@ class BatchRunner:
                 message=f"Long break — pausing {delay / 60:.1f} min to stay under "
                         f"Google's radar.",
             )
-        await asyncio.sleep(delay)
+            self._gate.clear()   # every worker sits this one out
+            try:
+                await asyncio.sleep(delay)
+            finally:
+                self._gate.set()
+            return
+        base = self.cfg.pace_seconds
+        if base <= 0:
+            return
+        jitter = base * self.cfg.pace_jitter
+        await asyncio.sleep(max(0.5, random.uniform(base - jitter, base + jitter)))
 
     def _eta_seconds(self, remaining: int) -> float:
         if not self._durations:
             return estimate_seconds(remaining, self.cfg)
         recent = self._durations[-20:]
         avg = sum(recent) / len(recent)
-        breaks = (remaining / max(1, self.cfg.long_break_every)) * self.cfg.long_break_seconds
-        return remaining * (avg + self.cfg.pace_seconds) + breaks
+        breaks = ((remaining / self.cfg.long_break_every) * self.cfg.long_break_seconds
+                  if self.cfg.long_break_every else 0)
+        return remaining * (avg + self.cfg.pace_seconds) / self._workers + breaks
 
     # ------------------------------------------------------------ blocking
-    async def _handle_block(self, note: str) -> bool:
-        """Back off and recycle. Returns False when we should give up."""
-        if self._block_hits >= len(self.cfg.block_backoff):
-            await self._emit(
-                "status",
-                message=f"Still blocked after {self._block_hits} back-offs. Stopping "
-                        f"— everything so far is saved, resume when your IP cools "
-                        f"down or add SCRAPER_PROXY.",
-            )
-            return False
-        wait = self.cfg.block_backoff[self._block_hits]
-        self._block_hits += 1
-        await self._emit(
-            "blocked",
-            message=f"{note} Backing off {wait / 60:.0f} min "
-                    f"(attempt {self._block_hits}/{len(self.cfg.block_backoff)}).",
-        )
-        self.store.save_manifest(status="backing-off")
-        await self._recycle_browser("blocked")
-        await asyncio.sleep(wait)
-        self._consecutive_empty = 0
-        return True
+    async def _handle_block(self, note: str, since: float) -> bool:
+        """Back off and recycle. Returns False when we should give up.
+
+        With several workers, the first to see the block does the waiting
+        and the rest just retry once it's over (``since`` is when their own
+        request started)."""
+        async with self._block_lock:
+            if self._last_backoff_end > since:
+                return True
+            if self._block_hits >= len(self.cfg.block_backoff):
+                await self._emit(
+                    "status",
+                    message=f"Still blocked after {self._block_hits} back-offs. Stopping "
+                            f"— everything so far is saved, resume when your IP cools "
+                            f"down or add SCRAPER_PROXY.",
+                )
+                return False
+            wait = self.cfg.block_backoff[self._block_hits]
+            self._block_hits += 1
+            self._gate.clear()
+            try:
+                await self._emit(
+                    "blocked",
+                    message=f"{note} Backing off {wait / 60:.0f} min "
+                            f"(attempt {self._block_hits}/{len(self.cfg.block_backoff)}).",
+                )
+                self.store.save_manifest(status="backing-off")
+                if self._fast:
+                    # Come back gentler: the rest of the run goes slower.
+                    self.cfg.rate = max(0.2, self.cfg.rate / 1.5)
+                await self._recycle_browser("blocked")
+                await asyncio.sleep(wait)
+            finally:
+                self._consecutive_empty = 0
+                self._last_backoff_end = time.monotonic()
+                self._gate.set()
+            return True
 
     # ------------------------------------------------------------------ run
     async def run(self, resume: bool = True) -> Dict[str, Any]:
         all_tasks = self.cfg.tasks()
         self.store.manifest.setdefault("counts", {})["tasks_total"] = len(all_tasks)
 
-        pending = [
+        pending = deque(
             t for t in all_tasks
             if not (resume and self.store.is_done(t["town"], t["business_type"]))
-        ]
+        )
         skipped = len(all_tasks) - len(pending)
+        self._total, self._skipped, self._n_pending, self._started = (
+            len(all_tasks), skipped, len(pending), 0)
 
         self.store.checkpoint(status="running", config=self.cfg.to_dict())
         await self._emit(
@@ -362,100 +439,20 @@ class BatchRunner:
             skipped=skipped,
             eta_seconds=round(estimate_seconds(len(pending), self.cfg)),
             message=(f"Resuming — {skipped} searches already done, {len(pending)} to go."
-                     if skipped else f"Starting {len(pending)} searches."),
+                     if skipped else f"Starting {len(pending)} searches.")
+                    + (f" {self._workers} at a time, ≤{self.cfg.rate:g} requests/s."
+                       if self._fast else ""),
         )
 
         status = "done"
         try:
-            for i, task in enumerate(pending):
-                if self.cancelled:
-                    status = "paused"
-                    break
-
-                town, btype = task["town"], task["business_type"]
-                query = build_query(btype, town, self.cfg.state, self.cfg.country)
-                started = time.monotonic()
-
-                await self._emit(
-                    "task_start",
-                    index=i, pending=len(pending), total=len(all_tasks),
-                    done=skipped + i, town=town, business_type=btype, query=query,
-                    eta_seconds=round(self._eta_seconds(len(pending) - i)),
-                    message=f"[{skipped + i + 1}/{len(all_tasks)}] {query}",
-                )
-
-                try:
-                    results = await self._search_one(query)
-                except asyncio.CancelledError:
-                    status = "paused"
-                    raise
-                except BlockedError as exc:
-                    self.store.record_task(town, btype, query, "blocked", error=str(exc),
-                                           seconds=time.monotonic() - started)
-                    self.store.checkpoint()
-                    if await self._handle_block(str(exc)):
-                        # Retry this same task after the back-off.
-                        self.store.done_tasks.pop(task_key(town, btype), None)
-                        pending.insert(i + 1, task)
-                        continue
-                    status = "blocked"
-                    break
-                except Exception as exc:  # noqa: BLE001
-                    self.store.record_task(town, btype, query, "failed",
-                                           error=f"{type(exc).__name__}: {exc}",
-                                           seconds=time.monotonic() - started)
-                    self.store.checkpoint()
-                    await self._emit("task_error", query=query, message=f"{query} — {exc}")
-                    await self._pace(i, len(pending))
-                    continue
-
-                elapsed = time.monotonic() - started
-                self._durations.append(elapsed)
-
-                found = [b.to_dict() for b in results]
-                dicts = [d for d in found if in_country(d, self.cfg.country)]
-                abroad = len(found) - len(dicts)
-                new = self.store.add_leads(dicts, town, btype)
-                self.store.record_task(town, btype, query, "done", found=len(dicts),
-                                       new_leads=new, seconds=elapsed)
-                self.store.checkpoint()
-
-                # Soft-block detection: real towns don't return nothing four
-                # times in a row.
-                if not dicts:
-                    self._consecutive_empty += 1
-                    if self._consecutive_empty >= self.cfg.block_threshold:
-                        if await self._handle_block(
-                            f"{self._consecutive_empty} empty searches in a row — "
-                            f"likely throttled."
-                        ):
-                            continue
-                        status = "blocked"
-                        break
-                else:
-                    self._consecutive_empty = 0
-                    self._block_hits = 0
-
-                counts = self.store.manifest.get("counts", {})
-                await self._emit(
-                    "task_done",
-                    index=i, done=skipped + i + 1, total=len(all_tasks),
-                    town=town, business_type=btype, query=query,
-                    found=len(dicts), new_leads=new,
-                    leads_total=counts.get("leads_total", 0),
-                    leads_no_website=counts.get("leads_no_website", 0),
-                    grades=counts.get("grades", {}),
-                    eta_seconds=round(self._eta_seconds(len(pending) - i - 1)),
-                    message=f"{query} — {len(dicts)} found, {new} new"
-                            + (f", {abroad} outside {self.cfg.country} dropped" if abroad else ""),
-                )
-
-                self._since_recycle += 1
-                if self.cfg.recycle_every and self._since_recycle >= self.cfg.recycle_every:
-                    await self._recycle_browser()
-
-                await self._pace(i, len(pending))
-
+            if self._workers == 1:
+                # Awaited directly, not as a task, so a KeyboardInterrupt from
+                # inside a search unwinds through here like it always has.
+                await self._worker(pending)
+            else:
+                await asyncio.gather(*(self._worker(pending) for _ in range(self._workers)))
+            status = self._stop or ("paused" if pending else "done")
         except asyncio.CancelledError:
             status = "paused"
             raise
@@ -475,12 +472,135 @@ class BatchRunner:
 
         return self.store.summary()
 
+    async def _worker(self, pending: deque) -> None:
+        while pending and not self._stop:
+            if self.cancelled:
+                self._stop = "paused"
+                break
+            await self._gate.wait()
+            if not pending or self._stop:
+                break
+            task = pending.popleft()
+            index = self._started
+            self._started += 1
+
+            outcome = await self._run_task(task, index)
+            if outcome == "retry":
+                pending.appendleft(task)
+                continue
+            if outcome == "stop":
+                break
+
+            self._since_recycle += 1
+            if (not self._fast and self.cfg.recycle_every
+                    and self._since_recycle >= self.cfg.recycle_every):
+                await self._recycle_browser()
+            await self._pace(index, self._n_pending)
+
+    async def _run_task(self, task: Dict[str, str], i: int) -> str:
+        """One search, start to finish → "ok" | "retry" | "stop"."""
+        town, btype = task["town"], task["business_type"]
+        query = build_query(btype, town, self.cfg.state, self.cfg.country)
+        started = time.monotonic()
+        total, skipped = self._total, self._skipped
+
+        await self._emit(
+            "task_start",
+            index=i, pending=self._n_pending, total=total,
+            done=skipped + i, town=town, business_type=btype, query=query,
+            eta_seconds=round(self._eta_seconds(self._n_pending - i)),
+            message=f"[{skipped + i + 1}/{total}] {query}",
+        )
+
+        try:
+            results = await self._search_one(query)
+        except asyncio.CancelledError:
+            self._stop = "paused"
+            raise
+        except BlockedError as exc:
+            self.store.record_task(town, btype, query, "blocked", error=str(exc),
+                                   seconds=time.monotonic() - started)
+            self._checkpoint(force=True)
+            if await self._handle_block(str(exc), started):
+                # Retry this same task after the back-off.
+                self.store.done_tasks.pop(task_key(town, btype), None)
+                return "retry"
+            self._stop = "blocked"
+            return "stop"
+        except Exception as exc:  # noqa: BLE001
+            self.store.record_task(town, btype, query, "failed",
+                                   error=f"{type(exc).__name__}: {exc}",
+                                   seconds=time.monotonic() - started)
+            self._checkpoint()
+            await self._emit("task_error", query=query, message=f"{query} — {exc}")
+            return "ok"
+
+        elapsed = time.monotonic() - started
+        self._durations.append(elapsed)
+
+        found = [b.to_dict() for b in results]
+        dicts = [d for d in found
+                 if in_country(d, self.cfg.country)
+                 and (self.cfg.country.lower() != "australia" or geo.in_australia(d.get("lat"), d.get("lng")))
+                 and d.get("closed") != "permanently"]
+        abroad = len(found) - len(dicts)
+        new = self.store.add_leads(dicts, town, btype)
+        added = self.store.leads[len(self.store.leads) - new:] if new else []
+        self._no_site += sum(1 for l in added if not l.get("has_website"))
+        self._hot += sum(1 for l in added if l.get("grade") == "Hot")
+        self.store.record_task(town, btype, query, "done", found=len(dicts),
+                               new_leads=new, seconds=elapsed)
+        self._checkpoint()
+
+        # Soft-block detection: real towns don't return nothing four times in
+        # a row. The fast provider sees blocks directly (Google answers with a
+        # page instead of data), and a small town genuinely can have no
+        # concreters, so it only treats a long run of empties as a block.
+        threshold = self.cfg.block_threshold if not self._fast else max(30, self.cfg.block_threshold)
+        if not dicts:
+            self._consecutive_empty += 1
+            if self._consecutive_empty >= threshold:
+                if await self._handle_block(
+                    f"{self._consecutive_empty} empty searches in a row — likely throttled.",
+                    started,
+                ):
+                    return "ok"
+                self._stop = "blocked"
+                return "stop"
+        else:
+            self._consecutive_empty = 0
+            self._block_hits = 0
+
+        counts = self.store.manifest.get("counts", {})
+        await self._emit(
+            "task_done",
+            index=i, done=skipped + i + 1, total=total,
+            town=town, business_type=btype, query=query,
+            found=len(dicts), new_leads=new,
+            leads_total=len(self.store.leads),
+            leads_no_website=self._no_site,
+            grades=dict(counts.get("grades", {}), Hot=self._hot),
+            eta_seconds=round(self._eta_seconds(self._n_pending - i - 1)),
+            message=f"{query} — {len(dicts)} found, {new} new"
+                    + (f", {abroad} outside {self.cfg.country} or closed dropped" if abroad else ""),
+        )
+        return "ok"
+
     async def _search_one(self, query: str) -> List[Any]:
         if self.cfg.provider == "places_api":
             from .places_api import search_places
 
             return await search_places(query, self.cfg.max_results)
         scraper = await self._ensure_browser()
+        if self._fast:
+            scraper.limiter.interval = 1.0 / max(0.05, self.cfg.rate)
+            need = self.cfg.more_if_no_site
+
+            def keep_going(page: List[Any]) -> bool:
+                return sum(1 for b in page if not b.has_website and b.phone) >= need
+
+            return await scraper.search(query, self.cfg.max_results,
+                                        keep_going=keep_going if need else None)
         return await scraper.search(query, self.cfg.max_results)
 
     def cancel(self) -> None:
