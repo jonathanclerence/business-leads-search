@@ -12,10 +12,18 @@ import time
 from . import auth
 from . import coverage as cov
 from . import db, dncr, documents, importer, publish
+from .content import KIND_GROUPS, expand_kinds
 
 
 def _list(value: str):
     return [v.strip() for v in (value or "").split(",") if v.strip()]
+
+
+def _kinds(p, value: str):
+    try:
+        return expand_kinds(_list(value))
+    except ValueError as exc:
+        p.error(str(exc))
 
 
 def main(argv=None) -> int:
@@ -29,6 +37,7 @@ def main(argv=None) -> int:
     pub.add_argument("--limit", type=int, help="at most this many new previews (0 = just update the live ones)")
     pub.add_argument("--min-score", type=int, default=0)
     pub.add_argument("--region", default="", help="comma list of regions, e.g. Geelong,Ballarat")
+    pub.add_argument("--kind", default="", help=f"comma list of kinds or groups ({', '.join(KIND_GROUPS)}), e.g. blue-collar")
     pub.add_argument("--no-push", action="store_true", help="commit in the publish worktree but don't push")
     pub.add_argument("--local", action="store_true", help="write into your own marketing-site checkout for `npm run dev`")
     pub.add_argument("--wait", action="store_true", help="after pushing, wait for the deploy and mark previews live")
@@ -36,7 +45,16 @@ def main(argv=None) -> int:
     en = sub.add_parser("enrich", help="add real opening hours + Google review quotes to the next leads (run before publish)")
     en.add_argument("--grade", default="Hot", help="comma list (default Hot)")
     en.add_argument("--limit", type=int, default=100)
+    en.add_argument("--kind", default="", help="comma list of kinds or groups, as for publish")
     en.add_argument("--pace", type=float, default=6.0, help="seconds between businesses (keep ≥ 6)")
+
+    cm = sub.add_parser("campaign", help="batches of previews start to finish: enrich, publish, wait until live, website packs")
+    cm.add_argument("--kind", default="", help="comma list of kinds or groups, e.g. blue-collar")
+    cm.add_argument("--grade", default="Hot,Warm", help="comma list (default Hot,Warm), or 'all'")
+    cm.add_argument("--batches", type=int, default=1, help="how many batches (default 1)")
+    cm.add_argument("--size", type=int, default=100, help="previews per batch (default 100)")
+    cm.add_argument("--no-enrich", action="store_true", help="skip opening hours and review quotes")
+    cm.add_argument("--pace", type=float, default=6.0, help="enrich: seconds between businesses (keep ≥ 6)")
 
     sub.add_parser("verify", help="mark published previews whose URL loads as 'Preview live'")
     sub.add_parser("coverage", help="towns × business types searched, by region")
@@ -46,10 +64,14 @@ def main(argv=None) -> int:
     ex.add_argument("slug")
 
     dc = sub.add_parser("docs", help="client PDFs: proposal, agreement, onboarding form, or all three as one pack")
-    dc.add_argument("slug", nargs="?", help="the lead (omit with --generic)")
+    dc.add_argument("slugs", nargs="*", metavar="slug", help="the lead(s) (omit with --generic or --live)")
     dc.add_argument("--kind", default="pack", choices=list(documents.DOCUMENTS) + ["all"])
     dc.add_argument("--generic", action="store_true",
                     help="rebuild the generic pack linked from every preview (pipeline/assets/)")
+    dc.add_argument("--live", action="store_true",
+                    help="every lead with a live preview that doesn't have this document in exports/docs/ yet")
+    dc.add_argument("--business", default="", help="with --live: only these kinds or groups, e.g. blue-collar")
+    dc.add_argument("--redo", action="store_true", help="with --live: rebuild documents that already exist")
 
     dn = sub.add_parser("dncr", help="Do Not Call Register: export numbers to wash, import the results")
     dn.add_argument("action", choices=["export", "import"])
@@ -84,7 +106,7 @@ def main(argv=None) -> int:
     elif a.cmd == "publish":
         grades = [] if a.grade.lower() == "all" else _list(a.grade)
         res = publish.publish(grades=grades, limit=a.limit, min_score=a.min_score, regions=_list(a.region),
-                              push=not a.no_push, local=a.local)
+                              push=not a.no_push, local=a.local, kinds=_kinds(p, a.kind))
         print(json.dumps(res, indent=2))
         if a.wait and res["pushed"]:
             deadline = time.time() + 15 * 60
@@ -98,10 +120,14 @@ def main(argv=None) -> int:
         from .enrich import enrich
         with db.connect() as con:
             # The same leads `publish` will pick next, in the same order.
-            slugs = publish.select_new(con, _list(a.grade), a.limit)
+            slugs = publish.select_new(con, _list(a.grade), a.limit, kinds=_kinds(p, a.kind))
             slugs = [s for s in slugs if not con.execute(
                 "SELECT enriched_at FROM leads WHERE slug = ?", (s,)).fetchone()[0]]
         print(json.dumps(enrich(slugs, pace=a.pace), indent=2))
+    elif a.cmd == "campaign":
+        from .campaign import run
+        grades = [] if a.grade.lower() == "all" else _list(a.grade)
+        print(json.dumps(run(_kinds(p, a.kind), grades, a.batches, a.size, not a.no_enrich, a.pace), indent=2))
     elif a.cmd == "verify":
         print(json.dumps(publish.verify(), indent=2))
     elif a.cmd == "coverage":
@@ -123,14 +149,29 @@ def main(argv=None) -> int:
             changed = documents.ensure_generic_pack(force=True)
             print(f"{'Rebuilt' if changed else 'Up to date:'} {documents.GENERIC_PACK}")
             return 0
-        if not a.slug:
-            p.error("docs needs a lead slug, or --generic")
+        kinds = list(documents.DOCUMENTS) if a.kind == "all" else [a.kind]
         with db.connect() as con:
-            lead = db.get(con, a.slug)
-        if not lead:
-            p.error(f"no lead {a.slug!r}")
-        for kind in documents.DOCUMENTS if a.kind == "all" else [a.kind]:
-            print(documents.save(kind, lead))
+            if a.live:
+                leads = publish.active_leads(con)
+                if a.business:
+                    wanted = set(_kinds(p, a.business))
+                    leads = [l for l in leads if l["kind"] in wanted]
+                leads.sort(key=lambda l: (-(l["score"] or 0), -(l["reviews"] or 0), l["slug"]))
+            elif a.slugs:
+                leads = [db.get(con, s) for s in a.slugs]
+                missing = [s for s, l in zip(a.slugs, leads) if not l]
+                if missing:
+                    p.error(f"no lead {', '.join(map(repr, missing))}")
+            else:
+                p.error("docs needs a lead slug, --live or --generic")
+        jobs = [(k, l) for l in leads for k in kinds
+                if a.redo or not a.live or not documents.export_path(k, l).exists()]
+        if not jobs:
+            print("Nothing to make: every live preview already has its documents.")
+            return 0
+        res = documents.save_many(jobs)
+        print(json.dumps({"made": len(res["made"]), "failed": res["failed"],
+                          "folder": str(documents.EXPORT_DIR)}, indent=2))
     elif a.cmd == "dncr":
         if a.action == "export":
             out = dncr.export(a.scope, a.limit)

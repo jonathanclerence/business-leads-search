@@ -145,6 +145,91 @@ def test_render():
     check("final booking really sends (sms/mail)", 'data-final="1"' in final, True)
     unrated = render({**lead, "rating": None, "reviews": 0})
     check("no rating → no reviews section", "Google reviews" in unrated, False)
+    from pipeline.render import media
+    from pipeline.content import KIND_COPY, KINDS as ALL_KINDS
+    check("a kind without its own photo uses the theme's", media("nail-salon", "beauty")["about"], "beauty")
+    check("removalists never get the cleaning video", media("removalist", "cleaning")["video"], "")
+    check("kind copy only for real kinds", set(KIND_COPY) <= set(ALL_KINDS), True)
+    wash = render({**lead, "kind": "car-wash", "theme": "auto", "category": "Car wash"})
+    check("car washes get car-wash words, not the mechanic's", ("A clean car" in wash, "Honest work." in wash), (True, False))
+
+
+def test_selection():
+    print("\nPicking the next previews")
+    import tempfile
+    from pipeline import publish
+    from pipeline.content import KIND_GROUPS, expand_kinds
+    from pipeline.leads import business_key, is_chain
+    check("every blue-collar kind is a real kind", set(KIND_GROUPS["blue-collar"]) <= set(KINDS), True)
+    check("groups and kinds mix", expand_kinds(["blue-collar", "vet"])[-1], "vet")
+    try:
+        expand_kinds(["plumbers"])
+        check("unknown kind is an error", "no error", "ValueError")
+    except ValueError:
+        check("unknown kind is an error", "ValueError", "ValueError")
+    check("franchises", [is_chain(n) for n in ("Jim's Mowing", "Colac Toyota Service Workshop", "APCO EasyWash")],
+          [True, True, True])
+    check("not franchises", [is_chain(n) for n in ("Geelong Tyre Services (Formerly Beaurepaires Geelong)",
+                                                   "Toyota Specialist Repairs", "Fordham Plumbing", "Thrifty Auto Electrics")],
+          [False, False, False, False])
+    check("one business, several towns", business_key("Mr Magic Carwash Shepparton", "Shepparton"),
+          business_key("Mr Magic Car Wash", "Warrnambool"))
+    check("different businesses stay apart", business_key("On Time Pest Control", "Echuca") == business_key("On Time Plumbing", "Echuca"), False)
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "t.db"
+        rows = (("bob", "Bob's Plumbing", "plumber", "Geelong", 90, "new"),
+                ("bob-2", "Bob's Plumbing", "plumber", "Ballarat", 88, "new"),
+                ("jims", "Jim's Mowing Geelong", "lawn-mowing", "Geelong", 95, "new"),
+                ("sparky", "Sparky Sam", "electrician", "Geelong", 80, "new"),
+                ("sparky-2", "Sparky Sam", "electrician", "Torquay", 85, "new"),
+                ("nails", "Pearl Nails", "nail-salon", "Geelong", 99, "new"))
+        with db.connect(path) as con:
+            for slug, name, kind, suburb, score, stage in rows:
+                con.execute("INSERT INTO leads (slug, key, name, kind, suburb, grade, stage, created_at, updated_at, score) "
+                            "VALUES (?, ?, ?, ?, ?, 'Hot', ?, ?, ?, ?)", (slug, slug, name, kind, suburb, stage, db.now(), db.now(), score))
+            con.execute("UPDATE leads SET stage = 'preview_hosted' WHERE slug = 'sparky'")
+            check("blue-collar only, no franchise, one per business, none already live",
+                  publish.select_new(con, ["Hot"], None, kinds=expand_kinds(["blue-collar"])), ["bob"])
+            check("limit counts what's picked", publish.select_new(con, ["Hot"], 1), ["nails"])
+    _campaign_check()
+
+
+def _campaign_check():
+    """campaign.run with the network parts faked: publish moves the picked leads on, verify finds them live."""
+    from pipeline import campaign, publish
+    from pipeline.content import expand_kinds
+    with db.connect() as con:
+        for slug, name, kind, score in (("pipes", "Pipes Plumbing", "plumber", 90), ("wires", "Wires Electrical", "electrician", 85),
+                                        ("mow", "Mow Co", "lawn-mowing", 80), ("salon", "Hair Salon X", "hair-salon", 99)):
+            con.execute("INSERT INTO leads (slug, key, name, kind, suburb, grade, stage, created_at, updated_at, score) "
+                        "VALUES (?, ?, ?, ?, 'Geelong', 'Hot', 'new', ?, ?, ?)", (slug, slug, name, kind, db.now(), db.now(), score))
+    calls = {"published": [], "packs": []}
+
+    def fake_publish(grades, limit, kinds, log):
+        with db.connect() as c:
+            picked = publish.select_new(c, grades, limit, kinds=kinds)
+            for slug in picked:
+                db.set_stage(c, slug, "preview_created")
+        calls["published"].append(picked)
+        return {"pushed": True}
+
+    def fake_verify(slugs, log):
+        with db.connect() as c:
+            for slug in slugs:
+                db.advance(c, slug, "preview_hosted")
+
+    saved = (publish.publish, publish.verify, documents.save_many, campaign.time.sleep)
+    publish.publish, publish.verify = fake_publish, fake_verify
+    documents.save_many = lambda jobs, log=None: calls["packs"].append([l["slug"] for _, l in jobs]) or {"made": jobs, "failed": []}
+    campaign.time.sleep = lambda s: None
+    try:
+        report = campaign.run(expand_kinds(["blue-collar"]), ["Hot"], batches=3, size=2, enrich_first=False, log=lambda m: None)
+    finally:
+        publish.publish, publish.verify, documents.save_many, campaign.time.sleep = saved
+    check("campaign: batches of the next blue-collar leads, then stops when none are left",
+          calls["published"], [["pipes", "wires"], ["mow"]])
+    check("campaign: a website pack for every new preview", calls["packs"], [["pipes", "wires"], ["mow"]])
+    check("campaign: report per batch, all live", [(r["published"], r["not_live"]) for r in report], [(2, []), (1, [])])
 
 
 def test_documents():
@@ -406,6 +491,7 @@ def main() -> int:
     test_classify()
     test_import()
     test_render()
+    test_selection()
     test_documents()
     test_dncr()
     test_stages()

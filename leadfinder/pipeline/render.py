@@ -15,8 +15,8 @@ from typing import Any, Dict
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import config
-from .content import (BOOKING, CTA_BAND, CTA_LABELS, GUESTS, KIND_ACCENT, KINDS, THEME_ABOUT, THEME_CINEMA,
-                      THEME_STATEMENT, THEME_STYLE, booking_mode)
+from .content import (BOOKING, CTA_BAND, CTA_LABELS, GUESTS, KIND_ACCENT, KIND_COPY, KINDS, NO_THEME_VIDEO,
+                      THEME_ABOUT, THEME_CINEMA, THEME_STATEMENT, THEME_STYLE, booking_mode)
 from .leads import slugify
 
 HERE = Path(__file__).resolve().parent
@@ -66,6 +66,20 @@ def video_available(theme: str) -> bool:
     return (config.MARKETING_SITE_DIR / config.ASSETS_DIR / "video" / f"{theme}.mp4").exists()
 
 
+def media(kind: str, theme: str) -> Dict[str, str]:
+    """Which photo and video the page uses: the kind's own when the site has
+    them (a pest controller gets pest control, not the plumber's tap), else
+    the theme's. → {"about": "<name>" for img/<name>-about.webp,
+    "video": "<name>" for video/<name>.mp4 and -poster.webp, or ""}."""
+    root = config.MARKETING_SITE_DIR / config.ASSETS_DIR
+    about = kind if kind and (root / "img" / f"{kind}-about.webp").exists() else theme
+    if kind and video_available(kind):
+        video = kind
+    else:
+        video = theme if kind not in NO_THEME_VIDEO and video_available(theme) else ""
+    return {"about": about, "video": video}
+
+
 def asset_version() -> str:
     """Changes whenever the shared css/js/icons change, so browsers never mix old and new."""
     h = hashlib.sha1()
@@ -93,6 +107,8 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
     service_area = not street or "mobile" in lead["name"].lower() or lead.get("kind") == "mobile-mechanic"
 
     version = asset_version()
+    pics = media(lead.get("kind") or "", theme)
+    own = KIND_COPY.get(lead.get("kind") or "", {})
     mode = booking_mode(lead.get("kind") or "local", cta)
     t_accent, t_type, t_paper = THEME_STYLE.get(theme, THEME_STYLE["local"])
     t_accent = KIND_ACCENT.get(lead.get("kind") or "", t_accent)
@@ -114,17 +130,18 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
         "corners": lead.get("corners") if lead.get("corners") in ("sharp", "soft", "round") else "round",
         "booking": dict(BOOKING[mode], mode=mode,
                         options=GUESTS if mode == "table" else [t for t, _ in kind["services"]]),
-        "cinema_line": THEME_CINEMA.get(theme, THEME_CINEMA["local"]),
+        "cinema_line": own.get("cinema") or THEME_CINEMA.get(theme, THEME_CINEMA["local"]),
         "scene": "boxes" if lead.get("kind") in ("removalist", "skip-bin") else theme,
         "brand_url": config.SITE_URL,
         "swatches": list(dict.fromkeys([t_accent] + SWATCHES)),
         "initials": initials(lead["name"]),
         "name_words": lead["name"].split(),
         "name_size": name_size(lead["name"]),
-        "video": video_available(theme),
+        "video": bool(pics["video"]),
+        "media": pics,
         "marquee": [t for t, _ in kind["services"]] + [f"{lead['category']} in {suburb}"]
                    + ([f"{rating:g}★ on Google"] if rated else []),
-        "statement": THEME_STATEMENT.get(theme, THEME_STATEMENT["local"]),
+        "statement": own.get("statement") or THEME_STATEMENT.get(theme, THEME_STATEMENT["local"]),
         "cta_band": CTA_BAND[cta],
         "hours": hours,
         "hours_json": json.dumps(hours).replace("</", "<\\/") if hours else "",
@@ -137,7 +154,7 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
         "icons": f"{assets}/preview-icons.svg?v={version}",
         "headline": kind["headline"].format(suburb=suburb),
         "lede": lede,
-        "about": THEME_ABOUT.get(theme, THEME_ABOUT["local"]).format(
+        "about": (own.get("about") or THEME_ABOUT.get(theme, THEME_ABOUT["local"])).format(
             name=lead["name"], suburb=suburb, what=lead["category"].lower()),
         "services": kind["services"],
         "services_title": f"Come and see us in {suburb}" if theme in ("food", "winery")

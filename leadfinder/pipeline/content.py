@@ -502,6 +502,33 @@ KINDS = {
 
 THEMES = sorted({k["theme"] for k in KINDS.values()})
 
+# Kinds the theme's video doesn't fit (a mop for a removalist): until they
+# have a clip of their own (video/<kind>.mp4), their page has no video
+# section rather than the wrong one.
+NO_THEME_VIDEO = {"removalist", "skip-bin"}
+
+# Named sets of kinds for `--kind` in publish / enrich / docs. "blue-collar"
+# is the hands-on, on-the-tools work: cars, trades, cleaning and outdoor jobs.
+KIND_GROUPS = {
+    "blue-collar": ["mechanic", "mobile-mechanic", "auto-electrician", "panel-beater", "tyres", "windscreen",
+                    "car-detailing", "car-wash", "plumber", "electrician", "handyman", "painter", "locksmith",
+                    "air-conditioning", "appliance-repair", "pest-control", "cleaning", "carpet-cleaning",
+                    "removalist", "skip-bin", "lawn-mowing", "gardening", "landscaping", "tree-removal"],
+}
+
+
+def expand_kinds(values) -> list:
+    """["blue-collar", "vet"] → every kind in the group, plus vet. Unknown names raise ValueError."""
+    out = []
+    for v in values:
+        if v in KIND_GROUPS:
+            out += KIND_GROUPS[v]
+        elif v in KINDS:
+            out.append(v)
+        else:
+            raise ValueError(f"unknown kind {v!r} (groups: {', '.join(KIND_GROUPS)})")
+    return list(dict.fromkeys(out))
+
 
 # Design defaults per theme: accent colour, type style ("serif" = Instrument
 # Serif display, "grotesk" = Bricolage Grotesque, "sans" = Geist) and paper
@@ -551,6 +578,28 @@ THEME_STATEMENT = {
     "professional": "Clear advice, <em>in plain English</em>.",
     "tech": "Fixed fast, <em>fixed right</em>.",
     "local": "Proudly <em>local</em>, always.",
+}
+
+# Where the theme's wording was written for another trade (a car wash isn't a
+# mechanic): the kind's own about text, statement and video line. Same rules
+# as the theme copy: generic to the trade, no claims about the business.
+KIND_COPY = {
+    "car-wash": dict(
+        about="{name} is a {what} in {suburb}. Pull in, relax, and drive away with a car you're proud of — inside and out.",
+        statement="A clean car, <em>every time</em>.", cinema="The shine you'll notice."),
+    "car-detailing": dict(
+        about="{name} is a {what} in {suburb}. Every panel, seat and corner gets the time it deserves, so your car looks and feels like new again.",
+        statement="Every detail, <em>done properly</em>.", cinema="The shine you'll notice."),
+    "tree-removal": dict(
+        about="{name} looks after trees across {suburb} and surrounds — removals, pruning and clean-ups, with the site left tidy when we're done.",
+        statement="Big jobs, <em>handled with care</em>.", cinema="Trees, taken care of."),
+    "pest-control": dict(statement="A pest-free home, <em>for good</em>.", cinema="Back to a pest-free home."),
+    "removalist": dict(
+        about="{name} is a {what} based in {suburb}. We plan the move with you and look after your things like our own, so moving day is one less worry.",
+        statement="Your things, <em>moved with care</em>."),
+    "skip-bin": dict(
+        about="{name} delivers skip bins across {suburb} and surrounds. Pick a size, tell us when, and we'll drop it off and take it away.",
+        statement="Clear it out, <em>the easy way</em>."),
 }
 
 # The closing call-to-action band, per main button type.

@@ -90,6 +90,38 @@ def slugify(text: str, maxlen: int = 48) -> str:
     return t or "business"
 
 
+# -------------------------------------------------- chains and branches
+# Franchises and big brands: head office owns the website and the name, so a
+# preview for one branch is a wasted call (and their trade mark). Matched
+# against the lower-cased name; "formerly Beaurepaires" is independent now.
+_CHAIN = re.compile(
+    r"\bjim'?s\b|\bk(a|ä)rcher\b|\bapco\b|\bmycar\b|\bultra ?tune\b|\bmidas\b|\bbob jane\b|\btyrepower\b"
+    r"|\bgoodyear\b|\bbridgestone\b|^beaurepaires\b|\brepco\b|\bkmart\b|\bhire a hubby\b|\blube mobile\b"
+    r"|\bpedders\b|\btyreright\b|\bautobarn\b|\bsupercheap\b|\bjax tyres\b|\bbattery world\b"
+    r"|\bmarshall batteries\b|\bo'?brien (auto)?glass\b|\bnovus\b|\binstant windscreens\b|\bterminix\b"
+    r"|\brentokil\b|\bflick anticimex\b|\bfantastic services\b|\bspotless\b|\belectrodry\b|\bchem-?dry\b"
+    r"|\bvip (home|lawn|cleaning|mowing)\b|\bpaul'?s mowing\b|\bmerry maids\b|\bmolly maid\b|\bpoolwerx\b"
+    r"|\bkennards\b|\bcoates hire\b|\bbunnings\b|\b(toyota|holden|ford|mazda|nissan|hyundai|kia|honda|isuzu"
+    r"|subaru|mitsubishi|volkswagen|suzuki|mercedes|bmw|audi)\b(?! ?(specialist|repairs?)\b)")
+
+
+def is_chain(name: str) -> bool:
+    return bool(_CHAIN.search((name or "").lower()))
+
+
+_KEY_DROP = {"pty", "ltd", "the", "and", "co", "vic", "nsw", "qld", "australia"}
+
+
+def business_key(name: str, suburb: str = "") -> str:
+    """One key for one business across its locations: "On Time Pest Control"
+    (Echuca) and "On Time Pest Control" (Cohuna), "Agnew's Plumbing Plus
+    Shepparton" and "…Plus cobram" all match. Place and filler words are
+    dropped, and the spaces, so "Car Wash" and "Carwash" agree."""
+    place = set(slugify(suburb, 80).split("-")) if suburb else set()
+    words = [w for w in slugify(name, 120).split("-") if w not in _KEY_DROP and w not in place]
+    return "".join(words) or slugify(name, 120)
+
+
 # Small words that never identify a business, and trade words that don't on
 # their own ("Barber One Shop" → barberone, not barber).
 _CODE_SKIP = {"the", "and", "a", "an", "of", "in", "on", "at", "by", "my"}

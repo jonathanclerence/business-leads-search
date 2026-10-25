@@ -104,8 +104,8 @@
   <section class="cinema" aria-label="{{ lead.category }} in {{ lead.suburb }}">
     <div class="wrap">
       <div class="cinema-frame" data-reveal="zoom">
-        <video class="cinema-video" muted loop playsinline preload="none" poster="{{ assets }}/video/{{ theme }}-poster.webp" aria-hidden="true">
-          <source src="{{ assets }}/video/{{ theme }}.mp4" type="video/mp4">
+        <video class="cinema-video" muted loop playsinline preload="none" poster="{{ assets }}/video/{{ media.video }}-poster.webp" aria-hidden="true">
+          <source src="{{ assets }}/video/{{ media.video }}.mp4" type="video/mp4">
         </video>
         <div class="cinema-cap">
           <p data-edit="cinema">{{ cinema_line }}</p>
@@ -119,7 +119,7 @@
   <section class="section about" id="about">
     <div class="wrap about-grid">
       <div class="about-media" data-reveal="zoom"{% if rated %} data-lens="{{ assets }}/glass.js?v={{ version }}" data-lens-rating="{{ rating }}" data-lens-reviews="{{ reviews_fmt }}"{% endif %}>
-        <img src="{{ assets }}/img/{{ theme }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async"{% if not rated %} data-parallax{% endif %}>
+        <img src="{{ assets }}/img/{{ media.about }}-about.webp" alt="" width="900" height="1100" loading="lazy" decoding="async"{% if not rated %} data-parallax{% endif %}>
       </div>
       <div class="about-copy">
         <p class="statement" data-reveal style="--d:1" data-edit="statement">{{ statement | safe }}</p>

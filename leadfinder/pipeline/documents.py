@@ -407,12 +407,18 @@ def _remote(kind: str, lead: Optional[Dict[str, Any]], today: Optional[date], sh
 
 
 def build(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[date] = None,
-          log: Log = print, fingerprint: str = "") -> bytes:
-    """One document as PDF bytes. kind: pack | proposal | agreement | onboarding."""
+          log: Log = print, fingerprint: str = "", browser=None, shots: Optional[Dict[str, str]] = None) -> bytes:
+    """One document as PDF bytes. kind: pack | proposal | agreement | onboarding.
+    Pass an open `browser` (and the lead's `shots`, if you have them) to make
+    many documents without starting Chromium for each one (see save_many)."""
     ctx = context(kind, lead, today)
     shoot = bool(lead and "website" in ctx["pages"])
     if config.CHROMIUM_URL:
         out = _remote(kind, lead, today, shoot)
+    elif browser is not None:
+        if shoot and shots is None:
+            shots = _screenshots(browser, lead, log)
+        out = _print(browser, html(kind, lead, today, shots if shoot else {}))
     else:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as pw:
@@ -436,11 +442,61 @@ def filename(kind: str, lead: Optional[Dict[str, Any]] = None) -> str:
     return f"DuNous-{title}" + (f"-{slugify(short_name(lead['name']), 40)}" if lead else "") + ".pdf"
 
 
+def export_path(kind: str, lead: Dict[str, Any]) -> Path:
+    return EXPORT_DIR / lead["slug"] / filename(kind, lead)
+
+
 def save(kind: str, lead: Dict[str, Any], log: Log = print) -> Path:
-    out = EXPORT_DIR / lead["slug"] / filename(kind, lead)
+    out = export_path(kind, lead)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(build(kind, lead, log=log))
     return out
+
+
+def save_many(jobs: List[tuple], log: Log = print, recycle: int = 50) -> Dict[str, Any]:
+    """[(kind, lead), …] → files in exports/docs/<slug>/, with one Chromium for
+    the lot (restarted every `recycle` leads) and one set of screenshots per
+    lead. A document that fails is reported and skipped, not fatal."""
+    made: List[str] = []
+    failed: List[Dict[str, str]] = []
+
+    def one(browser, kind, lead, shots_for):
+        if lead["slug"] not in shots_for and "website" in DOCUMENTS[kind]["pages"] and not config.CHROMIUM_URL:
+            shots_for.clear()  # only the current lead's are kept
+            shots_for[lead["slug"]] = _screenshots(browser, lead, log)
+        out = export_path(kind, lead)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(build(kind, lead, log=log, browser=browser, shots=shots_for.get(lead["slug"])))
+        made.append(str(out))
+
+    if config.CHROMIUM_URL:  # the cloud printer starts its own browser per request anyway
+        for kind, lead in jobs:
+            try:
+                one(None, kind, lead, {})
+            except Exception as exc:  # noqa: BLE001
+                failed.append({"slug": lead["slug"], "kind": kind, "error": str(exc)[:200]})
+        return {"made": made, "failed": failed}
+
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as pw:
+        browser, leads_in_browser, shots_for, last = _launch(pw), 0, {}, None
+        try:
+            for n, (kind, lead) in enumerate(jobs, 1):
+                if lead["slug"] != last:
+                    last = lead["slug"]
+                    leads_in_browser += 1
+                    if leads_in_browser > recycle:
+                        browser.close()
+                        browser, leads_in_browser = _launch(pw), 1
+                try:
+                    one(browser, kind, lead, shots_for)
+                    log(f"[{n}/{len(jobs)}] {DOCUMENTS[kind]['title']}: {lead['slug']}")
+                except Exception as exc:  # noqa: BLE001 — one bad lead shouldn't stop the batch
+                    failed.append({"slug": lead["slug"], "kind": kind, "error": str(exc)[:200]})
+                    log(f"[{n}/{len(jobs)}] ✗ {lead['slug']}: {exc}")
+        finally:
+            browser.close()
+    return {"made": made, "failed": failed}
 
 
 def generic_fingerprint() -> str:

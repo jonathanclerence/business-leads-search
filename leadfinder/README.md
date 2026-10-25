@@ -33,6 +33,7 @@ Two ways to use it:
 1. [Quick start](#quick-start)
 2. [Bulk batch & lead tracker](#bulk-batch--lead-tracker) ← **the CSV-in/CSV-out workflow**
    - [Sales pipeline: previews, calls, stages](#sales-pipeline-previews-calls-stages)
+   - [Making previews in batches: `campaign`](#making-previews-in-batches-campaign) ← **next 1,000 previews in one command**
 3. [Lead scoring](#lead-scoring)
 4. [How it works](#how-it-works)
 5. [The two data engines](#the-two-data-engines)
@@ -236,7 +237,14 @@ every lead from *New* to *Website live*.
 .venv/bin/python -m pipeline import          # batches/*/leads.csv → clean list + tracker
 .venv/bin/python -m pipeline enrich --grade Hot --limit 100   # opening hours + review quotes (~20 s per lead)
 .venv/bin/python -m pipeline publish --grade Hot --limit 100 --wait
+.venv/bin/python -m pipeline docs --live     # a website pack PDF for every new live preview
 .venv/bin/python -m pipeline coverage        # what's been searched, by region
+# one trade group only, e.g. the next 100 blue-collar businesses:
+.venv/bin/python -m pipeline enrich  --grade Hot,Warm --kind blue-collar --limit 100
+.venv/bin/python -m pipeline publish --grade Hot,Warm --kind blue-collar --limit 100 --wait
+# or all of it, batch after batch (enrich → publish → wait until live → website packs);
+# run it again after a stop and it carries on with the next leads:
+.venv/bin/python -m pipeline campaign --kind blue-collar --batches 10 --size 100
 ./run.sh                                     # then open http://localhost:5000/pipeline
 ```
 
@@ -246,6 +254,17 @@ every lead from *New* to *Website live*.
 - **Tracker:** `http://localhost:5000/pipeline` — call queue, personalised call
   script and SMS, one-click call logging, stages, follow-ups, notes, prices,
   region coverage and the sales playbook. Data lives in `batches/pipeline.db`.
+- **Picking leads:** `publish`, `enrich` and `docs --live` take `--kind`
+  (`--business` for docs): kind keys or a group from `KIND_GROUPS` in
+  `pipeline/content.py`, e.g. `--kind blue-collar` (cars, trades, cleaning,
+  outdoor jobs). Franchises and big brands (Jim's, mycar, dealerships… see
+  `_CHAIN` in `pipeline/leads.py`) are never picked, and a business with
+  several branches gets one preview, not one per town.
+- **Photos per trade:** a kind with its own `img/<kind>-about.webp` or
+  `video/<kind>.mp4` in the site's `previewsite-assets` uses them instead of
+  the theme's (a pest controller doesn't get the plumber's tap). Kinds in
+  `NO_THEME_VIDEO` skip the video section until they have a clip of their own.
+  `KIND_COPY` does the same for the wording.
 - **Publish:** renders a page per lead (`pipeline/templates/site.html.j2`, copy
   in `pipeline/content.py`) into the marketing-site repo's
   `public/previewsite-pages/`, commits from a separate worktree
@@ -259,7 +278,9 @@ every lead from *New* to *Website live*.
 - **Client documents:** when a lead says “send me the info”, press **⬇ Website
   pack (PDF)** in the lead's *Send the info* box (or
   `python -m pipeline docs <slug> [--kind pack|proposal|agreement|onboarding|all]`,
-  saved to `exports/docs/<slug>/`). One branded 5-page PDF made for that
+  saved to `exports/docs/<slug>/`; `python -m pipeline docs --live
+  [--business blue-collar]` makes one for every live preview that doesn't
+  have one yet, in one browser session). One branded 5-page PDF made for that
   business: cover, their website (screenshots and a QR code), packages and
   hosting, a one-page service agreement (the full Terms stay on
   dunous.com/terms) and a one-page onboarding form — the last two are
@@ -282,6 +303,31 @@ every lead from *New* to *Website live*.
   own Cloudflare Pages.
 
 `python tests/test_sales_pipeline.py` runs the offline tests.
+
+### Making previews in batches: `campaign`
+
+The one command for "make the next lot of previews":
+
+```bash
+.venv/bin/python -m pipeline campaign --kind blue-collar --batches 10 --size 100
+```
+
+That's 10 batches of 100, so 1,000 previews. For each batch it takes the next
+best leads `publish` would pick, adds their opening hours and review quotes
+(`enrich`), publishes them, waits until dunous.com serves every page (marked
+*Preview live*), then makes each one's website pack in `exports/docs/<slug>/`.
+A batch of 100 takes about 20–25 minutes, nearly all of it the Google Maps
+lookups.
+
+- **Stopped part-way?** Run the same command again. It carries on with the
+  next leads that have no preview yet, and `docs --live --business blue-collar`
+  makes any packs that were missed.
+- **Other trades:** `--kind` takes kind keys or a group from `KIND_GROUPS`
+  (`pipeline/content.py`), e.g. `--kind plumber,electrician`. Leave it out for
+  every kind. `--grade` defaults to `Hot,Warm`.
+- **Faster, plainer previews:** `--no-enrich` skips the hours and reviews.
+- **Before reps call:** wash the new numbers against the Do Not Call Register
+  (`python -m pipeline dncr export --scope calling`).
 
 ### Team access: sales reps on the tracker
 

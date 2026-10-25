@@ -25,8 +25,8 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Sequence
 
 from . import config, db, documents
-from .leads import preview_code
-from .render import ASSET_SRC, render
+from .leads import business_key, is_chain, preview_code
+from .render import ASSET_SRC, media, render
 
 Log = Callable[[str], None]
 
@@ -43,9 +43,10 @@ def _git(cwd: Path, *args: str) -> str:
 
 
 def select_new(con, grades: Sequence[str], limit: Optional[int], min_score: int = 0,
-               regions: Sequence[str] = ()) -> List[str]:
+               regions: Sequence[str] = (), kinds: Sequence[str] = ()) -> List[str]:
     """The next leads to publish. limit=None means all; limit=0 means none
-    (re-render the existing previews only)."""
+    (re-render the existing previews only). `kinds` are kind keys (see
+    content.expand_kinds for groups like "blue-collar")."""
     if limit is not None and limit <= 0:
         return []
     sql = "SELECT slug FROM leads WHERE stage = 'new' AND score >= ?"
@@ -56,11 +57,23 @@ def select_new(con, grades: Sequence[str], limit: Optional[int], min_score: int 
     if regions:
         sql += f" AND region IN ({','.join('?' * len(regions))})"
         args += list(regions)
+    if kinds:
+        sql += f" AND kind IN ({','.join('?' * len(kinds))})"
+        args += list(kinds)
     sql += " ORDER BY score DESC, reviews DESC"
-    if limit:
-        sql += " LIMIT ?"
-        args.append(limit)
-    return [r["slug"] for r in con.execute(sql, args)]
+    # Skip franchises, and branches of a business that already has (or is
+    # getting) a preview: one business, one preview, one call.
+    seen = {business_key(l["name"], l["suburb"]) for l in active_leads(con)}
+    picked: List[str] = []
+    for r in con.execute(sql.replace("SELECT slug", "SELECT slug, name, suburb", 1), args).fetchall():
+        key = business_key(r["name"], r["suburb"])
+        if is_chain(r["name"]) or key in seen:
+            continue
+        seen.add(key)
+        picked.append(r["slug"])
+        if limit and len(picked) >= limit:
+            break
+    return picked
 
 
 def active_leads(con) -> List[Dict[str, Any]]:
@@ -174,7 +187,7 @@ def commit_and_push(wt: Path, message: str, push: bool, log: Log) -> bool:
 
 def publish(grades: Sequence[str] = ("Hot",), limit: Optional[int] = None, min_score: int = 0,
             regions: Sequence[str] = (), push: bool = True, local: bool = False,
-            log: Log = print) -> Dict[str, Any]:
+            log: Log = print, kinds: Sequence[str] = ()) -> Dict[str, Any]:
     """`local=True` writes into your own marketing-site checkout instead (for
     `npm run dev`) and leaves every lead's stage alone.
 
@@ -182,7 +195,7 @@ def publish(grades: Sequence[str] = ("Hot",), limit: Optional[int] = None, min_s
     push fails, nothing is marked as published.
     """
     with db.connect() as con:
-        fresh = select_new(con, grades, limit, min_score, regions)
+        fresh = select_new(con, grades, limit, min_score, regions, kinds)
         target = config.MARKETING_SITE_DIR if local else prepare_worktree(log)
         refresh_info_pack(log)
         assign_codes(con, [l["slug"] for l in active_leads(con)] + fresh)
@@ -248,9 +261,9 @@ def export_site(slug: str, log: Log = print) -> Path:
         shutil.copyfile(ASSET_SRC / name, out / "assets" / name)
     site_assets = config.MARKETING_SITE_DIR / config.ASSETS_DIR
     shutil.copytree(site_assets / "fonts", out / "assets" / "fonts")
-    theme = lead["theme"]
-    for sub, names in (("img", [f"{theme}-hero.webp", f"{theme}-about.webp"]),
-                       ("video", [f"{theme}.mp4", f"{theme}-poster.webp"])):
+    theme, pics = lead["theme"], media(lead.get("kind") or "", lead["theme"])
+    for sub, names in (("img", [f"{theme}-hero.webp", f"{pics['about']}-about.webp"]),
+                       ("video", [f"{pics['video']}.mp4", f"{pics['video']}-poster.webp"] if pics["video"] else [])):
         for name in names:
             f = site_assets / sub / name
             if f.exists():
