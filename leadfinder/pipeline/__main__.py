@@ -30,7 +30,11 @@ def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="python -m pipeline", description="Leads → previews → paying clients.")
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    sub.add_parser("import", help="rebuild the clean list from batches/*/leads.csv and add new leads to the tracker")
+    im = sub.add_parser("import", help="rebuild the clean list from batches/*/leads.csv and add new leads to the tracker")
+    im.add_argument("--batch", action="append", default=[],
+                    help="import only this batch (folder name under batches/; repeatable). Default: every batch")
+    im.add_argument("--add-only", action="store_true",
+                    help="only add businesses the tracker doesn't have; leave tracked leads untouched")
 
     pub = sub.add_parser("publish", help="generate previews for the next leads and push them live")
     pub.add_argument("--grade", default="Hot", help="comma list, e.g. Hot,Warm (default Hot). Use 'all' for every grade")
@@ -102,7 +106,11 @@ def main(argv=None) -> int:
     a = p.parse_args(argv)
 
     if a.cmd == "import":
-        print(json.dumps(importer.run(), indent=2))
+        paths = [importer.BATCH_ROOT / b / "leads.csv" for b in a.batch]
+        missing = [str(x) for x in paths if not x.exists()]
+        if missing:
+            p.error(f"no leads.csv for: {', '.join(missing)}")
+        print(json.dumps(importer.run(paths or None, add_only=a.add_only), indent=2))
     elif a.cmd == "publish":
         grades = [] if a.grade.lower() == "all" else _list(a.grade)
         res = publish.publish(grades=grades, limit=a.limit, min_score=a.min_score, regions=_list(a.region),

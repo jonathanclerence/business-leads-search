@@ -104,6 +104,24 @@ def test_import():
     out = dedupe([b, a])
     check("same phone merged, best score kept", (len(out), out[0]["score"]), (1, 100))
 
+    from pipeline.importer import upsert
+    # A second Google listing with the same phone (a Facebook-only twin).
+    twin = dict(b, key="pid:twin", score=99, address="9 Other St, Ocean Grove VIC 3226", kind="cleaning")
+    def forget(con):
+        con.execute("DELETE FROM events WHERE slug IN (SELECT slug FROM leads WHERE phone = ?)", (a["phone"],))
+        con.execute("DELETE FROM leads WHERE phone = ?", (a["phone"],))
+
+    with db.connect() as con:
+        forget(con)
+        upsert(con, [a])
+        slug = con.execute("SELECT slug FROM leads WHERE phone = ?", (a["phone"],)).fetchone()[0]
+        check("add-only skips a tracked business", upsert(con, [twin], add_only=True), (0, 0))
+        check("add-only leaves its details alone",
+              con.execute("SELECT address, kind FROM leads WHERE slug = ?", (slug,)).fetchone()[:],
+              (a["address"], a["kind"]))
+        check("a normal import refreshes them", upsert(con, [twin]), (0, 1))
+        forget(con)
+
 
 def test_render():
     print("\nRendering")

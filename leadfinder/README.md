@@ -283,6 +283,7 @@ every lead from *New* to *Website live*.
 
 ```bash
 .venv/bin/python -m pipeline import          # batches/*/leads.csv → clean list + tracker
+.venv/bin/python -m pipeline import --batch 20261025-1343-australia --add-only   # one batch; never touch tracked leads
 .venv/bin/python -m pipeline enrich --grade Hot --limit 100   # opening hours + review quotes (~20 s per lead)
 .venv/bin/python -m pipeline publish --grade Hot --limit 100 --wait
 .venv/bin/python -m pipeline docs --live     # a website pack PDF for every new live preview

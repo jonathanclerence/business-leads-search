@@ -198,9 +198,13 @@ class BatchStore:
             if key in self._seen:
                 continue
             # Batches from before websites.py counted a Facebook page as a
-            # website; judge every batch by the same rule.
+            # website; judge every batch by the same rule, and re-score the
+            # leads whose verdict changed (their old score assumed a site).
+            was = row.get("has_website")
             row["has_website"] = websites.has_own_site(row.get("website") or "")
             row["website_status"] = websites.classify(row.get("website") or "")
+            if was is not None and bool(was) != row["has_website"]:
+                apply_score(row)
             self._seen[key] = len(self.leads)
             self.leads.append(row)
 

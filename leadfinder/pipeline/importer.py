@@ -128,12 +128,18 @@ def unique_slug(con: sqlite3.Connection, lead: Dict[str, Any]) -> str:
     return f"{base}-{n}"
 
 
-def upsert(con: sqlite3.Connection, leads: List[Dict[str, Any]]) -> Tuple[int, int]:
+def upsert(con: sqlite3.Connection, leads: List[Dict[str, Any]], add_only: bool = False) -> Tuple[int, int]:
+    """Insert new leads; refresh the scraped facts of ones already tracked
+    (matched by place id or phone). ``add_only`` leaves tracked leads exactly
+    as they are: a second Google listing with the same phone can otherwise
+    swap in its own address, trade and theme under a published preview."""
     added = updated = 0
     ts = db.now()
     for lead in leads:
         row = con.execute("SELECT slug FROM leads WHERE key = ? OR phone = ? LIMIT 1",
                           (lead["key"], lead["phone"])).fetchone()
+        if row and add_only:
+            continue
         if row:
             sets = ", ".join(f"{c} = ?" for c in SCRAPED if c != "name")
             con.execute(f"UPDATE leads SET {sets}, updated_at = ? WHERE slug = ?",
@@ -165,7 +171,7 @@ def write_clean_csv(con: sqlite3.Connection, path: Path = CLEAN_CSV) -> int:
     return len(rows)
 
 
-def run(paths: List[Path] | None = None) -> Dict[str, Any]:
+def run(paths: List[Path] | None = None, add_only: bool = False) -> Dict[str, Any]:
     paths = paths or batch_csvs()
     regions = town_regions()
     raw = 0
@@ -177,7 +183,7 @@ def run(paths: List[Path] | None = None) -> Dict[str, Any]:
             kept.append(lead)
     leads = dedupe(kept)
     with db.connect() as con:
-        added, updated = upsert(con, leads)
+        added, updated = upsert(con, leads, add_only=add_only)
         total = write_clean_csv(con)
     return {"files": [str(p) for p in paths], "rows_read": raw, "matched": len(kept),
             "unique": len(leads), "added": added, "updated": updated, "tracker_total": total,
