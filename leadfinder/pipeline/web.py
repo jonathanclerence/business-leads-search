@@ -15,8 +15,10 @@ from pydantic import BaseModel, Field
 from . import auth, config, db
 from . import coverage as cov
 from . import dncr, documents, importer, offer, payments, publish
+from .sri_lanka import router as sri_lanka_router
 
 router = APIRouter()
+router.include_router(sri_lanka_router)
 UI = Path(__file__).resolve().parent / "ui" / "tracker.html"
 TEXTS_UI = UI.with_name("texts.html")
 PLAYBOOK = UI.with_name("playbook.html")

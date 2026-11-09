@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from . import db
+from .importer import australian_batch
 
 ROOT = db.ROOT
 DATA = ROOT / "data"
@@ -21,6 +22,8 @@ def _towns() -> Dict[str, Dict[str, str]]:
     """town (lower) → {town, region, state, file}."""
     out: Dict[str, Dict[str, str]] = {}
     for f in sorted(DATA.glob("towns_*.csv")):
+        if f.name == "towns_sri_lanka.csv":
+            continue
         state = f.stem.replace("towns_", "").replace("_", " ").title()
         for row in csv.reader(f.read_text(encoding="utf-8-sig").splitlines()):
             if not row or not row[0].strip() or row[0].startswith("#") or row[0].lower() == "town":
@@ -43,6 +46,8 @@ def _tasks() -> Dict[str, Dict[str, Any]]:
     """Latest status per "type|town" across every batch."""
     latest: Dict[str, Dict[str, Any]] = {}
     for f in sorted(BATCHES.glob("*/tasks.jsonl")):
+        if not australian_batch(f.parent):
+            continue
         for line in f.read_text(encoding="utf-8").splitlines():
             try:
                 t = json.loads(line)

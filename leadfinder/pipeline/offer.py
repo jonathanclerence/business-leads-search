@@ -69,9 +69,70 @@ PROPOSAL_VALID_DAYS = 14
 TERMS_URL = "https://www.dunous.com/terms"
 
 
-def money(amount: int) -> str:
-    """649 → "$649", 1500 → "$1,500"."""
-    return f"${amount:,}"
+# ---- Sri Lanka (LKR) --------------------------------------------------------
+
+LK_PACKAGES = [
+    dict(id="foundation", name="Foundation", price=25000,
+         tagline="Your website as built, made yours.",
+         best_for="You like the website as it is.",
+         pages=1, revisions="1 round of text changes", launch_days=2, edit_days=0,
+         features=[
+             "The website we built, finished as one page",
+             "Your logo, colours, photos and details",
+             "Tap-to-call, WhatsApp, map and enquiry button",
+             "1 round of text changes",
+             "15% off first year domain and hosting",
+         ]),
+    dict(id="growth", name="Growth", price=39000, recommended=True,
+         tagline="A complete website that brings in bookings.",
+         best_for="Most local businesses.",
+         pages=3, revisions="2 rounds of design changes", launch_days=3, edit_days=14,
+         features=[
+             "Everything in Foundation",
+             "Up to 3 pages",
+             "Booking or enquiry form to your WhatsApp or email",
+             "Basic SEO, Google profile and socials linked",
+             "2 rounds of design changes",
+             "14 days of free edits after launch",
+             "50% off first year domain and hosting",
+         ]),
+    dict(id="pro", name="Pro", price=69000,
+         tagline="Written for you, set up to grow.",
+         best_for="Ready to advertise and track results.",
+         pages=5, revisions="3 rounds of design changes", launch_days=5, edit_days=30,
+         features=[
+             "Everything in Growth",
+             "Up to 5 pages, with a photo gallery",
+             "Copywriting for up to 3 pages",
+             "Google Analytics and Meta Pixel",
+             "3 rounds of design changes",
+             "30 days of free edits after launch",
+             "First year domain and hosting free",
+         ]),
+]
+
+LK_ENTERPRISE = dict(
+    name="Enterprise", price_from=120000,
+    tagline="Online shops, logins, integrations, multi-location sites or ongoing marketing. Fixed quote.",
+)
+
+LK_HOURLY_RATE = 3500
+
+LK_HOSTING = dict(
+    yearly=12000,
+    edit_minutes=30,
+    notice_days=30,
+    handover_fee=7500,
+)
+
+
+def money(amount: int, currency: str = "AUD") -> str:
+    """649 → "$649", 25000 (LKR) → "LKR 25,000"."""
+    return f"LKR {amount:,}" if currency == "LKR" else f"${amount:,}"
+
+
+def money_lk(amount: int) -> str:
+    return f"LKR {amount:,}"
 
 
 def package(pkg_id: str):

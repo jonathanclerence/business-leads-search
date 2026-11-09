@@ -22,6 +22,7 @@ from .leads import slugify
 HERE = Path(__file__).resolve().parent
 ASSET_SRC = HERE / "assets"
 INFO_PACK = "dunous-website-pack.pdf"
+INFO_PACK_LK = "dunous-website-pack-lk.pdf"
 
 _env = Environment(loader=FileSystemLoader(HERE / "templates"),
                    autoescape=select_autoescape(["html", "j2"]),
@@ -168,7 +169,7 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
         "maps_link": maps_link(lead),
         "street": street,
         "service_area": service_area,
-        "domain_hint": f"{slugify(lead['name'], 30).replace('-', '')}.com.au",
+        "domain_hint": f"{slugify(lead['name'], 30).replace('-', '')}{'.lk' if lead.get('country') == 'LK' else '.com.au'}",
         "year": date.today().year,
         "brand": config.BRAND,
         "phone_href": config.PHONE_HREF,
@@ -176,7 +177,8 @@ def context(lead: Dict[str, Any], final: bool = False, assets: str = "/previewsi
         "whatsapp_href": config.WHATSAPP_HREF,
         "whatsapp_display": config.WHATSAPP_DISPLAY,
         # The generic website pack (documents.ensure_generic_pack), shipped with the shared assets.
-        "info_pack": INFO_PACK if (ASSET_SRC / INFO_PACK).exists() else "",
+        "info_pack": (INFO_PACK_LK if lead.get("country") == "LK" and (ASSET_SRC / INFO_PACK_LK).exists()
+                      else INFO_PACK if (ASSET_SRC / INFO_PACK).exists() else ""),
         "checkout_url": (f"{config.CHECKOUT_PATH}?"
                          + urllib.parse.urlencode({"site": lead["slug"], "b": lead["name"]})
                          if config.CHECKOUT_PATH else ""),

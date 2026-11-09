@@ -18,11 +18,11 @@ import { Chart, Cloche, Cup, Flowers, House, Laptop, Lens, PetTag, Phone, Plaque
 
 const BY_KIND = {
   barber: BarberPole, "hair-salon": Scissors,
-  "nail-salon": PolishBottle, "beauty-salon": Serum, "day-spa": Serum, tattoo: TattooFlash,
+  "nail-salon": PolishBottle, "beauty-salon": Serum, "day-spa": Serum, "bridal-salon": Serum, tattoo: TattooFlash,
   massage: Stones, acupuncture: Stones, naturopath: Stones,
   physio: HealthCross, chiropractor: HealthCross, podiatrist: HealthCross, psychologist: HealthCross,
   "speech-pathologist": HealthCross, medical: HealthCross, dentist: Tooth, optometrist: Glasses,
-  "personal-trainer": Kettlebell, gym: Kettlebell, pilates: PilatesRing, yoga: PilatesRing,
+  "personal-trainer": Kettlebell, gym: Kettlebell, pilates: PilatesRing, yoga: PilatesRing, "surf-school": Bubbles,
   "dance-school": MusicNotes, "music-teacher": MusicNotes, tutoring: Books, childcare: Books, "swim-school": Bubbles,
   "driving-school": SteeringWheel, mechanic: Tyre, "mobile-mechanic": Tyre, "auto-electrician": Tyre,
   "panel-beater": Tyre, tyres: Tyre, windscreen: Tyre, "car-detailing": Bubbles, "car-wash": Bubbles,
@@ -30,9 +30,10 @@ const BY_KIND = {
   handyman: Tools, "pest-control": Tools, cleaning: Bubbles, "carpet-cleaning": Bubbles, removalist: Boxes, "skip-bin": Boxes,
   "lawn-mowing": Terrarium, gardening: Terrarium, landscaping: Terrarium, "tree-removal": Terrarium,
   "pet-grooming": PetTag, "dog-walker": PetTag, "pet-sitter": PetTag, vet: PetTag,
-  cafe: Cup, restaurant: Cloche, bakery: Cloche, butcher: Cloche, "fish-and-chips": Cloche, pizza: Cloche, caterer: Cloche,
+  cafe: Cup, restaurant: Cloche, bakery: Cloche, "cake-shop": Cloche, butcher: Cloche, "fish-and-chips": Cloche, pizza: Cloche, caterer: Cloche,
   winery: WineGlass, brewery: WineGlass,
-  photographer: Lens, florist: Flowers, celebrant: Rings,
+  photographer: Lens, "tour-operator": Lens, florist: Flowers, celebrant: Rings, "wedding-planner": Rings, jewellery: Rings,
+  hotel: Key, villa: House, boutique: Scissors,
   bookkeeper: Chart, accountant: Chart, "mortgage-broker": House,
   "computer-repair": Laptop, "phone-repair": Phone, local: Plaque,
 };

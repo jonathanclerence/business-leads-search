@@ -75,6 +75,10 @@ details summary{cursor:pointer}
 <body>
 <header>
   <h1>Pipeline</h1>
+  <nav class="tabs" data-admin style="background:var(--chip);padding:3px;border-radius:10px;gap:2px" aria-label="Country pipeline">
+    <a class="btn sm primary" href="/pipeline" style="border-radius:7px;border:0">🇦🇺 Australia</a>
+    <a class="btn sm" href="/pipeline/sri-lanka" style="border-radius:7px;border:0;background:transparent">🇱🇰 Sri Lanka</a>
+  </nav>
   <nav class="tabs">
     <button data-tab="leads" class="on">Leads</button>
     <button data-tab="coverage" data-admin data-mac>Coverage</button>
@@ -196,9 +200,9 @@ function payoff(l) {
   return "see what you offer and get in touch";
 }
 function proof(l) {
-  if (l.reviews >= 5 && l.rating >= 4) return `${l.reviews.toLocaleString()} Google reviews at ${l.rating} stars — that's brilliant — but there's no website`;
-  if (l.reviews >= 1) return `you've got Google reviews but no website`;
-  return `you're on Google Maps but there's no website`;
+  if (l.reviews >= 5 && l.rating >= 4) return `you've got ${l.reviews.toLocaleString()} Google reviews at ${l.rating} stars`;
+  if (l.reviews >= 1) return `I saw your customer reviews`;
+  return `I came across your business listing`;
 }
 const siteHost = () => META.site_url.replace(/^https?:\/\/(www\.)?/, "");
 /** The preview email to the business, with a way to see it without trusting a link. Customer
@@ -301,12 +305,30 @@ function scriptHtml(l) {
   const name = esc(l.name), owner = l.contact_name ? esc(firstName(l.contact_name)) : "the owner";
   const { rec, low } = offerOf();
   return `
-  <p class="muted">Don't introduce yourself first. Lead with <b>their</b> problem and the fact the site already exists. Smile — they can hear it.</p>
+  <p class="muted">Check their current setup first: a booking link is not the same as their own website. The listing can be incomplete; never assume they cannot take bookings. Use the matching branch below.</p>
   <p class="branch">1 · Opener (whoever answers)</p>
-  <p class="say">“Hi! Quick one — I was looking at <b>${name}</b> on Google Maps: ${esc(proof(l))}. So people who find you can't ${esc(payoff(l))}, and some just ring the next place that has one.<br><br>I've actually already built you a website — it's finished and free to look at. What's the best email to send it to?”</p>
+  <p class="say">“Hi, it's ${esc(me() || "[your name]")} from DuNous. I was looking at <b>${name}</b> on Google Maps — ${esc(proof(l))}. Quick question: do customers book through something like Fresha, or do you also have your own website?”</p>
+  <p class="branch">Already on Fresha · Your own brand and direct bookings</p>
+  <p class="say">“That makes sense — you've already got online booking covered. The opportunity is to make <b>${name}</b> the destination customers remember and come back to, on your own web address. A site lets you show your work, explain your services and give people a reason to choose you before they book.<br><br>You can put that address on Google, Instagram and your marketing, build a direct source of enquiries, and rely less on Fresha's marketplace. If you later change booking providers, your website and the address your customers know stay yours.”</p>
+  <p class="say">“Are most new clients finding you through Fresha, or coming from your own referrals and Instagram? Is your main concern the fees, standing out, or wanting to leave Fresha completely?”</p>
+  <p class="branch">“I want to move off Fresha”</p>
+  <p class="say">“We can start with your own site and a direct enquiry or booking route. Before replacing Fresha, let's check what you need for staff calendars, deposits, reminders and client records, then quote the right setup and a switch-over plan. Your own website gives you a permanent home while the booking system can change behind it.”</p>
+  <p class="muted">Growth can connect their existing booking link. A replacement scheduling system or data migration needs a separate scope and quote; a website form alone does not replace Fresha.</p>
+  <details><summary>“Why pay for a website when Fresha already works?” / fees</summary>
+    <p class="say">“Fresha handles the appointment. Your website gives you control over how you present the business: your story, service pages, photos and a web address registered to you. It gives your marketing somewhere of your own to send people. We can keep Fresha for bookings initially, then change that connection when you're ready.”</p>
+    <p class="muted">Sell reduced marketplace dependence, not guaranteed savings or search rankings. Fresha currently lists direct booking links and returning marketplace bookings without a marketplace fee. A new client who discovers them on the marketplace may still attract its acquisition fee even if they later book through their website. Check their actual plan and attribution before discussing savings; software, payment and other charges may still apply. <a href="https://www.fresha.com/pricing" target="_blank" rel="noopener">Fresha pricing</a> · <a href="https://www.fresha.com/help-center/knowledge-base/billing-and-fees/188-marketplace-new-client-fees" target="_blank" rel="noopener">New-client fee rules</a></p>
+  </details>
+  <details><summary>Other booking platforms / already has a website / no own site</summary>
+    <p><b>Another booking platform:</b> “Great, the booking is covered. We'd give ${name} its own branded home for your services, photos and enquiries, with your current booking link connected. Which provider are you using, and what would you want to improve?” Use that provider's terms when discussing fees.</p>
+    <p><b>Already has their own website:</b> “Thanks — what's the address? Is there anything you'd like to improve about how it looks on phones, explains your services or turns visits into enquiries?” Record the URL in Notes and only pitch a specific improvement after reviewing it.</p>
+    <p><b>No own website:</b> “An address of your own gives people one place to ${esc(payoff(l))}, with your photos and details. How do customers do that now?”</p>
+  </details>
+  <p class="branch">Invite them to see the preview</p>
+  <p class="say">${["preview_hosted","contacted","follow_up","interested","invoice_sent","paid","domain_selected","site_hosted"].includes(l.stage) ? `“I've made a website preview for <b>${name}</b> so you can see how that could look. It's free to view, with no obligation. What's the best email to send it to?”` : `“Would you be interested in seeing what a site for <b>${name}</b> could look like?”`}</p>
+  ${["preview_hosted","contacted","follow_up","interested","invoice_sent","paid","domain_selected","site_hosted"].includes(l.stage) ? "" : '<p class="muted">This preview is not live yet. Publish and check it before offering a link or using the preview follow-up below.</p>'}
   <p class="muted">That last question does the “who am I talking to” job for you: owners say “send it to me”, staff say “that'd be the owner”. Email beats a text: people trust it more.${IS_REP() ? ` Then press <b>Ask DuNous to email it</b>: it comes from ${esc(META.sales_email)}, not from you.` : ""}</p>
   ${l.code ? `<p class="say">“Or see it right now: go to <b>${esc(siteHost())}</b>, press <b>Preview your site</b> at the top and type <b>${esc(l.code)}</b>.”</p>
-  <p class="muted">No link to click and it's on our own website, so it can't be a scam. Great with anyone sceptical.</p>` : ""}
+  <p class="muted">They can visit our website independently and check our contact details before deciding.</p>` : ""}
   <p class="branch">2a · “Send it to me” — probably the owner</p>
   <p class="say">“It's on its way from DuNous, D-U-N-O-U-S. ${l.code ? `Or have a look right now while I'm on the line: go to ${esc(siteHost())}, press Preview your site and type ${esc(l.code)} — takes 20 seconds.` : "Have a look when it lands — takes 20 seconds."}”<br>…<br>“What do you think? Anything you'd change — colours, photos, wording?”</p>
   <p class="muted">Let them suggest changes — once they're designing it, it's theirs. Then:</p>

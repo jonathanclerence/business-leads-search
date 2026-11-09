@@ -141,6 +141,41 @@ CREATE TABLE IF NOT EXISTS texts (
     done_at      TEXT
 );
 CREATE INDEX IF NOT EXISTS texts_status ON texts(status, id);
+CREATE TABLE IF NOT EXISTS lk_leads (
+    id              TEXT PRIMARY KEY,
+    country         TEXT NOT NULL DEFAULT 'LK' CHECK(country='LK'),
+    name            TEXT NOT NULL,
+    category        TEXT,
+    sector          TEXT,
+    address         TEXT,
+    search_town     TEXT,
+    search_district TEXT,
+    search_province TEXT,
+    phone           TEXT NOT NULL UNIQUE CHECK(phone LIKE '+94%'),
+    website         TEXT,
+    website_status  TEXT,
+    maps_url        TEXT,
+    rating          REAL,
+    reviews         INTEGER,
+    score           INTEGER,
+    why             TEXT,
+    batch_id        TEXT,
+    found_at        TEXT,
+    imported_at     TEXT,
+    stage           TEXT NOT NULL DEFAULT 'new',
+    notes           TEXT NOT NULL DEFAULT '',
+    contact_name    TEXT NOT NULL DEFAULT '',
+    follow_up       TEXT,
+    updated_at      TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS lk_leads_score ON lk_leads(score DESC, reviews DESC);
+CREATE INDEX IF NOT EXISTS lk_leads_stage ON lk_leads(stage);
+CREATE TABLE IF NOT EXISTS lk_events (
+    id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    lead_id TEXT REFERENCES lk_leads(id),
+    at      TEXT,
+    detail  TEXT
+);
 """
 
 # Stages a sales rep may move their lead to. The rest are set by the pipeline
@@ -205,6 +240,18 @@ LATE_COLUMNS = {
 # One lead at a time: the database itself refuses a second one per rep.
 ONE_AT_A_TIME = "CREATE UNIQUE INDEX IF NOT EXISTS leads_working ON leads(owner) WHERE working_since IS NOT NULL"
 UNIQUE_CODES = "CREATE UNIQUE INDEX IF NOT EXISTS leads_code ON leads(code) WHERE code IS NOT NULL"
+LK_LATE_COLUMNS = {
+    "slug": "TEXT",
+    "code": "TEXT",
+    "owner": "TEXT",
+    "working_since": "TEXT",
+    "attempts": "INTEGER NOT NULL DEFAULT 0",
+    "last_contact": "TEXT",
+    "owner_phone": "TEXT NOT NULL DEFAULT ''",
+    "industry": "TEXT",
+    "tourism_category": "TEXT",
+}
+LK_ONE_AT_A_TIME = "CREATE UNIQUE INDEX IF NOT EXISTS lk_leads_working ON lk_leads(owner) WHERE working_since IS NOT NULL"
 
 
 def _migrate(con: sqlite3.Connection) -> None:
@@ -219,6 +266,15 @@ def _migrate(con: sqlite3.Connection) -> None:
         con.execute("ALTER TABLE events ADD COLUMN actor TEXT")
     con.execute(ONE_AT_A_TIME)
     con.execute(UNIQUE_CODES)
+    lk_cols = {r["name"] for r in con.execute("PRAGMA table_info(lk_leads)")}
+    for col, kind in LK_LATE_COLUMNS.items():
+        if col not in lk_cols:
+            con.execute(f"ALTER TABLE lk_leads ADD COLUMN {col} {kind}")
+    lk_ev_cols = {r["name"] for r in con.execute("PRAGMA table_info(lk_events)")}
+    for col in ("kind", "actor"):
+        if col not in lk_ev_cols:
+            con.execute(f"ALTER TABLE lk_events ADD COLUMN {col} TEXT")
+    con.execute(LK_ONE_AT_A_TIME)
 
 
 # ---- Postgres ---------------------------------------------------------------
@@ -257,10 +313,11 @@ def _rows(cursor):
 def _pg_sql(sql: str, with_params: bool) -> str:
     """SQLite-flavoured SQL → Postgres: ? placeholders, case-insensitive LIKE (as
     SQLite's is), blanks last when sorting high-to-low (as SQLite does), and
-    "today in Melbourne"."""
+    "today in Melbourne / Colombo"."""
     if with_params:
         sql = sql.replace("%", "%%").replace("?", "%s")
     sql = sql.replace("date('now', '+11 hours')", "to_char(now() AT TIME ZONE 'Australia/Melbourne', 'YYYY-MM-DD')")
+    sql = sql.replace("date('now', '+5 hours')", "to_char(now() AT TIME ZONE 'Asia/Colombo', 'YYYY-MM-DD')")
     sql = re.sub(r"\bLIKE\b", "ILIKE", sql)
     return re.sub(r"\bDESC\b", "DESC NULLS LAST", sql)
 
@@ -285,6 +342,12 @@ def _pg_schema() -> List[str]:
     ddl = SCHEMA.replace("INTEGER PRIMARY KEY AUTOINCREMENT", "BIGSERIAL PRIMARY KEY").replace(" REAL,", " DOUBLE PRECISION,")
     statements = [s.strip() for s in ddl.split(";") if s.strip()]
     statements += [f"ALTER TABLE leads ADD COLUMN IF NOT EXISTS {c} {k}" for c, k in LATE_COLUMNS.items()]
+    statements += [f"ALTER TABLE lk_leads ADD COLUMN IF NOT EXISTS {c} {k}" for c, k in LK_LATE_COLUMNS.items()]
+    statements += ["ALTER TABLE lk_events ADD COLUMN IF NOT EXISTS kind TEXT",
+                   "ALTER TABLE lk_events ADD COLUMN IF NOT EXISTS actor TEXT",
+                   "CREATE UNIQUE INDEX IF NOT EXISTS lk_leads_slug ON lk_leads(slug) WHERE slug IS NOT NULL",
+                   "CREATE UNIQUE INDEX IF NOT EXISTS lk_leads_code ON lk_leads(code) WHERE code IS NOT NULL",
+                   LK_ONE_AT_A_TIME]
     return statements + ["ALTER TABLE events ADD COLUMN IF NOT EXISTS actor TEXT", ONE_AT_A_TIME, UNIQUE_CODES]
 
 

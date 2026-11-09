@@ -93,6 +93,8 @@ def main(argv=None) -> int:
     us.add_argument("--admin", action="store_true", help="add: full access (lead finder, publishing, every lead)")
     us.add_argument("--texter", action="store_true",
                     help="add: sends the reps' texts from their phone (sees only the texts page)")
+    us.add_argument("--sri-lanka", action="store_true",
+                    help="add: Sri Lankan team rep (sees only the Sri Lanka pipeline, never Australia)")
     us.add_argument("--ask", action="store_true", help="add/password: type the password instead of generating one")
 
     cp = sub.add_parser("copy-to-cloud", help="one-off: copy batches/pipeline.db into the shared database (DATABASE_URL)")
@@ -214,9 +216,12 @@ def _users(p, a) -> int:
     if a.action == "list":
         with db.connect() as con:
             rows = con.execute(
-                "SELECT u.username, u.name, u.role, w.name AS working, "
-                f"(SELECT COUNT(*) FROM leads l WHERE l.owner = u.username AND l.stage NOT IN {db.CLOSED_STAGES}) AS open_leads "
-                "FROM users u LEFT JOIN leads w ON w.owner = u.username AND w.working_since IS NOT NULL "
+                "SELECT u.username, u.name, u.role, COALESCE(w.name, lw.name) AS working, "
+                f"(SELECT COUNT(*) FROM leads l WHERE l.owner = u.username AND l.stage NOT IN {db.CLOSED_STAGES}) + "
+                "(SELECT COUNT(*) FROM lk_leads ll WHERE ll.owner = u.username AND ll.stage NOT IN ('won', 'not_interested', 'do_not_contact')) AS open_leads "
+                "FROM users u "
+                "LEFT JOIN leads w ON w.owner = u.username AND w.working_since IS NOT NULL "
+                "LEFT JOIN lk_leads lw ON lw.owner = u.username AND lw.working_since IS NOT NULL "
                 "ORDER BY u.role, u.name").fetchall()
         if not rows:
             print("No users yet: sign-in is off. Start with: python -m pipeline users add <you> --admin")
@@ -237,7 +242,7 @@ def _users(p, a) -> int:
             if not con.execute("SELECT 1 FROM users WHERE role = 'admin'").fetchone() and not a.admin:
                 p.error("the first user must be you, with --admin (once sign-in is on, everyone needs an account)")
             pw = _password(a)
-            role = "admin" if a.admin else "texter" if a.texter else "rep"
+            role = "admin" if a.admin else "texter" if a.texter else "lk_rep" if a.sri_lanka else "rep"
             con.execute("INSERT INTO users (username, name, role, pw_hash, created_at) VALUES (?, ?, ?, ?, ?)",
                         (username, (a.name or "").strip()[:40] or username.capitalize(),
                          role, auth.hash_password(pw), db.now()))
@@ -260,7 +265,10 @@ def _users(p, a) -> int:
             # Their open leads go back to the pool; closed ones keep their name for the record.
             freed = con.execute(f"UPDATE leads SET owner = NULL, working_since = NULL WHERE owner = ? "
                                 f"AND stage NOT IN {db.CLOSED_STAGES}", (username,)).rowcount
+            freed += con.execute("UPDATE lk_leads SET owner = NULL, working_since = NULL WHERE owner = ? "
+                                 "AND stage NOT IN ('won', 'not_interested', 'do_not_contact')", (username,)).rowcount
             con.execute("UPDATE leads SET working_since = NULL WHERE owner = ?", (username,))
+            con.execute("UPDATE lk_leads SET working_since = NULL WHERE owner = ?", (username,))
             con.execute("DELETE FROM users WHERE username = ?", (username,))
             print(f"Removed {username}; {freed} open leads are back in the pool for anyone.")
             return 0
@@ -270,24 +278,36 @@ def _users(p, a) -> int:
 
 
 def _copy_to_cloud(p, a) -> int:
-    """Users, leads and their whole history from the SQLite file into Postgres, as they are."""
+    """Users, leads (Australia + Sri Lanka) and their history from the SQLite files into Postgres."""
+    import sqlite3
+    from . import sri_lanka
     if not db.DATABASE_URL:
         p.error("set DATABASE_URL (in .env) to the shared database first")
     with db.connect(db.DB_PATH) as src:   # by path: always the SQLite file
         tables = {t: [dict(r) for r in src.execute(f"SELECT * FROM {t} ORDER BY rowid")]
-                  for t in ("users", "leads", "events")}
+                  for t in ("users", "leads", "events", "texts")}
+    if sri_lanka.DB_PATH.exists():
+        with sqlite3.connect(sri_lanka.DB_PATH) as lk_src:
+            lk_src.row_factory = sqlite3.Row
+            tables["lk_leads"] = [dict(r) for r in lk_src.execute("SELECT * FROM leads ORDER BY rowid")]
+            tables["lk_events"] = [dict(r) for r in lk_src.execute("SELECT * FROM events ORDER BY rowid")]
     with db.connect() as dst:
         if dst.execute("SELECT COUNT(*) FROM leads").fetchone()[0] and not a.replace:
             p.error("the shared database already has leads; --replace empties it first")
-        dst.execute("TRUNCATE events, leads, users RESTART IDENTITY")
-        for table, rows in tables.items():
-            if rows:
+        dst.execute("TRUNCATE texts, events, leads, users, lk_events, lk_leads RESTART IDENTITY")
+        with dst.raw.cursor() as cur:
+            for table, rows in tables.items():
+                if not rows:
+                    continue
                 cols = list(rows[0])
-                dst.executemany(f"INSERT INTO {table} ({', '.join(cols)}) VALUES ({', '.join('?' * len(cols))})",
-                                [[r[c] for c in cols] for r in rows])
+                print(f"Copying {len(rows):,} {table}…", flush=True)
+                with cur.copy(f"COPY {table} ({', '.join(cols)}) FROM STDIN") as copy:
+                    for r in rows:
+                        copy.write_row([r[c] for c in cols])
         # New history continues after the copied rows' ids.
-        dst.execute("SELECT setval(pg_get_serial_sequence('events', 'id'), (SELECT COALESCE(MAX(id), 1) FROM events))")
-    print("Copied " + ", ".join(f"{len(rows):,} {t}" for t, rows in tables.items()) + f" from {db.DB_PATH.name}.")
+        for seq_tbl in ("events", "texts", "lk_events"):
+            dst.execute(f"SELECT setval(pg_get_serial_sequence('{seq_tbl}', 'id'), (SELECT COALESCE(MAX(id), 1) FROM {seq_tbl}))")
+    print("Copied " + ", ".join(f"{len(rows):,} {t}" for t, rows in tables.items()) + " to the cloud database.")
     return 0
 
 

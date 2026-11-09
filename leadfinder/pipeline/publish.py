@@ -76,10 +76,23 @@ def select_new(con, grades: Sequence[str], limit: Optional[int], min_score: int 
     return picked
 
 
+LK_PREVIEW_STAGES = ("preview_created", "preview_hosted", "researching", "contacted", "follow_up", "interested", "proposal")
+
+
 def active_leads(con) -> List[Dict[str, Any]]:
     marks = ",".join("?" * len(db.PREVIEW_STAGES))
     rows = con.execute(f"SELECT * FROM leads WHERE stage IN ({marks})", sorted(db.PREVIEW_STAGES))
     return [dict(r) for r in rows]
+
+
+def active_lk_leads(con) -> List[Dict[str, Any]]:
+    from . import sri_lanka
+    marks = ",".join("?" * len(LK_PREVIEW_STAGES))
+    try:
+        rows = con.execute(f"SELECT * FROM lk_leads WHERE slug IS NOT NULL AND stage IN ({marks})", list(LK_PREVIEW_STAGES)).fetchall()
+    except Exception:  # noqa: BLE001
+        return []
+    return [sri_lanka.doc_lead(dict(r)) for r in rows]
 
 
 def refresh_info_pack(log: Log) -> None:
@@ -87,6 +100,7 @@ def refresh_info_pack(log: Log) -> None:
     "Prices and info pack" link on every preview is never out of date."""
     try:
         documents.ensure_generic_pack(log=log)
+        documents.ensure_generic_pack_lk(log=log)
     except Exception as exc:  # noqa: BLE001 — a stale PDF shouldn't stop previews going live
         log(f"Couldn't rebuild the website pack PDF ({exc}); publishing the one we have.")
 
@@ -97,6 +111,10 @@ def assign_codes(con, slugs: Sequence[str]) -> None:
     if not slugs:
         return
     taken = {r["code"] for r in con.execute("SELECT code FROM leads WHERE code IS NOT NULL")}
+    try:
+        taken |= {r["code"] for r in con.execute("SELECT code FROM lk_leads WHERE code IS NOT NULL")}
+    except Exception:  # noqa: BLE001
+        pass
     marks = ",".join("?" * len(slugs))
     for r in con.execute(f"SELECT slug, name FROM leads WHERE code IS NULL AND slug IN ({marks}) "
                          "ORDER BY score DESC, reviews DESC, slug", list(slugs)).fetchall():
@@ -199,7 +217,7 @@ def publish(grades: Sequence[str] = ("Hot",), limit: Optional[int] = None, min_s
         target = config.MARKETING_SITE_DIR if local else prepare_worktree(log)
         refresh_info_pack(log)
         assign_codes(con, [l["slug"] for l in active_leads(con)] + fresh)
-        leads = active_leads(con) + [db.get(con, s) for s in fresh]
+        leads = active_leads(con) + [db.get(con, s) for s in fresh] + active_lk_leads(con)
         log(f"Rendering {len(leads)} preview pages ({len(fresh)} new)…")
         stats = write_site_files(target, leads)
         if local:

@@ -503,6 +503,180 @@ def _team_checks():
     check("new password signs them out", sam.get("/pipeline/api/leads").status_code, 401)
 
 
+def test_sri_lanka():
+    print("\nSri Lanka pipeline (separate from Australia)")
+    import tempfile
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from pipeline import auth, sri_lanka, web
+    check("LK phone normaliser", [sri_lanka.phone_lk(p) for p in ("077 123 4567", "+94 11 234 5678", "0094712345678", "+61412345678")],
+          ["+94771234567", "+94112345678", "+94712345678", ""])
+    check("Instagram/Facebook is social (no own site)", [sri_lanka.site_status("https://instagram.com/salon"),
+                                                         sri_lanka.site_status("https://facebook.com/cafe"),
+                                                         sri_lanka.site_status("https://booking.com/hotel/lk/x"),
+                                                         sri_lanka.site_status("https://ownsite.lk")],
+          ["social", "social", "directory", "real"])
+    areas = {"Colombo, Colombo District": {"district": "Colombo", "province": "Western"}}
+    raw_salon = {"name": "Colombo Glow Salon", "phone": "077 123 4567", "address": "12 Galle Rd, Colombo, Sri Lanka",
+                 "lat": 6.9, "lng": 79.85, "website": "https://instagram.com/colomboglow", "category": "Beauty salon",
+                 "search_town": "Colombo, Colombo District", "reviews": 45, "rating": 4.8, "claimed": True, "place_id": "lk1"}
+    cand = sri_lanka.candidate(raw_salon, "b-lk", areas)
+    check("Instagram-only salon is a Sri Lanka candidate", (cand["sector"], cand["website_status"], cand["country"]),
+          ("Beauty & bridal", "social", "LK"))
+    raw_mechanic = dict(raw_salon, name="Raja Motor Mechanic", category="Auto repair shop", place_id="lk2")
+    check("non-target older trade (motor mechanic) excluded", sri_lanka.candidate(raw_mechanic, "b-lk", areas), None)
+    raw_own_site = dict(raw_salon, website="https://colomboglow.lk", place_id="lk3")
+    check("business with proper website excluded", sri_lanka.candidate(raw_own_site, "b-lk", areas), None)
+
+    tourist = sri_lanka.tourist_towns()
+    seg = lambda cats, name="", town="Mirissa, Matara District": sri_lanka.tourism_segment(cats, name, town, tourist)
+    check("tourist towns exclude Colombo, the airport and regional hubs",
+          ["Mirissa, Matara District" in tourist, "Ella, Badulla District" in tourist,
+           "Colombo, Colombo District" in tourist, "Katunayake, Gampaha District" in tourist,
+           "Matara, Matara District" in tourist], [True, True, False, False, False])
+    check("tourism segments follow the inspiration brief", [
+        seg(["Surf school"]), seg(["Whale watching tour agency"]), seg(["Guest house", "Restaurant"]),
+        seg(["Travel agency", "Wildlife and safari park"], town="Kurunegala, Kurunegala District"),
+        seg(["Travel agency"], "Mirissa Whale Watching Tours"), seg(["Cafe"]),
+        seg(["Cafe"], town="Kurunegala, Kurunegala District"), seg(["Beauty salon", "Facial spa"]),
+        seg(["Cake shop", "Culinary school"], town="Wattala, Gampaha District"),
+        seg(["Service establishment"], "Ella Hiking Guides", "Ella, Badulla District"),
+        seg(["Coworking space"], town="Colombo, Colombo District"), seg(["Gem shop"]),
+    ], [
+        ("Tourism", "Surf camps & surf schools"), ("Tourism", "Whale watching, boat & lagoon tours"),
+        ("Tourism", "Guest houses & homestays"), ("Tourism", "Safari jeep operators"),
+        ("Tourism", "Whale watching, boat & lagoon tours"), ("Tourism", "Cafés"),
+        ("Other", ""), ("Other", ""), ("Other", ""),
+        ("Tourism", "Tea estate tours & trekking"), ("Other", ""), ("Tourism", "Gem, jewellery & souvenir shops"),
+    ])
+    check("every tourism category has a rule", set(sri_lanka.TOURISM_CATEGORIES) >= {
+        "Resorts & boutique hotels", "Villas & holiday rentals", "Surf camps & surf schools", "Cafés",
+        "Restaurants & beach clubs", "Yoga, Ayurveda & spas", "Whale watching, boat & lagoon tours",
+        "Safari jeep operators", "Diving & snorkelling", "Scooter, tuk-tuk & airport transfers",
+        "Cooking classes & local experiences", "Hostels & surf hostels", "Surf shops & board rental",
+        "Coworking & coliving", "Tea estate tours & trekking"}, True)
+    gem = sri_lanka.candidate(dict(raw_salon, name="Mirissa Moonstones", category="Gem shop", categories=["Gem shop"],
+                                   search_town="Mirissa, Matara District", place_id="lk5"), "b-lk", sri_lanka.towns())
+    check("tourism-only category in a tourist town imports as Tourism",
+          (gem["industry"], gem["tourism_category"], gem["sector"], gem["search_district"]),
+          ("Tourism", "Gem, jewellery & souvenir shops", "Retail & lifestyle", "Matara"))
+    check("salon in Colombo is a non-tourism lead", (cand["industry"], cand["tourism_category"]), ("Other", ""))
+    pairs = sri_lanka.tourism_pairs()
+    check("tourism sweep: whale searches only in whale towns, no restaurants in Colombo",
+          ({p["town"] for p in pairs if p["business_type"] == "whale watching"} <= {
+              t for t, r in sri_lanka.towns().items() if "whale" in (r.get("tags") or "")},
+           any(p["town"].startswith("Colombo") and p["business_type"] == "restaurant" for p in pairs),
+           any(p["town"].startswith("Colombo") and p["business_type"] == "tour operator" for p in pairs)),
+          (True, False, True))
+
+    lk_doc = documents.html("pack", sri_lanka.doc_lead(cand))
+    check("Sri Lanka website pack has 5 pages", lk_doc.count('<section class="page'), 5)
+    check("Sri Lanka website pack uses LKR pricing & discounts",
+          all(s in lk_doc for s in (
+              "LKR 25,000", "15% off first year domain and hosting",
+              "LKR 39,000", "50% off first year domain and hosting",
+              "LKR 69,000", "First year domain and hosting free",
+              "from LKR 120,000", "LKR 12,000 a year", "BRN / NIC", "colomboglowsalon.lk",
+          )),
+          True)
+    check("Sri Lanka website pack excludes AUD/ABN",
+          any(s in lk_doc for s in ("Australian dollars", "Australian Consumer Law")),
+          False)
+
+    saved_lk = sri_lanka.DB_PATH
+    saved_env = os.environ.get("SRI_LANKA_DB")
+    with tempfile.TemporaryDirectory() as tmp:
+        sri_lanka.DB_PATH = Path(tmp) / "lk.db"
+        os.environ["SRI_LANKA_DB"] = str(sri_lanka.DB_PATH)
+        try:
+            app = FastAPI()
+            app.include_router(web.router)
+            auth.install(app)
+            with db.connect() as con:
+                con.execute("DELETE FROM users")
+                for username, role in (("boss", "admin"), ("sam", "rep"), ("kasun", "lk_rep")):
+                    con.execute("INSERT INTO users (username, name, role, pw_hash, created_at) VALUES (?, ?, ?, ?, ?)",
+                                (username, username.title(), role, auth.hash_password("pw-" + username), db.now()))
+            cand2 = sri_lanka.candidate(
+                dict(raw_salon, name="Kandy Villa", phone="071 987 6543", category="Villa", place_id="lk4"),
+                "b-lk", areas,
+            )
+            with sri_lanka.connect() as lk_con:
+                for item in (cand, cand2):
+                    item_row = dict(item, imported_at=db.now(), updated_at=db.now())
+                    lk_con.execute(
+                        f"INSERT INTO leads ({','.join(item_row)}) VALUES ({','.join('?' for _ in item_row)})",
+                        list(item_row.values()),
+                    )
+            anon = TestClient(app)
+            check("anon redirected from Sri Lanka page", anon.get("/pipeline/sri-lanka", follow_redirects=False).status_code, 303)
+            sam = TestClient(app)
+            sam.post("/login", data={"username": "sam", "password": "pw-sam"}, follow_redirects=False)
+            check("Australian rep blocked from Sri Lanka page", sam.get("/pipeline/sri-lanka").status_code, 403)
+            check("Australian rep blocked from Sri Lanka API", sam.get("/pipeline/sri-lanka/api/leads").status_code, 403)
+            kasun = TestClient(app)
+            r_login = kasun.post("/login", data={"username": "kasun", "password": "pw-kasun"}, follow_redirects=False)
+            check("Sri Lanka rep login redirects to /pipeline/sri-lanka",
+                  (r_login.status_code, r_login.headers.get("location")), (303, "/pipeline/sri-lanka"))
+            check("Sri Lanka rep can open Sri Lanka page", kasun.get("/pipeline/sri-lanka").status_code, 200)
+            check("Sri Lanka rep can read Sri Lanka API", kasun.get("/pipeline/sri-lanka/api/meta").status_code, 200)
+            check("Sri Lanka rep blocked from Australia page", kasun.get("/pipeline").status_code, 403)
+            check("Sri Lanka rep blocked from Australia API", kasun.get("/pipeline/api/leads").status_code, 403)
+
+            pool_leads = kasun.get("/pipeline/sri-lanka/api/leads").json()["leads"]
+            check("Sri Lanka rep sees free leads without phone numbers",
+                  (len(pool_leads), pool_leads[0]["phone"]), (2, ""))
+            check("Sri Lanka rep can't open lead before claiming",
+                  kasun.get("/pipeline/sri-lanka/api/leads/lk:lk1").status_code, 403)
+            claimed = kasun.post("/pipeline/sri-lanka/api/leads/lk:lk1/claim")
+            check("Sri Lanka rep claims a lead and unlocks phone",
+                  (claimed.status_code, claimed.json()["phone"]), (200, "+94771234567"))
+            while_working = kasun.get("/pipeline/sri-lanka/api/leads").json()["leads"]
+            check("Sri Lanka rep only sees their active lead while working",
+                  [r["id"] for r in while_working], ["lk:lk1"])
+            check("Sri Lanka rep can't claim a second lead while working",
+                  kasun.post("/pipeline/sri-lanka/api/leads/lk:lk4/claim").status_code, 409)
+            check("Sri Lanka rep can't mark done before logging call",
+                  kasun.post("/pipeline/sri-lanka/api/leads/lk:lk1/done").status_code, 409)
+            logged = kasun.post(
+                "/pipeline/sri-lanka/api/leads/lk:lk1/call",
+                json={"outcome": "gatekeeper", "note": "Spoke to receptionist, gave owner mobile", "contact_name": "Dilshan", "owner_phone": "077 555 4444"},
+            )
+            check("Sri Lanka rep logs call + owner's phone number",
+                  (logged.status_code, logged.json()["contact_name"], logged.json()["owner_phone"], logged.json()["stage"]),
+                  (200, "Dilshan", "077 555 4444", "contacted"))
+            check("Sri Lanka rep marks lead done after logging",
+                  kasun.post("/pipeline/sri-lanka/api/leads/lk:lk1/done").status_code, 200)
+
+            boss = TestClient(app)
+            boss.post("/login", data={"username": "boss", "password": "pw-boss"}, follow_redirects=False)
+            check("admin can open Sri Lanka page", boss.get("/pipeline/sri-lanka").status_code, 200)
+            check("admin can read Sri Lanka API", boss.get("/pipeline/sri-lanka/api/meta").status_code, 200)
+            admin_leads = boss.get("/pipeline/sri-lanka/api/leads").json()["leads"]
+            check("admin sees all leads and phone numbers",
+                  (len(admin_leads), bool(admin_leads[0]["phone"])), (2, True))
+            check("tourism leads listed first", [r["id"] for r in admin_leads], ["lk:lk4", "lk:lk1"])
+            check("industry filter: tourism only",
+                  [r["id"] for r in boss.get("/pipeline/sri-lanka/api/leads?industry=Tourism").json()["leads"]], ["lk:lk4"])
+            check("industry filter: non-tourism only",
+                  [r["id"] for r in boss.get("/pipeline/sri-lanka/api/leads?industry=Other").json()["leads"]], ["lk:lk1"])
+            check("tourism type filter",
+                  boss.get("/pipeline/sri-lanka/api/leads?tourism_category=Villas+%26+holiday+rentals").json()["total"], 1)
+            lk_meta = boss.get("/pipeline/sri-lanka/api/meta").json()
+            check("meta counts tourism leads by type",
+                  (lk_meta["tourism"], dict(lk_meta["tourism_categories"])["Villas & holiday rentals"]), (1, 1))
+            export_csv = boss.get("/pipeline/sri-lanka/api/export.csv?industry=Tourism").text
+            check("export carries the tourism segment",
+                  ("industry,tourism_category" in export_csv, "Kandy Villa" in export_csv, "Colombo Glow" in export_csv),
+                  (True, True, False))
+        finally:
+            sri_lanka.DB_PATH = saved_lk
+            if saved_env is None:
+                os.environ.pop("SRI_LANKA_DB", None)
+            else:
+                os.environ["SRI_LANKA_DB"] = saved_env
+
+
 def main() -> int:
     test_phones()
     test_location()
@@ -515,6 +689,7 @@ def main() -> int:
     test_stages()
     test_codes()
     test_team()
+    test_sri_lanka()
     print(f"\n{'─' * 62}\n  {len(PASS)} passed, {len(FAIL)} failed")
     if FAIL:
         print("  failed: " + ", ".join(FAIL))

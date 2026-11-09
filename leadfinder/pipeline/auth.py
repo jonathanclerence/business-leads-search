@@ -100,16 +100,27 @@ def is_rep(u: Dict[str, Any]) -> bool:
 
 # A texter (someone in Australia with the phone) only sees the texts to send.
 TEXTER_PATHS = ("/pipeline/texts", "/pipeline/api/texts")
+LK_PATHS = ("/pipeline/sri-lanka", "/pipeline/sri-lanka/")
 
 
 def home(u: Dict[str, Any]) -> str:
-    return "/pipeline/texts" if u["role"] == "texter" else "/pipeline"
+    if u["role"] == "texter":
+        return "/pipeline/texts"
+    if u["role"] == "lk_rep":
+        return "/pipeline/sri-lanka"
+    return "/pipeline"
 
 
 def can_text(request: Request) -> None:
     """FastAPI dependency: the texts queue is for admins and texters."""
     if user(request)["role"] not in ("admin", "texter"):
         raise HTTPException(403, "Only DuNous sends texts.")
+
+
+def can_sri_lanka(request: Request) -> None:
+    """FastAPI dependency: Sri Lanka pipeline is only for admins and onboarded Sri Lankan reps."""
+    if user(request)["role"] not in ("admin", "lk_rep"):
+        raise HTTPException(403, "Only the Sri Lanka team or an admin can access that.")
 
 
 def admin_only(request: Request) -> None:
@@ -209,10 +220,19 @@ class AuthMiddleware:
                 nxt = path + (f"?{scope['query_string'].decode()}" if scope.get("query_string") else "")
                 return await RedirectResponse(f"/login?next={quote(nxt)}", 303)(scope, receive, send)
             return await _deny(scope, receive, send, 401, "Please sign in again.")
-        allowed = (path.startswith(TEXTER_PATHS) if u["role"] == "texter"
-                   else not is_rep(u) or path == "/pipeline" or path.startswith("/pipeline/"))
+        if u["role"] == "texter":
+            allowed = path.startswith(TEXTER_PATHS)
+        elif u["role"] == "lk_rep":
+            allowed = path == "/pipeline/sri-lanka" or path.startswith("/pipeline/sri-lanka/")
+        elif u["role"] == "rep":
+            allowed = (path == "/pipeline" or path.startswith("/pipeline/")) and not (
+                path == "/pipeline/sri-lanka" or path.startswith("/pipeline/sri-lanka/"))
+        else:
+            allowed = True
         if not allowed:
-            if scope["type"] == "http" and scope.get("method") == "GET" and "/api/" not in path:
+            if scope["type"] == "http" and scope.get("method") == "GET" and (
+                path == "/" or (u["role"] == "texter" and path == "/pipeline")
+            ):
                 return await RedirectResponse(home(u), 303)(scope, receive, send)
             return await _deny(scope, receive, send, 403, "Only an admin can do that.")
         scope.setdefault("state", {})["user"] = u

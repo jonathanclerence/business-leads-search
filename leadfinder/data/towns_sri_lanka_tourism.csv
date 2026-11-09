@@ -1,0 +1,73 @@
+town,district,province,region,tags
+"Galle, Galle District",Galle,Southern,South Coast,coast dive lagoon
+"Unawatuna, Galle District",Galle,Southern,South Coast,coast surf dive nomad
+"Thalpe, Galle District",Galle,Southern,South Coast,coast surf
+"Koggala, Galle District",Galle,Southern,South Coast,coast surf lagoon stilt
+"Habaraduwa, Galle District",Galle,Southern,South Coast,coast surf stilt
+"Ahangama, Galle District",Galle,Southern,South Coast,coast surf nomad stilt
+"Hikkaduwa, Galle District",Galle,Southern,South Coast,coast surf dive turtle nomad
+"Dodanduwa, Galle District",Galle,Southern,South Coast,coast lagoon
+"Ambalangoda, Galle District",Galle,Southern,South Coast,coast hub
+"Balapitiya, Galle District",Galle,Southern,South Coast,coast lagoon
+"Ahungalla, Galle District",Galle,Southern,South Coast,coast
+"Kosgoda, Galle District",Galle,Southern,South Coast,coast turtle
+"Induruwa, Galle District",Galle,Southern,South Coast,coast turtle
+"Bentota, Galle District",Galle,Southern,South Coast,coast dive lagoon
+"Midigama, Matara District",Matara,Southern,South Coast,coast surf nomad
+"Weligama, Matara District",Matara,Southern,South Coast,coast surf whale nomad
+"Mirissa, Matara District",Matara,Southern,South Coast,coast surf whale dive
+"Polhena, Matara District",Matara,Southern,South Coast,coast dive
+"Matara, Matara District",Matara,Southern,South Coast,coast hub
+"Talalla, Matara District",Matara,Southern,South Coast,coast surf
+"Dickwella, Matara District",Matara,Southern,South Coast,coast surf
+"Hiriketiya, Matara District",Matara,Southern,South Coast,coast surf nomad
+"Deniyaya, Matara District",Matara,Southern,Rainforest,hill trek
+"Tangalle, Hambantota District",Hambantota,Southern,South Coast,coast lagoon turtle
+"Rekawa, Hambantota District",Hambantota,Southern,South Coast,coast turtle lagoon
+"Hambantota, Hambantota District",Hambantota,Southern,South Coast,coast safari hub
+"Tissamaharama, Hambantota District",Hambantota,Southern,Safari,safari
+"Kirinda, Hambantota District",Hambantota,Southern,Safari,coast safari
+"Yala, Hambantota District",Hambantota,Southern,Safari,safari
+"Kataragama, Monaragala District",Monaragala,Uva,Safari,safari
+"Udawalawe, Ratnapura District",Ratnapura,Sabaragamuwa,Safari,safari
+"Kalutara, Kalutara District",Kalutara,Western,West Coast,coast lagoon hub
+"Wadduwa, Kalutara District",Kalutara,Western,West Coast,coast
+"Beruwala, Kalutara District",Kalutara,Western,West Coast,coast dive
+"Aluthgama, Kalutara District",Kalutara,Western,West Coast,coast lagoon
+"Mount Lavinia, Colombo District",Colombo,Western,West Coast,coast
+"Colombo, Colombo District",Colombo,Western,Colombo,city
+"Negombo, Gampaha District",Gampaha,Western,West Coast,coast dive lagoon airport
+"Katunayake, Gampaha District",Gampaha,Western,West Coast,airport
+"Kalpitiya, Puttalam District",Puttalam,North Western,West Coast,coast whale dive kite lagoon
+"Kandy, Kandy District",Kandy,Central,Hill Country,hill culture
+"Peradeniya, Kandy District",Kandy,Central,Hill Country,hill hub
+"Digana, Kandy District",Kandy,Central,Hill Country,hill hub
+"Nuwara Eliya, Nuwara Eliya District",Nuwara Eliya,Central,Hill Country,hill tea trek
+"Ramboda, Nuwara Eliya District",Nuwara Eliya,Central,Hill Country,hill tea trek
+"Hatton, Nuwara Eliya District",Nuwara Eliya,Central,Hill Country,hill tea trek
+"Talawakele, Nuwara Eliya District",Nuwara Eliya,Central,Hill Country,hill tea hub
+"Maskeliya, Nuwara Eliya District",Nuwara Eliya,Central,Hill Country,hill tea trek
+"Nallathanniya, Nuwara Eliya District",Nuwara Eliya,Central,Hill Country,hill trek
+"Bogawantalawa, Nuwara Eliya District",Nuwara Eliya,Central,Hill Country,hill tea
+"Ella, Badulla District",Badulla,Uva,Hill Country,hill tea trek nomad
+"Bandarawela, Badulla District",Badulla,Uva,Hill Country,hill tea hub
+"Haputale, Badulla District",Badulla,Uva,Hill Country,hill tea trek
+"Badulla, Badulla District",Badulla,Uva,Hill Country,hill hub
+"Belihuloya, Ratnapura District",Ratnapura,Sabaragamuwa,Hill Country,hill trek
+"Kitulgala, Kegalle District",Kegalle,Sabaragamuwa,Hill Country,hill rafting
+"Pinnawala, Kegalle District",Kegalle,Sabaragamuwa,Cultural Triangle,culture
+"Matale, Matale District",Matale,Central,Cultural Triangle,culture spice hub
+"Sigiriya, Matale District",Matale,Central,Cultural Triangle,culture safari
+"Dambulla, Matale District",Matale,Central,Cultural Triangle,culture
+"Habarana, Anuradhapura District",Anuradhapura,North Central,Cultural Triangle,culture safari
+"Anuradhapura, Anuradhapura District",Anuradhapura,North Central,Cultural Triangle,culture hub
+"Polonnaruwa, Polonnaruwa District",Polonnaruwa,North Central,Cultural Triangle,culture
+"Giritale, Polonnaruwa District",Polonnaruwa,North Central,Cultural Triangle,culture safari
+"Trincomalee, Trincomalee District",Trincomalee,Eastern,East Coast,coast whale dive
+"Uppuveli, Trincomalee District",Trincomalee,Eastern,East Coast,coast dive
+"Nilaveli, Trincomalee District",Trincomalee,Eastern,East Coast,coast dive
+"Pasikuda, Batticaloa District",Batticaloa,Eastern,East Coast,coast dive
+"Batticaloa, Batticaloa District",Batticaloa,Eastern,East Coast,coast lagoon hub
+"Arugam Bay, Ampara District",Ampara,Eastern,East Coast,coast surf safari nomad lagoon
+"Pottuvil, Ampara District",Ampara,Eastern,East Coast,coast surf lagoon
+"Jaffna, Jaffna District",Jaffna,Northern,North,culture coast hub

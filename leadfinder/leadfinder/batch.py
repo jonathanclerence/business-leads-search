@@ -229,11 +229,11 @@ def build_query(business_type: str, town: str, state: str = "", country: str = "
 
 
 _AU_ADDRESS = re.compile(r"\b(VIC|NSW|QLD|SA|WA|TAS|ACT|NT)(\s+\d{4}\b|\s*$)")
-_CALLING_CODES = {"australia": "61", "new zealand": "64", "united kingdom": "44",
+_CALLING_CODES = {"australia": "61", "sri lanka": "94", "new zealand": "64", "united kingdom": "44",
                   "united states": "1", "canada": "1"}
 _COUNTRIES = {"australia", "united states", "usa", "united kingdom", "uk", "canada",
               "new zealand", "ireland", "south africa", "italy", "india", "philippines",
-              "singapore", "malaysia", "germany", "france", "spain", "netherlands"}
+              "singapore", "malaysia", "germany", "france", "spain", "netherlands", "sri lanka"}
 
 
 def in_country(lead: Dict[str, Any], country: str) -> bool:
@@ -246,6 +246,13 @@ def in_country(lead: Dict[str, Any], country: str) -> bool:
     want = (country or "").strip().lower()
     if not want:
         return True
+    if want == "sri lanka":
+        lat, lng = lead.get("lat"), lead.get("lng")
+        if lat is not None and lng is not None and not (5.8 <= lat <= 9.9 and 79.5 <= lng <= 82.0):
+            return False
+        phone = re.sub(r"[^\d+]", "", lead.get("phone") or "")
+        if phone.startswith("+") and not phone.startswith("+94"):
+            return False
     address = (lead.get("address") or "").strip()
     if address:
         if address.lower().endswith(want):

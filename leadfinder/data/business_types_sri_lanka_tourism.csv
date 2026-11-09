@@ -1,0 +1,63 @@
+type,tourism_category,where
+# where: "all" = every town in towns_sri_lanka_tourism.csv; "tourist" = all but Colombo / the airport / regional hubs;
+# anything else = only towns carrying one of those tags (space-separated).
+resort,Resorts & boutique hotels,all
+boutique hotel,Resorts & boutique hotels,all
+hotel,Resorts & boutique hotels,tourist
+eco lodge,Resorts & boutique hotels,hill safari culture trek
+villa,Villas & holiday rentals,tourist
+holiday home,Villas & holiday rentals,tourist
+holiday apartment,Villas & holiday rentals,coast nomad
+tea estate bungalow,Villas & holiday rentals,tea
+glamping,Villas & holiday rentals,safari trek
+guest house,Guest houses & homestays,tourist
+homestay,Guest houses & homestays,tourist
+hostel,Hostels & surf hostels,all
+surf hostel,Hostels & surf hostels,surf
+surf camp,Surf camps & surf schools,surf
+surf school,Surf camps & surf schools,surf
+kitesurfing school,Surf camps & surf schools,kite
+surf shop,Surf shops & board rental,surf
+surfboard rental,Surf shops & board rental,surf
+cafe,Cafés,tourist
+coffee shop,Cafés,tourist
+restaurant,Restaurants & beach clubs,tourist
+seafood restaurant,Restaurants & beach clubs,coast
+beach club,Restaurants & beach clubs,coast
+bar,Restaurants & beach clubs,tourist
+yoga retreat,"Yoga, Ayurveda & spas",tourist
+yoga studio,"Yoga, Ayurveda & spas",tourist
+ayurveda,"Yoga, Ayurveda & spas",tourist
+spa,"Yoga, Ayurveda & spas",tourist
+massage,"Yoga, Ayurveda & spas",tourist
+whale watching,"Whale watching, boat & lagoon tours",whale
+boat tour,"Whale watching, boat & lagoon tours",coast lagoon
+river safari,"Whale watching, boat & lagoon tours",lagoon
+safari jeep,Safari jeep operators,safari
+safari tour,Safari jeep operators,safari
+diving center,Diving & snorkelling,dive
+snorkeling tour,Diving & snorkelling,dive
+tuk tuk rental,"Scooter, tuk-tuk & airport transfers",tourist
+scooter rental,"Scooter, tuk-tuk & airport transfers",tourist
+airport transfer,"Scooter, tuk-tuk & airport transfers",all
+taxi service,"Scooter, tuk-tuk & airport transfers",tourist
+private driver,"Scooter, tuk-tuk & airport transfers",tourist
+cooking class,Cooking classes & local experiences,tourist
+village tour,Cooking classes & local experiences,tourist
+spice garden,Cooking classes & local experiences,spice culture hill
+stilt fishing,Cooking classes & local experiences,stilt
+turtle hatchery,Cooking classes & local experiences,turtle
+white water rafting,Cooking classes & local experiences,rafting
+tea factory,Tea estate tours & trekking,tea
+hiking tour,Tea estate tours & trekking,trek
+coworking space,Coworking & coliving,nomad city
+tour operator,Tour operators & travel agents,all
+travel agency,Tour operators & travel agents,tourist
+tour guide,Tour operators & travel agents,tourist
+gem shop,"Gem, jewellery & souvenir shops",tourist
+moonstone,"Gem, jewellery & souvenir shops",coast
+souvenir shop,"Gem, jewellery & souvenir shops",tourist
+wedding venue,Wedding venues & photographers,tourist
+wedding photographer,Wedding venues & photographers,coast hill culture
+tattoo studio,"Tattoo, laundry & traveller services",tourist
+laundry,"Tattoo, laundry & traveller services",surf nomad

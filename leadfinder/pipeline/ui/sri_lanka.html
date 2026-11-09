@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sri Lanka · DuNous pipeline</title>
+<style>
+:root{color-scheme:light dark;--bg:#f5f5f3;--panel:#fff;--ink:#192923;--muted:#65756e;--line:#dce4df;--accent:#137552;--warn:#b26b00;--bad:#b84830;--chip:#e8f3ed}
+@media(prefers-color-scheme:dark){:root{--bg:#101815;--panel:#19231f;--ink:#e9f3ed;--muted:#a0b6aa;--line:#31443a;--accent:#65d8a3;--warn:#f5cf7c;--bad:#ff9a85;--chip:#243e30}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,sans-serif}a{color:var(--accent)}button,input,select,textarea{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}button,.btn{cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-decoration:none;font:inherit;border:1px solid var(--line);border-radius:8px;padding:7px 11px;background:var(--panel);color:var(--ink)}button:disabled,.btn.busy{opacity:.45;cursor:default;pointer-events:none}button:hover:not(:disabled),.btn:hover{border-color:var(--accent)}header{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}h1{font-size:21px;margin:0}h2{font-size:19px;margin:0 0 8px}h3{font-size:14px;margin:0}.muted{color:var(--muted)}.badge{background:var(--chip);padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600}.right{margin-left:auto;display:flex;align-items:center;gap:14px}.intro{padding:18px 24px 0}.intro p{margin:6px 0}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px 24px}.stat{padding:14px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px}.stat strong{display:block;font-size:25px;font-variant-numeric:tabular-nums}
+.poolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0 24px 12px}
+.chip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 13px;cursor:pointer;font-size:13px;font-weight:600}
+.chip.on{border-color:var(--accent);background:var(--chip);color:var(--accent)}
+.filters{padding:0 24px 16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.filters input{min-width:240px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 520px;border-top:1px solid var(--line)}.results{min-width:0;overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:500;background:var(--panel)}tr.selected{background:var(--chip)}td button{padding:0;border:0;background:none;text-align:left;color:var(--accent);font-weight:650}td small{display:block;color:var(--muted);max-width:250px}aside{border-left:1px solid var(--line);padding:20px;background:var(--panel);overflow-wrap:anywhere}aside label{display:grid;gap:4px;margin-top:8px;font-size:12.5px;font-weight:600;color:var(--muted)}aside label input,aside label select,aside label textarea{font-weight:400;color:var(--ink)}textarea{width:100%;min-height:95px}aside .links{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.box{border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0;background:var(--bg)}
+.box.mine{border-color:var(--accent);background:var(--chip)}
+details.box{padding:0;overflow:hidden}
+details.box>summary.box-head{list-style:none;cursor:pointer;padding:12px 14px;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:space-between;background:var(--panel);border-bottom:1px solid transparent;user-select:none}
+details.box>summary.box-head::-webkit-details-marker{display:none}
+details.box>summary.box-head::after{content:'▾';font-size:13px;color:var(--muted);transition:transform .15s}
+details.box:not([open])>summary.box-head::after{transform:rotate(-90deg)}
+details.box[open]>summary.box-head{border-bottom-color:var(--line)}
+details.box>.box-body{padding:14px}
+.say{background:var(--chip);padding:11px 13px;border-left:3px solid var(--accent);border-radius:6px;margin:6px 0 10px;font-size:13.5px;line-height:1.55}
+.warn-rule{background:color-mix(in srgb,var(--warn) 14%,var(--panel));border-left:3px solid var(--warn);padding:9px 12px;border-radius:6px;margin:0 0 10px;font-size:12.5px}
+.branch{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);margin:14px 0 4px}.branch.match{background:var(--accent);color:var(--bg);display:inline-block;padding:2px 8px;border-radius:5px}.row-btns{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.outcomes{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.hist{list-style:none;margin:0;padding:0;font-size:12.5px}.hist li{padding:6px 0;border-bottom:1px dashed var(--line)}.hist time{color:var(--muted);margin-right:8px}
+.sub-details{margin:8px 0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.sub-details summary{cursor:pointer;font-weight:600;font-size:13px}
+.pager{display:flex;gap:12px;align-items:center;padding:16px}.error{color:var(--bad);padding:0 24px;font-weight:600}#saved{color:var(--accent);font-weight:600}.note{font-size:12px}.primary{background:var(--accent);color:var(--bg);font-weight:650;border-color:var(--accent)}.sm{padding:5px 9px;font-size:12px}#refresh{margin-left:auto}
+@media(max-width:1100px){.layout{grid-template-columns:1fr}aside{border-left:0;border-top:1px solid var(--line)}}@media(max-width:600px){.stats,.grid2{grid-template-columns:1fr;gap:6px}.stat{padding:10px}.stat strong{font-size:21px}header,.intro{padding:14px}.filters,.poolbar{padding:12px}.filters input{width:100%}}
+</style></head><body>
+<header>
+  <h1>🇱🇰 Sri Lanka Pipeline</h1>
+  <nav id="countryNav" style="display:flex;background:var(--chip);padding:3px;border-radius:10px;gap:2px" aria-label="Country pipeline">
+    <a href="/pipeline" style="padding:5px 11px;border-radius:7px;text-decoration:none;color:var(--ink);font-weight:600;font-size:13px">🇦🇺 Australia</a>
+    <a href="/pipeline/sri-lanka" style="padding:5px 11px;border-radius:7px;text-decoration:none;background:var(--accent);color:var(--bg);font-weight:650;font-size:13px">🇱🇰 Sri Lanka</a>
+  </nav>
+  <span id="roleBadge" class="badge">Sri Lanka team</span>
+  <div class="right">
+    <a id="genericPack" class="btn sm" data-doc href="/pipeline/sri-lanka/api/docs/pack.pdf">⬇ Generic LKR Website Pack (PDF)</a>
+    <a id="macFinder" href="/">← Lead finder</a>
+    <span id="who" class="muted"></span>
+  </div>
+</header>
+<div class="intro">
+  <h2>A website should solve a business problem.</h2>
+  <p class="muted">Sri Lankan businesses in modern verticals (salons, villas &amp; stays, cafés, wedding &amp; photography, fitness, boutiques) using only Instagram, Facebook, booking directories, or no site at all.</p>
+</div>
+<div class="stats">
+  <div class="stat"><span class="muted">Sri Lanka prospects</span><strong id="total">—</strong><small id="tourismCount" class="muted"></small></div>
+  <div class="stat"><span class="muted">Live preview websites</span><strong id="previews">—</strong><small class="muted">Hosted on dunous.com with code</small></div>
+  <div class="stat"><span class="muted">Instagram / Facebook only</span><strong id="social">—</strong><small id="searchStatus" class="muted"></small></div>
+</div>
+<div id="poolBar" class="poolbar"></div>
+<div id="filterBar" class="filters">
+  <input id="q" type="search" placeholder="Search name, code, town or phone…" aria-label="Search prospects">
+  <select id="preview" aria-label="Preview website">
+    <option value="">All prospects</option>
+    <option value="live">🌐 Live preview website built</option>
+    <option value="none">No preview built yet</option>
+  </select>
+  <select id="stage" aria-label="Stage"><option value="">All stages</option></select>
+  <select id="industry" aria-label="Industry">
+    <option value="">All industries</option>
+    <option value="Tourism">🏝️ Tourism industry</option>
+    <option value="Other">Other (non-tourism)</option>
+  </select>
+  <select id="tourism_category" aria-label="Tourism type"><option value="">All tourism types</option></select>
+  <select id="sector" aria-label="Sector"><option value="">All sectors</option></select>
+  <select id="district" aria-label="Search district"><option value="">All search districts</option></select>
+  <select id="presence" aria-label="Web presence">
+    <option value="">All web presence</option>
+    <option value="social">Facebook / Instagram / social only</option>
+    <option value="none">No website link listed</option>
+    <option value="booking">Booking page only</option>
+    <option value="directory">Directory / marketplace only</option>
+    <option value="dead">Discontinued website host</option>
+  </select>
+  <select id="owner" aria-label="Owner"><option value="">Everyone's leads</option></select>
+  <a id="export" href="/pipeline/sri-lanka/api/export.csv">Export CSV</a>
+  <button id="refresh">Refresh</button>
+</div>
+<p id="error" class="error" role="alert"></p>
+<div class="layout">
+  <div class="results">
+    <table>
+      <thead><tr><th>Business</th><th>Fit</th><th>Search area</th><th>Web presence</th><th>Stage / Owner</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="pager"><button id="prev">← Previous</button><span id="pageInfo"></span><button id="next">Next →</button></div>
+  </div>
+  <aside id="detail">
+    <h2>Choose a business</h2>
+    <p class="muted">Select a Sri Lankan business on the left to claim it, view the sales script, log your call, and send the LKR Website Pack.</p>
+  </aside>
+</div>
+<script>
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const base='/pipeline/sri-lanka/api';
+const labels={none:'No website link listed',social:'Instagram / Facebook only',booking:'Booking platform only',directory:'Directory / marketplace only',dead:'Discontinued website host'};
+let meta=null,rows=[],selected=null,offset=0,sequence=0,dirty=false,mineMode=false,dueMode=false;
+
+const isRep=()=>meta?.user?.role==='lk_rep';
+const lkr=n=>'LKR '+Number(n).toLocaleString('en-LK');
+
+function secOpen(key,def=true){
+  try{
+    const v=localStorage.getItem('lk-sec-'+key);
+    return v===null?def:v==='1';
+  }catch{return def;}
+}
+function saveSecState(key,isOpen){
+  try{localStorage.setItem('lk-sec-'+key,isOpen?'1':'0');}catch{}
+}
+function callerName(){
+  try{return localStorage.getItem('lk-rep-name')||(meta?.user?.name?.split(' ')[0]||'');}catch{return meta?.user?.name?.split(' ')[0]||'';}
+}
+function setCallerName(v){
+  try{localStorage.setItem('lk-rep-name',v);}catch{}
+}
+function displayPhone(p){
+  const m=String(p||'').match(/^\+94(\d{2})(\d{3})(\d{4})$/);
+  return m?`0${m[1]} ${m[2]} ${m[3]}`:(p||'');
+}
+function normalizeDial(p){
+  const clean=String(p||'').replace(/[^\d+]/g,'');
+  if(/^0\d{9}$/.test(clean))return '+94'+clean.slice(1);
+  return clean;
+}
+function waHref(p,text=''){
+  let digits=String(p||'').replace(/\D/g,'');
+  if(!digits)return '';
+  if(digits.startsWith('0')&&digits.length===10)digits='94'+digits.slice(1);
+  return `https://wa.me/${digits}${text?'?text='+encodeURIComponent(text):''}`;
+}
+function domainHint(name){
+  const stem=String(name||'business').toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,26)||'business';
+  return `${stem}.lk`;
+}
+function tourismBadge(r){return r.industry==='Tourism'?`<span class="badge">🏝️ Tourism · ${esc(r.tourism_category)}</span>`:'';}
+function sectorPayoff(sector,r){
+  if(r?.industry==='Tourism')switch(r.tourism_category){
+    case 'Resorts & boutique hotels': case 'Villas & holiday rentals': case 'Guest houses & homestays': case 'Hostels & surf hostels':
+      return 'see your rooms and views, check direct rates and book or WhatsApp you without paying Booking.com or Airbnb commissions';
+    case 'Surf camps & surf schools': return 'see your lesson levels and camp packages, check prices and book a session before they arrive';
+    case 'Whale watching, boat & lagoon tours': case 'Safari jeep operators': case 'Diving & snorkelling': case 'Tea estate tours & trekking':
+    case 'Cooking classes & local experiences': case 'Tour operators & travel agents':
+      return 'see your trips and what is included, check prices and book a date directly instead of through GetYourGuide or hotel desks';
+    case 'Scooter, tuk-tuk & airport transfers': return 'check your rates and book a scooter, tuk-tuk or airport pickup on WhatsApp before landing';
+    case 'Yoga, Ayurveda & spas': return 'see your class timetable, treatments and retreat packages and book online';
+  }
+  switch(sector){
+    case 'Beauty & bridal': return 'see your bridal & salon work, check packages and book an appointment';
+    case 'Tourism & stays': return 'check your rooms, see direct rates and message you on WhatsApp without paying Booking.com commissions';
+    case 'Events & creative': return 'check your portfolio, packages and ask about their wedding or event date';
+    case 'Food & hospitality': return 'check your menu, see photos of your place and book a table or order ahead';
+    case 'Fitness & wellness': return 'check class times, membership rates and book a trial session';
+    case 'Retail & lifestyle': return 'see your latest collection, check prices and order on WhatsApp';
+    case 'Pets': return 'check your grooming or boarding packages and book a slot';
+    default: return 'see your work, check prices and send an enquiry directly';
+  }
+}
+function socialPlatform(url){
+  const u=String(url||'').toLowerCase();
+  if(u.includes('instagram.com'))return 'Instagram';
+  if(u.includes('facebook.com')||u.includes('fb.com'))return 'Facebook';
+  if(u.includes('tiktok.com'))return 'TikTok';
+  return 'Instagram and Facebook';
+}
+function directoryPlatform(url){
+  const u=String(url||'').toLowerCase();
+  if(u.includes('booking.com'))return 'Booking.com';
+  if(u.includes('agoda.com'))return 'Agoda';
+  if(u.includes('tripadvisor.'))return 'TripAdvisor';
+  if(u.includes('airbnb.'))return 'Airbnb';
+  if(u.includes('ikman.lk'))return 'ikman.lk';
+  if(u.includes('fresha.com'))return 'Fresha';
+  return 'booking sites';
+}
+
+function whatsappMessage(r){
+  const first=r.contact_name?r.contact_name.trim().split(/\s+/)[0]:'';
+  const hi=first?`Hi ${first},`:'Hi,';
+  const rep=callerName()||'Aaruran';
+  if(r.preview_url){
+    const codeLine=r.code?`\n(Or you can go to dunous.com, click "Preview your site" and enter your code: ${r.code})\n`:'';
+    return `${hi} it's ${rep} here, we just spoke on the phone.
+
+Here is the sample website we put together for ${r.name}:
+${r.preview_url}
+${codeLine}
+I've also attached the PDF with the package details we talked about (Growth at 39k with 50% off first year hosting, Foundation at 25k with 15% off first year hosting, or Pro at 69k with first year hosting free).
+
+Have a look when you're free and let me know what you think.`;
+  }
+  return `${hi} it's ${rep} here, we just spoke on the phone.
+
+I've attached the PDF with the website packages for ${r.name} (Growth at 39k with 50% off first year hosting, Foundation at 25k with 15% off first year hosting, or Pro at 69k with first year hosting free).
+
+Have a look when you're free and let me know what you think.`;
+}
+
+function scriptHtml(r){
+  const name=esc(r.name);
+  const town=esc((r.search_town||'').split(',')[0].trim()||r.search_district||'your area');
+  const owner=r.contact_name?esc(r.contact_name.trim().split(/\s+/)[0]):'the owner';
+  const rep=esc(callerName()||'[your name]');
+  const payoff=esc(sectorPayoff(r.sector,r));
+  const dom=esc(domainHint(r.name));
+  const socialName=esc(socialPlatform(r.website));
+  const dirName=esc(directoryPlatform(r.website));
+  const isSocial=r.website_status==='social';
+  const isDir=r.website_status==='booking'||r.website_status==='directory';
+  const isNone=!isSocial&&!isDir;
+
+  const ratingHook=r.rating&&r.reviews
+    ?`saw your ${esc(r.rating)}-star rating and ${esc(r.reviews)} reviews`
+    :(r.reviews?`saw your ${esc(r.reviews)} Google reviews`:`came across your listing in ${town}`);
+
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+    <span class="note muted">Goal: <b>Hook in 15s → Show live preview → Close the Growth Package (LKR 39,000)</b></span>
+    <label style="display:inline-flex;align-items:center;gap:6px;margin:0;font-size:12px">Your name <input id="repNameInput" value="${esc(callerName())}" placeholder="e.g. Aaruran" style="width:110px;padding:4px 8px"></label>
+  </div>
+
+  <div class="warn-rule">
+    <b>Golden Rule for the First 15 Seconds:</b> Never start with <i>“Hi I'm calling from DuNous, a web design company…”</i> — they will think you are a telemarketer and hang up immediately. Sound like a normal person calling about their Google listing.
+  </div>
+
+  <p class="branch">Step 1 · First 15 Seconds (The Hook — Get Them On Board)</p>
+  <p class="say">“Hi, quick question — is this <b>${name}</b> in ${town}?”<br>
+  <span class="muted"><i>(Wait for them to say “Yes”)</i></span><br>
+  “Hey${r.contact_name?' '+owner:''}, it's <b>${rep}</b> here. Look, I was just looking up <b>${name}</b> on Google Maps — ${ratingHook} — and I noticed when people click your listing to ${payoff}, there's no website attached. So my team actually put together a working sample website for <b>${name}</b> this morning just to show you how it looks. Are you the owner, or is the owner around for 30 seconds?”</p>
+
+  <details class="sub-details">
+    <summary>Step 2A · If Staff / Receptionist Answers (Get the Owner's Number!)</summary>
+    <p class="say">“No problem at all — I didn't want to bother the front desk because we already built the sample site for <b>${name}</b> and I just need to send the link to the owner so they can see it. Who's the owner — what's their name?”<br>
+    <span class="muted"><i>(Wait for name, then ask:)</i></span><br>
+    “Thanks! And what's the best mobile or WhatsApp number to send them the preview link directly? Or what time are they usually in?”</p>
+    <p class="note muted">👉 <b>Action:</b> Type the owner's name into <b>Who to contact / Owner name</b> and their number into <b>Owner's direct phone / WhatsApp</b> in the Call Log section above, then call or WhatsApp the owner directly.</p>
+  </details>
+
+  <p class="branch">Step 2B · Once Speaking to the Owner (Why You Built It)</p>
+  ${isSocial?`
+  <p class="say">“I saw you've got your <b>${socialName}</b> linked right now, which is great for photos and reels. The reason I built this for <b>${name}</b> is that on ${socialName}, posts get buried fast and customers have to DM ‘price pls’ and wait around just to check packages or book — half of them drop off.<br><br>
+  And when higher-paying locals or tourists search <b>${name}</b> on Google, they expect a proper website like <b>${dom}</b> where they can ${payoff} in 10 seconds and hit one button to message you on WhatsApp.”</p>
+  `:isDir?`
+  <p class="say">“I noticed when people search <b>${name}</b> on Google, they get sent to <b>${dirName}</b> — which means right underneath your photos, customers are shown five of your competitors, plus you lose 15% to 20% commission on every booking.<br><br>
+  So we built a standalone site for <b>${name}</b> (<b>${dom}</b>) so people finding you on Google or Instagram can ${payoff} directly with you — zero commission.”</p>
+  `:`
+  <p class="say">“You've already done the hard part building a strong reputation in ${town}. Right now, when someone hears about <b>${name}</b> or finds you on Google Maps, the website button is blank — so anyone who wants to ${payoff} before calling has nowhere to go.<br><br>
+  Instead of calling you with an empty sales pitch, we already built the sample site for <b>${name}</b> so you can judge it with your own eyes.”</p>
+  `}
+
+  <p class="branch">Step 3 · Get Them Looking at Their Live Preview (Ownership Transfer)</p>
+  ${r.code?`
+  <p class="say">“It takes 15 seconds to see it — no sign-up or anything. If you're near your phone or laptop right now, go to <b>dunous.com</b>, tap <b>Preview your site</b> at the top and type in your code <b>${esc(r.code)}</b> — or I can drop the link on your WhatsApp right now while we're on the line. Is this number on WhatsApp?”</p>
+  `:`
+  <p class="say">“I've got the 5-page Website Pack with screenshots of the site we mocked up for <b>${name}</b> ready to send to your WhatsApp right now while we're on the line. Is this number on WhatsApp?”</p>
+  `}
+  <p class="say">“Have a look at how we laid out your services, your Google rating, and the WhatsApp enquiry flow. You can even change the colours on screen. Honestly, how does that look to you? Would you keep those colours or swap in your own photos?”</p>
+  <p class="note muted">💡 <b>Sales tip:</b> Pause and let them talk. Once they say <i>“I'd change that photo”</i> or <i>“Can we add our price list?”</i>, they are already picturing owning it.</p>
+
+  <p class="branch match">Step 4 · Pitch the Growth Package (LKR 39,000 + 50% Off 1st Year Hosting)</p>
+  <p class="say">“We can swap in all your real photos and your exact packages in 3 days. And because we already built the base for <b>${name}</b>, we don't charge agency prices like 120,000 or 150,000 rupees, and there's no monthly retainer:<br><br>
+  • We do have a large 5-page <b>Pro package at LKR 69,000</b> (which includes full copywriting, photo gallery, Google &amp; Meta ad tracking, and <b>first year domain and hosting completely free</b>).<br><br>
+  • <b>But honestly, for ${name}, I recommend our Growth Package at LKR 39,000 one-off.</b> That's our sweet spot — you get:<br>
+  &nbsp;&nbsp;1. A complete <b>3-page website</b> on your own address (like <b>${dom}</b>) with your logo, photos, and full service/price list<br>
+  &nbsp;&nbsp;2. A <b>direct booking &amp; enquiry form</b> that sends customer requests straight to your WhatsApp and email<br>
+  &nbsp;&nbsp;3. <b>Google Maps, SEO &amp; Instagram integration</b> so you rank properly when people search in ${town}<br>
+  &nbsp;&nbsp;4. <b>2 rounds of design revisions</b> plus <b>14 days of free edits</b> after launch<br>
+  &nbsp;&nbsp;5. And right now on the Growth package, we give you <b>50% off your first year of domain and managed hosting</b> — so instead of LKR 12,000 for the year, it's just <b>LKR 6,000 for the entire first year</b> (including SSL security, backups and monthly text updates).<br><br>
+  • And if someone only wants a basic 1-page digital flyer as-is, our <b>Foundation starter is LKR 25,000</b> (with <b>15% off first-year domain &amp; hosting</b>).<br><br>
+  Between the 3-page <b>Growth package at 39k</b> (with the WhatsApp booking form and 50% off hosting) and the 1-page starter, Growth is the one that actually brings in bookings. How does the Growth setup sound for <b>${name}</b>?”</p>
+
+  <p class="branch">Step 5 · The Close (Zero Risk — 50% Deposit, 50% Only When Happy)</p>
+  <p class="say">“Here's how we make it zero risk for you: you don't pay the 39,000 upfront. It's 50% (LKR 19,500) to register your domain and get our designer putting your photos and prices in, and the other 50% <b>only after</b> you've seen the finished site on your phone and you're 100% happy to put it live.<br><br>
+  Let me send the preview link and our 5-page Website Pack PDF to your WhatsApp right now. If you like what you see, we can get <b>${name}</b> live in 3 days. Shall I send that to this number?”</p>
+
+  <details class="sub-details">
+    <summary>Step 6 · Handling Objections (Don't Let Them Brush You Off)</summary>
+    <p><b>1. “Just WhatsApp me the details, I'll look later.”</b><br>
+    “Sending it to your WhatsApp right now — it just went through. Do me one quick favour: just tap the link to make sure it opens on your phone while I'm here. Look at the top section — does that style suit <b>${name}</b>, or would you want darker/lighter colours? Great — have a proper read of page 3 (the 39k Growth pack with 50% off hosting) tonight, and I'll give you a quick 2-minute ring tomorrow around 11am or 4pm. Which time is better for you?”</p>
+    <p><b>2. “39,000 is a bit out of budget right now.” (Down-sell to Foundation 25k)</b><br>
+    “I completely understand. Here's what we can do so you don't miss out: start on our <b>Foundation package at LKR 25,000</b> (plus 15% off first year domain and hosting). Since it's 50/50 payment, it's just <b>LKR 12,500 to start</b> and 12,500 when it's ready. That gets <b>${name}</b> live on Google with your photos and WhatsApp button in 2 days — and whenever you want to upgrade to the 3-page Growth site later, you only pay the 14k difference. Fair enough?”</p>
+    <p><b>3. “We get enough business from Instagram / Facebook / word of mouth.”</b><br>
+    “That's why your reviews are so good! Your website isn't there to replace Instagram or word of mouth — it closes the people who hear about <b>${name}</b> from a friend or see a reel and then Google you. Even 2 or 3 extra customers all year pays off the entire 39k Growth site for life.”</p>
+    <p><b>4. “I need to discuss with my partner / husband / wife.”</b><br>
+    “100% — you should both see the live preview together. What's their name so I can include it on the proposal? I'll send the preview link and the PDF pack to your WhatsApp right now so you can show them tonight, and I'll call you back tomorrow afternoon once you've both had a look.”</p>
+  </details>`;
+}
+
+async function api(path,options={}){
+  const r=await fetch(base+path,{headers:{'Content-Type':'application/json'},...options});
+  if(r.status===401){location.href='/login?next=/pipeline/sri-lanka';throw Error('Please sign in');}
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw Error(typeof e.detail==='string'?e.detail:'Unable to save or load. Check your input and try again.');}
+  return r.json();
+}
+function params(){
+  const p=new URLSearchParams();
+  for(const id of ['q','preview','stage','industry','tourism_category','sector','district','presence','owner']){
+    const el=$('#'+id);
+    if(el&&el.value)p.set(id,el.value);
+  }
+  if(mineMode)p.set('mine','true');
+  if(dueMode)p.set('due','true');
+  return p;
+}
+function options(el,values,label){const old=el.value;el.innerHTML=`<option value="">${label}</option>`+values.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('');el.value=old;}
+
+function ownerLabel(u){
+  if(!u)return '';
+  if(u===meta?.user?.username)return 'You';
+  return meta?.team?.find(m=>m.username===u)?.name||u;
+}
+
+function renderPoolBar(){
+  const bar=$('#poolBar');
+  if(!meta)return;
+  if(isRep()){
+    if(meta.working){
+      bar.innerHTML=`<span class="chip on" data-working>🎯 Your active business: <b>${esc(meta.working.name)}</b> — log the call below, then click “✓ Done — next business”</span>`;
+      $('#filterBar').style.display='none';
+    }else{
+      bar.innerHTML=`
+        <span class="chip ${!mineMode&&!dueMode?'on':''}" data-pool="free">📞 Free to take <b>${(meta.available||0).toLocaleString()}</b></span>
+        <span class="chip ${mineMode&&!dueMode?'on':''}" data-pool="mine">⭐ My leads <b>${(meta.mine||0).toLocaleString()}</b></span>
+        ${meta.follow_ups_due?`<span class="chip ${dueMode?'on':''}" data-pool="due">⏰ Follow-ups due <b>${meta.follow_ups_due}</b></span>`:''}
+        <span class="note muted" style="margin-left:6px">Pick a business and click <b>Take it</b>. You work on one at a time until you log it.</span>`;
+      $('#filterBar').style.display='';
+    }
+  }else{
+    bar.innerHTML=`
+      <span class="chip ${!mineMode&&!dueMode?'on':''}" data-pool="all">All prospects <b>${(meta.total||0).toLocaleString()}</b></span>
+      <span class="chip ${dueMode?'on':''}" data-pool="due">⏰ Follow-ups due <b>${meta.follow_ups_due||0}</b></span>`;
+    $('#filterBar').style.display='';
+  }
+}
+
+async function loadMeta(){
+  meta=await api('/meta');
+  const rep=isRep();
+  if(meta.cloud||rep)$('#macFinder').hidden=true;
+  if(rep){
+    $('#countryNav').hidden=true;
+    $('#owner').hidden=true;
+    $('#export').hidden=true;
+  }
+  $('#roleBadge').textContent=rep?'Sri Lanka sales team':'Admin · Sri Lanka';
+  if(meta.user){
+    $('#who').innerHTML=`${esc(meta.user.name)} · <a href="/logout">Sign out</a>`;
+  }
+  $('#total').textContent=meta.total.toLocaleString();
+  $('#tourismCount').textContent=`🏝️ ${(meta.tourism||0).toLocaleString()} in tourism`;
+  $('#previews').textContent=(meta.previews||0).toLocaleString();
+  $('#social').textContent=meta.social.toLocaleString();
+  $('#searchStatus').textContent=`${meta.districts.length} districts across Sri Lanka`;
+  options($('#stage'),Object.entries(meta.stages),'All stages');
+  options($('#tourism_category'),(meta.tourism_categories||[]).map(([c,n])=>[c,`${c} (${n.toLocaleString()})`]),'All tourism types');
+  options($('#sector'),meta.sectors.map(s=>[s,s]),'All sectors');
+  options($('#district'),meta.districts.map(s=>[s,s]),'All search districts');
+  if(!rep&&meta.team){
+    const own=$('#owner'),old=own.value;
+    own.innerHTML=`<option value="">Everyone's leads</option><option value="none">Not taken</option>`+meta.team.map(m=>`<option value="${esc(m.username)}">${esc(m.name)} (${esc(m.role)})</option>`).join('');
+    own.value=old;
+  }
+  renderPoolBar();
+}
+
+async function load(){
+  const ticket=++sequence,p=params();
+  if(!isRep())$('#export').href=base+'/export.csv?'+p;
+  p.set('offset',offset);p.set('limit',50);
+  const data=await api('/leads?'+p);
+  if(ticket!==sequence)return;
+  rows=data.leads;
+  $('#rows').innerHTML=rows.map((r,i)=>`<tr class="${selected?.id===r.id?'selected':''}">
+    <td><button data-index="${i}">${esc(r.name)}</button>
+      <small>${esc(r.category)}</small>
+      <small>${r.rating?esc(r.rating)+' ★ · ':''}${r.reviews} reviews</small>
+      ${r.code?`<small><span class="badge" style="padding:1px 7px;font-size:11px">🌐 Code: <b>${esc(r.code)}</b></span></small>`:''}
+    </td>
+    <td><b>${r.score}</b><small>${r.industry==='Tourism'?'🏝️ '+esc(r.tourism_category):esc(r.sector)}</small></td>
+    <td>${esc(r.search_town.split(',')[0])}<small>${esc(r.search_district)}</small></td>
+    <td>${esc(labels[r.website_status]||r.website_status)}<small>${r.phone?esc(displayPhone(r.phone)):(isRep()?'🔒 Take lead to view phone':'')}</small></td>
+    <td><span class="badge">${esc(meta.stages[r.stage]||r.stage)}</span>
+      ${r.owner?`<small>${r.working_since?'🎯 ':''}Owner: <b>${esc(ownerLabel(r.owner))}</b></small>`:''}
+      ${r.attempts?`<small>Tried ${r.attempts}×</small>`:''}
+      ${r.follow_up?'<small>Follow up '+esc(r.follow_up)+'</small>':''}
+    </td></tr>`).join('')||'<tr><td colspan="5">No prospects match these filters.</td></tr>';
+  $('#pageInfo').textContent=data.total?`${offset+1}–${Math.min(offset+50,data.total)} of ${data.total.toLocaleString()}`:'0 results';
+  $('#prev').disabled=offset===0;$('#next').disabled=offset+50>=data.total;
+}
+
+function safeLink(raw){try{const u=new URL(raw.includes('://')?raw:'https://'+raw);return ['http:','https:'].includes(u.protocol)?u.href:'';}catch{return '';}}
+function link(raw,label){const url=safeLink(raw);return url?`<a class="btn sm" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`:'';}
+function canLeave(){return !dirty||confirm('Discard your unsaved changes to this prospect?');}
+
+function renderPick(r){
+  selected=r;dirty=false;
+  $('#detail').innerHTML=`
+    <h2>${esc(r.name)}</h2>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <span class="badge">🇱🇰 ${esc(r.sector)}</span>
+      ${tourismBadge(r)}
+      <span class="badge">Score ${esc(r.score)}</span>
+      <span class="badge">${esc(meta.stages[r.stage]||r.stage)}</span>
+      ${r.rating?`<span class="badge">${esc(r.rating)} ★ (${esc(r.reviews)} reviews)</span>`:''}
+      ${r.code?`<span class="badge">🌐 Preview ready (code: ${esc(r.code)})</span>`:''}
+    </div>
+    <p style="margin:4px 0">${esc(r.address)||'Address not listed'} · <b>${esc(r.search_district)}</b></p>
+    <p class="note muted" style="margin:4px 0"><b>${esc(labels[r.website_status]||r.website_status)}</b> · ${esc(r.why)}</p>
+    <section class="box mine" style="margin-top:16px">
+      <h3 style="margin-bottom:6px">Take this business?</h3>
+      <p style="margin:0 0 12px">When you take <b>${esc(r.name)}</b>, it becomes yours: nobody else on the team will call it, and you unlock the phone number, live preview website, sales pitch script, and LKR Website Pack. You work on one business at a time — log the call, then press <b>Done</b> to move to the next.</p>
+      <button type="button" class="btn primary" id="claimBtn" data-id="${esc(r.id)}" style="font-size:15px;padding:10px 18px">🎯 Take this business</button>
+    </section>`;
+  $('#claimBtn')?.addEventListener('click',async e=>{
+    const btn=e.currentTarget;btn.disabled=true;
+    try{
+      $('#error').textContent='';
+      const claimed=await api('/leads/'+encodeURIComponent(r.id)+'/claim',{method:'POST'});
+      await loadMeta();await load();detail(claimed);
+    }catch(err){showError(err);btn.disabled=false;}
+  });
+}
+
+function workBox(r){
+  if(isRep()){
+    return `<section class="box mine" style="margin:10px 0">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <div>
+          <h3 style="margin:0 0 3px">🎯 Your active business</h3>
+          <p class="note" style="margin:0">Call, log the outcome or save notes below, then mark it done to pick your next business. It stays under <b>My leads</b> for follow-ups.</p>
+        </div>
+        <button type="button" class="btn primary" id="doneBtn" data-id="${esc(r.id)}">✓ Done — next business</button>
+      </div>
+    </section>`;
+  }
+  if(!meta?.team?.length)return '';
+  const opts=meta.team.map(m=>`<option value="${esc(m.username)}" ${m.username===r.owner?'selected':''}>${esc(m.name)} (${esc(m.role)})</option>`).join('');
+  return `<div style="margin:8px 0;font-size:13px" class="muted">Assigned to: <select id="ownerAssign" style="padding:4px 8px"><option value="">Nobody — free to take</option>${opts}</select>${r.working_since?` · <b>🎯 Working on it now</b>`:''}</div>`;
+}
+
+function daysFromNowColombo(n){
+  const d=new Date(Date.now()+n*864e5);
+  return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Colombo'}).format(d);
+}
+
+async function openLeadById(id){
+  try{
+    $('#error').textContent='';
+    const full=await api('/leads/'+encodeURIComponent(id));
+    detail(full);
+  }catch(err){showError(err);}
+}
+
+function detail(r){
+  selected=r;dirty=false;
+  const docBase=`${base}/leads/${encodeURIComponent(r.id)}/docs`;
+  const targetPhone=r.owner_phone||r.phone;
+  const waUrl=waHref(targetPhone);
+  const mainWaUrl=waHref(r.phone);
+  const ownerDial=normalizeDial(r.owner_phone);
+
+  $('#detail').innerHTML=`
+    <h2>${esc(r.name)}</h2>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <span class="badge">🇱🇰 ${esc(r.sector)}</span>
+      ${tourismBadge(r)}
+      <span class="badge">Score ${esc(r.score)}</span>
+      <span class="badge">${esc(meta.stages[r.stage]||r.stage)}</span>
+      ${r.rating?`<span class="badge">${esc(r.rating)} ★ (${esc(r.reviews)} reviews)</span>`:''}
+      ${r.attempts?`<span class="badge">Tried ${r.attempts}×</span>`:''}
+    </div>
+    <p style="margin:4px 0">${esc(r.address)||'Address not listed'} · <b>${esc(r.search_district)}</b></p>
+    ${workBox(r)}
+    <div class="links">
+      <a class="btn primary sm" href="tel:${esc(r.phone)}">📞 Business: ${esc(displayPhone(r.phone))}</a>
+      ${r.owner_phone?`<a class="btn primary sm" href="tel:${esc(ownerDial)}">👤 Owner (${esc(r.contact_name||'Direct')}): ${esc(r.owner_phone)}</a>`:''}
+      ${waUrl?`<a class="btn sm" href="${esc(waUrl)}" target="_blank" rel="noopener noreferrer">💬 WhatsApp ${r.owner_phone?'Owner':'Business'} ↗</a>`:''}
+      <button type="button" class="btn sm" id="copyPhone" data-phone="${esc(targetPhone)}">Copy number</button>
+      ${r.preview_url?`<a class="btn primary sm" href="${esc(r.preview_url)}" target="_blank" rel="noopener noreferrer">🌐 Open preview site ↗</a>`:''}
+      ${link(r.maps_url,'Google Maps')}
+      ${r.website?link(r.website,'Current '+socialPlatform(r.website)+' / page'):''}
+    </div>
+    <p class="note muted" style="margin:4px 0"><b>${esc(labels[r.website_status]||r.website_status)}</b> · ${esc(r.why)}</p>
+
+    ${r.preview_url?`<details class="box" data-sec="preview" ${secOpen('preview',true)?'open':''}>
+      <summary class="box-head"><span>🌐 Live Preview Website on dunous.com (Code: ${esc(r.code)})</span></summary>
+      <div class="box-body">
+        <p style="margin:0 0 8px">Preview code: <b style="font-size:15px;color:var(--accent)">${esc(r.code)}</b><br>
+        <span class="note muted">At <b>dunous.com</b>, they tap <b>Preview your site</b> and type <b>${esc(r.code)}</b> — or open <a href="${esc(r.preview_url)}" target="_blank" rel="noopener noreferrer">${esc(r.preview_url)} ↗</a></span></p>
+        <div class="row-btns" style="margin-bottom:0">
+          <a class="btn primary sm" href="${esc(r.preview_url)}" target="_blank" rel="noopener noreferrer">Open preview ↗</a>
+          <button type="button" class="btn sm" id="copyCode" data-val="${esc(r.code)}">Copy code (${esc(r.code)})</button>
+          <button type="button" class="btn sm" id="copyPreviewUrl" data-val="${esc(r.preview_url)}">Copy preview link</button>
+        </div>
+      </div>
+    </details>`:''}
+
+    <details class="box" data-sec="script" ${secOpen('script',true)?'open':''}>
+      <summary class="box-head"><span>🎯 Sales Pitch &amp; Call Script (Sell Growth · LKR 39,000)</span></summary>
+      <div class="box-body" id="scriptContent">${scriptHtml(r)}</div>
+    </details>
+
+    <details class="box" data-sec="call" ${secOpen('call',true)?'open':''}>
+      <summary class="box-head"><span>📞 Log Call, Owner Contact &amp; Stage</span></summary>
+      <div class="box-body">
+        <p class="note muted" style="margin:0 0 6px"><b>Quick-log call outcome</b> (saves contact details &amp; notes below and logs the call):</p>
+        <div class="outcomes">
+          ${Object.entries(meta.outcomes||{no_answer:'No answer',voicemail:'Left voicemail',gatekeeper:'Spoke to staff',owner:'Spoke to owner',whatsapp:'Sent WhatsApp',wrong_number:'Wrong number'}).map(([k,v])=>`<button type="button" class="btn sm" data-outcome="${esc(k)}">${esc(v)}</button>`).join('')}
+        </div>
+        <form id="edit" style="margin-top:10px">
+          <div class="grid2">
+            <label>Who to contact (Owner / Decision-maker)<input id="contactName" maxlength="200" placeholder="e.g. Dilshan (Owner)" value="${esc(r.contact_name||'')}"></label>
+            <label>Owner's / Contact's phone number<input id="ownerPhone" maxlength="60" placeholder="e.g. 077 123 4567 (direct/WhatsApp)" value="${esc(r.owner_phone||'')}"></label>
+          </div>
+          <div class="grid2">
+            <label>Stage<select id="editStage">${Object.entries(meta.stages).map(([k,v])=>`<option value="${k}" ${r.stage===k?'selected':''}>${esc(v)}</option>`).join('')}</select></label>
+            <label>Follow-up date<input id="followUp" type="date" value="${esc(r.follow_up||'')}"></label>
+          </div>
+          <div class="row-btns" style="margin:6px 0">
+            <span class="note muted" style="align-self:center">Call back:</span>
+            <button type="button" class="btn sm" data-cb="1">Tomorrow</button>
+            <button type="button" class="btn sm" data-cb="2">In 2 days</button>
+            <button type="button" class="btn sm" data-cb="7">Next week</button>
+          </div>
+          <label>Call notes<textarea id="notes" maxlength="10000" placeholder="Who answered, owner's reaction to the preview, whether you pitched Growth (39k) or Foundation (25k), and next step…">${esc(r.notes||'')}</textarea></label>
+          <p style="margin:10px 0 0;display:flex;align-items:center;gap:10px"><button type="submit" class="primary">Save details &amp; notes</button> <span id="saved" role="status"></span></p>
+        </form>
+      </div>
+    </details>
+
+    <details class="box" data-sec="pack" ${secOpen('pack',true)?'open':''}>
+      <summary class="box-head"><span>📄 Send LKR Website Pack (PDF) &amp; Simple WhatsApp Message</span></summary>
+      <div class="box-body">
+        <p class="note muted" style="margin:0 0 8px">5-page DuNous Website Pack PDF personalised for <b>${esc(r.name)}</b>: Foundation LKR 25,000 (15% off 1st yr domain &amp; hosting) · <b>Growth LKR 39,000 (50% off 1st yr domain &amp; hosting)</b> · Pro LKR 69,000 (1st yr domain &amp; hosting free) · Enterprise from LKR 120,000.</p>
+        <div class="row-btns">
+          <a class="btn primary sm" data-doc href="${docBase}/pack.pdf">⬇ Website pack (PDF)</a>
+          <a class="btn sm" data-doc href="${docBase}/proposal.pdf">Proposal</a>
+          <a class="btn sm" data-doc href="${docBase}/agreement.pdf">Agreement</a>
+          <a class="btn sm" data-doc href="${docBase}/onboarding.pdf">Onboarding form</a>
+        </div>
+        <label style="margin-top:10px">Simple WhatsApp message (plain text, no emojis)
+          <textarea id="waText" style="margin-top:4px;min-height:135px;font-size:12.5px">${esc(whatsappMessage(r))}</textarea>
+        </label>
+        <div class="row-btns" style="margin-bottom:0">
+          <button type="button" class="btn sm" id="copyWaText">Copy message</button>
+          ${waUrl?`<a class="btn primary sm" id="openWaWithText" href="${esc(waHref(targetPhone,whatsappMessage(r)))}" target="_blank" rel="noopener noreferrer">Send on WhatsApp (${esc(r.owner_phone?r.owner_phone:displayPhone(r.phone))}) ↗</a>`:''}
+          ${r.owner_phone&&mainWaUrl?`<a class="btn sm" href="${esc(waHref(r.phone,whatsappMessage(r)))}" target="_blank" rel="noopener noreferrer">Send to shop number ↗</a>`:''}
+        </div>
+      </div>
+    </details>
+
+    <details class="box" data-sec="history" ${secOpen('history',false)?'open':''}>
+      <summary class="box-head"><span>🕓 Call &amp; Activity History (${(r.history||[]).length})</span></summary>
+      <div class="box-body">
+        <ul class="hist">
+          ${(r.history||[]).map(h=>`<li><time>${esc(String(h.at||'').slice(0,16).replace('T',' '))}</time>${esc(h.detail||h.kind||'')}${h.actor?` <span class="muted">— ${esc(h.actor)}</span>`:''}</li>`).join('')||'<li class="muted">No activity logged yet.</li>'}
+        </ul>
+      </div>
+    </details>`;
+
+  $$('details.box[data-sec]').forEach(d=>{
+    d.addEventListener('toggle',()=>saveSecState(d.dataset.sec,d.open));
+  });
+
+  const inp=$('#repNameInput');
+  if(inp)inp.onchange=e=>{setCallerName(e.target.value.trim());detail(selected);};
+
+  $('#doneBtn')?.addEventListener('click',async e=>{
+    const btn=e.currentTarget;btn.disabled=true;
+    try{
+      $('#error').textContent='';
+      await api('/leads/'+encodeURIComponent(r.id)+'/done',{method:'POST'});
+      selected=null;dirty=false;mineMode=false;dueMode=false;offset=0;
+      $('#detail').innerHTML='<h2>Done! Pick your next business</h2><p class="muted">Select the next business on the left and press <b>Take this business</b>.</p>';
+      await refresh();
+    }catch(err){showError(err);btn.disabled=false;}
+  });
+
+  $('#ownerAssign')?.addEventListener('change',async e=>{
+    try{
+      $('#error').textContent='';
+      const updated=await api('/leads/'+encodeURIComponent(r.id)+'/owner',{method:'POST',body:JSON.stringify({owner:e.target.value||null})});
+      detail(updated);await loadMeta();await load();
+    }catch(err){showError(err);}
+  });
+
+  $$('[data-cb]').forEach(b=>b.addEventListener('click',()=>{
+    $('#followUp').value=daysFromNowColombo(+b.dataset.cb);
+    dirty=true;
+  }));
+
+  $$('[data-outcome]').forEach(b=>b.addEventListener('click',async()=>{
+    b.disabled=true;
+    try{
+      $('#error').textContent='';
+      const updated=await api('/leads/'+encodeURIComponent(r.id)+'/call',{
+        method:'POST',
+        body:JSON.stringify({
+          outcome:b.dataset.outcome,
+          note:$('#notes').value,
+          follow_up:$('#followUp').value||null,
+          contact_name:$('#contactName').value,
+          owner_phone:$('#ownerPhone').value
+        })
+      });
+      detail(updated);
+      $('#saved').textContent='Call logged ✓';
+      await loadMeta();await load();
+    }catch(err){showError(err);b.disabled=false;}
+  }));
+
+  $('#copyPhone')?.addEventListener('click',async e=>{
+    try{await navigator.clipboard.writeText(e.currentTarget.dataset.phone);$('#saved').textContent='Phone copied';}catch{}
+  });
+  $('#copyCode')?.addEventListener('click',async e=>{
+    try{await navigator.clipboard.writeText(e.currentTarget.dataset.val);$('#saved').textContent='Preview code copied';}catch{}
+  });
+  $('#copyPreviewUrl')?.addEventListener('click',async e=>{
+    try{await navigator.clipboard.writeText(e.currentTarget.dataset.val);$('#saved').textContent='Preview link copied';}catch{}
+  });
+  $('#copyWaText')?.addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText($('#waText').value);$('#saved').textContent='Message copied — attach the PDF!';}catch{}
+  });
+
+  $('#edit').oninput=()=>{dirty=true;$('#saved').textContent='Unsaved changes';};
+  $('#edit').onsubmit=async e=>{
+    e.preventDefault();
+    const button=$('#edit button[type="submit"]');button.disabled=true;
+    try{
+      $('#error').textContent='';
+      const updated=await api('/leads/'+encodeURIComponent(r.id),{
+        method:'PATCH',
+        body:JSON.stringify({
+          stage:$('#editStage').value,
+          contact_name:$('#contactName').value,
+          owner_phone:$('#ownerPhone').value,
+          follow_up:$('#followUp').value||null,
+          notes:$('#notes').value
+        })
+      });
+      detail(updated);$('#saved').textContent='Saved ✓';await loadMeta();await load();
+    }catch(err){showError(err);button.disabled=false;}
+  };
+}
+
+document.addEventListener('click',async e=>{
+  const poolChip=e.target.closest('[data-pool]');
+  if(poolChip&&canLeave()){
+    const mode=poolChip.dataset.pool;
+    mineMode=(mode==='mine');
+    dueMode=(mode==='due');
+    offset=0;
+    renderPoolBar();
+    load().catch(showError);
+    return;
+  }
+  const workChip=e.target.closest('[data-working]');
+  if(workChip&&meta?.working){
+    openLeadById(meta.working.id);
+    return;
+  }
+  const docBtn=e.target.closest('[data-doc]');
+  if(!docBtn)return;
+  e.preventDefault();
+  if(docBtn.classList.contains('busy'))return;
+  const orig=docBtn.textContent;
+  docBtn.classList.add('busy');
+  docBtn.textContent='Building PDF… (5–10s)';
+  try{
+    const r=await fetch(docBtn.href);
+    if(!r.ok){
+      const err=await r.json().catch(()=>({}));
+      throw Error(err.detail||`HTTP ${r.status}`);
+    }
+    const blob=await r.blob();
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=(r.headers.get('Content-Disposition')||'').match(/filename="([^"]+)"/)?.[1]||'DuNous-Website-Pack-LKR.pdf';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),15000);
+  }catch(err){
+    showError(err);
+  }finally{
+    docBtn.classList.remove('busy');
+    docBtn.textContent=orig;
+  }
+});
+
+function showError(e){$('#error').textContent=e.message;}
+async function refresh(){
+  try{
+    $('#error').textContent='';
+    await loadMeta();
+    await load();
+    if(isRep()&&meta?.working&&selected?.id!==meta.working.id){
+      await openLeadById(meta.working.id);
+    }
+  }catch(e){showError(e);}
+}
+$('#rows').onclick=e=>{
+  const button=e.target.closest('[data-index]');
+  if(!button||!canLeave())return;
+  const r=rows[+button.dataset.index];
+  if(!r)return;
+  if(isRep()&&(!meta.working||meta.working.id!==r.id)){
+    renderPick(r);
+  }else{
+    openLeadById(r.id);
+  }
+  load().catch(showError);
+};
+for(const id of ['preview','stage','industry','tourism_category','sector','district','presence','owner']){
+  const el=$('#'+id);
+  if(el)el.onchange=()=>{offset=0;load().catch(showError);};
+}
+let timer;$('#q').oninput=()=>{clearTimeout(timer);timer=setTimeout(()=>{offset=0;load().catch(showError);},250);};
+$('#prev').onclick=()=>{offset=Math.max(0,offset-50);load().catch(showError);};$('#next').onclick=()=>{offset+=50;load().catch(showError);};$('#refresh').onclick=refresh;
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+refresh();setInterval(()=>{if(!dirty)refresh();},60000);
+</script></body></html>

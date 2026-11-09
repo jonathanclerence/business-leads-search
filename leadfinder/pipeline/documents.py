@@ -32,12 +32,13 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from . import config, offer
 from .content import BOOKING, KINDS, booking_mode
 from .leads import slugify
-from .render import ASSET_SRC, INFO_PACK, initials, render
+from .render import ASSET_SRC, INFO_PACK, INFO_PACK_LK, initials, render
 
 Log = Callable[[str], None]
 
 DOCS = Path(__file__).resolve().parent / "docs"
 GENERIC_PACK = ASSET_SRC / INFO_PACK
+GENERIC_PACK_LK = ASSET_SRC / INFO_PACK_LK
 EXPORT_DIR = config.ROOT / "exports" / "docs"
 
 DOCUMENTS = {
@@ -136,15 +137,23 @@ def context(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[da
     if kind not in DOCUMENTS:
         raise DocumentError(f"Unknown document {kind!r} (use {', '.join(DOCUMENTS)})")
     today = today or date.today()
+    is_lk = bool(lead and lead.get("country") == "LK")
+    has_lead = bool(lead and lead.get("name"))
     # The page about their own website needs a business to show.
-    pages = [p for p in DOCUMENTS[kind]["pages"] if lead or p != "website"]
+    pages = [p for p in DOCUMENTS[kind]["pages"] if has_lead or p != "website"]
     ctx: Dict[str, Any] = {
         "doc_title": DOCUMENTS[kind]["title"],
         "pages": pages,
-        "packages": offer.PACKAGES,
-        "enterprise": offer.ENTERPRISE,
-        "hosting": offer.HOSTING,
-        "rate": offer.HOURLY_RATE,
+        "currency": "LKR" if is_lk else "AUD",
+        "currency_name": "Sri Lankan rupees (LKR)" if is_lk else "Australian dollars",
+        "packages": offer.LK_PACKAGES if is_lk else offer.PACKAGES,
+        "enterprise": offer.LK_ENTERPRISE if is_lk else offer.ENTERPRISE,
+        "hosting": offer.LK_HOSTING if is_lk else offer.HOSTING,
+        "rate": offer.LK_HOURLY_RATE if is_lk else offer.HOURLY_RATE,
+        "domain_cost_note": "about LKR 5,000 to LKR 9,000 a year" if is_lk else "about $20 to $30 a year",
+        "reg_label": "BRN / NIC" if is_lk else "ABN",
+        "reg_hint": "(for .lk domain)" if is_lk else "(for .com.au)",
+        "consumer_law": "applicable Sri Lankan law" if is_lk else "your rights under the Australian Consumer Law",
         "payment_due_days": offer.PAYMENT_DUE_DAYS,
         "terms_url": offer.TERMS_URL,
         "terms_short": offer.TERMS_URL.split("//", 1)[-1].replace("www.", ""),
@@ -154,7 +163,7 @@ def context(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[da
         "shots": shots or {},
         "biz": None, "suburb": "", "state": "", "rated": False, "prefill": {}, "qr": "",
     }
-    if not lead:
+    if not has_lead:
         ctx["meta_title"] = f"DuNous — {ctx['doc_title']}"
         return ctx
 
@@ -187,7 +196,7 @@ def context(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[da
         "prefill": {
             "business": biz,
             "contact": lead.get("contact_name") or "",
-            "phone": lead.get("phone_display") or "",
+            "phone": lead.get("phone_display") or lead.get("phone") or "",
             "email": lead.get("email") or "",
             "address": _clean(lead.get("address") or ""),
             "domain": lead.get("domain") or "",
@@ -412,7 +421,7 @@ def build(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[date
     Pass an open `browser` (and the lead's `shots`, if you have them) to make
     many documents without starting Chromium for each one (see save_many)."""
     ctx = context(kind, lead, today)
-    shoot = bool(lead and "website" in ctx["pages"])
+    shoot = bool(lead and lead.get("name") and "website" in ctx["pages"])
     if config.CHROMIUM_URL:
         out = _remote(kind, lead, today, shoot)
     elif browser is not None:
@@ -439,7 +448,7 @@ def build(kind: str, lead: Optional[Dict[str, Any]] = None, today: Optional[date
 
 def filename(kind: str, lead: Optional[Dict[str, Any]] = None) -> str:
     title = DOCUMENTS[kind]["title"].replace(" ", "-")
-    return f"DuNous-{title}" + (f"-{slugify(short_name(lead['name']), 40)}" if lead else "") + ".pdf"
+    return f"DuNous-{title}" + (f"-{slugify(short_name(lead['name']), 40)}" if lead and lead.get("name") else "") + ".pdf"
 
 
 def export_path(kind: str, lead: Dict[str, Any]) -> Path:
@@ -518,4 +527,20 @@ def ensure_generic_pack(log: Log = print, force: bool = False) -> bool:
             return False
     log(f"Building the generic website pack → {GENERIC_PACK.name}")
     GENERIC_PACK.write_bytes(build("pack", log=log, fingerprint=want))
+    return True
+
+
+def ensure_generic_pack_lk(log: Log = print, force: bool = False) -> bool:
+    """Rebuild pipeline/assets/dunous-website-pack-lk.pdf if it's missing or out of date."""
+    want = hashlib.sha1(html("pack", {"country": "LK"}).encode("utf-8")).hexdigest()[:16]
+    if GENERIC_PACK_LK.exists() and not force:
+        from pypdf import PdfReader
+        try:
+            have = (PdfReader(GENERIC_PACK_LK).metadata or {}).get("/DunousSource")
+        except Exception:  # noqa: BLE001
+            have = None
+        if have == want:
+            return False
+    log(f"Building the generic Sri Lanka website pack → {GENERIC_PACK_LK.name}")
+    GENERIC_PACK_LK.write_bytes(build("pack", {"country": "LK"}, log=log, fingerprint=want))
     return True

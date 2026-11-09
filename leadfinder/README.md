@@ -303,6 +303,54 @@ every lead from *New* to *Website live*.
 - **Tracker:** `http://localhost:5000/pipeline` — call queue, personalised call
   script and SMS, one-click call logging, stages, follow-ups, notes, prices,
   region coverage and the sales playbook. Data lives in `batches/pipeline.db`.
+- **Sri Lanka pipeline (separate, admin-only):** `http://localhost:5000/pipeline/sri-lanka` —
+  dedicated Sri Lanka prospect workspace (`batches/sri-lanka/pipeline.db`),
+  physically isolated from the Australian pipeline and hidden from Australian
+  sales reps. Searches across all 25 Sri Lankan districts (`data/towns_sri_lanka.csv`)
+  for modern, visually/digitally driven sectors (`data/business_types_sri_lanka.csv`:
+  beauty & bridal, tourism & stays, events & creative, cafes & cake shops,
+  fitness & yoga, boutiques, pet grooming) where businesses have no standalone
+  website (including Instagram/Facebook-only, booking-only or directory-only links).
+  Sync new Sri Lanka batches with `.venv/bin/python -m pipeline.sri_lanka sync`.
+- **Sri Lanka is tourism-focused.** Every lead carries `industry` (Tourism /
+  Other) and a `tourism_category` from the South Coast & Hill Country brief:
+  resorts & boutique hotels, villas, guest houses, hostels, surf camps/schools,
+  surf shops, cafés, restaurants & beach clubs, yoga/Ayurveda/spas, whale & boat
+  tours, safari jeeps, diving, scooter/tuk-tuk/transfers, cooking classes &
+  experiences, tea tours & trekking, coworking, tour operators, gem & souvenir
+  shops, wedding venues, tattoo/laundry. Hotels, tours, surf and the like count
+  anywhere; cafés, restaurants, spas, gem shops and so on count only in the
+  tourist towns of `data/towns_sri_lanka_tourism.csv` (not Colombo, the airport
+  or towns tagged `hub`). The tracker lists tourism first and filters by both.
+  Tourism sweep: `python -m pipeline.sri_lanka pairs` writes
+  `data/pairs_sri_lanka_tourism.csv` from the towns and
+  `data/business_types_sri_lanka_tourism.csv` (niche searches only in towns
+  tagged for them), run it with `python batch_cli.py run --pairs
+  data/pairs_sri_lanka_tourism.csv --provider fast --country "Sri Lanka" --state ""`,
+  then `sync` (imports tourism only; `--all-industries` for everything).
+  `python -m pipeline.sri_lanka segment` re-tags existing leads after rule changes.
+- **Why the counts differ:** Lead Finder's Australia export is a prospect
+  database, built separately from the tracker; it does not automatically import
+  every prospect. The admin's full pipeline includes imported leads without
+  previews. The call queue uses Preview live / Contacted / Follow up, fewer
+  than four attempts, callbacks that are due, and no DNCR Y flag. Reps see
+  unassigned queue leads or their own leads, and only their current company
+  while working it. The exported call list excludes businesses already tracked.
+- **Import the curated Australia prospects (local SQLite tracker):** run
+  `.venv/bin/python deploy/import_prospects.py` to see the additional count,
+  then add `--apply` to import. This reads `exports/australia/au_leads.db`'s
+  curated call list, backs up the tracker under `batches/snapshots/`, and adds
+  only missing businesses as **New**, with existing web links in Notes.
+  Existing leads are checked against their full pre-import records and remain
+  untouched. Re-running skips duplicates using the current tracker. The
+  export remains a dated snapshot; its old “additional” count does not update
+  until the export is rebuilt. This does not publish previews or add New leads
+  to the call queue.
+- **Booking-platform pitch:** the per-lead script and Playbook first confirm
+  the current setup, then cover Fresha, other booking platforms, existing
+  websites and no own site. Pitch their brand, domain and direct enquiries;
+  connecting an existing booking link and replacing a booking system are
+  different scopes. Fresha fee references are linked in both scripts.
 - **Picking leads:** `publish`, `enrich` and `docs --live` take `--kind`
   (`--business` for docs): kind keys or a group from `KIND_GROUPS` in
   `pipeline/content.py`, e.g. `--kind blue-collar` (cars, trades, cleaning,

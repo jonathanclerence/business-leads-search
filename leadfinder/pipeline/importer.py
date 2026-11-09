@@ -9,6 +9,7 @@ notes and history are never touched, and its preview URL never changes.
 from __future__ import annotations
 
 import csv
+import json
 import sqlite3
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Tuple
@@ -43,7 +44,17 @@ def town_regions() -> Dict[str, str]:
 
 
 def batch_csvs() -> List[Path]:
-    return sorted(p for p in BATCH_ROOT.glob("*/leads.csv") if p.parent.name != "clean")
+    return sorted(p for p in BATCH_ROOT.glob("*/leads.csv")
+                  if p.parent.name != "clean" and australian_batch(p.parent))
+
+
+def australian_batch(path: Path) -> bool:
+    """Keep overseas campaigns out of the Australian import and coverage."""
+    manifest = path / "manifest.json"
+    if not manifest.exists():
+        return True  # legacy batches predate manifests
+    data = json.loads(manifest.read_text(encoding="utf-8"))
+    return data.get("config", {}).get("country", "Australia").strip().lower() == "australia"
 
 
 def read_rows(paths: Iterable[Path]) -> Iterable[Tuple[str, Dict[str, str]]]:
@@ -173,6 +184,8 @@ def write_clean_csv(con: sqlite3.Connection, path: Path = CLEAN_CSV) -> int:
 
 def run(paths: List[Path] | None = None, add_only: bool = False) -> Dict[str, Any]:
     paths = paths or batch_csvs()
+    if any(not australian_batch(p.parent) for p in paths):
+        raise ValueError("Only Australian batches may be imported into the Australian pipeline.")
     regions = town_regions()
     raw = 0
     kept: List[Dict[str, Any]] = []

@@ -21,7 +21,7 @@
     {{ ui.field("ob_contact", "Your name", prefill.contact) }}
     {{ ui.field("ob_phone", "Phone to show", prefill.phone) }}
     {{ ui.field("ob_email", "Email for enquiries and bookings", prefill.email, "", "8mm", false, "span-2") }}
-    {{ ui.field("ob_abn", "ABN", prefill.abn, "(for .com.au)") }}
+    {{ ui.field("ob_abn", reg_label | default("ABN"), prefill.abn, reg_hint | default("(for .com.au)")) }}
     {{ ui.field("ob_domain", "Web address you’d like", prefill.domain) }}
     {{ ui.field("ob_address", "Address to show, or the area you service", prefill.address, "", "8mm", false, "span-all") }}
   </div>

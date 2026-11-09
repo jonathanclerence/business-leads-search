@@ -491,6 +491,61 @@ KINDS = {
                   ("Batteries", "Like-new battery life."),
                   ("Charging ports", "Charge properly again."),
                   ("Tablets", "iPads and tablets too.")]),
+    # ------------------------------------------------- sri lanka & lifestyle
+    "bridal-salon": dict(theme="beauty", cta="book", label="Bridal & make-up studio",
+        headline="Bridal dressing, hair & make-up in {suburb}",
+        services=[("Bridal dressing", "Kandyan, Indian and Western bridal dressing tailored to you."),
+                  ("HD & airbrush make-up", "Flawless, long-lasting make-up for your big day."),
+                  ("Retinue & party styling", "Hair, saree draping and make-up for bridesmaids and family."),
+                  ("Bridal trials & packages", "Book a private consultation to plan your complete look.")]),
+    "wedding-planner": dict(theme="creative", cta="enquire", label="Weddings & events",
+        headline="Weddings and events in {suburb}, beautifully planned",
+        services=[("Full wedding planning", "From venue styling and florals to on-the-day coordination."),
+                  ("Poruwa & floral decor", "Traditional and modern backdrops, table styling and lighting."),
+                  ("Private & corporate events", "Birthdays, engagements and milestone celebrations."),
+                  ("Custom packages", "Tailored around your vision, guest list and budget.")]),
+    "cake-shop": dict(theme="food", cta="enquire", label="Custom cakes & bakery",
+        headline="Custom cakes and fresh bakes in {suburb}",
+        services=[("Wedding & engagement cakes", "Bespoke tiered cakes and wedding cake structures."),
+                  ("Birthday & celebration cakes", "Custom-designed cakes made fresh to order."),
+                  ("Cupcakes & dessert tables", "Treat boxes, brownies and event sweet tables."),
+                  ("Pre-orders & pick-up", "Send us your reference photo and date to reserve your slot.")]),
+    "hotel": dict(theme="winery", cta="book", label="Hotel & resort",
+        headline="Stay in comfort in {suburb} — book direct for our best rates",
+        services=[("Rooms & suites", "Comfortable, air-conditioned rooms with modern amenities."),
+                  ("Direct booking rates", "Book directly with us for our best rates and flexible check-in."),
+                  ("Dining & breakfast", "Fresh local and international dishes made daily."),
+                  ("Airport & tour transfers", "Easy transport and local day trips arranged for you.")]),
+    "villa": dict(theme="wellness", cta="book", label="Villa & guest house",
+        headline="Your private escape in {suburb}",
+        services=[("Private rooms & villa stays", "Peaceful, spacious rooms designed for relaxation."),
+                  ("Home-cooked meals", "Authentic local breakfast and dinner prepared fresh."),
+                  ("Local experiences", "Recommendations and transport for nearby sights and beaches."),
+                  ("Direct reservations", "Message or book directly with us — no platform fees.")]),
+    "tour-operator": dict(theme="garden", cta="enquire", label="Tours & travel",
+        headline="Unforgettable private tours from {suburb}",
+        services=[("Private day tours", "Custom itineraries with an experienced local driver-guide."),
+                  ("Multi-day round tours", "Tailor-made trips at your own pace."),
+                  ("Airport transfers", "Reliable, air-conditioned pickups and drop-offs."),
+                  ("Safari & wildlife excursions", "Early-morning national park, coastal and cultural experiences.")]),
+    "surf-school": dict(theme="fitness", cta="book", label="Surf & water sports",
+        headline="Catch your best waves in {suburb}",
+        services=[("Beginner surf lessons", "Safe, step-by-step coaching in waist-deep water."),
+                  ("Intermediate coaching", "Line-up positioning, green waves and technique."),
+                  ("Board rentals", "Soft-tops, longboards and shortboards ready to go."),
+                  ("Multi-day surf packages", "Progress faster with daily guided sessions.")]),
+    "boutique": dict(theme="beauty", cta="enquire", label="Fashion & boutique",
+        headline="Curated fashion and new arrivals in {suburb}",
+        services=[("New arrivals", "Fresh styles, casual wear and occasion outfits."),
+                  ("Occasion & party wear", "Dresses, sarees and coordinated sets for special events."),
+                  ("Personal styling & fitting", "Friendly sizing advice and fittings in store."),
+                  ("Islandwide delivery", "Visit us in {suburb} or message us to order for delivery.")]),
+    "jewellery": dict(theme="creative", cta="enquire", label="Jewellery studio",
+        headline="Fine jewellery and custom pieces in {suburb}",
+        services=[("Bridal & wedding jewellery", "Engagement rings, wedding bands and bridal sets."),
+                  ("Custom designs", "Bespoke gold, silver and gemstone pieces made to order."),
+                  ("Everyday collections", "Necklaces, earrings, bracelets and gifts."),
+                  ("Repairs & polishing", "Careful resizing, stone setting and cleaning.")]),
     # ---------------------------------------------------------------- other
     "local": dict(theme="local", cta="enquire", label="Local business",
         headline="Proudly serving {suburb}",
@@ -556,7 +611,18 @@ THEME_STYLE = {
 }
 
 # Where a kind has a colour of its own: barber poles are red, white and navy.
-KIND_ACCENT = {"barber": "#1f3a5f"}
+KIND_ACCENT = {
+    "barber": "#1f3a5f",
+    "bridal-salon": "#a44a6b",
+    "wedding-planner": "#8c5a3c",
+    "cake-shop": "#b55369",
+    "hotel": "#1d4d4f",
+    "villa": "#2e6b5e",
+    "tour-operator": "#1e6b52",
+    "surf-school": "#0e7490",
+    "boutique": "#6b3e52",
+    "jewellery": "#9a7132",
+}
 
 # One line for the "about" statement; <em> words are set in the accent italic.
 THEME_STATEMENT = {
@@ -600,6 +666,33 @@ KIND_COPY = {
     "skip-bin": dict(
         about="{name} delivers skip bins across {suburb} and surrounds. Pick a size, tell us when, and we'll drop it off and take it away.",
         statement="Clear it out, <em>the easy way</em>."),
+    "bridal-salon": dict(
+        about="{name} specialises in bridal dressing, make-up and styling in {suburb}. Calm, unhurried preparation so you walk out looking radiant on your wedding day.",
+        statement="Radiant on <em>your</em> day.", cinema="Every detail for your wedding morning."),
+    "wedding-planner": dict(
+        about="{name} plans and styles unforgettable weddings and events in {suburb}. We handle the timelines, vendors and styling so you can enjoy every moment with your guests.",
+        statement="Your celebration, <em>brought to life</em>.", cinema="Moments your guests will talk about."),
+    "cake-shop": dict(
+        about="{name} bakes custom celebration cakes, wedding cakes and sweet treats in {suburb}. Every order is baked fresh from scratch and decorated around your theme.",
+        statement="Baked fresh, <em>made to celebrate</em>.", cinema="Crafted by hand for every celebration."),
+    "hotel": dict(
+        about="{name} welcomes guests to {suburb} with warm hospitality, comfortable rooms and everything you need for a relaxing stay. Book direct with us for our best rates.",
+        statement="Warm hospitality, <em>in {suburb}</em>.", cinema="Your home away from home."),
+    "villa": dict(
+        about="{name} is a peaceful {what} in {suburb}. Whether you're visiting for a weekend getaway or a longer stay, we look after every detail so you can unwind.",
+        statement="Slow down and <em>stay a while</em>.", cinema="Peace, privacy and warm hospitality."),
+    "tour-operator": dict(
+        about="{name} organises private tours, transport and local experiences from {suburb}. Travel at your own pace with local guides who know every hidden gem.",
+        statement="Every journey, <em>planned around you</em>.", cinema="See the best of the island, your way."),
+    "surf-school": dict(
+        about="{name} is a local {what} in {suburb}. From your very first wave to dialling in your turns, our local instructors keep every session fun, safe and personal.",
+        statement="Good waves, <em>great coaching</em>.", cinema="Out in the line-up, every morning."),
+    "boutique": dict(
+        about="{name} is a {what} in {suburb} bringing you hand-picked styles, flattering cuts and quality fabrics. Drop into our store or reserve your size online.",
+        statement="Style that <em>fits</em> your life.", cinema="New arrivals, curated for you."),
+    "jewellery": dict(
+        about="{name} crafts and curates timeless jewellery in {suburb}. Visit our showroom or book a consultation to design a custom piece.",
+        statement="Crafted to <em>treasure</em>.", cinema="Timeless pieces, made with care."),
 }
 
 # The closing call-to-action band, per main button type.
@@ -653,7 +746,7 @@ BOOKING = {
         steps=["Topic", "Day", "Time", "Details"], done="Request sent!", tick="Easy online bookings"),
 }
 TABLE_KINDS = {"cafe", "restaurant", "pizza", "fish-and-chips", "brewery", "winery"}
-ORDER_KINDS = {"bakery", "butcher", "caterer", "florist"}
+ORDER_KINDS = {"bakery", "cake-shop", "butcher", "caterer", "florist"}
 GUESTS = ["1 person", "2 people", "3 people", "4 people", "5 people", "6+ people"]
 
 
