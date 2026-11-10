@@ -1,0 +1,4870 @@
+[
+ {
+  "id": "dehiwala-zoo",
+  "name": "Dehiwala Zoo",
+  "kind": "wildlife",
+  "region": "Colombo",
+  "lat": 6.8568,
+  "lng": 79.8729,
+  "nearest_towns": [
+   "Mount Lavinia, Colombo District",
+   "Colombo, Colombo District",
+   "Wadduwa, Kalutara District"
+  ],
+  "blurb": "The national zoo, one of the oldest in Asia, set in tropical gardens with a large aquarium, a butterfly park and a reptile house.",
+  "image": {
+   "file": "dehiwala-zoo.jpg",
+   "small": "dehiwala-zoo-sm.jpg",
+   "commons_file": "File:Dehiwala Zoo.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Dehiwala_Zoo.jpg",
+   "author": "Debodly",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1440,
+   "height": 1080
+  }
+ },
+ {
+  "id": "galle-face-green",
+  "name": "Galle Face Green",
+  "kind": "town",
+  "region": "Colombo",
+  "lat": 6.9266,
+  "lng": 79.8435,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A long seafront lawn in central Colombo where families fly kites, eat street food and watch the sun set over the Indian Ocean.",
+  "image": {
+   "file": "galle-face-green.jpg",
+   "small": "galle-face-green-sm.jpg",
+   "commons_file": "File:Covid 19’s changed Galle Face Look.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Covid_19%E2%80%99s_changed_Galle_Face_Look.jpg",
+   "author": "Thamilselvan Kiritharan",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "gangaramaya-temple",
+  "name": "Gangaramaya Temple",
+  "kind": "temple",
+  "region": "Colombo",
+  "lat": 6.9165,
+  "lng": 79.8564,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District",
+   "Wadduwa, Kalutara District"
+  ],
+  "blurb": "A busy Colombo temple mixing Sri Lankan, Thai, Indian and Chinese styles, with a museum crammed with gifts from devotees.",
+  "image": {
+   "file": "gangaramaya-temple.jpg",
+   "small": "gangaramaya-temple-sm.jpg",
+   "commons_file": "File:Gangaramaya_Temple.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Gangaramaya_Temple.JPG",
+   "author": "AKS.9955",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1019
+  }
+ },
+ {
+  "id": "independence-memorial-hall",
+  "name": "Independence Memorial Hall",
+  "kind": "heritage",
+  "region": "Colombo",
+  "lat": 6.9046,
+  "lng": 79.8673,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Wadduwa, Kalutara District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A large open pavilion built to mark independence in 1948, modelled on Kandyan royal architecture and set in wide grounds for walking.",
+  "image": {
+   "file": "independence-memorial-hall.jpg",
+   "small": "independence-memorial-hall-sm.jpg",
+   "commons_file": "File:Independence_Commemoration_Hall.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Independence_Commemoration_Hall.jpg",
+   "author": "Charaka Ranasinghe",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 1089
+  }
+ },
+ {
+  "id": "jami-ul-alfar-mosque",
+  "name": "Jami Ul-Alfar Mosque",
+  "kind": "heritage",
+  "region": "Colombo",
+  "lat": 6.9385,
+  "lng": 79.8518,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A red and white striped mosque in Pettah built in 1909, one of the most photographed buildings in Colombo.",
+  "image": {
+   "file": "jami-ul-alfar-mosque.jpg",
+   "small": "jami-ul-alfar-mosque-sm.jpg",
+   "commons_file": "File:Jami-Ul-Alfar Mosque Pettah.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Jami-Ul-Alfar_Mosque_Pettah.jpg",
+   "author": "McKay Savage from London, UK",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kelaniya-temple",
+  "name": "Kelaniya Raja Maha Vihara",
+  "kind": "temple",
+  "region": "Colombo",
+  "lat": 6.9531,
+  "lng": 79.9185,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A major Buddhist temple on the Kelani River east of Colombo, known for its painted murals and the Duruthu perahera procession each January.",
+  "image": {
+   "file": "kelaniya-temple.jpg",
+   "small": "kelaniya-temple-sm.jpg",
+   "commons_file": "File:Kelaniya Temple (Kelaniya Raja Maha Vihara) (5440490106).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kelaniya_Temple_(Kelaniya_Raja_Maha_Vihara)_(5440490106).jpg",
+   "author": "Jorge Láscar from Australia",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 1062
+  }
+ },
+ {
+  "id": "lotus-tower",
+  "name": "Lotus Tower",
+  "kind": "viewpoint",
+  "region": "Colombo",
+  "lat": 6.9271,
+  "lng": 79.8584,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A 350-metre telecoms tower shaped like a lotus bud, with an observation deck over the city and the coast. It is lit up in colour at night.",
+  "image": {
+   "file": "lotus-tower.jpg",
+   "small": "lotus-tower-sm.jpg",
+   "commons_file": "File:Lotus Tower Floating Market-Colombo Srilanka-Andres Larin.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Lotus_Tower_Floating_Market-Colombo_Srilanka-Andres_Larin.jpg",
+   "author": "Saaremees",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "colombo-national-museum",
+  "name": "National Museum of Colombo",
+  "kind": "heritage",
+  "region": "Colombo",
+  "lat": 6.9101,
+  "lng": 79.8607,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Wadduwa, Kalutara District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "The country's largest museum, in a white colonial building, with royal regalia, ancient sculpture, masks and old maps.",
+  "image": {
+   "file": "colombo-national-museum.jpg",
+   "small": "colombo-national-museum-sm.jpg",
+   "commons_file": "File:Colombo National Museum Sri Lanka.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Colombo_National_Museum_Sri_Lanka.JPG",
+   "author": "Hasindu2008",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "pettah-market",
+  "name": "Pettah Market",
+  "kind": "market",
+  "region": "Colombo",
+  "lat": 6.9363,
+  "lng": 79.8499,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A crowded grid of streets where each lane sells something different, from spices and fabric to electronics. Busiest on weekday mornings.",
+  "image": {
+   "file": "pettah-market.jpg",
+   "small": "pettah-market-sm.jpg",
+   "commons_file": "File:Bags of Spices in Market - Pettah District - Colombo - Sri Lanka (13995169756).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Bags_of_Spices_in_Market_-_Pettah_District_-_Colombo_-_Sri_Lanka_(13995169756).jpg",
+   "author": "Adam Jones from Kelowna, BC, Canada",
+   "license": "CC BY-SA 2.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "seema-malakaya",
+  "name": "Seema Malakaya",
+  "kind": "temple",
+  "region": "Colombo",
+  "lat": 6.9168,
+  "lng": 79.8577,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District",
+   "Wadduwa, Kalutara District"
+  ],
+  "blurb": "A small meditation hall on platforms in Beira Lake designed by Geoffrey Bawa, linked to the shore by a footbridge and lined with Buddha statues.",
+  "image": {
+   "file": "seema-malakaya.jpg",
+   "small": "seema-malakaya-sm.jpg",
+   "commons_file": "File:Seema_Malaka_temple.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Seema_Malaka_temple.JPG",
+   "author": "AKS.9955",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1025
+  }
+ },
+ {
+  "id": "viharamahadevi-park",
+  "name": "Viharamahadevi Park",
+  "kind": "garden",
+  "region": "Colombo",
+  "lat": 6.9139,
+  "lng": 79.8606,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Mount Lavinia, Colombo District",
+   "Katunayake, Gampaha District",
+   "Wadduwa, Kalutara District"
+  ],
+  "blurb": "Colombo's largest public park, facing the white Town Hall, with shady lawns, a large Buddha statue and fountains.",
+  "image": {
+   "file": "viharamahadevi-park.jpg",
+   "small": "viharamahadevi-park-sm.jpg",
+   "commons_file": "File:Viharamahadevi_Park_incl._Town_Hall.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Viharamahadevi_Park_incl._Town_Hall.jpg",
+   "author": "Kondephy",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1064
+  }
+ },
+ {
+  "id": "barberyn-lighthouse",
+  "name": "Barberyn Lighthouse",
+  "kind": "island",
+  "region": "West Coast",
+  "lat": 6.4635,
+  "lng": 79.9683,
+  "nearest_towns": [
+   "Beruwala, Kalutara District",
+   "Aluthgama, Kalutara District",
+   "Bentota, Galle District",
+   "Induruwa, Galle District",
+   "Kalutara, Kalutara District",
+   "Kosgoda, Galle District",
+   "Ahungalla, Galle District",
+   "Wadduwa, Kalutara District",
+   "Balapitiya, Galle District",
+   "Ambalangoda, Galle District"
+  ],
+  "blurb": "An 1889 lighthouse on a small island off Beruwala, seen from the beach or close up on a short boat trip from the fishing harbour.",
+  "image": {
+   "file": "barberyn-lighthouse.jpg",
+   "small": "barberyn-lighthouse-sm.jpg",
+   "commons_file": "File:Островной_маяк_Бентоты_-_panoramio.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:%D0%9E%D1%81%D1%82%D1%80%D0%BE%D0%B2%D0%BD%D0%BE%D0%B9_%D0%BC%D0%B0%D1%8F%D0%BA_%D0%91%D0%B5%D0%BD%D1%82%D0%BE%D1%82%D1%8B_-_panoramio.jpg",
+   "author": "vivali",
+   "license": "CC BY 3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "bolgoda-lake",
+  "name": "Bolgoda Lake",
+  "kind": "lake",
+  "region": "West Coast",
+  "lat": 6.7711,
+  "lng": 79.9075,
+  "nearest_towns": [
+   "Mount Lavinia, Colombo District",
+   "Wadduwa, Kalutara District",
+   "Colombo, Colombo District",
+   "Kalutara, Kalutara District"
+  ],
+  "blurb": "The largest natural lake in Sri Lanka, a maze of wetland channels south of Colombo used for boat trips, birdwatching and rowing.",
+  "image": {
+   "file": "bolgoda-lake.jpg",
+   "small": "bolgoda-lake-sm.jpg",
+   "commons_file": "File:Bolgoda_lake.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Bolgoda_lake.JPG",
+   "author": "Chamal N",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "hamilton-canal",
+  "name": "Hamilton Canal",
+  "kind": "lake",
+  "region": "West Coast",
+  "lat": 7.19,
+  "lng": 79.84,
+  "nearest_towns": [
+   "Negombo, Gampaha District",
+   "Katunayake, Gampaha District",
+   "Colombo, Colombo District"
+  ],
+  "blurb": "A Dutch-era canal running south from Negombo, explored by boat or bicycle past fishing villages, mangroves and coconut groves.",
+  "image": {
+   "file": "hamilton-canal.jpg",
+   "small": "hamilton-canal-sm.jpg",
+   "commons_file": "File:Sri_Lanka_Negombo_Dutch_Channel.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sri_Lanka_Negombo_Dutch_Channel.JPG",
+   "author": "Tbachner",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "bar-reef-dolphins",
+  "name": "Kalpitiya Dolphin Watching and Bar Reef",
+  "kind": "wildlife",
+  "region": "West Coast",
+  "lat": 8.3,
+  "lng": 79.73,
+  "nearest_towns": [
+   "Kalpitiya, Puttalam District"
+  ],
+  "blurb": "Boats from Kalpitiya head out from November to April to see large pods of spinner dolphins, with snorkelling on the Bar Reef nearby.",
+  "image": {
+   "file": "bar-reef-dolphins.jpg",
+   "small": "bar-reef-dolphins-sm.jpg",
+   "commons_file": "File:Swiming With The Pod - Spinner dolphins in Kalpitiya.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Swiming_With_The_Pod_-_Spinner_dolphins_in_Kalpitiya.jpg",
+   "author": "Woshitha",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1015
+  }
+ },
+ {
+  "id": "kalpitiya-fort",
+  "name": "Kalpitiya Fort",
+  "kind": "heritage",
+  "region": "West Coast",
+  "lat": 8.2356,
+  "lng": 79.7661,
+  "nearest_towns": [
+   "Kalpitiya, Puttalam District"
+  ],
+  "blurb": "A small coral-stone Dutch fort from the 1670s on the lagoon shore in Kalpitiya town, with a gateway and old walls. It sits on a naval base.",
+  "image": {
+   "file": "kalpitiya-fort.jpg",
+   "small": "kalpitiya-fort-sm.jpg",
+   "commons_file": "File:Kalpitiya fort.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kalpitiya_fort.JPG",
+   "author": "AntanO",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "kalpitiya-kitesurfing",
+  "name": "Kalpitiya Lagoon Kitesurfing",
+  "kind": "surf",
+  "region": "West Coast",
+  "lat": 8.165,
+  "lng": 79.74,
+  "nearest_towns": [
+   "Kalpitiya, Puttalam District"
+  ],
+  "blurb": "Flat, shallow water and steady wind make the Kalpitiya lagoon a top spot to learn kitesurfing, with the main season from May to October.",
+  "image": null
+ },
+ {
+  "id": "kalutara-bodhiya",
+  "name": "Kalutara Bodhiya and Chaitya",
+  "kind": "temple",
+  "region": "West Coast",
+  "lat": 6.5838,
+  "lng": 79.9608,
+  "nearest_towns": [
+   "Kalutara, Kalutara District",
+   "Wadduwa, Kalutara District",
+   "Beruwala, Kalutara District",
+   "Aluthgama, Kalutara District",
+   "Bentota, Galle District",
+   "Induruwa, Galle District",
+   "Kosgoda, Galle District"
+  ],
+  "blurb": "A large hollow white stupa beside the Kalu River bridge that you can walk inside, with murals of the Buddha's life around the inner wall.",
+  "image": {
+   "file": "kalutara-bodhiya.jpg",
+   "small": "kalutara-bodhiya-sm.jpg",
+   "commons_file": "File:Kalutara Temple - panoramio.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kalutara_Temple_-_panoramio.jpg",
+   "author": "Yoshan Bisanka",
+   "license": "CC BY 3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0",
+   "width": 1200,
+   "height": 1600
+  }
+ },
+ {
+  "id": "kande-viharaya",
+  "name": "Kande Viharaya",
+  "kind": "temple",
+  "region": "West Coast",
+  "lat": 6.4335,
+  "lng": 80.019,
+  "nearest_towns": [
+   "Aluthgama, Kalutara District",
+   "Bentota, Galle District",
+   "Beruwala, Kalutara District",
+   "Induruwa, Galle District",
+   "Kosgoda, Galle District",
+   "Ahungalla, Galle District",
+   "Kalutara, Kalutara District",
+   "Balapitiya, Galle District",
+   "Ambalangoda, Galle District",
+   "Wadduwa, Kalutara District"
+  ],
+  "blurb": "A hilltop temple near Aluthgama with a seated Buddha statue about 48 metres high, one of the tallest in the country, and an old stupa.",
+  "image": {
+   "file": "kande-viharaya.jpg",
+   "small": "kande-viharaya-sm.jpg",
+   "commons_file": "File:LK-aluthgama-kande-vihara-tempel.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:LK-aluthgama-kande-vihara-tempel.jpg",
+   "author": "Balou46",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1060
+  }
+ },
+ {
+  "id": "kechimalai-mosque",
+  "name": "Kechimalai Mosque",
+  "kind": "heritage",
+  "region": "West Coast",
+  "lat": 6.4786,
+  "lng": 79.9817,
+  "nearest_towns": [
+   "Beruwala, Kalutara District",
+   "Aluthgama, Kalutara District",
+   "Bentota, Galle District",
+   "Induruwa, Galle District",
+   "Kalutara, Kalutara District",
+   "Kosgoda, Galle District",
+   "Ahungalla, Galle District",
+   "Wadduwa, Kalutara District",
+   "Balapitiya, Galle District",
+   "Ambalangoda, Galle District"
+  ],
+  "blurb": "A white mosque on a headland at Beruwala, built near the place where Arab traders are said to have first settled on the island.",
+  "image": {
+   "file": "kechimalai-mosque.jpg",
+   "small": "kechimalai-mosque-sm.jpg",
+   "commons_file": "File:Ketchimalai Mosque- Beruwala, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Ketchimalai_Mosque-_Beruwala,_Sri_Lanka.jpg",
+   "author": "yimhafiz",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 1110
+  }
+ },
+ {
+  "id": "mount-lavinia-beach",
+  "name": "Mount Lavinia Beach",
+  "kind": "beach",
+  "region": "West Coast",
+  "lat": 6.83,
+  "lng": 79.8625,
+  "nearest_towns": [
+   "Mount Lavinia, Colombo District",
+   "Colombo, Colombo District",
+   "Wadduwa, Kalutara District",
+   "Kalutara, Kalutara District"
+  ],
+  "blurb": "A city beach south of Colombo below the colonial Mount Lavinia Hotel, with seafood restaurants on the sand and trains passing behind.",
+  "image": {
+   "file": "mount-lavinia-beach.jpg",
+   "small": "mount-lavinia-beach-sm.jpg",
+   "commons_file": "File:Mount Lavinia Hotel Beach.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Mount_Lavinia_Hotel_Beach.jpg",
+   "author": "Kalaiarasy",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "muthurajawela",
+  "name": "Muthurajawela Marsh",
+  "kind": "wildlife",
+  "region": "West Coast",
+  "lat": 7.04,
+  "lng": 79.88,
+  "nearest_towns": [
+   "Colombo, Colombo District",
+   "Katunayake, Gampaha District",
+   "Negombo, Gampaha District",
+   "Mount Lavinia, Colombo District"
+  ],
+  "blurb": "A large coastal wetland between Colombo and Negombo, explored by small boat to see water birds, monitor lizards and macaques.",
+  "image": null
+ },
+ {
+  "id": "negombo-beach",
+  "name": "Negombo Beach",
+  "kind": "beach",
+  "region": "West Coast",
+  "lat": 7.23,
+  "lng": 79.838,
+  "nearest_towns": [
+   "Negombo, Gampaha District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A long beach close to the airport, lined with hotels and seafood restaurants, where outrigger fishing boats come in on the sand.",
+  "image": {
+   "file": "negombo-beach.jpg",
+   "small": "negombo-beach-sm.jpg",
+   "commons_file": "File:Negombo, Beach, 2025-08 CN-01.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Negombo,_Beach,_2025-08_CN-01.jpg",
+   "author": "Steffen Schmitz",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1041
+  }
+ },
+ {
+  "id": "negombo-fish-market",
+  "name": "Negombo Fish Market",
+  "kind": "market",
+  "region": "West Coast",
+  "lat": 7.212,
+  "lng": 79.835,
+  "nearest_towns": [
+   "Negombo, Gampaha District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A busy early-morning market at Lellama where the night's catch is sold, with fish laid out to dry on mats along the beach nearby.",
+  "image": {
+   "file": "negombo-fish-market.jpg",
+   "small": "negombo-fish-market-sm.jpg",
+   "commons_file": "File:Entrance to Negombo Fish Market.(Monday 29-10-2012).JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Entrance_to_Negombo_Fish_Market.(Monday_29-10-2012).JPG",
+   "author": "Rudolph.A.furtado",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "negombo-fort",
+  "name": "Negombo Fort",
+  "kind": "heritage",
+  "region": "West Coast",
+  "lat": 7.2111,
+  "lng": 79.8358,
+  "nearest_towns": [
+   "Negombo, Gampaha District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "The remains of a Dutch fort from the 1670s by the lagoon mouth, with a gateway and a clock tower still standing. Part of it is a prison.",
+  "image": {
+   "file": "negombo-fort.jpg",
+   "small": "negombo-fort-sm.jpg",
+   "commons_file": "File:Negombo, Fort, 2025-08 CN-01.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Negombo,_Fort,_2025-08_CN-01.jpg",
+   "author": "Steffen Schmitz",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1184
+  }
+ },
+ {
+  "id": "negombo-lagoon",
+  "name": "Negombo Lagoon",
+  "kind": "lake",
+  "region": "West Coast",
+  "lat": 7.15,
+  "lng": 79.85,
+  "nearest_towns": [
+   "Katunayake, Gampaha District",
+   "Negombo, Gampaha District",
+   "Colombo, Colombo District"
+  ],
+  "blurb": "A wide estuary south of Negombo where you can take a boat past mangroves and fishermen working with traditional nets.",
+  "image": {
+   "file": "negombo-lagoon.jpg",
+   "small": "negombo-lagoon-sm.jpg",
+   "commons_file": "File:Negombo,_Lagoon,_2025-08_CN-07.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Negombo,_Lagoon,_2025-08_CN-07.jpg",
+   "author": "Steffen Schmitz",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1063
+  }
+ },
+ {
+  "id": "richmond-castle",
+  "name": "Richmond Castle",
+  "kind": "heritage",
+  "region": "West Coast",
+  "lat": 6.6006,
+  "lng": 79.9752,
+  "nearest_towns": [
+   "Kalutara, Kalutara District",
+   "Wadduwa, Kalutara District",
+   "Beruwala, Kalutara District",
+   "Aluthgama, Kalutara District",
+   "Bentota, Galle District",
+   "Induruwa, Galle District",
+   "Kosgoda, Galle District",
+   "Mount Lavinia, Colombo District"
+  ],
+  "blurb": "An early 1900s country mansion near Kalutara mixing Indian and British styles, with teak staircases, stained glass and large gardens.",
+  "image": {
+   "file": "richmond-castle.jpg",
+   "small": "richmond-castle-sm.jpg",
+   "commons_file": "File:Richmond Castle Kalutara.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Richmond_Castle_Kalutara.jpg",
+   "author": "Meshaun de Silva",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "st-annes-talawila",
+  "name": "St Anne's Church, Talawila",
+  "kind": "heritage",
+  "region": "West Coast",
+  "lat": 8.048,
+  "lng": 79.715,
+  "nearest_towns": [
+   "Kalpitiya, Puttalam District"
+  ],
+  "blurb": "A seaside Catholic shrine on the Kalpitiya peninsula that draws large crowds of pilgrims for its feasts in March and July.",
+  "image": null
+ },
+ {
+  "id": "st-marys-church-negombo",
+  "name": "St Mary's Church, Negombo",
+  "kind": "heritage",
+  "region": "West Coast",
+  "lat": 7.2097,
+  "lng": 79.8389,
+  "nearest_towns": [
+   "Negombo, Gampaha District",
+   "Katunayake, Gampaha District"
+  ],
+  "blurb": "A large Catholic church built between 1874 and 1922, with a tall facade and painted ceilings showing scenes from the Bible.",
+  "image": {
+   "file": "st-marys-church-negombo.jpg",
+   "small": "st-marys-church-negombo-sm.jpg",
+   "commons_file": "File:St. Mary's Church, Negombo in 2024.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:St._Mary%27s_Church,_Negombo_in_2024.jpg",
+   "author": "MKoala",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "wilpattu",
+  "name": "Wilpattu National Park",
+  "kind": "wildlife",
+  "region": "West Coast",
+  "lat": 8.4333,
+  "lng": 80.0,
+  "nearest_towns": [
+   "Kalpitiya, Puttalam District"
+  ],
+  "blurb": "Sri Lanka's largest national park, a quiet mix of forest and natural lakes called villus, known for leopards and sloth bears.",
+  "image": {
+   "file": "wilpattu.jpg",
+   "small": "wilpattu-sm.jpg",
+   "commons_file": "File:Sambar Deer at Wilpattu National Park.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sambar_Deer_at_Wilpattu_National_Park.jpg",
+   "author": "Manelka Jayasundara",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1440,
+   "height": 956
+  }
+ },
+ {
+  "id": "ariyapala-mask-museum",
+  "name": "Ariyapala Mask Museum",
+  "kind": "heritage",
+  "region": "South Coast",
+  "lat": 6.2393,
+  "lng": 80.0548,
+  "nearest_towns": [
+   "Ambalangoda, Galle District",
+   "Balapitiya, Galle District",
+   "Ahungalla, Galle District",
+   "Hikkaduwa, Galle District",
+   "Kosgoda, Galle District",
+   "Induruwa, Galle District",
+   "Dodanduwa, Galle District",
+   "Bentota, Galle District",
+   "Aluthgama, Kalutara District",
+   "Beruwala, Kalutara District",
+   "Galle, Galle District"
+  ],
+  "blurb": "A family workshop and museum in Ambalangoda showing the carved and painted wooden masks used in southern dance, drama and healing rituals.",
+  "image": {
+   "file": "ariyapala-mask-museum.jpg",
+   "small": "ariyapala-mask-museum-sm.jpg",
+   "commons_file": "File:Traditional masks - Ambalangoda 02.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Traditional_masks_-_Ambalangoda_02.jpg",
+   "author": "Dan arndt",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1065
+  }
+ },
+ {
+  "id": "bentota-beach",
+  "name": "Bentota Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 6.42,
+  "lng": 79.9975,
+  "nearest_towns": [
+   "Bentota, Galle District",
+   "Aluthgama, Kalutara District",
+   "Induruwa, Galle District",
+   "Beruwala, Kalutara District",
+   "Kosgoda, Galle District",
+   "Ahungalla, Galle District",
+   "Balapitiya, Galle District",
+   "Kalutara, Kalutara District",
+   "Ambalangoda, Galle District",
+   "Wadduwa, Kalutara District"
+  ],
+  "blurb": "A long, wide beach on a sand spit between the Bentota River and the sea, used for swimming in the dry season and water sports on the river.",
+  "image": {
+   "file": "bentota-beach.jpg",
+   "small": "bentota-beach-sm.jpg",
+   "commons_file": "File:Sri Lanka, Bentota, beach (2).JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sri_Lanka,_Bentota,_beach_(2).JPG",
+   "author": "Vincent van Zeijst",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1062
+  }
+ },
+ {
+  "id": "brief-garden",
+  "name": "Brief Garden",
+  "kind": "garden",
+  "region": "South Coast",
+  "lat": 6.4572,
+  "lng": 80.0376,
+  "nearest_towns": [
+   "Aluthgama, Kalutara District",
+   "Bentota, Galle District",
+   "Beruwala, Kalutara District",
+   "Induruwa, Galle District",
+   "Kosgoda, Galle District",
+   "Ahungalla, Galle District",
+   "Kalutara, Kalutara District",
+   "Balapitiya, Galle District",
+   "Ambalangoda, Galle District",
+   "Wadduwa, Kalutara District"
+  ],
+  "blurb": "The hillside garden of landscape designer Bevis Bawa, brother of Geoffrey, with winding paths, statues and a house hung with art.",
+  "image": {
+   "file": "brief-garden.jpg",
+   "small": "brief-garden-sm.jpg",
+   "commons_file": "File:Frontyard .jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Frontyard_.jpg",
+   "author": "Danofbrief",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1280,
+   "height": 960
+  }
+ },
+ {
+  "id": "coconut-tree-hill",
+  "name": "Coconut Tree Hill",
+  "kind": "viewpoint",
+  "region": "South Coast",
+  "lat": 5.9393,
+  "lng": 80.4681,
+  "nearest_towns": [
+   "Mirissa, Matara District",
+   "Polhena, Matara District",
+   "Weligama, Matara District",
+   "Matara, Matara District",
+   "Midigama, Matara District",
+   "Ahangama, Galle District",
+   "Talalla, Matara District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Thalpe, Galle District",
+   "Dickwella, Matara District",
+   "Unawatuna, Galle District",
+   "Hiriketiya, Matara District",
+   "Galle, Galle District"
+  ],
+  "blurb": "A small headland at the east end of Mirissa covered in tall coconut palms, with views over the bay. Best early morning or at sunset.",
+  "image": {
+   "file": "coconut-tree-hill.jpg",
+   "small": "coconut-tree-hill-sm.jpg",
+   "commons_file": "File:View from Coconut Tree Hill to Mirissa in March.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:View_from_Coconut_Tree_Hill_to_Mirissa_in_March.jpg",
+   "author": "Alexey Komarov",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "dalawella-beach",
+  "name": "Dalawella Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 6.004,
+  "lng": 80.266,
+  "nearest_towns": [
+   "Unawatuna, Galle District",
+   "Thalpe, Galle District",
+   "Habaraduwa, Galle District",
+   "Galle, Galle District",
+   "Koggala, Galle District",
+   "Ahangama, Galle District",
+   "Midigama, Matara District",
+   "Dodanduwa, Galle District",
+   "Weligama, Matara District",
+   "Mirissa, Matara District",
+   "Hikkaduwa, Galle District",
+   "Polhena, Matara District"
+  ],
+  "blurb": "A palm-lined beach just east of Unawatuna with a natural rock pool, a well-known rope swing and turtles often feeding near the reef.",
+  "image": {
+   "file": "dalawella-beach.jpg",
+   "small": "dalawella-beach-sm.jpg",
+   "commons_file": "File:White sands of Dalawella.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:White_sands_of_Dalawella.jpg",
+   "author": "Umeshani Wickramanayake",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 756
+  }
+ },
+ {
+  "id": "dondra-head-lighthouse",
+  "name": "Dondra Head Lighthouse",
+  "kind": "heritage",
+  "region": "South Coast",
+  "lat": 5.9213,
+  "lng": 80.5941,
+  "nearest_towns": [
+   "Talalla, Matara District",
+   "Matara, Matara District",
+   "Polhena, Matara District",
+   "Dickwella, Matara District",
+   "Hiriketiya, Matara District",
+   "Mirissa, Matara District",
+   "Weligama, Matara District",
+   "Midigama, Matara District",
+   "Tangalle, Hambantota District",
+   "Ahangama, Galle District"
+  ],
+  "blurb": "Sri Lanka's tallest lighthouse, built in the late 1880s near the island's southern tip. Visitors can usually climb to the top for a small fee.",
+  "image": {
+   "file": "dondra-head-lighthouse.jpg",
+   "small": "dondra-head-lighthouse-sm.jpg",
+   "commons_file": "File:Dondra Head lighthouse.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Dondra_Head_lighthouse.jpg",
+   "author": "Charaka Ranasinghe",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "galle-fort",
+  "name": "Galle Fort",
+  "kind": "heritage",
+  "region": "South Coast",
+  "lat": 6.0269,
+  "lng": 80.217,
+  "nearest_towns": [
+   "Galle, Galle District",
+   "Unawatuna, Galle District",
+   "Thalpe, Galle District",
+   "Habaraduwa, Galle District",
+   "Dodanduwa, Galle District",
+   "Koggala, Galle District",
+   "Ahangama, Galle District",
+   "Hikkaduwa, Galle District",
+   "Midigama, Matara District",
+   "Weligama, Matara District",
+   "Mirissa, Matara District",
+   "Ambalangoda, Galle District"
+  ],
+  "blurb": "A walled Dutch-era town on a headland. Walk the ramparts at sunset, then wander lanes of colonial houses, churches, cafés and small shops.",
+  "image": {
+   "file": "galle-fort.jpg",
+   "small": "galle-fort-sm.jpg",
+   "commons_file": "File:Galle Fort ramparts (23304598811).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Galle_Fort_ramparts_(23304598811).jpg",
+   "author": "Ankur Panchbudhe from Pune, India",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "galle-lighthouse",
+  "name": "Galle Lighthouse",
+  "kind": "heritage",
+  "region": "South Coast",
+  "lat": 6.024,
+  "lng": 80.2192,
+  "nearest_towns": [
+   "Galle, Galle District",
+   "Unawatuna, Galle District",
+   "Thalpe, Galle District",
+   "Habaraduwa, Galle District",
+   "Dodanduwa, Galle District",
+   "Koggala, Galle District",
+   "Ahangama, Galle District",
+   "Hikkaduwa, Galle District",
+   "Midigama, Matara District",
+   "Weligama, Matara District",
+   "Mirissa, Matara District",
+   "Ambalangoda, Galle District"
+  ],
+  "blurb": "The white lighthouse on the south-east corner of the fort walls, dating from 1939. A good spot to watch waves break on the reef below.",
+  "image": {
+   "file": "galle-lighthouse.jpg",
+   "small": "galle-lighthouse-sm.jpg",
+   "commons_file": "File:Galle Lighthouse 1.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Galle_Lighthouse_1.jpg",
+   "author": "Philip Nalangan",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1005
+  }
+ },
+ {
+  "id": "goyambokka-beach",
+  "name": "Goyambokka Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 6.0093,
+  "lng": 80.7807,
+  "nearest_towns": [
+   "Tangalle, Hambantota District",
+   "Rekawa, Hambantota District",
+   "Hiriketiya, Matara District",
+   "Dickwella, Matara District",
+   "Talalla, Matara District",
+   "Matara, Matara District"
+  ],
+  "blurb": "A sheltered cove just west of Tangalle with soft sand and fairly calm water, good for a swim when the sea is settled.",
+  "image": {
+   "file": "goyambokka-beach.jpg",
+   "small": "goyambokka-beach-sm.jpg",
+   "commons_file": "File:Goyambokka Beach, Tangalle, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Goyambokka_Beach,_Tangalle,_Sri_Lanka.jpg",
+   "author": "Satdeep Gill",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "hikkaduwa-coral-reef",
+  "name": "Hikkaduwa Coral Reef",
+  "kind": "wildlife",
+  "region": "South Coast",
+  "lat": 6.14,
+  "lng": 80.1,
+  "nearest_towns": [
+   "Hikkaduwa, Galle District",
+   "Dodanduwa, Galle District",
+   "Ambalangoda, Galle District",
+   "Balapitiya, Galle District",
+   "Galle, Galle District",
+   "Unawatuna, Galle District",
+   "Ahungalla, Galle District",
+   "Kosgoda, Galle District",
+   "Thalpe, Galle District",
+   "Habaraduwa, Galle District",
+   "Induruwa, Galle District",
+   "Koggala, Galle District"
+  ],
+  "blurb": "A shallow marine park off Hikkaduwa where you can snorkel or ride a glass-bottom boat over the reef, with green turtles feeding near the shore.",
+  "image": {
+   "file": "hikkaduwa-coral-reef.jpg",
+   "small": "hikkaduwa-coral-reef-sm.jpg",
+   "commons_file": "File:Hikkaduwa Turtle.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Hikkaduwa_Turtle.jpg",
+   "author": "Chamixth",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "hikkaduwa-main-reef",
+  "name": "Hikkaduwa Main Reef",
+  "kind": "surf",
+  "region": "South Coast",
+  "lat": 6.134,
+  "lng": 80.1035,
+  "nearest_towns": [
+   "Hikkaduwa, Galle District",
+   "Dodanduwa, Galle District",
+   "Ambalangoda, Galle District",
+   "Balapitiya, Galle District",
+   "Galle, Galle District",
+   "Unawatuna, Galle District",
+   "Ahungalla, Galle District",
+   "Thalpe, Galle District",
+   "Kosgoda, Galle District",
+   "Habaraduwa, Galle District",
+   "Koggala, Galle District",
+   "Induruwa, Galle District"
+  ],
+  "blurb": "Hikkaduwa's best-known wave, a reef break off the main beach for intermediate surfers, with gentler beach breaks further south at Narigama.",
+  "image": {
+   "file": "hikkaduwa-main-reef.jpg",
+   "small": "hikkaduwa-main-reef-sm.jpg",
+   "commons_file": "File:Hikka Beach.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Hikka_Beach.jpg",
+   "author": "Sendaru Perera",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "hiriketiya-bay",
+  "name": "Hiriketiya Bay",
+  "kind": "surf",
+  "region": "South Coast",
+  "lat": 5.961,
+  "lng": 80.708,
+  "nearest_towns": [
+   "Hiriketiya, Matara District",
+   "Dickwella, Matara District",
+   "Tangalle, Hambantota District",
+   "Talalla, Matara District",
+   "Rekawa, Hambantota District",
+   "Matara, Matara District",
+   "Polhena, Matara District",
+   "Mirissa, Matara District"
+  ],
+  "blurb": "A small horseshoe bay with a reef break on one side and a mellow beach break on the other, ringed by palms and cafés.",
+  "image": null
+ },
+ {
+  "id": "hummanaya-blowhole",
+  "name": "Hummanaya Blowhole",
+  "kind": "viewpoint",
+  "region": "South Coast",
+  "lat": 5.9779,
+  "lng": 80.7369,
+  "nearest_towns": [
+   "Hiriketiya, Matara District",
+   "Dickwella, Matara District",
+   "Tangalle, Hambantota District",
+   "Talalla, Matara District",
+   "Rekawa, Hambantota District",
+   "Matara, Matara District",
+   "Polhena, Matara District"
+  ],
+  "blurb": "A blowhole on a rocky headland near Kudawella that sends spray high into the air, strongest during the south-west monsoon from June to August.",
+  "image": {
+   "file": "hummanaya-blowhole.jpg",
+   "small": "hummanaya-blowhole-sm.jpg",
+   "commons_file": "File:Hummanaya.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Hummanaya.jpg",
+   "author": "Thilanka Kasunjith",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "japanese-peace-pagoda",
+  "name": "Japanese Peace Pagoda, Rumassala",
+  "kind": "temple",
+  "region": "South Coast",
+  "lat": 6.019,
+  "lng": 80.2375,
+  "nearest_towns": [
+   "Unawatuna, Galle District",
+   "Galle, Galle District",
+   "Thalpe, Galle District",
+   "Habaraduwa, Galle District",
+   "Koggala, Galle District",
+   "Dodanduwa, Galle District",
+   "Ahangama, Galle District",
+   "Midigama, Matara District",
+   "Hikkaduwa, Galle District",
+   "Weligama, Matara District",
+   "Mirissa, Matara District"
+  ],
+  "blurb": "A white stupa built by Japanese Buddhist monks on Rumassala hill, looking back across the water to Galle Fort. Quiet in the early morning.",
+  "image": {
+   "file": "japanese-peace-pagoda.jpg",
+   "small": "japanese-peace-pagoda-sm.jpg",
+   "commons_file": "File:Japanese peace pagoda in Rumassala,Unawatuna.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Japanese_peace_pagoda_in_Rumassala,Unawatuna.jpg",
+   "author": "MHFAfra",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 777
+  }
+ },
+ {
+  "id": "jungle-beach",
+  "name": "Jungle Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 6.0185,
+  "lng": 80.239,
+  "nearest_towns": [
+   "Unawatuna, Galle District",
+   "Galle, Galle District",
+   "Thalpe, Galle District",
+   "Habaraduwa, Galle District",
+   "Koggala, Galle District",
+   "Dodanduwa, Galle District",
+   "Ahangama, Galle District",
+   "Midigama, Matara District",
+   "Hikkaduwa, Galle District",
+   "Weligama, Matara District",
+   "Mirissa, Matara District"
+  ],
+  "blurb": "A small cove at the foot of Rumassala hill, reached on a forest path or by boat from Unawatuna, with clear water and coral close to shore.",
+  "image": {
+   "file": "jungle-beach.jpg",
+   "small": "jungle-beach-sm.jpg",
+   "commons_file": "File:Jungle Beach, Unawatuna, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Jungle_Beach,_Unawatuna,_Sri_Lanka.jpg",
+   "author": "Hirushini Dematagoda",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1198
+  }
+ },
+ {
+  "id": "kabalana-beach",
+  "name": "Kabalana Beach, Ahangama",
+  "kind": "surf",
+  "region": "South Coast",
+  "lat": 5.972,
+  "lng": 80.361,
+  "nearest_towns": [
+   "Ahangama, Galle District",
+   "Midigama, Matara District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Weligama, Matara District",
+   "Thalpe, Galle District",
+   "Mirissa, Matara District",
+   "Unawatuna, Galle District",
+   "Galle, Galle District",
+   "Polhena, Matara District",
+   "Matara, Matara District",
+   "Dodanduwa, Galle District",
+   "Talalla, Matara District"
+  ],
+  "blurb": "Ahangama's main surf beach. A reef break known as The Rock holds bigger swell, while softer waves on the inside suit learners.",
+  "image": null
+ },
+ {
+  "id": "kalametiya-sanctuary",
+  "name": "Kalametiya Bird Sanctuary",
+  "kind": "wildlife",
+  "region": "South Coast",
+  "lat": 6.0894,
+  "lng": 80.9369,
+  "nearest_towns": [
+   "Rekawa, Hambantota District",
+   "Tangalle, Hambantota District",
+   "Hambantota, Hambantota District",
+   "Hiriketiya, Matara District"
+  ],
+  "blurb": "A coastal lagoon and mangrove sanctuary near Hungama. Early boat trips show herons, kingfishers, painted storks and the odd crocodile.",
+  "image": {
+   "file": "kalametiya-sanctuary.jpg",
+   "small": "kalametiya-sanctuary-sm.jpg",
+   "commons_file": "File:Kalametiya Bird Sanctuary Reflections.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kalametiya_Bird_Sanctuary_Reflections.jpg",
+   "author": "Peter Addor",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "koggala-lake",
+  "name": "Koggala Lake",
+  "kind": "lake",
+  "region": "South Coast",
+  "lat": 5.993,
+  "lng": 80.334,
+  "nearest_towns": [
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Ahangama, Galle District",
+   "Thalpe, Galle District",
+   "Midigama, Matara District",
+   "Unawatuna, Galle District",
+   "Weligama, Matara District",
+   "Galle, Galle District",
+   "Mirissa, Matara District",
+   "Polhena, Matara District",
+   "Matara, Matara District",
+   "Dodanduwa, Galle District",
+   "Hikkaduwa, Galle District"
+  ],
+  "blurb": "A shallow lagoon scattered with small islands. Boat trips pass through mangroves to a cinnamon island and a temple on another island.",
+  "image": {
+   "file": "koggala-lake.jpg",
+   "small": "koggala-lake-sm.jpg",
+   "commons_file": "File:Lake Koggala mangroves.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Lake_Koggala_mangroves.jpg",
+   "author": "Richtr Jan",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kosgoda-turtle-hatchery",
+  "name": "Kosgoda Turtle Hatchery",
+  "kind": "wildlife",
+  "region": "South Coast",
+  "lat": 6.334,
+  "lng": 80.028,
+  "nearest_towns": [
+   "Ahungalla, Galle District",
+   "Kosgoda, Galle District",
+   "Induruwa, Galle District",
+   "Balapitiya, Galle District",
+   "Bentota, Galle District",
+   "Ambalangoda, Galle District",
+   "Aluthgama, Kalutara District",
+   "Beruwala, Kalutara District",
+   "Hikkaduwa, Galle District",
+   "Kalutara, Kalutara District",
+   "Dodanduwa, Galle District"
+  ],
+  "blurb": "A beachside hatchery that buys turtle eggs from local collectors, reburies them in protected sand and releases the hatchlings into the sea.",
+  "image": {
+   "file": "kosgoda-turtle-hatchery.jpg",
+   "small": "kosgoda-turtle-hatchery-sm.jpg",
+   "commons_file": "File:Kosgoda turtle hatchery 01(js0.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kosgoda_turtle_hatchery_01(js0.jpg",
+   "author": "Jerzy Strzelecki",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "lunuganga",
+  "name": "Lunuganga",
+  "kind": "garden",
+  "region": "South Coast",
+  "lat": 6.4033,
+  "lng": 80.0219,
+  "nearest_towns": [
+   "Bentota, Galle District",
+   "Induruwa, Galle District",
+   "Aluthgama, Kalutara District",
+   "Kosgoda, Galle District",
+   "Beruwala, Kalutara District",
+   "Ahungalla, Galle District",
+   "Balapitiya, Galle District",
+   "Ambalangoda, Galle District",
+   "Kalutara, Kalutara District"
+  ],
+  "blurb": "The country estate of architect Geoffrey Bawa, a landscaped garden of lawns, terraces and sculptures on Dedduwa Lake, shown on guided tours.",
+  "image": {
+   "file": "lunuganga.jpg",
+   "small": "lunuganga-sm.jpg",
+   "commons_file": "File:Lunuganga_-_Bungalow_Back.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Lunuganga_-_Bungalow_Back.jpg",
+   "author": "Eco2004",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "madu-ganga",
+  "name": "Madu Ganga",
+  "kind": "lake",
+  "region": "South Coast",
+  "lat": 6.285,
+  "lng": 80.05,
+  "nearest_towns": [
+   "Balapitiya, Galle District",
+   "Ahungalla, Galle District",
+   "Ambalangoda, Galle District",
+   "Kosgoda, Galle District",
+   "Induruwa, Galle District",
+   "Bentota, Galle District",
+   "Hikkaduwa, Galle District",
+   "Aluthgama, Kalutara District",
+   "Beruwala, Kalutara District",
+   "Dodanduwa, Galle District"
+  ],
+  "blurb": "A mangrove-lined river estuary near Balapitiya with more than 60 islands, toured by boat to see cinnamon peeling and a small island temple.",
+  "image": {
+   "file": "madu-ganga.jpg",
+   "small": "madu-ganga-sm.jpg",
+   "commons_file": "File:Standup_Paddle_-_Madu_Ganga_Estuary_-_Srilanka_-_Kumaran.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Standup_Paddle_-_Madu_Ganga_Estuary_-_Srilanka_-_Kumaran.jpg",
+   "author": "SUPindia",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "martin-wickramasinghe-museum",
+  "name": "Martin Wickramasinghe Folk Museum",
+  "kind": "heritage",
+  "region": "South Coast",
+  "lat": 5.9901,
+  "lng": 80.3281,
+  "nearest_towns": [
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Ahangama, Galle District",
+   "Thalpe, Galle District",
+   "Midigama, Matara District",
+   "Unawatuna, Galle District",
+   "Weligama, Matara District",
+   "Galle, Galle District",
+   "Mirissa, Matara District",
+   "Polhena, Matara District",
+   "Matara, Matara District",
+   "Dodanduwa, Galle District",
+   "Hikkaduwa, Galle District"
+  ],
+  "blurb": "The childhood home of the Sinhala novelist, now a museum of village life with old tools, masks, carts and household objects in a shady garden.",
+  "image": {
+   "file": "martin-wickramasinghe-museum.jpg",
+   "small": "martin-wickramasinghe-museum-sm.jpg",
+   "commons_file": "File:Great Author's Place.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Great_Author%27s_Place.jpg",
+   "author": "Kosala Migara",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "midigama-surf",
+  "name": "Midigama Surf Breaks",
+  "kind": "surf",
+  "region": "South Coast",
+  "lat": 5.963,
+  "lng": 80.387,
+  "nearest_towns": [
+   "Midigama, Matara District",
+   "Ahangama, Galle District",
+   "Weligama, Matara District",
+   "Koggala, Galle District",
+   "Mirissa, Matara District",
+   "Habaraduwa, Galle District",
+   "Thalpe, Galle District",
+   "Polhena, Matara District",
+   "Unawatuna, Galle District",
+   "Matara, Matara District",
+   "Galle, Galle District",
+   "Talalla, Matara District"
+  ],
+  "blurb": "A row of reef breaks, among them Lazy Left and Rams, that suit intermediate and experienced surfers during the November to April season.",
+  "image": {
+   "file": "midigama-surf.jpg",
+   "small": "midigama-surf-sm.jpg",
+   "commons_file": "File:Midigama by Sunset.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Midigama_by_Sunset.jpg",
+   "author": "UmarAzwer",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "mirissa-beach",
+  "name": "Mirissa Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 5.9455,
+  "lng": 80.458,
+  "nearest_towns": [
+   "Mirissa, Matara District",
+   "Weligama, Matara District",
+   "Polhena, Matara District",
+   "Midigama, Matara District",
+   "Matara, Matara District",
+   "Ahangama, Galle District",
+   "Koggala, Galle District",
+   "Talalla, Matara District",
+   "Habaraduwa, Galle District",
+   "Thalpe, Galle District",
+   "Unawatuna, Galle District",
+   "Dickwella, Matara District",
+   "Hiriketiya, Matara District",
+   "Galle, Galle District"
+  ],
+  "blurb": "A curved bay of soft sand sloping into clear water, with beach restaurants along the back and calm swimming in the dry months.",
+  "image": {
+   "file": "mirissa-beach.jpg",
+   "small": "mirissa-beach-sm.jpg",
+   "commons_file": "File:Mirissa-Plage (3).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Mirissa-Plage_(3).jpg",
+   "author": "Ji-Elle",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "mirissa-whale-watching",
+  "name": "Mirissa Harbour (Whale Watching)",
+  "kind": "wildlife",
+  "region": "South Coast",
+  "lat": 5.947,
+  "lng": 80.454,
+  "nearest_towns": [
+   "Mirissa, Matara District",
+   "Weligama, Matara District",
+   "Polhena, Matara District",
+   "Midigama, Matara District",
+   "Matara, Matara District",
+   "Ahangama, Galle District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Talalla, Matara District",
+   "Thalpe, Galle District",
+   "Unawatuna, Galle District",
+   "Dickwella, Matara District",
+   "Galle, Galle District",
+   "Hiriketiya, Matara District"
+  ],
+  "blurb": "The fishing harbour where whale-watching boats leave at dawn from November to April, with blue whales and spinner dolphins often seen offshore.",
+  "image": {
+   "file": "mirissa-whale-watching.jpg",
+   "small": "mirissa-whale-watching-sm.jpg",
+   "commons_file": "File:Mirissa-Whale watching (1).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Mirissa-Whale_watching_(1).jpg",
+   "author": "Ji-Elle",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "mulkirigala",
+  "name": "Mulkirigala Rock Temple",
+  "kind": "temple",
+  "region": "South Coast",
+  "lat": 6.123,
+  "lng": 80.7364,
+  "nearest_towns": [
+   "Tangalle, Hambantota District",
+   "Rekawa, Hambantota District",
+   "Hiriketiya, Matara District",
+   "Dickwella, Matara District",
+   "Talalla, Matara District",
+   "Matara, Matara District"
+  ],
+  "blurb": "A rock outcrop with cave temples on several levels, climbed by around 500 steps, with reclining Buddhas, murals and views over paddy fields.",
+  "image": {
+   "file": "mulkirigala.jpg",
+   "small": "mulkirigala-sm.jpg",
+   "commons_file": "File:Sunset at Mulkirigala Rock Temple.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sunset_at_Mulkirigala_Rock_Temple.jpg",
+   "author": "98 Bunny",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "paravi-duwa-temple",
+  "name": "Paravi Duwa Temple",
+  "kind": "temple",
+  "region": "South Coast",
+  "lat": 5.9425,
+  "lng": 80.5465,
+  "nearest_towns": [
+   "Matara, Matara District",
+   "Polhena, Matara District",
+   "Talalla, Matara District",
+   "Mirissa, Matara District",
+   "Weligama, Matara District",
+   "Dickwella, Matara District",
+   "Midigama, Matara District",
+   "Hiriketiya, Matara District",
+   "Ahangama, Galle District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Tangalle, Hambantota District",
+   "Thalpe, Galle District"
+  ],
+  "blurb": "A Buddhist temple on a small rocky island just off Matara beach, reached by a suspension footbridge. Popular with families in the evening.",
+  "image": null
+ },
+ {
+  "id": "polhena-beach",
+  "name": "Polhena Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 5.934,
+  "lng": 80.517,
+  "nearest_towns": [
+   "Polhena, Matara District",
+   "Matara, Matara District",
+   "Mirissa, Matara District",
+   "Weligama, Matara District",
+   "Talalla, Matara District",
+   "Midigama, Matara District",
+   "Ahangama, Galle District",
+   "Dickwella, Matara District",
+   "Hiriketiya, Matara District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Thalpe, Galle District"
+  ],
+  "blurb": "A reef-protected beach near Matara with a shallow lagoon for snorkelling, where green turtles often feed close to the shore.",
+  "image": null
+ },
+ {
+  "id": "rekawa-turtle-watch",
+  "name": "Rekawa Turtle Watch",
+  "kind": "wildlife",
+  "region": "South Coast",
+  "lat": 6.049,
+  "lng": 80.856,
+  "nearest_towns": [
+   "Rekawa, Hambantota District",
+   "Tangalle, Hambantota District",
+   "Hiriketiya, Matara District",
+   "Dickwella, Matara District",
+   "Talalla, Matara District"
+  ],
+  "blurb": "A community project on Rekawa beach where guides take small groups out at night to watch green turtles come ashore to lay their eggs.",
+  "image": null
+ },
+ {
+  "id": "star-fort-matara",
+  "name": "Star Fort, Matara",
+  "kind": "heritage",
+  "region": "South Coast",
+  "lat": 5.9481,
+  "lng": 80.5483,
+  "nearest_towns": [
+   "Matara, Matara District",
+   "Polhena, Matara District",
+   "Talalla, Matara District",
+   "Mirissa, Matara District",
+   "Weligama, Matara District",
+   "Dickwella, Matara District",
+   "Hiriketiya, Matara District",
+   "Midigama, Matara District",
+   "Ahangama, Galle District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Tangalle, Hambantota District",
+   "Thalpe, Galle District"
+  ],
+  "blurb": "A small star-shaped Dutch fort from the 1760s on the edge of Matara, with a moat, a carved gateway and a small museum inside.",
+  "image": {
+   "file": "star-fort-matara.jpg",
+   "small": "star-fort-matara-sm.jpg",
+   "commons_file": "File:Dutch_Star_Fort,_Matara_0691.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Dutch_Star_Fort,_Matara_0691.jpg",
+   "author": "Michael Gunther",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "stilt-fishermen-koggala",
+  "name": "Stilt Fishermen, Koggala",
+  "kind": "heritage",
+  "region": "South Coast",
+  "lat": 5.977,
+  "lng": 80.345,
+  "nearest_towns": [
+   "Ahangama, Galle District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District",
+   "Midigama, Matara District",
+   "Thalpe, Galle District",
+   "Weligama, Matara District",
+   "Unawatuna, Galle District",
+   "Mirissa, Matara District",
+   "Galle, Galle District",
+   "Polhena, Matara District",
+   "Matara, Matara District",
+   "Dodanduwa, Galle District"
+  ],
+  "blurb": "Fishermen perched on poles set into the shallows between Koggala and Ahangama, a traditional method now mostly seen around dawn and dusk.",
+  "image": {
+   "file": "stilt-fishermen-koggala.jpg",
+   "small": "stilt-fishermen-koggala-sm.jpg",
+   "commons_file": "File:Fishermen practicing traditional stilt fishing near Galle, southern Sri Lanka, 20260207 1420 9468.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Fishermen_practicing_traditional_stilt_fishing_near_Galle,_southern_Sri_Lanka,_20260207_1420_9468.jpg",
+   "author": "Jakub Hałun",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1068
+  }
+ },
+ {
+  "id": "talalla-beach",
+  "name": "Talalla Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 5.941,
+  "lng": 80.617,
+  "nearest_towns": [
+   "Talalla, Matara District",
+   "Dickwella, Matara District",
+   "Matara, Matara District",
+   "Hiriketiya, Matara District",
+   "Polhena, Matara District",
+   "Mirissa, Matara District",
+   "Tangalle, Hambantota District",
+   "Weligama, Matara District",
+   "Midigama, Matara District",
+   "Ahangama, Galle District",
+   "Rekawa, Hambantota District"
+  ],
+  "blurb": "A quiet crescent bay between Matara and Dickwella with gentle beginner waves, a few guesthouses and very little traffic.",
+  "image": {
+   "file": "talalla-beach.jpg",
+   "small": "talalla-beach-sm.jpg",
+   "commons_file": "File:Talallabeach.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Talallabeach.jpg",
+   "author": "Nilan.iro",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1440,
+   "height": 1080
+  }
+ },
+ {
+  "id": "taprobane-island",
+  "name": "Taprobane Island",
+  "kind": "island",
+  "region": "South Coast",
+  "lat": 5.9678,
+  "lng": 80.4256,
+  "nearest_towns": [
+   "Weligama, Matara District",
+   "Midigama, Matara District",
+   "Mirissa, Matara District",
+   "Ahangama, Galle District",
+   "Polhena, Matara District",
+   "Koggala, Galle District",
+   "Matara, Matara District",
+   "Habaraduwa, Galle District",
+   "Thalpe, Galle District",
+   "Unawatuna, Galle District",
+   "Talalla, Matara District",
+   "Galle, Galle District",
+   "Dickwella, Matara District"
+  ],
+  "blurb": "A tiny rocky island in Weligama Bay topped by a villa built by a French count in the 1920s. You can wade out to it at low tide.",
+  "image": {
+   "file": "taprobane-island.jpg",
+   "small": "taprobane-island-sm.jpg",
+   "commons_file": "File:TAPROBANE ISLAND NEAR KOGGLA SRI LANKA JAN 2013 (8491428227).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:TAPROBANE_ISLAND_NEAR_KOGGLA_SRI_LANKA_JAN_2013_(8491428227).jpg",
+   "author": "calflier001",
+   "license": "CC BY-SA 2.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "unawatuna-beach",
+  "name": "Unawatuna Beach",
+  "kind": "beach",
+  "region": "South Coast",
+  "lat": 6.0097,
+  "lng": 80.2472,
+  "nearest_towns": [
+   "Unawatuna, Galle District",
+   "Galle, Galle District",
+   "Thalpe, Galle District",
+   "Habaraduwa, Galle District",
+   "Koggala, Galle District",
+   "Ahangama, Galle District",
+   "Dodanduwa, Galle District",
+   "Midigama, Matara District",
+   "Weligama, Matara District",
+   "Hikkaduwa, Galle District",
+   "Mirissa, Matara District"
+  ],
+  "blurb": "A curved, reef-sheltered bay with calm water for much of the dry season, good for swimming and snorkelling, backed by beach restaurants.",
+  "image": {
+   "file": "unawatuna-beach.jpg",
+   "small": "unawatuna-beach-sm.jpg",
+   "commons_file": "File:Unawatuna Beach full view.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Unawatuna_Beach_full_view.jpg",
+   "author": "Aashaa",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "ussangoda",
+  "name": "Ussangoda National Park",
+  "kind": "viewpoint",
+  "region": "South Coast",
+  "lat": 6.1,
+  "lng": 80.9894,
+  "nearest_towns": [
+   "Hambantota, Hambantota District",
+   "Rekawa, Hambantota District",
+   "Tangalle, Hambantota District"
+  ],
+  "blurb": "A clifftop plateau of red soil and low scrub above the sea, protected as a national park and linked in local legend to the Ramayana.",
+  "image": {
+   "file": "ussangoda.jpg",
+   "small": "ussangoda-sm.jpg",
+   "commons_file": "File:Ussangoda beach.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Ussangoda_beach.jpg",
+   "author": "R.M.S. Ratnayake",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "weherahena-temple",
+  "name": "Weherahena Temple",
+  "kind": "temple",
+  "region": "South Coast",
+  "lat": 5.95,
+  "lng": 80.57,
+  "nearest_towns": [
+   "Matara, Matara District",
+   "Talalla, Matara District",
+   "Polhena, Matara District",
+   "Mirissa, Matara District",
+   "Dickwella, Matara District",
+   "Hiriketiya, Matara District",
+   "Weligama, Matara District",
+   "Midigama, Matara District",
+   "Ahangama, Galle District",
+   "Tangalle, Hambantota District",
+   "Koggala, Galle District",
+   "Habaraduwa, Galle District"
+  ],
+  "blurb": "A temple east of Matara with a giant seated Buddha and a long tunnel underground, its walls painted with scenes from the Buddha's lives.",
+  "image": {
+   "file": "weherahena-temple.jpg",
+   "small": "weherahena-temple-sm.jpg",
+   "commons_file": "File:Weherahena DSCN0180.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Weherahena_DSCN0180.jpg",
+   "author": "Amila Ruwan 20",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "weligama-bay",
+  "name": "Weligama Bay",
+  "kind": "surf",
+  "region": "South Coast",
+  "lat": 5.972,
+  "lng": 80.425,
+  "nearest_towns": [
+   "Weligama, Matara District",
+   "Midigama, Matara District",
+   "Mirissa, Matara District",
+   "Ahangama, Galle District",
+   "Polhena, Matara District",
+   "Koggala, Galle District",
+   "Matara, Matara District",
+   "Habaraduwa, Galle District",
+   "Thalpe, Galle District",
+   "Unawatuna, Galle District",
+   "Talalla, Matara District",
+   "Galle, Galle District",
+   "Dickwella, Matara District"
+  ],
+  "blurb": "A wide sandy bay with gentle, consistent beach-break waves, one of the most popular places in Sri Lanka to learn to surf.",
+  "image": {
+   "file": "weligama-bay.jpg",
+   "small": "weligama-bay-sm.jpg",
+   "commons_file": "File:26526281.wlg.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:26526281.wlg.jpg",
+   "author": "Annelicious i",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1017
+  }
+ },
+ {
+  "id": "wewurukannala-vihara",
+  "name": "Wewurukannala Vihara",
+  "kind": "temple",
+  "region": "South Coast",
+  "lat": 5.9768,
+  "lng": 80.6991,
+  "nearest_towns": [
+   "Hiriketiya, Matara District",
+   "Dickwella, Matara District",
+   "Talalla, Matara District",
+   "Tangalle, Hambantota District",
+   "Rekawa, Hambantota District",
+   "Matara, Matara District",
+   "Polhena, Matara District",
+   "Mirissa, Matara District",
+   "Weligama, Matara District"
+  ],
+  "blurb": "A temple near Dickwella with a 50-metre seated Buddha and a hall of painted statues showing scenes of reward and punishment after death.",
+  "image": {
+   "file": "wewurukannala-vihara.jpg",
+   "small": "wewurukannala-vihara-sm.jpg",
+   "commons_file": "File:Wewurukannala Vihara (25275876344).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Wewurukannala_Vihara_(25275876344).jpg",
+   "author": "Eleleleven from Bielefeld, Deutschland",
+   "license": "CC BY-SA 2.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "gongala-mountain",
+  "name": "Gongala Mountain",
+  "kind": "hike",
+  "region": "Rainforest",
+  "lat": 6.3858,
+  "lng": 80.6539,
+  "nearest_towns": [
+   "Deniyaya, Matara District",
+   "Udawalawe, Ratnapura District"
+  ],
+  "blurb": "The highest point of the Rakwana hills east of Deniyaya, climbed on a steep trail through forest and tea for wide views over Sinharaja and the south.",
+  "image": {
+   "file": "gongala-mountain.jpg",
+   "small": "gongala-mountain-sm.jpg",
+   "commons_file": "File:Gongala Mountain view from Godawela area.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Gongala_Mountain_view_from_Godawela_area.jpg",
+   "author": "Hashanhatharasinge",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "kanneliya-forest",
+  "name": "Kanneliya Forest Reserve",
+  "kind": "hike",
+  "region": "Rainforest",
+  "lat": 6.25,
+  "lng": 80.345,
+  "nearest_towns": [
+   "Deniyaya, Matara District",
+   "Unawatuna, Galle District",
+   "Dodanduwa, Galle District",
+   "Galle, Galle District",
+   "Habaraduwa, Galle District",
+   "Thalpe, Galle District",
+   "Koggala, Galle District",
+   "Hikkaduwa, Galle District",
+   "Ahangama, Galle District"
+  ],
+  "blurb": "A protected lowland rainforest inland from Galle, with marked trails to streams, natural pools and waterfalls among tall trees.",
+  "image": {
+   "file": "kanneliya-forest.jpg",
+   "small": "kanneliya-forest-sm.jpg",
+   "commons_file": "File:Kanneliya rain forest.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kanneliya_rain_forest.jpg",
+   "author": "Asith costa",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1071
+  }
+ },
+ {
+  "id": "maduwanwela-walawwa",
+  "name": "Maduwanwela Walawwa",
+  "kind": "heritage",
+  "region": "Rainforest",
+  "lat": 6.3892,
+  "lng": 80.7035,
+  "nearest_towns": [
+   "Deniyaya, Matara District",
+   "Udawalawe, Ratnapura District"
+  ],
+  "blurb": "A manor house of a family of local chiefs near Kolonne, begun around 1700, with inner courtyards, period furniture and tiled floors, open as a museum.",
+  "image": {
+   "file": "maduwanwela-walawwa.jpg",
+   "small": "maduwanwela-walawwa-sm.jpg",
+   "commons_file": "File:Royal_Palace_Maduwanwela_Walawwa_-_මඩුවන්වෙල_වලව්ව_2012_-_panoramio.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Royal_Palace_Maduwanwela_Walawwa_-_%E0%B6%B8%E0%B6%A9%E0%B7%94%E0%B7%80%E0%B6%B1%E0%B7%8A%E0%B7%80%E0%B7%99%E0%B6%BD_%E0%B7%80%E0%B6%BD%E0%B7%80%E0%B7%8A%E0%B7%80_2012_-_panoramio.jpg",
+   "author": "Pol van den Scheetek…",
+   "license": "CC BY 3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "sinharaja-deniyaya",
+  "name": "Sinharaja Forest Reserve",
+  "kind": "hike",
+  "region": "Rainforest",
+  "lat": 6.3713,
+  "lng": 80.586,
+  "nearest_towns": [
+   "Deniyaya, Matara District"
+  ],
+  "blurb": "A UNESCO-listed lowland rainforest. Guided walks from the Deniyaya side follow streams to waterfalls, with endemic birds, frogs and lizards.",
+  "image": {
+   "file": "sinharaja-deniyaya.jpg",
+   "small": "sinharaja-deniyaya-sm.jpg",
+   "commons_file": "File:Sinharaja Forest Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sinharaja_Forest_Sri_Lanka.jpg",
+   "author": "Ruchira159",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1440,
+   "height": 1151
+  }
+ },
+ {
+  "id": "bundala",
+  "name": "Bundala National Park",
+  "kind": "wildlife",
+  "region": "Safari",
+  "lat": 6.2139,
+  "lng": 81.225,
+  "nearest_towns": [
+   "Tissamaharama, Hambantota District",
+   "Kirinda, Hambantota District",
+   "Hambantota, Hambantota District",
+   "Yala, Hambantota District",
+   "Kataragama, Monaragala District"
+  ],
+  "blurb": "A park of lagoons, scrub and dunes near Hambantota, best for birdwatching, with flamingos in some winters, crocodiles and occasional elephants.",
+  "image": {
+   "file": "bundala.jpg",
+   "small": "bundala-sm.jpg",
+   "commons_file": "File:Painted Stork at Bundala National Park.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Painted_Stork_at_Bundala_National_Park.jpg",
+   "author": "Manelka Jayasundara",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1051
+  }
+ },
+ {
+  "id": "elephant-transit-home",
+  "name": "Elephant Transit Home",
+  "kind": "wildlife",
+  "region": "Safari",
+  "lat": 6.442,
+  "lng": 80.862,
+  "nearest_towns": [
+   "Udawalawe, Ratnapura District"
+  ],
+  "blurb": "A rehabilitation centre for orphaned elephant calves beside Udawalawe park, where visitors watch the scheduled milk feeds from a platform.",
+  "image": {
+   "file": "elephant-transit-home.jpg",
+   "small": "elephant-transit-home-sm.jpg",
+   "commons_file": "File:Udawalawe Elephant Transit Home 2017-10-27 (8).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Udawalawe_Elephant_Transit_Home_2017-10-27_(8).jpg",
+   "author": "Z thomas",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kataragama-temple",
+  "name": "Kataragama Temple",
+  "kind": "temple",
+  "region": "Safari",
+  "lat": 6.4167,
+  "lng": 81.3333,
+  "nearest_towns": [
+   "Kataragama, Monaragala District",
+   "Yala, Hambantota District",
+   "Tissamaharama, Hambantota District",
+   "Kirinda, Hambantota District"
+  ],
+  "blurb": "A sacred complex shared by Buddhists, Hindus and Muslims, busiest at the evening puja and during the July and August festival.",
+  "image": {
+   "file": "kataragama-temple.jpg",
+   "small": "kataragama-temple-sm.jpg",
+   "commons_file": "File:Kataragama_Maha_Devale.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kataragama_Maha_Devale.jpg",
+   "author": "Ghostface Buddha",
+   "license": "CC BY-SA 2.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kiri-vehera",
+  "name": "Kiri Vehera",
+  "kind": "temple",
+  "region": "Safari",
+  "lat": 6.422,
+  "lng": 81.336,
+  "nearest_towns": [
+   "Kataragama, Monaragala District",
+   "Yala, Hambantota District",
+   "Tissamaharama, Hambantota District",
+   "Kirinda, Hambantota District"
+  ],
+  "blurb": "A white stupa at the end of the Kataragama sacred road, believed to date to the 1st century BC, where pilgrims gather at dusk.",
+  "image": {
+   "file": "kiri-vehera.jpg",
+   "small": "kiri-vehera-sm.jpg",
+   "commons_file": "File:Kataragama Kiri Vehera Sri Lanka 01.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kataragama_Kiri_Vehera_Sri_Lanka_01.jpg",
+   "author": "Sanath Sri Lanka",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 904
+  }
+ },
+ {
+  "id": "kirinda-temple",
+  "name": "Kirinda Temple",
+  "kind": "temple",
+  "region": "Safari",
+  "lat": 6.218,
+  "lng": 81.333,
+  "nearest_towns": [
+   "Kirinda, Hambantota District",
+   "Tissamaharama, Hambantota District",
+   "Yala, Hambantota District",
+   "Kataragama, Monaragala District",
+   "Hambantota, Hambantota District"
+  ],
+  "blurb": "A small temple on a boulder above Kirinda's fishing village, with a stupa at the top and views over the beach towards the Yala coast.",
+  "image": {
+   "file": "kirinda-temple.jpg",
+   "small": "kirinda-temple-sm.jpg",
+   "commons_file": "File:Kirinda temple .Srilanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kirinda_temple_.Srilanka.jpg",
+   "author": "Sarala Gamage",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "lunugamvehera",
+  "name": "Lunugamvehera National Park",
+  "kind": "wildlife",
+  "region": "Safari",
+  "lat": 6.4603,
+  "lng": 81.2103,
+  "nearest_towns": [
+   "Kataragama, Monaragala District",
+   "Tissamaharama, Hambantota District",
+   "Yala, Hambantota District"
+  ],
+  "blurb": "A quieter park north of Tissamaharama around a large reservoir, linking Yala and Udawalawe, with elephants, water birds and few other jeeps.",
+  "image": {
+   "file": "lunugamvehera.jpg",
+   "small": "lunugamvehera-sm.jpg",
+   "commons_file": "File:Landscape_with_elephant_at_Lunugamvehera_National_Park.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Landscape_with_elephant_at_Lunugamvehera_National_Park.JPG",
+   "author": "Mammalwatcher",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "width": 1600,
+   "height": 981
+  }
+ },
+ {
+  "id": "sithulpawwa",
+  "name": "Sithulpawwa Rock Temple",
+  "kind": "temple",
+  "region": "Safari",
+  "lat": 6.3869,
+  "lng": 81.4497,
+  "nearest_towns": [
+   "Yala, Hambantota District",
+   "Kataragama, Monaragala District",
+   "Tissamaharama, Hambantota District",
+   "Kirinda, Hambantota District"
+  ],
+  "blurb": "An ancient monastery on a rock in the Yala forest, once home to thousands of monks, with a stupa on the summit and cave shrines below.",
+  "image": {
+   "file": "sithulpawwa.jpg",
+   "small": "sithulpawwa-sm.jpg",
+   "commons_file": "File:Sithulpawwa.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sithulpawwa.JPG",
+   "author": "Shehanw",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "tissa-wewa",
+  "name": "Tissa Wewa",
+  "kind": "lake",
+  "region": "Safari",
+  "lat": 6.29,
+  "lng": 81.29,
+  "nearest_towns": [
+   "Tissamaharama, Hambantota District",
+   "Kirinda, Hambantota District",
+   "Yala, Hambantota District",
+   "Kataragama, Monaragala District",
+   "Hambantota, Hambantota District"
+  ],
+  "blurb": "An ancient reservoir on the edge of Tissamaharama, with a lakeside road for evening walks and good birdwatching among the dead trees.",
+  "image": {
+   "file": "tissa-wewa.jpg",
+   "small": "tissa-wewa-sm.jpg",
+   "commons_file": "File:Tissa Lake Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Tissa_Lake_Sri_Lanka.jpg",
+   "author": "Kasuni Amarasinghe",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "tissamaharama-stupa",
+  "name": "Tissamaharama Raja Maha Vihara",
+  "kind": "temple",
+  "region": "Safari",
+  "lat": 6.2794,
+  "lng": 81.2903,
+  "nearest_towns": [
+   "Tissamaharama, Hambantota District",
+   "Kirinda, Hambantota District",
+   "Yala, Hambantota District",
+   "Kataragama, Monaragala District",
+   "Hambantota, Hambantota District"
+  ],
+  "blurb": "A large white stupa first built more than 2,000 years ago by the kings of Ruhuna, still a busy place of worship near the town's reservoir.",
+  "image": {
+   "file": "tissamaharama-stupa.jpg",
+   "small": "tissamaharama-stupa-sm.jpg",
+   "commons_file": "File:Tissamaharama_Stupa.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Tissamaharama_Stupa.JPG",
+   "author": "Shehanw",
+   "license": "CC BY 3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "udawalawe-national-park",
+  "name": "Udawalawe National Park",
+  "kind": "wildlife",
+  "region": "Safari",
+  "lat": 6.4383,
+  "lng": 80.8885,
+  "nearest_towns": [
+   "Udawalawe, Ratnapura District"
+  ],
+  "blurb": "Open grassland around a large reservoir where herds of elephants are seen on almost every jeep safari, along with buffalo, deer and eagles.",
+  "image": {
+   "file": "udawalawe-national-park.jpg",
+   "small": "udawalawe-national-park-sm.jpg",
+   "commons_file": "File:Udawalawe Elephants Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Udawalawe_Elephants_Sri_Lanka.jpg",
+   "author": "Sanduweragoda",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "udawalawe-reservoir",
+  "name": "Udawalawe Reservoir",
+  "kind": "lake",
+  "region": "Safari",
+  "lat": 6.4339,
+  "lng": 80.8542,
+  "nearest_towns": [
+   "Udawalawe, Ratnapura District"
+  ],
+  "blurb": "The large reservoir at the heart of Udawalawe park, with a road along the dam wall that gives views over the water and the hills beyond.",
+  "image": {
+   "file": "udawalawe-reservoir.jpg",
+   "small": "udawalawe-reservoir-sm.jpg",
+   "commons_file": "File:UdawalaweDam-Srilanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:UdawalaweDam-Srilanka.jpg",
+   "author": "Mohamed Ashfarq",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "yala-national-park",
+  "name": "Yala National Park",
+  "kind": "wildlife",
+  "region": "Safari",
+  "lat": 6.272,
+  "lng": 81.408,
+  "nearest_towns": [
+   "Yala, Hambantota District",
+   "Kirinda, Hambantota District",
+   "Tissamaharama, Hambantota District",
+   "Kataragama, Monaragala District"
+  ],
+  "blurb": "Sri Lanka's best-known park for leopards, with elephants, sloth bears, crocodiles and birds. Jeep safaris enter through the Palatupana gate.",
+  "image": null
+ },
+ {
+  "id": "aberdeen-falls",
+  "name": "Aberdeen Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 6.9483,
+  "lng": 80.5019,
+  "nearest_towns": [
+   "Kitulgala, Kegalle District",
+   "Hatton, Nuwara Eliya District",
+   "Nallathanniya, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Nuwara Eliya, Nuwara Eliya District"
+  ],
+  "blurb": "A 98-metre waterfall near Ginigathena, reached by a short walk down through forest to a wide pool at its foot.",
+  "image": {
+   "file": "aberdeen-falls.jpg",
+   "small": "aberdeen-falls-sm.jpg",
+   "commons_file": "File:Aberdeen Falls.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Aberdeen_Falls.jpg",
+   "author": "Aquinas Silva",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1115
+  }
+ },
+ {
+  "id": "adams-peak",
+  "name": "Adam's Peak (Sri Pada)",
+  "kind": "hike",
+  "region": "Hill Country",
+  "lat": 6.8096,
+  "lng": 80.4994,
+  "nearest_towns": [
+   "Nallathanniya, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Kitulgala, Kegalle District"
+  ],
+  "blurb": "A 2,243-metre sacred mountain climbed overnight by thousands of steps from Nallathanniya, timed to reach the top for sunrise. Season is December to May.",
+  "image": {
+   "file": "adams-peak.jpg",
+   "small": "adams-peak-sm.jpg",
+   "commons_file": "File:Sri_Pada.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sri_Pada.JPG",
+   "author": "Bourgeois",
+   "license": "CC BY-SA 3.0",
+   "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "adisham-bungalow",
+  "name": "Adisham Bungalow",
+  "kind": "heritage",
+  "region": "Hill Country",
+  "lat": 6.772,
+  "lng": 80.931,
+  "nearest_towns": [
+   "Haputale, Badulla District",
+   "Bandarawela, Badulla District",
+   "Ella, Badulla District",
+   "Belihuloya, Ratnapura District",
+   "Badulla, Badulla District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District"
+  ],
+  "blurb": "A 1930s English country house near Haputale, now a Benedictine monastery, with gardens and a small shop selling the monks' jams.",
+  "image": {
+   "file": "adisham-bungalow.jpg",
+   "small": "adisham-bungalow-sm.jpg",
+   "commons_file": "File:Adisham_Bungalow.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Adisham_Bungalow.JPG",
+   "author": "AntanO",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "ambuluwawa",
+  "name": "Ambuluwawa Tower",
+  "kind": "viewpoint",
+  "region": "Hill Country",
+  "lat": 7.1614,
+  "lng": 80.5472,
+  "nearest_towns": [
+   "Peradeniya, Kandy District",
+   "Kandy, Kandy District",
+   "Ramboda, Nuwara Eliya District",
+   "Pinnawala, Kegalle District",
+   "Kitulgala, Kegalle District",
+   "Digana, Kandy District",
+   "Talawakele, Nuwara Eliya District"
+  ],
+  "blurb": "A spiral tower on a hilltop near Gampola, with a narrow outdoor staircase that climbs to wide views over the central hills.",
+  "image": {
+   "file": "ambuluwawa.jpg",
+   "small": "ambuluwawa-sm.jpg",
+   "commons_file": "File:Ambuluwawa View.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Ambuluwawa_View.jpg",
+   "author": "Iamciaby",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "bahirawakanda",
+  "name": "Bahirawakanda Buddha Statue",
+  "kind": "viewpoint",
+  "region": "Hill Country",
+  "lat": 7.2958,
+  "lng": 80.6292,
+  "nearest_towns": [
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District",
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Pinnawala, Kegalle District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A large white seated Buddha on a hilltop above Kandy, reached by a steep climb, with views over the city and the lake.",
+  "image": {
+   "file": "bahirawakanda.jpg",
+   "small": "bahirawakanda-sm.jpg",
+   "commons_file": "File:Bahirawakanda.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Bahirawakanda.jpg",
+   "author": "Eswar1996",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1066,
+   "height": 1600
+  }
+ },
+ {
+  "id": "bambarakanda-falls",
+  "name": "Bambarakanda Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 6.7733,
+  "lng": 80.8311,
+  "nearest_towns": [
+   "Belihuloya, Ratnapura District",
+   "Haputale, Badulla District",
+   "Bandarawela, Badulla District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Ella, Badulla District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District"
+  ],
+  "blurb": "Sri Lanka's tallest waterfall at 263 metres, falling down a sheer cliff among pine trees near Kalupahana. A short walk leads to the base.",
+  "image": {
+   "file": "bambarakanda-falls.jpg",
+   "small": "bambarakanda-falls-sm.jpg",
+   "commons_file": "File:Bambarakanda_Waterfall.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Bambarakanda_Waterfall.jpg",
+   "author": "Kiriwattuduwa",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 902
+  }
+ },
+ {
+  "id": "belilena-cave",
+  "name": "Belilena Cave",
+  "kind": "heritage",
+  "region": "Hill Country",
+  "lat": 7.0022,
+  "lng": 80.4358,
+  "nearest_towns": [
+   "Kitulgala, Kegalle District",
+   "Hatton, Nuwara Eliya District",
+   "Nallathanniya, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A large rock cave near Kitulgala where remains of people who lived tens of thousands of years ago were found, reached by a forest path.",
+  "image": null
+ },
+ {
+  "id": "castlereagh-reservoir",
+  "name": "Castlereagh Reservoir",
+  "kind": "lake",
+  "region": "Hill Country",
+  "lat": 6.8733,
+  "lng": 80.5664,
+  "nearest_towns": [
+   "Hatton, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Nallathanniya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Kitulgala, Kegalle District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Belihuloya, Ratnapura District"
+  ],
+  "blurb": "A long reservoir among tea estates near Hatton and Norwood, with lakeside bungalows, walking paths and views of Adam's Peak.",
+  "image": {
+   "file": "castlereagh-reservoir.jpg",
+   "small": "castlereagh-reservoir-sm.jpg",
+   "commons_file": "File:UG-LK_Photowalk_-_2018-03-24_-_Castlereigh_Dam_(2).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:UG-LK_Photowalk_-_2018-03-24_-_Castlereigh_Dam_(2).jpg",
+   "author": "Rehman Abubakr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "ceylon-tea-museum",
+  "name": "Ceylon Tea Museum",
+  "kind": "tea",
+  "region": "Hill Country",
+  "lat": 7.2686,
+  "lng": 80.6327,
+  "nearest_towns": [
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District",
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Ramboda, Nuwara Eliya District",
+   "Pinnawala, Kegalle District"
+  ],
+  "blurb": "A former tea factory in the Hantana hills with old machinery, displays on the history of Ceylon tea and a tasting room with views.",
+  "image": {
+   "file": "ceylon-tea-museum.jpg",
+   "small": "ceylon-tea-museum-sm.jpg",
+   "commons_file": "File:KANDY_TEA_MUSEUM_KANDY_TOWN_SRI_LANKA_JAN_2013_(8583226551).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:KANDY_TEA_MUSEUM_KANDY_TOWN_SRI_LANKA_JAN_2013_(8583226551).jpg",
+   "author": "calflier001",
+   "license": "CC BY-SA 2.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "width": 1600,
+   "height": 916
+  }
+ },
+ {
+  "id": "degaldoruwa-temple",
+  "name": "Degaldoruwa Cave Temple",
+  "kind": "temple",
+  "region": "Hill Country",
+  "lat": 7.3044,
+  "lng": 80.6644,
+  "nearest_towns": [
+   "Kandy, Kandy District",
+   "Digana, Kandy District",
+   "Peradeniya, Kandy District",
+   "Matale, Matale District",
+   "Ramboda, Nuwara Eliya District",
+   "Pinnawala, Kegalle District"
+  ],
+  "blurb": "An 18th-century cave temple near Kandy with some of the best-preserved Kandyan wall paintings, showing stories of the Buddha's past lives.",
+  "image": {
+   "file": "degaldoruwa-temple.jpg",
+   "small": "degaldoruwa-temple-sm.jpg",
+   "commons_file": "File:Degaldoruwa cave temple.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Degaldoruwa_cave_temple.jpg",
+   "author": "Chamal N",
+   "license": "Public domain",
+   "license_url": "",
+   "width": 1600,
+   "height": 1128
+  }
+ },
+ {
+  "id": "demodara-loop",
+  "name": "Demodara Loop",
+  "kind": "heritage",
+  "region": "Hill Country",
+  "lat": 6.9,
+  "lng": 81.05,
+  "nearest_towns": [
+   "Ella, Badulla District",
+   "Badulla, Badulla District",
+   "Bandarawela, Badulla District",
+   "Haputale, Badulla District"
+  ],
+  "blurb": "A railway spiral where the line loops round a hill and passes under itself to reach Demodara station, a feat of colonial engineering.",
+  "image": {
+   "file": "demodara-loop.jpg",
+   "small": "demodara-loop-sm.jpg",
+   "commons_file": "File:Demodara.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Demodara.JPG",
+   "author": "AntanO",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "devon-falls",
+  "name": "Devon Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 6.9517,
+  "lng": 80.6297,
+  "nearest_towns": [
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Nallathanniya, Nuwara Eliya District",
+   "Kitulgala, Kegalle District"
+  ],
+  "blurb": "A 97-metre waterfall named after an early coffee planter, seen from a roadside viewpoint on the main road near Talawakele.",
+  "image": {
+   "file": "devon-falls.jpg",
+   "small": "devon-falls-sm.jpg",
+   "commons_file": "File:Devon Falls - panoramio.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Devon_Falls_-_panoramio.jpg",
+   "author": "Pol van den Scheetek…",
+   "license": "CC BY 3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0",
+   "width": 1440,
+   "height": 1080
+  }
+ },
+ {
+  "id": "diyaluma-falls",
+  "name": "Diyaluma Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 6.7333,
+  "lng": 81.0315,
+  "nearest_towns": [
+   "Haputale, Badulla District",
+   "Bandarawela, Badulla District",
+   "Ella, Badulla District",
+   "Badulla, Badulla District",
+   "Belihuloya, Ratnapura District"
+  ],
+  "blurb": "A 220-metre waterfall near Koslanda. A trail climbs to natural rock pools at the top where you can swim, with views over the plains.",
+  "image": {
+   "file": "diyaluma-falls.jpg",
+   "small": "diyaluma-falls-sm.jpg",
+   "commons_file": "File:Ihala Diyaluma.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Ihala_Diyaluma.jpg",
+   "author": "SarangaRodrigo",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1176
+  }
+ },
+ {
+  "id": "dowa-temple",
+  "name": "Dowa Rock Temple",
+  "kind": "temple",
+  "region": "Hill Country",
+  "lat": 6.862,
+  "lng": 81.009,
+  "nearest_towns": [
+   "Ella, Badulla District",
+   "Bandarawela, Badulla District",
+   "Haputale, Badulla District",
+   "Badulla, Badulla District",
+   "Nuwara Eliya, Nuwara Eliya District"
+  ],
+  "blurb": "A temple in a cave by a stream between Ella and Bandarawela, with an unfinished standing Buddha carved into the rock face.",
+  "image": {
+   "file": "dowa-temple.jpg",
+   "small": "dowa-temple-sm.jpg",
+   "commons_file": "File:Dowa Rajamaha Viharaya 2017-10-24 (2).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Dowa_Rajamaha_Viharaya_2017-10-24_(2).jpg",
+   "author": "Z thomas",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "dunhinda-falls",
+  "name": "Dunhinda Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 7.0167,
+  "lng": 81.0667,
+  "nearest_towns": [
+   "Badulla, Badulla District",
+   "Ella, Badulla District",
+   "Bandarawela, Badulla District"
+  ],
+  "blurb": "A waterfall near Badulla that throws off a fine mist, reached on a path of about 1 km with views over the river valley.",
+  "image": {
+   "file": "dunhinda-falls.jpg",
+   "small": "dunhinda-falls-sm.jpg",
+   "commons_file": "File:Dunhinda falls closeup.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Dunhinda_falls_closeup.jpg",
+   "author": "Cb619619",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "ella-rock",
+  "name": "Ella Rock",
+  "kind": "hike",
+  "region": "Hill Country",
+  "lat": 6.854,
+  "lng": 81.041,
+  "nearest_towns": [
+   "Ella, Badulla District",
+   "Bandarawela, Badulla District",
+   "Haputale, Badulla District",
+   "Badulla, Badulla District"
+  ],
+  "blurb": "A steeper half-day hike from Ella along the railway line and through tea and eucalyptus to a cliff edge looking over the lowlands.",
+  "image": {
+   "file": "ella-rock.jpg",
+   "small": "ella-rock-sm.jpg",
+   "commons_file": "File:Top of Ella Rock.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Top_of_Ella_Rock.jpg",
+   "author": "Leeno2001",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "embekke-devalaya",
+  "name": "Embekke Devalaya",
+  "kind": "heritage",
+  "region": "Hill Country",
+  "lat": 7.2179,
+  "lng": 80.5677,
+  "nearest_towns": [
+   "Peradeniya, Kandy District",
+   "Kandy, Kandy District",
+   "Digana, Kandy District",
+   "Pinnawala, Kegalle District",
+   "Ramboda, Nuwara Eliya District",
+   "Matale, Matale District"
+  ],
+  "blurb": "A 14th-century shrine known for the carved wooden pillars of its drumming hall, decorated with dancers, wrestlers, birds and animals.",
+  "image": {
+   "file": "embekke-devalaya.jpg",
+   "small": "embekke-devalaya-sm.jpg",
+   "commons_file": "File:Embekka_Devalaya_01.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Embekka_Devalaya_01.JPG",
+   "author": "Cherubino",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "gadaladeniya-temple",
+  "name": "Gadaladeniya Temple",
+  "kind": "temple",
+  "region": "Hill Country",
+  "lat": 7.2556,
+  "lng": 80.5525,
+  "nearest_towns": [
+   "Peradeniya, Kandy District",
+   "Kandy, Kandy District",
+   "Pinnawala, Kegalle District",
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A 14th-century stone temple on a rock outcrop near Kandy, built in a south Indian style with carved doorways and a small stupa.",
+  "image": {
+   "file": "gadaladeniya-temple.jpg",
+   "small": "gadaladeniya-temple-sm.jpg",
+   "commons_file": "File:Gadaladeniya Viharaya 02.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Gadaladeniya_Viharaya_02.JPG",
+   "author": "Cherubino",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "hakgala-botanical-garden",
+  "name": "Hakgala Botanical Garden",
+  "kind": "garden",
+  "region": "Hill Country",
+  "lat": 6.9274,
+  "lng": 80.8201,
+  "nearest_towns": [
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Bandarawela, Badulla District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Haputale, Badulla District",
+   "Belihuloya, Ratnapura District",
+   "Ella, Badulla District",
+   "Hatton, Nuwara Eliya District",
+   "Badulla, Badulla District",
+   "Maskeliya, Nuwara Eliya District"
+  ],
+  "blurb": "A cool hill garden below Hakgala rock with rose gardens, ferns, conifers and monkeys, first planted in the 1860s to grow cinchona.",
+  "image": {
+   "file": "hakgala-botanical-garden.jpg",
+   "small": "hakgala-botanical-garden-sm.jpg",
+   "commons_file": "File:Hakgala botanical gardens.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Hakgala_botanical_gardens.jpg",
+   "author": "Prabothd",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "horton-plains",
+  "name": "Horton Plains and World's End",
+  "kind": "hike",
+  "region": "Hill Country",
+  "lat": 6.8019,
+  "lng": 80.8,
+  "nearest_towns": [
+   "Belihuloya, Ratnapura District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Haputale, Badulla District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Bandarawela, Badulla District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Ella, Badulla District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A high plateau of grassland and cloud forest. A 9 km loop walk leads to the World's End cliff and Baker's Falls. Go early before the mist rises.",
+  "image": {
+   "file": "horton-plains.jpg",
+   "small": "horton-plains-sm.jpg",
+   "commons_file": "File:World's End, Horton Plains National Park, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:World%27s_End,_Horton_Plains_National_Park,_Sri_Lanka.jpg",
+   "author": "Sendaru Perera",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1190
+  }
+ },
+ {
+  "id": "hunnas-falls",
+  "name": "Hunnas Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 7.4019,
+  "lng": 80.6897,
+  "nearest_towns": [
+   "Matale, Matale District",
+   "Digana, Kandy District",
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District"
+  ],
+  "blurb": "A waterfall in the tea country near Elkaduwa, north of Kandy, set among plantations with walking paths through the estate.",
+  "image": {
+   "file": "hunnas-falls.jpg",
+   "small": "hunnas-falls-sm.jpg",
+   "commons_file": "File:View from Hunnas-falls Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:View_from_Hunnas-falls_Sri_Lanka.jpg",
+   "author": "Shaminda.samaratunge",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kandy-lake",
+  "name": "Kandy Lake",
+  "kind": "lake",
+  "region": "Hill Country",
+  "lat": 7.292,
+  "lng": 80.644,
+  "nearest_towns": [
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District",
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Pinnawala, Kegalle District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "An artificial lake built by the last king of Kandy in 1807, with a shady path around it about 3 km long and views of the Temple of the Tooth.",
+  "image": {
+   "file": "kandy-lake.jpg",
+   "small": "kandy-lake-sm.jpg",
+   "commons_file": "File:Kandy_Lake_(9).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kandy_Lake_(9).jpg",
+   "author": "Ji-Elle",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kandy-market",
+  "name": "Kandy Municipal Market",
+  "kind": "market",
+  "region": "Hill Country",
+  "lat": 7.2925,
+  "lng": 80.633,
+  "nearest_towns": [
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District",
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Pinnawala, Kegalle District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A covered market around a courtyard in central Kandy selling fruit, spices, tea, batik and handicrafts.",
+  "image": {
+   "file": "kandy-market.jpg",
+   "small": "kandy-market-sm.jpg",
+   "commons_file": "File:Spice shop in Kandy Market, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Spice_shop_in_Kandy_Market,_Sri_Lanka.jpg",
+   "author": "McKay Savage",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kelani-river-rafting",
+  "name": "Kelani River Rafting",
+  "kind": "lake",
+  "region": "Hill Country",
+  "lat": 6.994,
+  "lng": 80.42,
+  "nearest_towns": [
+   "Kitulgala, Kegalle District",
+   "Nallathanniya, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District"
+  ],
+  "blurb": "Kitulgala's stretch of the Kelani River has grade 2 to 3 rapids, run by rafting operators on half-day trips through the forest.",
+  "image": {
+   "file": "kelani-river-rafting.jpg",
+   "small": "kelani-river-rafting-sm.jpg",
+   "commons_file": "File:Kelani River - panoramio.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kelani_River_-_panoramio.jpg",
+   "author": "Pol van den Scheetek…",
+   "license": "CC BY 3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "knuckles-range",
+  "name": "Knuckles Mountain Range",
+  "kind": "hike",
+  "region": "Hill Country",
+  "lat": 7.45,
+  "lng": 80.8,
+  "nearest_towns": [
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Kandy, Kandy District"
+  ],
+  "blurb": "A UNESCO-listed range of misty peaks, cloud forest and small villages north-east of Kandy, explored on guided day hikes and treks.",
+  "image": {
+   "file": "knuckles-range.jpg",
+   "small": "knuckles-range-sm.jpg",
+   "commons_file": "File:Knuckles_Range.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Knuckles_Range.JPG",
+   "author": "Astronomyinertia",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1109
+  }
+ },
+ {
+  "id": "gregory-lake",
+  "name": "Lake Gregory",
+  "kind": "lake",
+  "region": "Hill Country",
+  "lat": 6.957,
+  "lng": 80.78,
+  "nearest_towns": [
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Bandarawela, Badulla District",
+   "Belihuloya, Ratnapura District",
+   "Maskeliya, Nuwara Eliya District",
+   "Haputale, Badulla District",
+   "Ella, Badulla District"
+  ],
+  "blurb": "A reservoir at the edge of Nuwara Eliya with a lakeside park, pedal boats, pony rides and a walking path around the shore.",
+  "image": {
+   "file": "gregory-lake.jpg",
+   "small": "gregory-lake-sm.jpg",
+   "commons_file": "File:Gregory Lake Nuwara Eliya 02.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Gregory_Lake_Nuwara_Eliya_02.jpg",
+   "author": "Kalana Jayatilake",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "lankatilaka-temple",
+  "name": "Lankatilaka Temple",
+  "kind": "temple",
+  "region": "Hill Country",
+  "lat": 7.2338,
+  "lng": 80.565,
+  "nearest_towns": [
+   "Peradeniya, Kandy District",
+   "Kandy, Kandy District",
+   "Pinnawala, Kegalle District",
+   "Digana, Kandy District",
+   "Ramboda, Nuwara Eliya District",
+   "Matale, Matale District"
+  ],
+  "blurb": "A tall 14th-century temple on a rocky hill near Kandy with old paintings, a seated Buddha and views across the countryside.",
+  "image": {
+   "file": "lankatilaka-temple.jpg",
+   "small": "lankatilaka-temple-sm.jpg",
+   "commons_file": "File:Lankathilaka_Vhihara_-_Le_temple.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Lankathilaka_Vhihara_-_Le_temple.JPG",
+   "author": "BluesyPete",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "laxapana-falls",
+  "name": "Laxapana Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 6.9016,
+  "lng": 80.5029,
+  "nearest_towns": [
+   "Nallathanniya, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Kitulgala, Kegalle District",
+   "Talawakele, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A waterfall about 126 metres high on the Maskeliya Oya near Norton Bridge, reached by a short walk down through village paths.",
+  "image": {
+   "file": "laxapana-falls.jpg",
+   "small": "laxapana-falls-sm.jpg",
+   "commons_file": "File:Laxapana_falls_1.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Laxapana_falls_1.JPG",
+   "author": "Astronomyinertia",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "liptons-seat",
+  "name": "Lipton's Seat",
+  "kind": "viewpoint",
+  "region": "Hill Country",
+  "lat": 6.788,
+  "lng": 81.005,
+  "nearest_towns": [
+   "Bandarawela, Badulla District",
+   "Haputale, Badulla District",
+   "Ella, Badulla District",
+   "Badulla, Badulla District",
+   "Belihuloya, Ratnapura District"
+  ],
+  "blurb": "A lookout at the top of the Dambatenne tea estate where Thomas Lipton surveyed his land. Arrive early for views across several provinces.",
+  "image": {
+   "file": "liptons-seat.jpg",
+   "small": "liptons-seat-sm.jpg",
+   "commons_file": "File:Lipton's seat.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Lipton%27s_seat.jpg",
+   "author": "Adbar",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1071
+  }
+ },
+ {
+  "id": "little-adams-peak",
+  "name": "Little Adam's Peak",
+  "kind": "hike",
+  "region": "Hill Country",
+  "lat": 6.865,
+  "lng": 81.0635,
+  "nearest_towns": [
+   "Ella, Badulla District",
+   "Bandarawela, Badulla District",
+   "Badulla, Badulla District",
+   "Haputale, Badulla District"
+  ],
+  "blurb": "An easy walk of about 45 minutes from Ella through tea gardens to a grassy summit with views down the Ella Gap.",
+  "image": {
+   "file": "little-adams-peak.jpg",
+   "small": "little-adams-peak-sm.jpg",
+   "commons_file": "File:Little Adam's Peak, Ella, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Little_Adam%27s_Peak,_Ella,_Sri_Lanka.jpg",
+   "author": "Bcd4e6",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "labookellie-tea",
+  "name": "Mackwoods Labookellie Tea Centre",
+  "kind": "tea",
+  "region": "Hill Country",
+  "lat": 7.025,
+  "lng": 80.708,
+  "nearest_towns": [
+   "Ramboda, Nuwara Eliya District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Peradeniya, Kandy District"
+  ],
+  "blurb": "A tea centre on the winding Ramboda road where you can walk through the factory and have tea and cake overlooking the estate.",
+  "image": {
+   "file": "labookellie-tea.jpg",
+   "small": "labookellie-tea-sm.jpg",
+   "commons_file": "File:Mackwoods Labookellie tea plantations (1).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Mackwoods_Labookellie_tea_plantations_(1).jpg",
+   "author": "Ji-Elle",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1280,
+   "height": 960
+  }
+ },
+ {
+  "id": "maussakelle-reservoir",
+  "name": "Maussakelle Reservoir",
+  "kind": "lake",
+  "region": "Hill Country",
+  "lat": 6.8436,
+  "lng": 80.5489,
+  "nearest_towns": [
+   "Maskeliya, Nuwara Eliya District",
+   "Nallathanniya, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Kitulgala, Kegalle District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Belihuloya, Ratnapura District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A reservoir in the hills below Adam's Peak, passed on the road to Nallathanniya, with tea estates running down to the water.",
+  "image": {
+   "file": "maussakelle-reservoir.jpg",
+   "small": "maussakelle-reservoir-sm.jpg",
+   "commons_file": "File:UG-LK_Photowalk_-_2018-03-24_-_Maskeliya_Dam_(1).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:UG-LK_Photowalk_-_2018-03-24_-_Maskeliya_Dam_(1).jpg",
+   "author": "Rehman Abubakr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "moon-plains",
+  "name": "Moon Plains",
+  "kind": "viewpoint",
+  "region": "Hill Country",
+  "lat": 6.944,
+  "lng": 80.815,
+  "nearest_towns": [
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Bandarawela, Badulla District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Haputale, Badulla District",
+   "Belihuloya, Ratnapura District",
+   "Ella, Badulla District",
+   "Badulla, Badulla District",
+   "Maskeliya, Nuwara Eliya District"
+  ],
+  "blurb": "A grassland reserve above Nuwara Eliya with a viewpoint that, on clear mornings, shows several of the island's highest peaks.",
+  "image": {
+   "file": "moon-plains.jpg",
+   "small": "moon-plains-sm.jpg",
+   "commons_file": "File:Moon Plains Morning View.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Moon_Plains_Morning_View.jpg",
+   "author": "Keshani Kaveesha",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1105
+  }
+ },
+ {
+  "id": "muthiyangana-temple",
+  "name": "Muthiyangana Raja Maha Vihara",
+  "kind": "temple",
+  "region": "Hill Country",
+  "lat": 6.988,
+  "lng": 81.06,
+  "nearest_towns": [
+   "Badulla, Badulla District",
+   "Ella, Badulla District",
+   "Bandarawela, Badulla District",
+   "Haputale, Badulla District"
+  ],
+  "blurb": "An ancient Buddhist temple in the centre of Badulla, with a white stupa and painted shrine rooms, said to be visited by the Buddha.",
+  "image": {
+   "file": "muthiyangana-temple.jpg",
+   "small": "muthiyangana-temple-sm.jpg",
+   "commons_file": "File:Muthiyangana raja maha viharaya.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Muthiyangana_raja_maha_viharaya.jpg",
+   "author": "Randeepa Dhanarathna",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 899
+  }
+ },
+ {
+  "id": "nine-arch-bridge",
+  "name": "Nine Arch Bridge",
+  "kind": "heritage",
+  "region": "Hill Country",
+  "lat": 6.8767,
+  "lng": 81.0611,
+  "nearest_towns": [
+   "Ella, Badulla District",
+   "Bandarawela, Badulla District",
+   "Badulla, Badulla District",
+   "Haputale, Badulla District"
+  ],
+  "blurb": "A stone railway viaduct with nine arches set in jungle and tea near Ella. Locals post the train times, so you can watch one cross.",
+  "image": {
+   "file": "nine-arch-bridge.jpg",
+   "small": "nine-arch-bridge-sm.jpg",
+   "commons_file": "File:Nine Arch Bridge, Demodara Ella.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Nine_Arch_Bridge,_Demodara_Ella.jpg",
+   "author": "Dr.S.Rajivraja",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "nuwara-eliya-post-office",
+  "name": "Nuwara Eliya Post Office",
+  "kind": "heritage",
+  "region": "Hill Country",
+  "lat": 6.9716,
+  "lng": 80.7664,
+  "nearest_towns": [
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Belihuloya, Ratnapura District",
+   "Bandarawela, Badulla District"
+  ],
+  "blurb": "A red-brick Tudor-style post office from 1894 in the town centre, still in use and a reminder of the town's colonial hill-station past.",
+  "image": {
+   "file": "nuwara-eliya-post-office.jpg",
+   "small": "nuwara-eliya-post-office-sm.jpg",
+   "commons_file": "File:Nuwara_Eliya_Post_Office_(2).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Nuwara_Eliya_Post_Office_(2).jpg",
+   "author": "Dan arndt",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "pedro-tea-estate",
+  "name": "Pedro Tea Estate",
+  "kind": "tea",
+  "region": "Hill Country",
+  "lat": 6.96,
+  "lng": 80.792,
+  "nearest_towns": [
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Bandarawela, Badulla District",
+   "Belihuloya, Ratnapura District",
+   "Maskeliya, Nuwara Eliya District",
+   "Haputale, Badulla District",
+   "Ella, Badulla District",
+   "Badulla, Badulla District"
+  ],
+  "blurb": "A working tea factory just outside Nuwara Eliya that runs short tours of the withering and rolling floors, followed by a tea tasting.",
+  "image": null
+ },
+ {
+  "id": "ramboda-falls",
+  "name": "Ramboda Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 7.067,
+  "lng": 80.7,
+  "nearest_towns": [
+   "Ramboda, Nuwara Eliya District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Peradeniya, Kandy District",
+   "Digana, Kandy District",
+   "Kandy, Kandy District",
+   "Maskeliya, Nuwara Eliya District"
+  ],
+  "blurb": "A 109-metre waterfall beside the Kandy to Nuwara Eliya road, with a path from the hotel above down to the base of the falls.",
+  "image": {
+   "file": "ramboda-falls.jpg",
+   "small": "ramboda-falls-sm.jpg",
+   "commons_file": "File:Ramboda water falls.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Ramboda_water_falls.jpg",
+   "author": "നിരക്ഷരൻ",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "ravana-falls",
+  "name": "Ravana Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 6.8408,
+  "lng": 81.0544,
+  "nearest_towns": [
+   "Ella, Badulla District",
+   "Bandarawela, Badulla District",
+   "Haputale, Badulla District",
+   "Badulla, Badulla District"
+  ],
+  "blurb": "A tiered waterfall beside the Ella to Wellawaya road, about 25 metres high, flowing strongest in the rainy months.",
+  "image": {
+   "file": "ravana-falls.jpg",
+   "small": "ravana-falls-sm.jpg",
+   "commons_file": "File:Ravana Falls (Ella).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Ravana_Falls_(Ella).jpg",
+   "author": "A-wiki-guest-user",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1066,
+   "height": 1600
+  }
+ },
+ {
+  "id": "peradeniya-botanic-gardens",
+  "name": "Royal Botanic Gardens, Peradeniya",
+  "kind": "garden",
+  "region": "Hill Country",
+  "lat": 7.2711,
+  "lng": 80.5956,
+  "nearest_towns": [
+   "Peradeniya, Kandy District",
+   "Kandy, Kandy District",
+   "Digana, Kandy District",
+   "Pinnawala, Kegalle District",
+   "Matale, Matale District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A large botanic garden on a bend of the Mahaweli River with an orchid house, a giant Javan fig tree, palm avenues and a long suspension bridge.",
+  "image": {
+   "file": "peradeniya-botanic-gardens.jpg",
+   "small": "peradeniya-botanic-gardens-sm.jpg",
+   "commons_file": "File:Botanical_Garden_of_Peradeniya_03.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Botanical_Garden_of_Peradeniya_03.jpg",
+   "author": "Bernard Gagnon",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1440,
+   "height": 1080
+  }
+ },
+ {
+  "id": "samanalawewa",
+  "name": "Samanalawewa Reservoir",
+  "kind": "lake",
+  "region": "Hill Country",
+  "lat": 6.6819,
+  "lng": 80.78,
+  "nearest_towns": [
+   "Belihuloya, Ratnapura District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Haputale, Badulla District",
+   "Bandarawela, Badulla District",
+   "Maskeliya, Nuwara Eliya District"
+  ],
+  "blurb": "A hydroelectric reservoir below Belihuloya, set in wooded hills, with views of the water from the dam road.",
+  "image": {
+   "file": "samanalawewa.jpg",
+   "small": "samanalawewa-sm.jpg",
+   "commons_file": "File:UG-LK_Photowalk_-_2018-03-25_-_Samanala_Dam_(2).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:UG-LK_Photowalk_-_2018-03-25_-_Samanala_Dam_(2).jpg",
+   "author": "Rehman Abubakr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1280,
+   "height": 960
+  }
+ },
+ {
+  "id": "seetha-amman-temple",
+  "name": "Seetha Amman Temple",
+  "kind": "temple",
+  "region": "Hill Country",
+  "lat": 6.9187,
+  "lng": 80.8164,
+  "nearest_towns": [
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Bandarawela, Badulla District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Belihuloya, Ratnapura District",
+   "Haputale, Badulla District",
+   "Hatton, Nuwara Eliya District",
+   "Ella, Badulla District",
+   "Badulla, Badulla District",
+   "Maskeliya, Nuwara Eliya District"
+  ],
+  "blurb": "A colourful Hindu temple by a stream near Hakgala, linked by tradition to the place where Sita was held in the Ramayana.",
+  "image": {
+   "file": "seetha-amman-temple.jpg",
+   "small": "seetha-amman-temple-sm.jpg",
+   "commons_file": "File:Seetha_Amman_Temple_Seetha_Eliya.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Seetha_Amman_Temple_Seetha_Eliya.jpg",
+   "author": "Buddhika Mawella",
+   "license": "CC BY-SA 3.0",
+   "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+   "width": 1600,
+   "height": 1027
+  }
+ },
+ {
+  "id": "st-clairs-falls",
+  "name": "St. Clair's Falls",
+  "kind": "waterfall",
+  "region": "Hill Country",
+  "lat": 6.9513,
+  "lng": 80.648,
+  "nearest_towns": [
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Nallathanniya, Nuwara Eliya District",
+   "Kitulgala, Kegalle District",
+   "Belihuloya, Ratnapura District"
+  ],
+  "blurb": "One of the widest waterfalls in Sri Lanka, falling in two tiers through tea estates. A tea lounge on the main road looks straight at it.",
+  "image": {
+   "file": "st-clairs-falls.jpg",
+   "small": "st-clairs-falls-sm.jpg",
+   "commons_file": "File:UG-LK_Photowalk_-_2018-03-25_-_St_Clairs_Falls_(1).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:UG-LK_Photowalk_-_2018-03-25_-_St_Clairs_Falls_(1).jpg",
+   "author": "Rehman Abubakr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1440,
+   "height": 1080
+  }
+ },
+ {
+  "id": "temple-of-the-tooth",
+  "name": "Temple of the Sacred Tooth Relic",
+  "kind": "temple",
+  "region": "Hill Country",
+  "lat": 7.2936,
+  "lng": 80.6413,
+  "nearest_towns": [
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District",
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Pinnawala, Kegalle District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "The temple in the old royal palace in Kandy that holds a relic of the Buddha's tooth. Visit at puja time to hear drums and see offerings.",
+  "image": {
+   "file": "temple-of-the-tooth.jpg",
+   "small": "temple-of-the-tooth-sm.jpg",
+   "commons_file": "File:Sri Lanka, Kandy, Temple of the Tooth, Sri Dalada Maligawa.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sri_Lanka,_Kandy,_Temple_of_the_Tooth,_Sri_Dalada_Maligawa.jpg",
+   "author": "Vyacheslav Argenberg",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "udawatta-kele",
+  "name": "Udawatta Kele Forest",
+  "kind": "hike",
+  "region": "Hill Country",
+  "lat": 7.2994,
+  "lng": 80.6389,
+  "nearest_towns": [
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District",
+   "Digana, Kandy District",
+   "Matale, Matale District",
+   "Pinnawala, Kegalle District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A forest reserve on the hill behind the Temple of the Tooth, once the royal pleasure garden, with walking trails, monkeys and many birds.",
+  "image": {
+   "file": "udawatta-kele.jpg",
+   "small": "udawatta-kele-sm.jpg",
+   "commons_file": "File:Udawattakele kandy 2017-10-20 (4).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Udawattakele_kandy_2017-10-20_(4).jpg",
+   "author": "Z thomas",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1440,
+   "height": 1080
+  }
+ },
+ {
+  "id": "victoria-park-nuwara-eliya",
+  "name": "Victoria Park, Nuwara Eliya",
+  "kind": "garden",
+  "region": "Hill Country",
+  "lat": 6.9692,
+  "lng": 80.7681,
+  "nearest_towns": [
+   "Nuwara Eliya, Nuwara Eliya District",
+   "Ramboda, Nuwara Eliya District",
+   "Talawakele, Nuwara Eliya District",
+   "Hatton, Nuwara Eliya District",
+   "Bogawantalawa, Nuwara Eliya District",
+   "Maskeliya, Nuwara Eliya District",
+   "Belihuloya, Ratnapura District",
+   "Bandarawela, Badulla District"
+  ],
+  "blurb": "A tidy town park in the centre of Nuwara Eliya with flower beds, a stream and many birds, at its best from February to May.",
+  "image": {
+   "file": "victoria-park-nuwara-eliya.jpg",
+   "small": "victoria-park-nuwara-eliya-sm.jpg",
+   "commons_file": "File:Victoria_Park,_by_Sandunruki.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Victoria_Park,_by_Sandunruki.jpg",
+   "author": "Sandunruki at English Wikipedia",
+   "license": "CC BY 3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0",
+   "width": 1600,
+   "height": 1013
+  }
+ },
+ {
+  "id": "victoria-reservoir",
+  "name": "Victoria Reservoir",
+  "kind": "lake",
+  "region": "Hill Country",
+  "lat": 7.2414,
+  "lng": 80.7836,
+  "nearest_towns": [
+   "Digana, Kandy District",
+   "Kandy, Kandy District",
+   "Peradeniya, Kandy District",
+   "Ramboda, Nuwara Eliya District"
+  ],
+  "blurb": "A large reservoir in the hills east of Kandy, held back by a tall arch dam, with viewpoints over the water and surrounding forest.",
+  "image": {
+   "file": "victoria-reservoir.jpg",
+   "small": "victoria-reservoir-sm.jpg",
+   "commons_file": "File:VictoriaDam-SriLanka-April2011-1.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:VictoriaDam-SriLanka-April2011-1.jpg",
+   "author": "Rehman Abubakr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "abhayagiri",
+  "name": "Abhayagiri Monastery",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 8.3709,
+  "lng": 80.3953,
+  "nearest_towns": [
+   "Anuradhapura, Anuradhapura District"
+  ],
+  "blurb": "The ruins of a large monastery in the north of Anuradhapura, with a restored brick stupa, guard stones, moonstones and a museum.",
+  "image": {
+   "file": "abhayagiri.jpg",
+   "small": "abhayagiri-sm.jpg",
+   "commons_file": "File:Abhayagiri Dagoba in Anuradhapura, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Abhayagiri_Dagoba_in_Anuradhapura,_Sri_Lanka.jpg",
+   "author": "Nicolas Chadeville",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 882
+  }
+ },
+ {
+  "id": "aluvihare-temple",
+  "name": "Aluvihare Rock Temple",
+  "kind": "temple",
+  "region": "Cultural Triangle",
+  "lat": 7.4972,
+  "lng": 80.6219,
+  "nearest_towns": [
+   "Matale, Matale District",
+   "Kandy, Kandy District",
+   "Digana, Kandy District",
+   "Peradeniya, Kandy District"
+  ],
+  "blurb": "Cave temples among boulders north of Matale, where Buddhist teachings were first written down on palm leaves in the 1st century BC.",
+  "image": {
+   "file": "aluvihare-temple.jpg",
+   "small": "aluvihare-temple-sm.jpg",
+   "commons_file": "File:Reclining Buddha. Aluvihara, Sri Lanka 0465.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Reclining_Buddha._Aluvihara,_Sri_Lanka_0465.jpg",
+   "author": "Michael Gunther",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "polonnaruwa-ancient-city",
+  "name": "Ancient City of Polonnaruwa",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 7.9476,
+  "lng": 81.0012,
+  "nearest_towns": [
+   "Polonnaruwa, Polonnaruwa District",
+   "Giritale, Polonnaruwa District",
+   "Sigiriya, Matale District",
+   "Habarana, Anuradhapura District"
+  ],
+  "blurb": "The medieval royal capital, best seen by bicycle, with palace ruins, a circular relic house, stupas and temples spread across a large park.",
+  "image": {
+   "file": "polonnaruwa-ancient-city.jpg",
+   "small": "polonnaruwa-ancient-city-sm.jpg",
+   "commons_file": "File:The Quadrangle Vatadage, Ancient City of Polonnaruwa, Sri Lanka (2).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:The_Quadrangle_Vatadage,_Ancient_City_of_Polonnaruwa,_Sri_Lanka_(2).jpg",
+   "author": "Nahid Sultan",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "avukana-buddha",
+  "name": "Avukana Buddha Statue",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 8.0109,
+  "lng": 80.5127,
+  "nearest_towns": [
+   "Dambulla, Matale District",
+   "Habarana, Anuradhapura District",
+   "Sigiriya, Matale District"
+  ],
+  "blurb": "A standing Buddha about 12 metres tall, carved from a granite rock face in the 5th century near the Kala Wewa reservoir.",
+  "image": {
+   "file": "avukana-buddha.jpg",
+   "small": "avukana-buddha-sm.jpg",
+   "commons_file": "File:Buda de Avukana - 01.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Buda_de_Avukana_-_01.jpg",
+   "author": "Carlos Delgado",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "dambulla-cave-temple",
+  "name": "Dambulla Cave Temple",
+  "kind": "temple",
+  "region": "Cultural Triangle",
+  "lat": 7.8567,
+  "lng": 80.6492,
+  "nearest_towns": [
+   "Dambulla, Matale District",
+   "Sigiriya, Matale District",
+   "Habarana, Anuradhapura District"
+  ],
+  "blurb": "Five painted caves high on a rock above Dambulla, filled with over 150 Buddha statues and ceiling murals, used for worship for 2,000 years.",
+  "image": {
+   "file": "dambulla-cave-temple.jpg",
+   "small": "dambulla-cave-temple-sm.jpg",
+   "commons_file": "File:Statue of the Buddha reclining in the Dambulla cave temple, Dambulla, Sri Lanka, 20260201 1419 8127.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Statue_of_the_Buddha_reclining_in_the_Dambulla_cave_temple,_Dambulla,_Sri_Lanka,_20260201_1419_8127.jpg",
+   "author": "Jakub Hałun",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1068
+  }
+ },
+ {
+  "id": "gal-vihara",
+  "name": "Gal Vihara",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 7.9659,
+  "lng": 81.005,
+  "nearest_towns": [
+   "Polonnaruwa, Polonnaruwa District",
+   "Giritale, Polonnaruwa District",
+   "Sigiriya, Matale District",
+   "Habarana, Anuradhapura District"
+  ],
+  "blurb": "Four large Buddha figures cut into one granite rock face in Polonnaruwa in the 12th century, including a 14-metre reclining Buddha.",
+  "image": {
+   "file": "gal-vihara.jpg",
+   "small": "gal-vihara-sm.jpg",
+   "commons_file": "File:Gal Vihara Polonnaruwa 1.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Gal_Vihara_Polonnaruwa_1.jpg",
+   "author": "Philip Nalangan",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1051
+  }
+ },
+ {
+  "id": "hurulu-eco-park",
+  "name": "Hurulu Eco Park",
+  "kind": "wildlife",
+  "region": "Cultural Triangle",
+  "lat": 8.13,
+  "lng": 80.82,
+  "nearest_towns": [
+   "Habarana, Anuradhapura District",
+   "Giritale, Polonnaruwa District",
+   "Sigiriya, Matale District",
+   "Polonnaruwa, Polonnaruwa District"
+  ],
+  "blurb": "A dry forest reserve near Habarana used for elephant safaris during the wet months, when the herds are less often at Minneriya.",
+  "image": {
+   "file": "hurulu-eco-park.jpg",
+   "small": "hurulu-eco-park-sm.jpg",
+   "commons_file": "File:Hurulu Eco Park, North Central Province, Sri Lanka, 20260201 1032 7859.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Hurulu_Eco_Park,_North_Central_Province,_Sri_Lanka,_20260201_1032_7859.jpg",
+   "author": "Jakub Hałun",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1060
+  }
+ },
+ {
+  "id": "isurumuniya",
+  "name": "Isurumuniya",
+  "kind": "temple",
+  "region": "Cultural Triangle",
+  "lat": 8.3346,
+  "lng": 80.3904,
+  "nearest_towns": [
+   "Anuradhapura, Anuradhapura District"
+  ],
+  "blurb": "A rock temple beside a pond in Anuradhapura, known for its carved lovers and elephant reliefs. Climb the rock at sunset.",
+  "image": {
+   "file": "isurumuniya.jpg",
+   "small": "isurumuniya-sm.jpg",
+   "commons_file": "File:ISURUMUNIYA_ROCK_TEMPLE.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:ISURUMUNIYA_ROCK_TEMPLE.JPG",
+   "author": "Abhaya77 at English Wikipedia",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "sri-maha-bodhi",
+  "name": "Jaya Sri Maha Bodhi",
+  "kind": "temple",
+  "region": "Cultural Triangle",
+  "lat": 8.3447,
+  "lng": 80.3967,
+  "nearest_towns": [
+   "Anuradhapura, Anuradhapura District"
+  ],
+  "blurb": "A sacred fig tree in Anuradhapura grown from a cutting of the Bodhi tree in India, planted in 288 BC and visited by pilgrims every day.",
+  "image": {
+   "file": "sri-maha-bodhi.jpg",
+   "small": "sri-maha-bodhi-sm.jpg",
+   "commons_file": "File:Sri Maha Bodhi, Anuradhapura.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sri_Maha_Bodhi,_Anuradhapura.jpg",
+   "author": "Hirushini Dematagoda",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1440,
+   "height": 1026
+  }
+ },
+ {
+  "id": "jetavanaramaya",
+  "name": "Jetavanaramaya",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 8.3517,
+  "lng": 80.4036,
+  "nearest_towns": [
+   "Anuradhapura, Anuradhapura District"
+  ],
+  "blurb": "A brick stupa from the 3rd century, once among the tallest buildings in the ancient world, surrounded by monastery ruins.",
+  "image": {
+   "file": "jetavanaramaya.jpg",
+   "small": "jetavanaramaya-sm.jpg",
+   "commons_file": "File:Jetavanaramaya_Stupa_profile.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Jetavanaramaya_Stupa_profile.jpg",
+   "author": "Wimukthi Bandara",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1169
+  }
+ },
+ {
+  "id": "kaudulla",
+  "name": "Kaudulla National Park",
+  "kind": "wildlife",
+  "region": "Cultural Triangle",
+  "lat": 8.1611,
+  "lng": 80.905,
+  "nearest_towns": [
+   "Giritale, Polonnaruwa District",
+   "Habarana, Anuradhapura District",
+   "Polonnaruwa, Polonnaruwa District",
+   "Sigiriya, Matale District"
+  ],
+  "blurb": "A park around another old reservoir near Habarana, often visited when the elephant herds move away from Minneriya.",
+  "image": {
+   "file": "kaudulla.jpg",
+   "small": "kaudulla-sm.jpg",
+   "commons_file": "File:Elefantenfamilie kaudulla nationalpark 2017-10-17 (20).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Elefantenfamilie_kaudulla_nationalpark_2017-10-17_(20).jpg",
+   "author": "Z thomas",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "mihintale",
+  "name": "Mihintale",
+  "kind": "temple",
+  "region": "Cultural Triangle",
+  "lat": 8.3506,
+  "lng": 80.5169,
+  "nearest_towns": [
+   "Anuradhapura, Anuradhapura District"
+  ],
+  "blurb": "A hill east of Anuradhapura where Buddhism is said to have been introduced to the island, climbed by a long stone stairway to stupas and views.",
+  "image": {
+   "file": "mihintale.jpg",
+   "small": "mihintale-sm.jpg",
+   "commons_file": "File:Mihintale_Rock.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Mihintale_Rock.jpg",
+   "author": "Dennis Sylvester Hurd",
+   "license": "CC0",
+   "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "minneriya",
+  "name": "Minneriya National Park",
+  "kind": "wildlife",
+  "region": "Cultural Triangle",
+  "lat": 7.9789,
+  "lng": 80.8489,
+  "nearest_towns": [
+   "Giritale, Polonnaruwa District",
+   "Sigiriya, Matale District",
+   "Habarana, Anuradhapura District",
+   "Polonnaruwa, Polonnaruwa District",
+   "Dambulla, Matale District"
+  ],
+  "blurb": "A park around an ancient reservoir where hundreds of elephants gather in the dry season, roughly July to October, to graze on the shore.",
+  "image": {
+   "file": "minneriya.jpg",
+   "small": "minneriya-sm.jpg",
+   "commons_file": "File:Minneriya National Park, elephants gathering.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Minneriya_National_Park,_elephants_gathering.jpg",
+   "author": "Walter Gehr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "nalanda-gedige",
+  "name": "Nalanda Gedige",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 7.6697,
+  "lng": 80.6456,
+  "nearest_towns": [
+   "Dambulla, Matale District",
+   "Matale, Matale District"
+  ],
+  "blurb": "A stone temple standing on its own by a reservoir near Matale, built in a mix of Hindu and Buddhist styles more than 1,000 years ago.",
+  "image": {
+   "file": "nalanda-gedige.jpg",
+   "small": "nalanda-gedige-sm.jpg",
+   "commons_file": "File:Nalanda_Gedige.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Nalanda_Gedige.jpg",
+   "author": "Anton Croos",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1074
+  }
+ },
+ {
+  "id": "parakrama-samudra",
+  "name": "Parakrama Samudra",
+  "kind": "lake",
+  "region": "Cultural Triangle",
+  "lat": 7.91,
+  "lng": 80.98,
+  "nearest_towns": [
+   "Polonnaruwa, Polonnaruwa District",
+   "Giritale, Polonnaruwa District",
+   "Sigiriya, Matale District",
+   "Habarana, Anuradhapura District"
+  ],
+  "blurb": "A vast reservoir built in the 12th century beside Polonnaruwa, with an embankment road that is good at sunset.",
+  "image": {
+   "file": "parakrama-samudra.jpg",
+   "small": "parakrama-samudra-sm.jpg",
+   "commons_file": "File:Reflection_of_the_sky_in_Parakrama_Samudraya.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Reflection_of_the_sky_in_Parakrama_Samudraya.jpg",
+   "author": "Udeshika Jayapali",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "pidurangala",
+  "name": "Pidurangala Rock",
+  "kind": "hike",
+  "region": "Cultural Triangle",
+  "lat": 7.9656,
+  "lng": 80.7619,
+  "nearest_towns": [
+   "Sigiriya, Matale District",
+   "Habarana, Anuradhapura District",
+   "Dambulla, Matale District",
+   "Giritale, Polonnaruwa District",
+   "Polonnaruwa, Polonnaruwa District"
+  ],
+  "blurb": "A rock just north of Sigiriya with a cave temple and a reclining Buddha. A short scramble to the top gives the best view of Sigiriya.",
+  "image": {
+   "file": "pidurangala.jpg",
+   "small": "pidurangala-sm.jpg",
+   "commons_file": "File:Sigiriya depuis Pidurangala (2).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sigiriya_depuis_Pidurangala_(2).jpg",
+   "author": "Ji-Elle",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "pinnawala-elephant-orphanage",
+  "name": "Pinnawala Elephant Orphanage",
+  "kind": "wildlife",
+  "region": "Cultural Triangle",
+  "lat": 7.3006,
+  "lng": 80.3883,
+  "nearest_towns": [
+   "Pinnawala, Kegalle District",
+   "Peradeniya, Kandy District",
+   "Kandy, Kandy District"
+  ],
+  "blurb": "A government-run home for orphaned and injured elephants. The herd walks down to bathe in the Maha Oya river twice a day.",
+  "image": {
+   "file": "pinnawala-elephant-orphanage.jpg",
+   "small": "pinnawala-elephant-orphanage-sm.jpg",
+   "commons_file": "File:Pinnawala_01.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Pinnawala_01.jpg",
+   "author": "Bernard Gagnon",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1051
+  }
+ },
+ {
+  "id": "ritigala",
+  "name": "Ritigala Forest Monastery",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 8.1153,
+  "lng": 80.6553,
+  "nearest_towns": [
+   "Habarana, Anuradhapura District",
+   "Sigiriya, Matale District",
+   "Dambulla, Matale District"
+  ],
+  "blurb": "Ruins of a forest monastery on a mountainside, with stone paths, bridges and meditation platforms among tall trees.",
+  "image": {
+   "file": "ritigala.jpg",
+   "small": "ritigala-sm.jpg",
+   "commons_file": "File:Stone bridge -Ritigala-SriLanka.png",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Stone_bridge_-Ritigala-SriLanka.png",
+   "author": "Prof Ranga Sai",
+   "license": "CC BY 4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0",
+   "width": 1600,
+   "height": 1062
+  }
+ },
+ {
+  "id": "riverston",
+  "name": "Riverston",
+  "kind": "viewpoint",
+  "region": "Cultural Triangle",
+  "lat": 7.525,
+  "lng": 80.735,
+  "nearest_towns": [
+   "Matale, Matale District",
+   "Digana, Kandy District",
+   "Kandy, Kandy District"
+  ],
+  "blurb": "A windy ridge in the Knuckles range above Matale with grassland walks, a viewpoint called Pitawala Pathana and small waterfalls nearby.",
+  "image": {
+   "file": "riverston.jpg",
+   "small": "riverston-sm.jpg",
+   "commons_file": "File:Reverston Matale.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Reverston_Matale.jpg",
+   "author": "Thisaru Tharuka",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "ruwanwelisaya",
+  "name": "Ruwanwelisaya",
+  "kind": "temple",
+  "region": "Cultural Triangle",
+  "lat": 8.35,
+  "lng": 80.3964,
+  "nearest_towns": [
+   "Anuradhapura, Anuradhapura District"
+  ],
+  "blurb": "A huge white stupa from the 2nd century BC, ringed by a wall of carved elephants. Pilgrims in white circle it in the evening.",
+  "image": {
+   "file": "ruwanwelisaya.jpg",
+   "small": "ruwanwelisaya-sm.jpg",
+   "commons_file": "File:Ruwanweli Saya 1.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Ruwanweli_Saya_1.jpg",
+   "author": "KennyOMG",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 960
+  }
+ },
+ {
+  "id": "sigiriya-rock",
+  "name": "Sigiriya Rock Fortress",
+  "kind": "heritage",
+  "region": "Cultural Triangle",
+  "lat": 7.9569,
+  "lng": 80.7597,
+  "nearest_towns": [
+   "Sigiriya, Matale District",
+   "Habarana, Anuradhapura District",
+   "Dambulla, Matale District",
+   "Giritale, Polonnaruwa District",
+   "Polonnaruwa, Polonnaruwa District"
+  ],
+  "blurb": "A 5th-century palace on top of a 180-metre rock, climbed past water gardens, painted frescoes and giant stone lion paws.",
+  "image": {
+   "file": "sigiriya-rock.jpg",
+   "small": "sigiriya-rock-sm.jpg",
+   "commons_file": "File:Sigiriya_(141688197).jpeg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Sigiriya_(141688197).jpeg",
+   "author": "Wrobell",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "matale-muthumariamman",
+  "name": "Sri Muthumariamman Temple, Matale",
+  "kind": "temple",
+  "region": "Cultural Triangle",
+  "lat": 7.4766,
+  "lng": 80.6226,
+  "nearest_towns": [
+   "Matale, Matale District",
+   "Kandy, Kandy District",
+   "Digana, Kandy District",
+   "Peradeniya, Kandy District"
+  ],
+  "blurb": "A Hindu temple in Matale with a tall gopuram tower covered in painted figures of gods, busiest during the yearly chariot festival.",
+  "image": {
+   "file": "matale-muthumariamman.jpg",
+   "small": "matale-muthumariamman-sm.jpg",
+   "commons_file": "File:Matale_Sri_Muttumariyamman_Kovil.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Matale_Sri_Muttumariyamman_Kovil.JPG",
+   "author": "Umapathy",
+   "license": "Public domain",
+   "license_url": "",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "arugam-bay-main-point",
+  "name": "Arugam Bay Main Point",
+  "kind": "surf",
+  "region": "East Coast",
+  "lat": 6.84,
+  "lng": 81.837,
+  "nearest_towns": [
+   "Arugam Bay, Ampara District",
+   "Pottuvil, Ampara District"
+  ],
+  "blurb": "A long right-hand point break at the south end of the bay, one of the best-known waves in Sri Lanka, at its best from May to September.",
+  "image": {
+   "file": "arugam-bay-main-point.jpg",
+   "small": "arugam-bay-main-point-sm.jpg",
+   "commons_file": "File:Arugam bay beach.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Arugam_bay_beach.jpg",
+   "author": "Kondephy",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1065
+  }
+ },
+ {
+  "id": "batticaloa-fort",
+  "name": "Batticaloa Fort",
+  "kind": "heritage",
+  "region": "East Coast",
+  "lat": 7.7119,
+  "lng": 81.7024,
+  "nearest_towns": [
+   "Batticaloa, Batticaloa District",
+   "Pasikuda, Batticaloa District"
+  ],
+  "blurb": "A small Portuguese and Dutch fort on an island in the Batticaloa lagoon, with thick walls, old cannons and lagoon views.",
+  "image": {
+   "file": "batticaloa-fort.jpg",
+   "small": "batticaloa-fort-sm.jpg",
+   "commons_file": "File:Batticaloa_Portuguese_(dutch)_fort.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Batticaloa_Portuguese_(dutch)_fort.jpg",
+   "author": "Anton Croos",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 964
+  }
+ },
+ {
+  "id": "batticaloa-lagoon",
+  "name": "Batticaloa Lagoon",
+  "kind": "lake",
+  "region": "East Coast",
+  "lat": 7.73,
+  "lng": 81.68,
+  "nearest_towns": [
+   "Batticaloa, Batticaloa District",
+   "Pasikuda, Batticaloa District"
+  ],
+  "blurb": "A long lagoon running through Batticaloa, crossed by old bridges and known for its singing fish heard on still nights around the full moon.",
+  "image": {
+   "file": "batticaloa-lagoon.jpg",
+   "small": "batticaloa-lagoon-sm.jpg",
+   "commons_file": "File:Batticaloa_Lagoon.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Batticaloa_Lagoon.jpg",
+   "author": "Anton Croos",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1013
+  }
+ },
+ {
+  "id": "batticaloa-lighthouse",
+  "name": "Batticaloa Lighthouse",
+  "kind": "heritage",
+  "region": "East Coast",
+  "lat": 7.7549,
+  "lng": 81.6854,
+  "nearest_towns": [
+   "Batticaloa, Batticaloa District",
+   "Pasikuda, Batticaloa District"
+  ],
+  "blurb": "A 28-metre lighthouse from 1913 at the mouth of the Batticaloa lagoon, with a small park where locals gather in the evening.",
+  "image": {
+   "file": "batticaloa-lighthouse.jpg",
+   "small": "batticaloa-lighthouse-sm.jpg",
+   "commons_file": "File:Batticaloa Lighthouse & Sunset.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Batticaloa_Lighthouse_%26_Sunset.jpg",
+   "author": "Tharsan Sriranganathan",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 900
+  }
+ },
+ {
+  "id": "fort-frederick",
+  "name": "Fort Frederick",
+  "kind": "heritage",
+  "region": "East Coast",
+  "lat": 8.5786,
+  "lng": 81.24,
+  "nearest_towns": [
+   "Trincomalee, Trincomalee District",
+   "Uppuveli, Trincomalee District",
+   "Nilaveli, Trincomalee District"
+  ],
+  "blurb": "A 17th-century fort on the Trincomalee headland, still an army base, which you pass through on the way to Koneswaram. Spotted deer roam inside.",
+  "image": {
+   "file": "fort-frederick.jpg",
+   "small": "fort-frederick-sm.jpg",
+   "commons_file": "File:Fort Fredrick, entrance.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Fort_Fredrick,_entrance.JPG",
+   "author": "AntanO",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "kalkudah-beach",
+  "name": "Kalkudah Beach",
+  "kind": "beach",
+  "region": "East Coast",
+  "lat": 7.915,
+  "lng": 81.568,
+  "nearest_towns": [
+   "Pasikuda, Batticaloa District",
+   "Batticaloa, Batticaloa District"
+  ],
+  "blurb": "A long, quiet beach just south of Pasikudah with fewer hotels, fishing boats on the sand and room for long walks.",
+  "image": {
+   "file": "kalkudah-beach.jpg",
+   "small": "kalkudah-beach-sm.jpg",
+   "commons_file": "File:Kalkudah Beach.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kalkudah_Beach.jpg",
+   "author": "fazen",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "kallady-beach",
+  "name": "Kallady Beach",
+  "kind": "beach",
+  "region": "East Coast",
+  "lat": 7.7181,
+  "lng": 81.7189,
+  "nearest_towns": [
+   "Batticaloa, Batticaloa District",
+   "Pasikuda, Batticaloa District"
+  ],
+  "blurb": "A long, open beach across the lagoon bridge from Batticaloa town, quiet in the day and busy with local families at sunset.",
+  "image": {
+   "file": "kallady-beach.jpg",
+   "small": "kallady-beach-sm.jpg",
+   "commons_file": "File:Batticaloa kallady beach view.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Batticaloa_kallady_beach_view.jpg",
+   "author": "Srisar",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 778
+  }
+ },
+ {
+  "id": "kanniya-hot-springs",
+  "name": "Kanniya Hot Wells",
+  "kind": "heritage",
+  "region": "East Coast",
+  "lat": 8.6042,
+  "lng": 81.1712,
+  "nearest_towns": [
+   "Uppuveli, Trincomalee District",
+   "Trincomalee, Trincomalee District",
+   "Nilaveli, Trincomalee District"
+  ],
+  "blurb": "Seven small square wells of warm spring water near Trincomalee, each a slightly different temperature, where visitors pour buckets over themselves.",
+  "image": {
+   "file": "kanniya-hot-springs.jpg",
+   "small": "kanniya-hot-springs-sm.jpg",
+   "commons_file": "File:Kanniya hot springs.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kanniya_hot_springs.jpg",
+   "author": "K.shayanthan",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "koneswaram-temple",
+  "name": "Koneswaram Temple",
+  "kind": "temple",
+  "region": "East Coast",
+  "lat": 8.5825,
+  "lng": 81.2456,
+  "nearest_towns": [
+   "Trincomalee, Trincomalee District",
+   "Uppuveli, Trincomalee District",
+   "Nilaveli, Trincomalee District"
+  ],
+  "blurb": "A Hindu temple on the top of Swami Rock in Trincomalee, above sheer cliffs. Blue whales and dolphins are sometimes seen from the edge.",
+  "image": {
+   "file": "koneswaram-temple.jpg",
+   "small": "koneswaram-temple-sm.jpg",
+   "commons_file": "File:Koneswaram temple of Trincomalee 02.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Koneswaram_temple_of_Trincomalee_02.jpg",
+   "author": "Dr.S.Rajivraja",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "kudumbigala",
+  "name": "Kudumbigala Monastery",
+  "kind": "temple",
+  "region": "East Coast",
+  "lat": 6.6706,
+  "lng": 81.7438,
+  "nearest_towns": [
+   "Arugam Bay, Ampara District",
+   "Pottuvil, Ampara District"
+  ],
+  "blurb": "A forest hermitage of rock caves and ruins south of Arugam Bay. Climb the rock for views over forest and sea.",
+  "image": {
+   "file": "kudumbigala.jpg",
+   "small": "kudumbigala-sm.jpg",
+   "commons_file": "File:Kudumbigala Sanctuary.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kudumbigala_Sanctuary.jpg",
+   "author": "AntanO",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "kumana-national-park",
+  "name": "Kumana National Park",
+  "kind": "wildlife",
+  "region": "East Coast",
+  "lat": 6.65,
+  "lng": 81.77,
+  "nearest_towns": [
+   "Arugam Bay, Ampara District",
+   "Pottuvil, Ampara District"
+  ],
+  "blurb": "A remote park south of Arugam Bay with wetlands that fill with nesting water birds from April to July, plus elephants and leopards.",
+  "image": {
+   "file": "kumana-national-park.jpg",
+   "small": "kumana-national-park-sm.jpg",
+   "commons_file": "File:Kumana National Park (Kudumbigala Sanctuary).JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Kumana_National_Park_(Kudumbigala_Sanctuary).JPG",
+   "author": "AntanO",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "lahugala",
+  "name": "Lahugala Kitulana National Park",
+  "kind": "wildlife",
+  "region": "East Coast",
+  "lat": 6.883,
+  "lng": 81.715,
+  "nearest_towns": [
+   "Pottuvil, Ampara District",
+   "Arugam Bay, Ampara District"
+  ],
+  "blurb": "A small park inland from Pottuvil around a few reservoirs, where elephants often come out to feed on the tall grass in the dry season.",
+  "image": {
+   "file": "lahugala.jpg",
+   "small": "lahugala-sm.jpg",
+   "commons_file": "File:Lahugala Kitulana National Park.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Lahugala_Kitulana_National_Park.jpg",
+   "author": "Knthabrew",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 720
+  }
+ },
+ {
+  "id": "marble-beach",
+  "name": "Marble Beach",
+  "kind": "beach",
+  "region": "East Coast",
+  "lat": 8.51,
+  "lng": 81.205,
+  "nearest_towns": [
+   "Trincomalee, Trincomalee District",
+   "Uppuveli, Trincomalee District",
+   "Nilaveli, Trincomalee District"
+  ],
+  "blurb": "A sheltered bay south of Trincomalee run by the air force, with very clear, calm water and a beach with simple facilities.",
+  "image": {
+   "file": "marble-beach.jpg",
+   "small": "marble-beach-sm.jpg",
+   "commons_file": "File:Marble beach Trincomalee close view.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Marble_beach_Trincomalee_close_view.jpg",
+   "author": "Tstriker7",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 899
+  }
+ },
+ {
+  "id": "muhudu-maha-viharaya",
+  "name": "Muhudu Maha Viharaya",
+  "kind": "temple",
+  "region": "East Coast",
+  "lat": 6.88,
+  "lng": 81.837,
+  "nearest_towns": [
+   "Pottuvil, Ampara District",
+   "Arugam Bay, Ampara District"
+  ],
+  "blurb": "Ancient temple ruins among sand dunes on the beach at Pottuvil, with old Buddha statues looking out to sea.",
+  "image": {
+   "file": "muhudu-maha-viharaya.jpg",
+   "small": "muhudu-maha-viharaya-sm.jpg",
+   "commons_file": "File:Muhudu Maha Viharaya (මුහුදු මහා විහාරය).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Muhudu_Maha_Viharaya_(%E0%B6%B8%E0%B7%94%E0%B7%84%E0%B7%94%E0%B6%AF%E0%B7%94_%E0%B6%B8%E0%B7%84%E0%B7%8F_%E0%B7%80%E0%B7%92%E0%B7%84%E0%B7%8F%E0%B6%BB%E0%B6%BA).jpg",
+   "author": "Knthabrew",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 720
+  }
+ },
+ {
+  "id": "nilaveli-beach",
+  "name": "Nilaveli Beach",
+  "kind": "beach",
+  "region": "East Coast",
+  "lat": 8.695,
+  "lng": 81.195,
+  "nearest_towns": [
+   "Nilaveli, Trincomalee District",
+   "Uppuveli, Trincomalee District",
+   "Trincomalee, Trincomalee District"
+  ],
+  "blurb": "A long, quiet beach of pale sand north of Trincomalee with calm water from May to September and boats to Pigeon Island.",
+  "image": {
+   "file": "nilaveli-beach.jpg",
+   "small": "nilaveli-beach-sm.jpg",
+   "commons_file": "File:Nilaveli Beach (31254637808).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Nilaveli_Beach_(31254637808).jpg",
+   "author": "David Stanley from Nanaimo, Canada",
+   "license": "CC BY 2.0",
+   "license_url": "https://creativecommons.org/licenses/by/2.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "pasikudah-beach",
+  "name": "Pasikudah Beach",
+  "kind": "beach",
+  "region": "East Coast",
+  "lat": 7.9295,
+  "lng": 81.5613,
+  "nearest_towns": [
+   "Pasikuda, Batticaloa District",
+   "Batticaloa, Batticaloa District"
+  ],
+  "blurb": "A wide bay with a shallow, sandy shelf that stays waist deep a long way out, making it one of the calmest swimming beaches on the island.",
+  "image": {
+   "file": "pasikudah-beach.jpg",
+   "small": "pasikudah-beach-sm.jpg",
+   "commons_file": "File:Pasikudah beach.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Pasikudah_beach.JPG",
+   "author": "Anton Croos",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "pigeon-island",
+  "name": "Pigeon Island National Park",
+  "kind": "island",
+  "region": "East Coast",
+  "lat": 8.72,
+  "lng": 81.2,
+  "nearest_towns": [
+   "Nilaveli, Trincomalee District",
+   "Uppuveli, Trincomalee District",
+   "Trincomalee, Trincomalee District"
+  ],
+  "blurb": "A small island off Nilaveli with a shallow coral reef. Boats take snorkellers to see reef fish, turtles and blacktip reef sharks.",
+  "image": {
+   "file": "pigeon-island.jpg",
+   "small": "pigeon-island-sm.jpg",
+   "commons_file": "File:Pigeon_Island_National_Park,_Trincomalee.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Pigeon_Island_National_Park,_Trincomalee.jpg",
+   "author": "AntanO",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 960
+  }
+ },
+ {
+  "id": "pottuvil-lagoon",
+  "name": "Pottuvil Lagoon",
+  "kind": "lake",
+  "region": "East Coast",
+  "lat": 6.877,
+  "lng": 81.825,
+  "nearest_towns": [
+   "Pottuvil, Ampara District",
+   "Arugam Bay, Ampara District"
+  ],
+  "blurb": "A mangrove lagoon just north of Pottuvil, explored on short trips by traditional canoe to see birds, monkeys and crocodiles.",
+  "image": {
+   "file": "pottuvil-lagoon.jpg",
+   "small": "pottuvil-lagoon-sm.jpg",
+   "commons_file": "File:Fishermen .jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Fishermen_.jpg",
+   "author": "Milhan Meerasahib",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 993
+  }
+ },
+ {
+  "id": "trincomalee-war-cemetery",
+  "name": "Trincomalee War Cemetery",
+  "kind": "heritage",
+  "region": "East Coast",
+  "lat": 8.6156,
+  "lng": 81.2136,
+  "nearest_towns": [
+   "Uppuveli, Trincomalee District",
+   "Trincomalee, Trincomalee District",
+   "Nilaveli, Trincomalee District"
+  ],
+  "blurb": "A neatly kept Commonwealth cemetery for service people who died in and around Trincomalee during the Second World War.",
+  "image": {
+   "file": "trincomalee-war-cemetery.jpg",
+   "small": "trincomalee-war-cemetery-sm.jpg",
+   "commons_file": "File:Trincomalee War Cemetery.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Trincomalee_War_Cemetery.JPG",
+   "author": "Anton 17",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "uppuveli-beach",
+  "name": "Uppuveli Beach",
+  "kind": "beach",
+  "region": "East Coast",
+  "lat": 8.602,
+  "lng": 81.216,
+  "nearest_towns": [
+   "Uppuveli, Trincomalee District",
+   "Trincomalee, Trincomalee District",
+   "Nilaveli, Trincomalee District"
+  ],
+  "blurb": "A beach a few kilometres north of Trincomalee with guesthouses, restaurants and dive shops, calm and clear in the summer months.",
+  "image": {
+   "file": "uppuveli-beach.jpg",
+   "small": "uppuveli-beach-sm.jpg",
+   "commons_file": "File:Uppveli Beach in Trincomalee, Sri Lanka.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Uppveli_Beach_in_Trincomalee,_Sri_Lanka.jpg",
+   "author": "Honeplus",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "whiskey-point",
+  "name": "Whiskey Point",
+  "kind": "surf",
+  "region": "East Coast",
+  "lat": 6.892,
+  "lng": 81.83,
+  "nearest_towns": [
+   "Pottuvil, Ampara District",
+   "Arugam Bay, Ampara District"
+  ],
+  "blurb": "A sandy right-hand point north of Pottuvil with softer, slower waves than Main Point, good for beginners and longboarders.",
+  "image": {
+   "file": "whiskey-point.jpg",
+   "small": "whiskey-point-sm.jpg",
+   "commons_file": "File:Whiskey Point 2.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Whiskey_Point_2.jpg",
+   "author": "Kalana Jayatilake",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "casuarina-beach",
+  "name": "Casuarina Beach",
+  "kind": "beach",
+  "region": "North",
+  "lat": 9.76,
+  "lng": 79.88,
+  "nearest_towns": [
+   "Jaffna, Jaffna District"
+  ],
+  "blurb": "A shallow, calm beach on Karainagar island, reached by causeway from Jaffna, named after the casuarina trees along the sand.",
+  "image": {
+   "file": "casuarina-beach.jpg",
+   "small": "casuarina-beach-sm.jpg",
+   "commons_file": "File:Casurina beach.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Casurina_beach.jpg",
+   "author": "Vakeezan",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1066
+  }
+ },
+ {
+  "id": "jaffna-fort",
+  "name": "Jaffna Fort",
+  "kind": "heritage",
+  "region": "North",
+  "lat": 9.6621,
+  "lng": 80.0083,
+  "nearest_towns": [
+   "Jaffna, Jaffna District"
+  ],
+  "blurb": "A large star-shaped fort built by the Portuguese and rebuilt by the Dutch, with ramparts you can walk for views over the lagoon.",
+  "image": {
+   "file": "jaffna-fort.jpg",
+   "small": "jaffna-fort-sm.jpg",
+   "commons_file": "File:Jaffna_Fort_(1).jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Jaffna_Fort_(1).jpg",
+   "author": "Rehman Abubakr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "jaffna-public-library",
+  "name": "Jaffna Public Library",
+  "kind": "heritage",
+  "region": "North",
+  "lat": 9.6621,
+  "lng": 80.0118,
+  "nearest_towns": [
+   "Jaffna, Jaffna District"
+  ],
+  "blurb": "A white library in an Indo-Saracenic style, rebuilt after it was burnt in 1981 and an important symbol for the Tamil community.",
+  "image": {
+   "file": "jaffna-public-library.jpg",
+   "small": "jaffna-public-library-sm.jpg",
+   "commons_file": "File:Public_Library,_Jaffna.JPG",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Public_Library,_Jaffna.JPG",
+   "author": "Anton Croos",
+   "license": "CC BY-SA 3.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+   "width": 1600,
+   "height": 1065
+  }
+ },
+ {
+  "id": "kadurugoda-temple",
+  "name": "Kadurugoda Temple",
+  "kind": "temple",
+  "region": "North",
+  "lat": 9.75,
+  "lng": 80.0167,
+  "nearest_towns": [
+   "Jaffna, Jaffna District"
+  ],
+  "blurb": "A cluster of small ancient stupas in Chunnakam, north of Jaffna, the remains of a Buddhist monastery from the early centuries AD.",
+  "image": null
+ },
+ {
+  "id": "keerimalai-springs",
+  "name": "Keerimalai Springs",
+  "kind": "heritage",
+  "region": "North",
+  "lat": 9.8167,
+  "lng": 80.0,
+  "nearest_towns": [
+   "Jaffna, Jaffna District"
+  ],
+  "blurb": "Freshwater springs by the sea on the north coast, filled into stone bathing pools beside a Hindu temple. Locals come to swim.",
+  "image": {
+   "file": "keerimalai-springs.jpg",
+   "small": "keerimalai-springs-sm.jpg",
+   "commons_file": "File:Keerimalai Hot springs jaffna.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Keerimalai_Hot_springs_jaffna.jpg",
+   "author": "Walidh97sm",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "nainativu",
+  "name": "Nainativu Island",
+  "kind": "island",
+  "region": "North",
+  "lat": 9.6167,
+  "lng": 79.7667,
+  "nearest_towns": [
+   "Jaffna, Jaffna District"
+  ],
+  "blurb": "A small island reached by ferry from Kurikadduwan, with both the Hindu Nagapooshani Amman temple and the Buddhist Nagadeepa Vihara.",
+  "image": {
+   "file": "nainativu.jpg",
+   "small": "nainativu-sm.jpg",
+   "commons_file": "File:Nagadeepa Isaland.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Nagadeepa_Isaland.jpg",
+   "author": "Wanigasooriyaawanr",
+   "license": "CC BY-SA 4.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "width": 1600,
+   "height": 1200
+  }
+ },
+ {
+  "id": "nallur-kandaswamy",
+  "name": "Nallur Kandaswamy Temple",
+  "kind": "temple",
+  "region": "North",
+  "lat": 9.6745,
+  "lng": 80.0293,
+  "nearest_towns": [
+   "Jaffna, Jaffna District"
+  ],
+  "blurb": "Jaffna's largest Hindu temple, with a golden gopuram tower. Men remove their shirts to enter, and the 25-day festival takes place in August.",
+  "image": {
+   "file": "nallur-kandaswamy.jpg",
+   "small": "nallur-kandaswamy-sm.jpg",
+   "commons_file": "File:Nallur_Kandasamy_front_entrance.jpg",
+   "page_url": "https://commons.wikimedia.org/wiki/File:Nallur_Kandasamy_front_entrance.jpg",
+   "author": "Gane Kumaraswamy",
+   "license": "CC BY-SA 2.0",
+   "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "width": 1600,
+   "height": 1142
+  }
+ }
+]

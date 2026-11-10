@@ -329,6 +329,24 @@ every lead from *New* to *Website live*.
   data/pairs_sri_lanka_tourism.csv --provider fast --country "Sri Lanka" --state ""`,
   then `sync` (imports tourism only; `--all-industries` for everything).
   `python -m pipeline.sri_lanka segment` re-tags existing leads after rule changes.
+- **Sri Lanka tourism websites.** Tourism leads get their own preview template
+  (`pipeline/templates/tourism.html.j2`, `pipeline/tourism/`), one look per
+  family: stays, hostels, surf (the surfing chameleon), cafés, restaurants,
+  wellness, trips, rides and local shops. Each site is personalised from the
+  business's Google listing (cover photo, amenities, nightly price, hours,
+  coordinates), the real attractions nearest to it with travel times
+  (`data/attractions_sri_lanka.json`, Wikimedia Commons photos credited in the
+  footer), the drive from the airport and the season for its region. Copy rules
+  (no dashes, emoji or clichés) are tested in `tests/test_tourism_sites.py`.
+  1. `python -m pipeline.tourism_data pick --limit 1000` shows who is next
+     (every tourism category gets a share, chains are skipped);
+  2. `python -m pipeline.tourism_data fetch --limit 1000` reads their listings,
+     downloads cover photos and marks flyer-like ones with macOS Vision (`scan`);
+  3. `python -m pipeline.sri_lanka publish --limit 1000` assigns slugs and codes,
+     renders and pushes. Only photos a page shows are copied to the site,
+     recompressed, under `previewsite-assets/lk/`.
+  Drop `pipeline/tourism/video/surf-chameleon.mp4` (+ `.webp` poster) in to
+  replace the drawn chameleon with a video scrubbed by the pointer.
 - **Why the counts differ:** Lead Finder's Australia export is a prospect
   database, built separately from the tracker; it does not automatically import
   every prospect. The admin's full pipeline includes imported leads without

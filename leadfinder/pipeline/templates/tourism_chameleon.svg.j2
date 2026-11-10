@@ -1,0 +1,110 @@
+<svg class="chameleon" viewBox="70 110 570 430" role="img" aria-label="A chameleon surfing a wave" data-chameleon>
+  <defs>
+    <linearGradient id="cw-sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="var(--accent)"/>
+      <stop offset="1" stop-color="var(--deep)"/>
+    </linearGradient>
+    <linearGradient id="cw-face" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".55"/>
+      <stop offset=".5" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cw-skin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5fd18b"/>
+      <stop offset=".55" stop-color="#25a26f"/>
+      <stop offset="1" stop-color="#14735a"/>
+    </linearGradient>
+    <linearGradient id="cw-board" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="var(--soft)"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <pattern id="cw-scales" width="9" height="9" patternUnits="userSpaceOnUse">
+      <circle cx="4.5" cy="4.5" r="1.7" fill="#0c4e3c" opacity=".22"/>
+    </pattern>
+    <clipPath id="cw-turret"><circle cx="0" cy="0" r="19"/></clipPath>
+  </defs>
+
+  <!-- the wave -->
+  <g class="cw-wave">
+    <path d="M0 330 C90 300 150 240 230 200 C330 150 450 120 540 150 C600 170 640 210 640 210 L640 560 L0 560 Z" fill="url(#cw-sea)"/>
+    <path d="M540 150 C600 170 640 210 640 210 L640 560 L470 560 C520 470 560 380 560 300 C560 230 530 180 540 150 Z" fill="#000" opacity=".12"/>
+    <path d="M0 330 C90 300 150 240 230 200 C330 150 450 120 540 150 C580 162 612 186 628 200 C590 182 548 176 520 184 C470 198 455 238 470 262 C440 240 448 196 488 176 C430 170 360 186 300 214 C220 252 130 320 0 352 Z" fill="url(#cw-face)"/>
+    <path class="cw-lip" d="M486 176 C520 150 580 152 612 190 C590 176 556 172 532 184 C512 194 506 214 512 232 C494 216 488 194 486 176 Z" fill="#ffffff" opacity=".9"/>
+    <g class="cw-foam" fill="#ffffff">
+      <ellipse cx="80" cy="470" rx="46" ry="5" opacity=".35"/>
+      <ellipse cx="230" cy="500" rx="70" ry="6" opacity=".25"/>
+      <ellipse cx="420" cy="480" rx="56" ry="5" opacity=".3"/>
+      <ellipse cx="560" cy="430" rx="40" ry="4" opacity=".3"/>
+    </g>
+  </g>
+
+  <!-- rider: board + chameleon, bobbing together -->
+  <g class="cw-rider">
+    <!-- spray off the rail -->
+    <g class="cw-spray" fill="#ffffff">
+      <circle cx="132" cy="398" r="6" opacity=".7"/><circle cx="112" cy="384" r="4" opacity=".55"/>
+      <circle cx="98" cy="404" r="3" opacity=".5"/><circle cx="120" cy="414" r="5" opacity=".6"/>
+    </g>
+    <!-- board -->
+    <g transform="rotate(-9 330 390)">
+      <ellipse cx="330" cy="404" rx="210" ry="14" fill="#000" opacity=".18"/>
+      <path d="M128 392 C150 372 300 368 470 374 C522 376 548 384 548 392 C548 400 522 408 470 410 C300 416 150 412 128 392 Z" fill="url(#cw-board)"/>
+      <path d="M150 392 C300 386 420 386 540 390" stroke="var(--accent)" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M190 410 L176 432 L214 412 Z" fill="var(--deep)"/>
+    </g>
+
+    <!-- tail: a tight curl -->
+    <path class="cw-tail" d="M252 330 C214 346 182 336 176 310 C170 284 192 266 214 272 C234 278 236 302 220 306 C208 309 202 298 208 290"
+      fill="none" stroke="url(#cw-skin)" stroke-width="15" stroke-linecap="round"/>
+
+    <!-- back leg -->
+    <path d="M268 322 C250 336 238 352 236 372" fill="none" stroke="#1c8a62" stroke-width="16" stroke-linecap="round"/>
+    <path d="M224 376 C232 368 246 368 252 376" fill="none" stroke="#1c8a62" stroke-width="9" stroke-linecap="round"/>
+    <!-- back arm, thrown back for balance -->
+    <path d="M300 262 C278 246 258 236 236 236" fill="none" stroke="#1c8a62" stroke-width="12" stroke-linecap="round"/>
+    <path d="M238 228 C228 230 224 238 228 246" fill="none" stroke="#1c8a62" stroke-width="7" stroke-linecap="round"/>
+
+    <!-- body -->
+    <path d="M244 322 C232 272 278 230 336 226 C374 224 398 246 394 274 C390 304 350 322 300 330 C274 334 250 334 244 322 Z" fill="url(#cw-skin)"/>
+    <path d="M244 322 C232 272 278 230 336 226 C374 224 398 246 394 274 C390 304 350 322 300 330 C274 334 250 334 244 322 Z" fill="url(#cw-scales)"/>
+    <path d="M262 316 C290 314 330 306 372 286" fill="none" stroke="#c9f2cf" stroke-width="7" stroke-linecap="round" opacity=".75"/>
+    <!-- dorsal crest -->
+    <path d="M262 268 l8 -12 l4 14 l8 -14 l4 14 l9 -14 l3 14 l10 -13 l3 13 l10 -12 l2 12 l11 -10 l1 11" fill="#14735a"/>
+
+    <!-- front leg -->
+    <path d="M346 306 C370 320 384 338 390 360" fill="none" stroke="#25a26f" stroke-width="17" stroke-linecap="round"/>
+    <path d="M378 364 C386 356 400 356 406 364" fill="none" stroke="#25a26f" stroke-width="9" stroke-linecap="round"/>
+
+    <!-- head -->
+    <g class="cw-head">
+      <!-- far eye, peeking over the casque -->
+      <g class="cw-eye cw-eye-far" transform="translate(452 204)">
+        <circle r="15" fill="#1f9466"/>
+        <circle r="15" fill="url(#cw-scales)"/>
+        <g class="cw-pupil"><circle r="5.5" fill="#10201a"/><circle r="1.6" cx="-1.6" cy="-1.8" fill="#fff"/></g>
+      </g>
+      <path d="M372 248 C368 216 380 182 398 164 L408 156 C420 170 444 188 458 206 C468 220 472 232 466 242 C456 256 428 262 402 260 C388 258 376 256 372 248 Z" fill="url(#cw-skin)"/>
+      <path d="M372 248 C368 216 380 182 398 164 L408 156 C420 170 444 188 458 206 C468 220 472 232 466 242 C456 256 428 262 402 260 C388 258 376 256 372 248 Z" fill="url(#cw-scales)"/>
+      <path d="M420 250 C436 249 452 244 464 236" fill="none" stroke="#0e5a45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M392 238 C404 246 420 250 432 250" fill="none" stroke="#c9f2cf" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+      <!-- sunglasses pushed up on the casque -->
+      <g class="cw-shades" transform="rotate(-24 400 172)">
+        <rect x="380" y="164" width="22" height="15" rx="7" fill="#151a1f"/>
+        <rect x="406" y="164" width="22" height="15" rx="7" fill="#151a1f"/>
+        <path d="M402 170 h4" stroke="#151a1f" stroke-width="3"/>
+        <path d="M385 168 l8 0" stroke="#ffffff" stroke-width="2" opacity=".4" stroke-linecap="round"/>
+      </g>
+      <!-- near eye: the turret -->
+      <g class="cw-eye cw-eye-near" transform="translate(428 214)">
+        <circle r="19" fill="#2aa874"/>
+        <g clip-path="url(#cw-turret)" fill="none" stroke="#0f6249" stroke-width="1.6" opacity=".55">
+          <circle r="15"/><circle r="11"/><circle r="7.5"/>
+        </g>
+        <g class="cw-pupil"><circle r="6.5" fill="#10201a"/><circle r="2" cx="-2" cy="-2.2" fill="#fff"/></g>
+      </g>
+    </g>
+
+    <!-- front arm reaching forward -->
+    <path d="M370 262 C392 270 414 280 436 282" fill="none" stroke="#25a26f" stroke-width="12" stroke-linecap="round"/>
+    <path d="M436 274 C446 276 450 284 446 292" fill="none" stroke="#25a26f" stroke-width="7" stroke-linecap="round"/>
+  </g>
+</svg>

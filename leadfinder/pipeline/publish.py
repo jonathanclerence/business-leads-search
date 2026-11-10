@@ -133,12 +133,14 @@ def write_site_files(site_dir: Path, leads: List[Dict[str, Any]]) -> Dict[str, i
     for f in ASSET_SRC.iterdir():
         shutil.copyfile(f, assets / f.name)
 
+    from . import tourism_site
     wanted = set()
     written = 0
+    tourism = [l for l in leads if tourism_site.is_tourism(l)]
     for lead in leads:
         wanted.add(lead["slug"])
         target = pages / lead["slug"]
-        html = render(lead)
+        html = tourism_site.render(lead) if tourism_site.is_tourism(lead) else render(lead)
         if not target.exists() or target.read_text(encoding="utf-8") != html:
             target.write_text(html, encoding="utf-8")
             written += 1
@@ -147,6 +149,9 @@ def write_site_files(site_dir: Path, leads: List[Dict[str, Any]]) -> Dict[str, i
         if f.is_file() and f.name not in wanted and not f.name.startswith("."):
             f.unlink()
             removed += 1
+    # Sri Lanka tourism sites: their css/js/fonts, the businesses' own photos
+    # and the attraction photos, under previewsite-assets/lk/.
+    tourism_site.sync_assets(site_dir, tourism)
     codes = site_dir / config.CODES_FILE
     codes.parent.mkdir(parents=True, exist_ok=True)
     codes.write_text(json.dumps({l["code"]: l["slug"] for l in sorted(leads, key=lambda l: l["code"]) if l.get("code")},

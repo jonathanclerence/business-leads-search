@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en-GB" data-family="{{ family }}" data-variant="{{ variant }}" data-cat="{{ cat_slug }}"
+  style="--paper:{{ paper }};--ink:{{ ink }};--accent:{{ accent }};--accent-ink:{{ accent_ink }};--deep:{{ deep }};--soft:{{ soft }};--display:'{{ display_font }}';--display-weight:{{ display_weight }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ name }}, {{ town }}: website preview</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="pv-slug" content="{{ slug }}">
+<meta name="pv-ts" content="%%TURNSTILE_SITE_KEY%%">
+<meta name="theme-color" content="{{ paper }}">
+<link rel="preload" href="{{ lk }}/fonts/{{ display_font }}.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ lk }}/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+{% if hero %}<link rel="preload" as="image" href="{{ hero.url }}">{% endif %}
+<link rel="stylesheet" href="{{ lk }}/tourism.css?v={{ version }}">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+{% macro field(kind) %}
+  {% if kind in ('checkin', 'checkout', 'date') %}
+  <label class="f"><span>{{ {'checkin': 'Arrive', 'checkout': 'Leave', 'date': 'Date'}[kind] }}</span><input type="date" name="{{ kind }}" required></label>
+  {% elif kind in ('guests', 'people', 'beds') %}
+  <label class="f f-n"><span>{{ {'guests': 'Guests', 'people': 'People', 'beds': 'Beds'}[kind] }}</span>
+    <select name="{{ kind }}">{% for n in range(1, 9) %}<option{% if n == 2 %} selected{% endif %}>{{ n }}</option>{% endfor %}</select></label>
+  {% elif kind == 'time' %}
+  <label class="f"><span>Time</span><select name="time">{% for t in ['12:00', '12:30', '13:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'] %}<option{% if t == '19:30' %} selected{% endif %}>{{ t }}</option>{% endfor %}</select></label>
+  {% elif kind == 'level' %}
+  <label class="f"><span>Level</span><select name="level"><option>First time</option><option>Can stand up</option><option>Confident</option></select></label>
+  {% elif kind == 'treatment' %}
+  <label class="f"><span>Session</span><select name="treatment">{% for t, _ in offer %}<option>{{ t }}</option>{% endfor %}</select></label>
+  {% elif kind == 'from' %}
+  <label class="f f-wide"><span>From</span><select name="from"><option>Bandaranaike Airport (CMB)</option><option>Colombo city</option><option>Galle</option><option>Kandy</option><option>Ella</option><option>Somewhere else</option></select></label>
+  {% elif kind == 'to' %}
+  <label class="f f-wide"><span>To</span><input name="to" value="{{ ride_to }}" maxlength="60"></label>
+  {% elif kind == 'board' %}
+  <label class="f"><span>Board</span><select name="board"><option>Soft top</option><option>Longboard</option><option>Shortboard</option><option>Not sure, help me</option></select></label>
+  {% elif kind == 'days' %}
+  <label class="f f-n"><span>Days</span><select name="days">{% for n in [1, 2, 3, 5, 7, 14, 30] %}<option>{{ n }}</option>{% endfor %}</select></label>
+  {% elif kind == 'note' %}
+  <label class="f f-wide"><span>{{ 'Your order' if family == 'cafe' else 'Message' }}</span><input name="note" maxlength="140" placeholder="{{ 'Two flat whites, one bowl, at 8:30' if family == 'cafe' else 'What can we help with?' }}"></label>
+  {% endif %}
+{% endmacro %}
+{% macro bookform(where) %}
+<form class="book book-{{ where }}" data-book novalidate>
+  <div class="book-fields">{% for f in booking.fields %}{{ field(f) }}{% endfor %}</div>
+  <button class="btn btn-accent" type="submit">{{ booking.button }}</button>
+  <p class="book-done" role="status" hidden>Request ready for {{ name }}. On the finished site it goes straight to their WhatsApp. <button type="button" class="linkish" data-open>Make this site mine</button></p>
+</form>
+{% endmacro %}
+
+<div class="pv-bar" role="region" aria-label="Preview notice">
+  <p class="pv-bar-msg"><span class="pv-dot"></span><span>Preview made for <b data-bizname>{{ name }}</b></span>
+    <a class="pv-by" href="{{ brand_url }}" target="_blank" rel="noopener">by <b>{{ brand }}</b></a></p>
+  <div class="pv-bar-actions">
+    <button class="pv-btn" type="button" data-open>Make it mine</button>
+  </div>
+</div>
+
+<header class="nav" data-nav>
+  <nav class="glass nav-pill" aria-label="Main">
+    <a class="brand" href="#top" aria-label="{{ name }}, back to top"><span class="brand-mark" aria-hidden="true">{{ name[:1] }}</span><span class="brand-name">{{ name }}</span></a>
+    <span class="nav-sep" aria-hidden="true"></span>
+    <div class="nav-links">
+      <span class="nav-lens" aria-hidden="true"></span>
+      <a class="nav-link" href="#about">{{ nav[0] }}</a>
+      <a class="nav-link" href="#near">{{ 'Nearby' if nav[1] == 'Around us' else nav[1] }}</a>
+      <a class="nav-link" href="#visit">{{ 'Find us' if family not in ('trip', 'ride') else 'Contact' }}</a>
+    </div>
+    <a class="btn btn-ink nav-cta" href="#book">{{ booking.nav }}</a>
+    <button class="nav-burger" type="button" aria-expanded="false" aria-controls="nav-sheet" aria-label="Menu"><i></i><i></i></button>
+  </nav>
+  <div class="glass nav-sheet" id="nav-sheet" data-open="false">
+    <a href="#about">{{ nav[0] }}</a><a href="#near">Nearby</a><a href="#visit">{{ 'Find us' if family not in ('trip', 'ride') else 'Contact' }}</a><a href="#book">{{ booking.nav }}</a>
+  </div>
+</header>
+
+<main id="top">
+{# ------------------------------------------------------------- hero #}
+<section class="hero hero-{{ family }}" id="book">
+  {% if family == 'surf' %}
+  <div class="surf-scene{% if surf_video %} has-video{% endif %}" aria-hidden="true">
+    {% if surf_video %}
+    <video class="scrub" data-scrub muted playsinline preload="auto" poster="{{ lk }}/video/{{ surf_video }}.webp"><source src="{{ lk }}/video/{{ surf_video }}.mp4" type="video/mp4"></video>
+    {% else %}
+    {% include 'tourism_chameleon.svg.j2' %}
+    {% endif %}
+  </div>
+  <div class="hero-copy">
+    <h1 class="name name-{{ name_size }}" data-bizname>{{ name }}</h1>
+    <p class="headline">{{ headline }}</p>
+    {{ bookform('hero') }}
+  </div>
+  {% elif family == 'ride' %}
+  <div class="hero-copy">
+    <h1 class="name name-{{ name_size }}" data-bizname>{{ name }}</h1>
+    <p class="headline">{{ headline }}</p>
+    {% if airport %}<p class="route"><span class="route-a">Airport</span><span class="route-line" aria-hidden="true"><i></i></span><span class="route-b">{{ town }}</span><small>{{ town }} is {{ airport }}.</small></p>{% endif %}
+  </div>
+  <div class="hero-card">{{ bookform('hero') }}</div>
+  {% if hero %}<figure class="hero-photo"><img src="{{ hero.url }}" alt="{{ hero.place.name if hero.place else name }}" width="{{ hero.w }}" height="{{ hero.h }}"></figure>{% endif %}
+  {% else %}
+  {% if hero %}<figure class="hero-photo"><img src="{{ hero.url }}" alt="{{ hero.place.name if hero.place else name ~ ', ' ~ town }}" width="{{ hero.w }}" height="{{ hero.h }}" fetchpriority="high">{% if hero.place %}<figcaption>{{ hero.place.name }}, {{ hero.place.travel }}</figcaption>{% endif %}</figure>
+  {% else %}<figure class="hero-photo hero-mono" aria-hidden="true"><span>{{ monogram }}</span></figure>{% endif %}
+  <div class="hero-copy">
+    <h1 class="name name-{{ name_size }}" data-bizname>{{ name }}</h1>
+    <p class="headline">{{ headline }}</p>
+  </div>
+  {% if family in ('stay', 'hostel', 'dine', 'well', 'trip') %}
+  <div class="hero-card">
+    {% if family == 'trip' %}<p class="card-title">{{ booking.title }}</p>{% endif %}
+    {{ bookform('hero') }}
+    {% if price and family in ('stay', 'hostel') %}<p class="card-note">From {{ price }} a night on Google today. Book here for the direct rate.</p>{% endif %}
+  </div>
+  {% else %}
+  <div class="hero-actions"><a class="btn btn-accent" href="#visit">{{ 'Get directions' if family != 'cafe' or category != 'Coworking & coliving' else 'Book a day pass' }}</a>{% if phone %}<a class="btn btn-line" href="tel:{{ phone }}">Call {{ phone_display }}</a>{% endif %}</div>
+  {% endif %}
+  {% endif %}
+</section>
+
+{# ------------------------------------------------------------- intro #}
+<section class="intro" id="about">
+  <div class="wrap intro-grid">
+    <p class="intro-text">{{ intro }}</p>
+    <dl class="facts">
+      {% if rated %}<div><dt>Guests say</dt><dd><b>{{ rating }}</b> out of 5 from {{ reviews_fmt }} Google reviews</dd></div>{% endif %}
+      {% if airport and family in ('stay', 'hostel', 'surf', 'ride', 'trip') %}<div><dt>Getting here</dt><dd>{{ airport | ucfirst }}</dd></div>{% endif %}
+      {% if beach and family != 'ride' %}<div><dt>Closest beach</dt><dd>{{ beach.name }}, {{ beach.travel }}</dd></div>{% endif %}
+      {% if checkin %}<div><dt>Check in</dt><dd>{{ checkin.split(':', 1)[1].strip() if ':' in checkin and checkin.lower().startswith('check') else checkin }}</dd></div>{% endif %}
+      <div><dt>Best time to come</dt><dd>{{ season.when }}</dd></div>
+    </dl>
+  </div>
+</section>
+
+{# ------------------------------------------------------------- special #}
+{% if special == 'stay' %}
+<section class="sec stay-sec">
+  <div class="wrap two">
+    <div>
+      <h2 class="h2">{{ nav[0] }}</h2>
+      <ul class="offer-list">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
+    </div>
+    <div>
+      {% if photos|length > 1 %}<figure class="second-photo"><img src="{{ photos[1].url }}" alt="{{ name }}" loading="lazy" width="{{ photos[1].w }}" height="{{ photos[1].h }}"></figure>{% endif %}
+      {% if amenities %}
+      <h3 class="h3">At {{ name }}</h3>
+      <ul class="amenities">{% for a in amenities %}<li>{{ a }}</li>{% endfor %}</ul>
+      {% endif %}
+      {% if photos|length < 2 and not amenities and near %}
+      <figure class="second-photo place-fig"><img src="{{ lk }}/places/{{ near[0].image.file.rsplit('.', 1)[0] }}.webp" alt="{{ near[0].name }}" loading="lazy"><figcaption>{{ near[0].name }}, {{ near[0].travel }} from the door</figcaption></figure>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% elif special == 'hostel' %}
+<section class="sec hostel-sec">
+  <div class="wrap">
+    <h2 class="h2">What you get for your bed</h2>
+    <ul class="tags">{% for t, d in offer %}<li style="--r:{{ [-2, 1.5, -1, 2][loop.index0] }}deg"><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
+    {% if amenities %}<p class="amen-line">Also here: {{ amenities | join(', ') }}.</p>{% endif %}
+  </div>
+</section>
+{% elif special == 'surf' %}
+<section class="sec surf-sec">
+  <div class="wrap two">
+    <div>
+      <h2 class="h2">{{ 'Lessons' if category == 'Surf camps & surf schools' else 'Boards and kit' }}</h2>
+      {% if category == 'Surf camps & surf schools' %}
+      <ol class="ladder">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ol>
+      {% else %}
+      <ul class="offer-list">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
+      {% endif %}
+    </div>
+    <aside class="break-card">
+      <h3 class="h3">{{ surf_break.name if surf_break else 'The waves here' }}</h3>
+      {% if surf_break %}<p>{{ surf_break.blurb }}</p><p class="muted">{{ surf_break.travel | ucfirst }} from {{ name }}.</p>{% endif %}
+      <p><b>Season:</b> {{ season.extra or season.text }}</p>
+    </aside>
+  </div>
+</section>
+{% elif special == 'menu' %}
+<section class="sec menu-sec">
+  <div class="wrap">
+    <h2 class="h2">{{ 'What we pour and plate' if family == 'cafe' and category == 'Cafés' else 'On the menu' if family == 'dine' else 'How it works' }}</h2>
+    <div class="menu-board">{% for t, d in offer %}<div class="menu-row"><h3>{{ t }}</h3><span class="dots" aria-hidden="true"></span><p>{{ d }}</p></div>{% endfor %}</div>
+    {% if hours %}<p class="menu-hours">Open today: <b data-today='{{ hours | tojson }}'>{{ hours[0][1] }}</b></p>{% endif %}
+  </div>
+</section>
+{% elif special == 'well' %}
+<section class="sec well-sec">
+  <div class="wrap two">
+    <div>
+      <h2 class="h2">Treatments and classes</h2>
+      <ul class="offer-list">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
+    </div>
+    <div>
+      {% if hours %}
+      <h3 class="h3">Opening hours</h3>
+      <table class="hours">{% for d, h in hours %}<tr><th>{{ d }}</th><td>{{ h }}</td></tr>{% endfor %}</table>
+      {% else %}
+      <p class="quiet-note">Sessions run every day. Message us the day and time that suits you and we confirm within the hour.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% elif special == 'trip' %}
+<section class="sec trip-sec">
+  <div class="wrap two">
+    <div>
+      <h2 class="h2">{{ 'A typical route' if category == 'Tour operators & travel agents' else 'How the day goes' }}</h2>
+      <ol class="timeline">{% for t, d in itinerary %}<li><time>{{ t }}</time><p>{{ d }}</p></li>{% endfor %}</ol>
+    </div>
+    <div>
+      <h3 class="h3">Included</h3>
+      <ul class="checks">{% for i in included %}<li>{{ i }}</li>{% endfor %}</ul>
+      <div class="season-box"><h3 class="h3">When to go</h3><p>{{ season.extra or season.text }}</p></div>
+    </div>
+  </div>
+</section>
+{% elif special == 'ride' %}
+<section class="sec ride-sec">
+  <div class="wrap">
+    <h2 class="h2">Ways to get around</h2>
+    <ul class="fleet">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
+  </div>
+</section>
+{% else %}
+<section class="sec local-sec">
+  <div class="wrap two">
+    <ul class="offer-list">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
+    {% if hours %}<table class="hours">{% for d, h in hours %}<tr><th>{{ d }}</th><td>{{ h }}</td></tr>{% endfor %}</table>{% endif %}
+  </div>
+</section>
+{% endif %}
+
+{# ------------------------------------------------------------- nearby #}
+{% if near %}
+<section class="sec near" id="near">
+  <div class="wrap near-head">
+    <h2 class="h2">Around {{ town }}</h2>
+    <p>Places our guests ask about, with the time it takes to get there from {{ name }}.</p>
+  </div>
+  <div class="rail" tabindex="0" aria-label="Places near {{ name }}">
+    {% for a in near %}
+    <article class="place">
+      <img src="{{ lk }}/places/{{ a.image.file.rsplit('.', 1)[0] }}.webp" alt="{{ a.name }}" loading="lazy" width="{{ a.image.width or 1600 }}" height="{{ a.image.height or 1067 }}">
+      <div class="place-text">
+        <h3>{{ a.name }}</h3>
+        {% if a.travel %}<p class="place-time">{{ a.travel | ucfirst }}</p>{% endif %}
+        <p>{{ a.blurb }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{# ------------------------------------------------------------- visit #}
+<section class="sec visit" id="visit">
+  <div class="wrap two">
+    <div>
+      <h2 class="h2">{{ 'Find us' if family not in ('trip', 'ride') else 'Talk to us' }}</h2>
+      {% if address %}<p class="addr">{{ address }}</p>{% endif %}
+      <div class="visit-actions">
+        {% if phone %}<a class="btn btn-accent" href="{{ wa }}" target="_blank" rel="noopener">WhatsApp us</a><a class="btn btn-line" href="tel:{{ phone }}">{{ phone_display }}</a>{% endif %}
+        <a class="btn btn-line" href="{{ maps_link }}" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+    </div>
+    <div>
+      {% if family in ('stay', 'hostel', 'trip') %}
+      <dl class="facts facts-dark">
+        {% if airport %}<div><dt>From the airport</dt><dd>{{ airport | ucfirst }}</dd></div>{% endif %}
+        {% if checkin %}<div><dt>Check in</dt><dd>{{ checkin.split(':', 1)[1].strip() if ':' in checkin and checkin.lower().startswith('check') else checkin }}</dd></div>{% endif %}
+        <div><dt>Weather</dt><dd>{{ season.text }}</dd></div>
+      </dl>
+      {% elif hours and special not in ('well', 'local') %}
+      <table class="hours">{% for d, h in hours %}<tr><th>{{ d }}</th><td>{{ h }}</td></tr>{% endfor %}</table>
+      {% else %}
+      <p class="quiet-note">{{ season.text }}</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <p class="foot-name">{{ name }}</p>
+    <p>{{ town }}{% if district and district != town %}, {{ district }} District{% endif %}, Sri Lanka</p>
+    <p class="foot-small">&copy; {{ year }} {{ name }}. Website preview by <a href="{{ brand_url }}" target="_blank" rel="noopener">{{ brand }}</a>.</p>
+    {% if credits %}
+    <details class="credits"><summary>Photo credits</summary>
+      <ul>{% for a in credits %}<li>{{ a.name }}: <a href="{{ a.image.page_url }}" target="_blank" rel="noopener">{{ a.image.author or 'Wikimedia Commons' }}</a>, <a href="{{ a.image.license_url or a.image.page_url }}" target="_blank" rel="noopener">{{ a.image.license }}</a></li>{% endfor %}</ul>
+    </details>
+    {% endif %}
+  </div>
+</footer>
+
+<a class="dock btn btn-accent" href="#book" data-dock>{{ booking.nav }}</a>
+
+<dialog class="pv-sheet" id="pv-sheet" aria-labelledby="pv-title">
+  <form id="pv-form" novalidate>
+    <div class="pv-head">
+      <h2 id="pv-title">{{ "Like it? Make it yours." if checkout_url else "Like it? Let's finish it." }}</h2>
+      <button class="pv-close" type="button" data-close aria-label="Close">Close</button>
+    </div>
+    <p class="pv-sub">This is a first draft we made for <b data-bizname>{{ name }}</b>. We finish it with your photos, rooms or menu and prices, and put it live on your own web address (like {{ domain_hint }}).</p>
+    {% if checkout_url %}
+    <div class="pv-buy"><a class="pv-btn pv-buy-btn" href="{{ checkout_url }}">Buy it now</a><p>Choose a package and place your order. We email your invoice.</p></div>
+    <p class="pv-or"><span>or send us a question first</span></p>
+    {% endif %}
+    {% if info_pack %}<a class="pv-pack" href="{{ assets }}/{{ info_pack }}" target="_blank" rel="noopener"><span><b>Prices and info pack</b><small>Packages in LKR, hosting, our agreement and the onboarding form (PDF)</small></span></a>{% endif %}
+    <p class="pv-look" hidden></p>
+    <input type="hidden" name="intent" value="buy">
+    <input type="hidden" name="slug" value="{{ slug }}">
+    <input type="hidden" name="business" value="{{ name }}">
+    <div class="pv-hp" aria-hidden="true"><label>Company website<input name="hp" tabindex="-1" autocomplete="off"></label></div>
+    <div class="pv-grid">
+      <label><span>Your name</span><input name="name" required maxlength="80" autocomplete="name"></label>
+      <label><span>Mobile <i>(optional)</i></span><input name="phone" type="tel" maxlength="25" autocomplete="tel"></label>
+    </div>
+    <label><span>Email</span><input name="email" type="email" required maxlength="254" autocomplete="email"></label>
+    <label><span>Web address you'd like <i>(optional)</i></span><input name="domain" maxlength="100" placeholder="{{ domain_hint }}"></label>
+    <label><span>Anything you'd change? <i>(optional)</i></span><textarea name="message" rows="3" maxlength="1500" placeholder="Photos, rooms, prices, colours"></textarea></label>
+    <div class="pv-ts"></div>
+    <p class="pv-status" role="status" aria-live="polite"></p>
+    <button class="pv-btn pv-submit" type="submit">Send</button>
+    <p class="pv-alt">Prefer to talk? Call <a href="{{ phone_href }}">{{ brand_phone }}</a> or <a href="{{ whatsapp_href }}" target="_blank" rel="noopener">WhatsApp {{ whatsapp_display }}</a></p>
+  </form>
+</dialog>
+<script src="{{ lk }}/tourism.js?v={{ version }}" defer></script>
+<script src="{{ assets }}/preview.js?v={{ version }}" defer></script>
+</body>
+</html>

@@ -441,18 +441,15 @@ def publish_previews(limit: int = 100, push: bool = True, reset_worktree: bool =
         active_rows = con.execute(f'SELECT name, search_town FROM {tbl} WHERE slug IS NOT NULL').fetchall()
         seen_keys = {lead_tools.business_key(r['name'], (r['search_town'] or '').split(',')[0]) for r in active_rows}
 
-        candidates = con.execute(
-            f"SELECT id, name, category, sector, search_town FROM {tbl} WHERE stage = 'new' AND slug IS NULL ORDER BY (CASE WHEN industry = 'Tourism' THEN 0 ELSE 1 END), score DESC, reviews DESC, id LIMIT ?",
-            (limit * 4,),
-        ).fetchall()
+        # Tourism businesses, every tourism category represented, no chains
+        # (tourism_data.pick). They get the tourism template (tourism_site).
+        from . import tourism_data
+        candidates = tourism_data.pick(con, limit)
 
         picked = []
         for r in candidates:
             row = dict(r)
             town = (row.get('search_town') or '').split(',')[0].strip()
-            kind = lead_tools.classify(row.get('category') or '', row.get('sector') or '', row.get('name') or '')
-            if kind == 'local' or lead_tools.is_chain(row['name']):
-                continue
             bkey = lead_tools.business_key(row['name'], town)
             if bkey in seen_keys:
                 continue
@@ -486,14 +483,18 @@ def publish_previews(limit: int = 100, push: bool = True, reset_worktree: bool =
             [(lid, ts, f'Published preview {config.preview_url(slug)} (code: {code})') for lid, slug, code, _ in picked],
         )
 
-        target = pub.prepare_worktree(log) if reset_worktree else config.PUBLISH_WORKTREE
-        if reset_worktree:
-            pub.refresh_info_pack(log)
+
+    # Rendering, photo compression and the git push take minutes: do them with
+    # no transaction open, so the live tracker never waits on this.
+    with connect() as con:
         all_leads = pub.active_leads(con) + pub.active_lk_leads(con)
-        log(f'Rendering {len(all_leads)} total preview pages (+{len(picked)} new Sri Lanka sites)…')
-        stats = pub.write_site_files(target, all_leads)
-        msg = f"Sri Lanka previews: +{len(picked)} new ({len(all_leads)} total live)"
-        committed = pub.commit_and_push(target, msg, push, log)
+    target = pub.prepare_worktree(log) if reset_worktree else config.PUBLISH_WORKTREE
+    if reset_worktree:
+        pub.refresh_info_pack(log)
+    log(f'Rendering {len(all_leads)} total preview pages (+{len(picked)} new Sri Lanka sites)…')
+    stats = pub.write_site_files(target, all_leads)
+    msg = f"Sri Lanka previews: +{len(picked)} new ({len(all_leads)} total live)"
+    committed = pub.commit_and_push(target, msg, push, log)
 
     return {
         'new': len(picked),
