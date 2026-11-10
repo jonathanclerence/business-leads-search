@@ -11,7 +11,8 @@
 <meta name="theme-color" content="{{ paper }}">
 <link rel="preload" href="{{ lk }}/fonts/{{ display_font }}.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ lk }}/fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
-{% if hero %}<link rel="preload" as="image" href="{{ hero.url }}">{% endif %}
+{% if family == 'surf' and surf_video %}<link rel="preload" as="image" href="{{ lk }}/video/{{ surf_video }}.avif" type="image/avif">{% endif %}
+{% if hero and family != 'surf' %}<link rel="preload" as="image" href="{{ hero.url }}"{% if hero.srcset %} imagesrcset="{{ hero.srcset }}" imagesizes="{{ hero_sizes }}"{% endif %}>{% endif %}
 <link rel="stylesheet" href="{{ lk }}/tourism.css?v={{ version }}">
 <script>document.documentElement.classList.add("js")</script>
 </head>
@@ -40,6 +41,7 @@
   <label class="f f-wide"><span>{{ 'Your order' if family == 'cafe' else 'Message' }}</span><input name="note" maxlength="140" placeholder="{{ 'Two flat whites, one bowl, at 8:30' if family == 'cafe' else 'What can we help with?' }}"></label>
   {% endif %}
 {% endmacro %}
+{% macro pic(p, sizes, alt, lazy=False, high=False) %}<img src="{{ p.url }}"{% if p.srcset %} srcset="{{ p.srcset }}" sizes="{{ sizes }}"{% endif %} alt="{{ alt }}" width="{{ p.w }}" height="{{ p.h }}"{% if lazy %} loading="lazy"{% endif %}{% if high %} fetchpriority="high"{% endif %} decoding="async">{% endmacro %}
 {% macro bookform(where) %}
 <form class="book book-{{ where }}" data-book novalidate>
   <div class="book-fields">{% for f in booking.fields %}{{ field(f) }}{% endfor %}</div>
@@ -76,14 +78,23 @@
 
 <main id="top">
 {# ------------------------------------------------------------- hero #}
-<section class="hero hero-{{ family }}" id="book">
-  {% if family == 'surf' %}
-  <div class="surf-scene{% if surf_video %} has-video{% endif %}" aria-hidden="true">
-    {% if surf_video %}
-    <video class="scrub" data-scrub muted playsinline preload="auto" poster="{{ lk }}/video/{{ surf_video }}.webp"><source src="{{ lk }}/video/{{ surf_video }}.mp4" type="video/mp4"></video>
-    {% else %}
+<section class="hero hero-{{ family }}{% if family == 'surf' and surf_video %} has-video{% endif %}" id="book">
+  {% if family == 'surf' and surf_video %}
+  <div class="surf-video" aria-hidden="true" data-surf-stage
+       data-sm="{{ lk }}/video/ride-sm.mp4" data-lg="{{ lk }}/video/ride-lg.mp4">
+    <picture><source srcset="{{ lk }}/video/{{ surf_video }}.avif" type="image/avif"><img class="surf-poster" src="{{ lk }}/video/{{ surf_video }}.jpg" alt="" fetchpriority="high"></picture>
+    <video class="ride ride-f on" muted playsinline disablepictureinpicture disableremoteplayback preload="none"></video>
+    <video class="ride ride-r" muted playsinline disablepictureinpicture disableremoteplayback preload="none"></video>
+    <span class="ride-hint">Drag sideways to ride</span>
+  </div>
+  <div class="hero-copy">
+    <h1 class="name name-{{ name_size }}" data-bizname>{{ name }}</h1>
+    <p class="headline">{{ headline }}</p>
+    {{ bookform('hero') }}
+  </div>
+  {% elif family == 'surf' %}
+  <div class="surf-scene" aria-hidden="true">
     {% include 'tourism_chameleon.svg.j2' %}
-    {% endif %}
   </div>
   <div class="hero-copy">
     <h1 class="name name-{{ name_size }}" data-bizname>{{ name }}</h1>
@@ -97,9 +108,9 @@
     {% if airport %}<p class="route"><span class="route-a">Airport</span><span class="route-line" aria-hidden="true"><i></i></span><span class="route-b">{{ town }}</span><small>{{ town }} is {{ airport }}.</small></p>{% endif %}
   </div>
   <div class="hero-card">{{ bookform('hero') }}</div>
-  {% if hero %}<figure class="hero-photo"><img src="{{ hero.url }}" alt="{{ hero.place.name if hero.place else name }}" width="{{ hero.w }}" height="{{ hero.h }}"></figure>{% endif %}
+  {% if hero %}<figure class="hero-photo">{{ pic(hero, hero_sizes, hero.place.name if hero.place else name) }}</figure>{% endif %}
   {% else %}
-  {% if hero %}<figure class="hero-photo"><img src="{{ hero.url }}" alt="{{ hero.place.name if hero.place else name ~ ', ' ~ town }}" width="{{ hero.w }}" height="{{ hero.h }}" fetchpriority="high">{% if hero.place %}<figcaption>{{ hero.place.name }}, {{ hero.place.travel }}</figcaption>{% endif %}</figure>
+  {% if hero %}<figure class="hero-photo">{{ pic(hero, hero_sizes, hero.place.name if hero.place else name ~ ', ' ~ town, high=True) }}{% if hero.place %}<figcaption>{{ hero.place.name }}, {{ hero.place.travel }}</figcaption>{% endif %}</figure>
   {% else %}<figure class="hero-photo hero-mono" aria-hidden="true"><span>{{ monogram }}</span></figure>{% endif %}
   <div class="hero-copy">
     <h1 class="name name-{{ name_size }}" data-bizname>{{ name }}</h1>
@@ -120,7 +131,10 @@
 {# ------------------------------------------------------------- intro #}
 <section class="intro" id="about">
   <div class="wrap intro-grid">
-    <p class="intro-text">{{ intro }}</p>
+    <div class="intro-main">
+      <p class="intro-text">{{ intro }}</p>
+      {% if own_inline %}<figure class="own-photo">{{ pic(own_inline, '(min-width: 900px) 560px, 92vw', name ~ ', ' ~ town, lazy=True) }}</figure>{% endif %}
+    </div>
     <dl class="facts">
       {% if rated %}<div><dt>Guests say</dt><dd><b>{{ rating }}</b> out of 5 from {{ reviews_fmt }} Google reviews</dd></div>{% endif %}
       {% if airport and family in ('stay', 'hostel', 'surf', 'ride', 'trip') %}<div><dt>Getting here</dt><dd>{{ airport | ucfirst }}</dd></div>{% endif %}
@@ -140,13 +154,13 @@
       <ul class="offer-list">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
     </div>
     <div>
-      {% if photos|length > 1 %}<figure class="second-photo"><img src="{{ photos[1].url }}" alt="{{ name }}" loading="lazy" width="{{ photos[1].w }}" height="{{ photos[1].h }}"></figure>{% endif %}
+      {% if photos|length > 1 %}<figure class="second-photo">{{ pic(photos[1], '(min-width: 900px) 45vw, 92vw', name, lazy=True) }}</figure>{% endif %}
       {% if amenities %}
       <h3 class="h3">At {{ name }}</h3>
       <ul class="amenities">{% for a in amenities %}<li>{{ a }}</li>{% endfor %}</ul>
       {% endif %}
       {% if photos|length < 2 and not amenities and near %}
-      <figure class="second-photo place-fig"><img src="{{ lk }}/places/{{ near[0].image.file.rsplit('.', 1)[0] }}.webp" alt="{{ near[0].name }}" loading="lazy"><figcaption>{{ near[0].name }}, {{ near[0].travel }} from the door</figcaption></figure>
+      <figure class="second-photo place-fig">{{ pic(near[0].pic, '(min-width: 900px) 45vw, 92vw', near[0].name, lazy=True) }}<figcaption>{{ near[0].name }}, {{ near[0].travel }} from the door</figcaption></figure>
       {% endif %}
     </div>
   </div>
@@ -242,7 +256,7 @@
   <div class="rail" tabindex="0" aria-label="Places near {{ name }}">
     {% for a in near %}
     <article class="place">
-      <img src="{{ lk }}/places/{{ a.image.file.rsplit('.', 1)[0] }}.webp" alt="{{ a.name }}" loading="lazy" width="{{ a.image.width or 1600 }}" height="{{ a.image.height or 1067 }}">
+      {{ pic(a.pic, '(min-width: 600px) 360px, 78vw', a.name, lazy=True) }}
       <div class="place-text">
         <h3>{{ a.name }}</h3>
         {% if a.travel %}<p class="place-time">{{ a.travel | ucfirst }}</p>{% endif %}

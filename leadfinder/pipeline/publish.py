@@ -217,6 +217,18 @@ def publish(grades: Sequence[str] = ("Hot",), limit: Optional[int] = None, min_s
     Stage changes share one transaction with the publish: if the commit or
     push fails, nothing is marked as published.
     """
+    if limit == 0 and not local:
+        # Re-render only: read the live list, then render and push with no
+        # transaction open (a large push must never make the tracker wait).
+        with db.connect() as con:
+            assign_codes(con, [l["slug"] for l in active_leads(con)])
+            leads = active_leads(con) + active_lk_leads(con)
+        target = prepare_worktree(log)
+        refresh_info_pack(log)
+        log(f"Rendering {len(leads)} preview pages (0 new)…")
+        stats = write_site_files(target, leads)
+        committed = commit_and_push(target, f"Previews: {stats['pages']} live (+0 new, {stats['removed']} removed)", push, log)
+        return {"new": 0, **stats, "pushed": committed and push, "new_slugs": []}
     with db.connect() as con:
         fresh = select_new(con, grades, limit, min_score, regions, kinds)
         target = config.MARKETING_SITE_DIR if local else prepare_worktree(log)

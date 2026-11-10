@@ -245,6 +245,131 @@ def scan_text(log=print) -> Dict[str, int]:
     return {'scanned': len(results), 'flyers': flyers}
 
 
+# --------------------------------------------------------------------------
+# Sharp images for the published sites: every photo a site shows, from the
+# original (up to 2560 px), as AVIF at 1920 and 960 px wide. Pages pick one
+# with srcset. Business photos come from Google, attractions from Commons.
+# --------------------------------------------------------------------------
+WEB = ROOT / 'batches/sri-lanka/web'
+WIDTHS = (1920, 960)
+QUALITY = {1920: 60, 960: 56}
+UA = {'User-Agent': 'DuNousPreviewBuilder/1.0 (https://www.dunous.com)'}
+
+
+def web_name(stem: str, width: int) -> str:
+    return f'{stem}-{width}.avif'
+
+
+BUDGET = {1920: 430_000, 960: 165_000}  # bytes; quality steps down to fit
+
+
+def _encode(data: bytes, stem: str) -> Dict[str, Any]:
+    from PIL import Image, ImageOps
+    img = ImageOps.exif_transpose(Image.open(io.BytesIO(data))).convert('RGB')
+    WEB.mkdir(parents=True, exist_ok=True)
+    out = {'src_w': img.width, 'src_h': img.height, 'files': {}}
+    for w in WIDTHS:
+        if w != min(WIDTHS) and img.width <= min(WIDTHS):
+            continue  # no bigger file than the original has pixels for
+        # Fit within w wide and 1.1 w tall (portrait photos are cropped anyway).
+        scale = min(1.0, w / img.width, (w * 1.1) / img.height)
+        im = img.resize((round(img.width * scale), round(img.height * scale)), Image.LANCZOS) if scale < 1 else img
+        q = QUALITY[w]
+        while True:
+            buf = io.BytesIO()
+            im.save(buf, 'AVIF', quality=q, speed=6)
+            if buf.tell() <= BUDGET[w] or q <= 42:
+                break
+            q -= 6
+        (WEB / web_name(stem, w)).write_bytes(buf.getvalue())
+        out['files'][w] = [im.width, im.height]
+    return out
+
+
+def shown_photos(lead: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """The business photos a site shows: the first usable one, two for stays."""
+    from .tourism_copy import FAMILY
+    det = details(lead['id'])
+    usable_ = [p for p in det.get('photo_files') or [] if not is_flyer(p)]
+    return usable_[:2 if FAMILY.get(lead.get('tourism_category') or '') == 'stay' else 1]
+
+
+async def build_web(leads: List[Dict[str, Any]], workers: int = 6, log=print) -> Dict[str, int]:
+    """Download originals and write the sharp AVIFs for these leads' photos and
+    every attraction photo. Already-built images are skipped."""
+    import concurrent.futures
+    import httpx
+    pool = concurrent.futures.ThreadPoolExecutor(workers)
+    loop = asyncio.get_running_loop()
+    sem = asyncio.Semaphore(workers)
+    stats = {'photos': 0, 'places': 0, 'skipped': 0, 'failed': 0}
+
+    async def one(client, url: str, stem: str, kind: str, record: Dict[str, Any]):
+        if record.get('web') and all((WEB / web_name(stem, int(w))).exists() for w in record['web']['files']):
+            stats['skipped'] += 1
+            return
+        async with sem:
+            for attempt in range(5):
+                try:
+                    r = await client.get(url)
+                    if r.status_code == 429:  # Google's CDN asks us to slow down
+                        await asyncio.sleep(15 * (attempt + 1))
+                        continue
+                    r.raise_for_status()
+                    record['web'] = await loop.run_in_executor(pool, _encode, r.content, stem)
+                    stats[kind] += 1
+                    break
+                except Exception as exc:  # noqa: BLE001
+                    if attempt == 4:
+                        stats['failed'] += 1
+                        log(f'  {stem}: {exc}')
+                    else:
+                        await asyncio.sleep(5)
+            else:
+                stats['failed'] += 1
+            await asyncio.sleep(0.4)
+
+    async with httpx.AsyncClient(timeout=60, headers=UA, follow_redirects=True) as client:
+        # Business photos: Google serves the original size up to the cap.
+        jobs, touched = [], {}
+        for lead in leads:
+            f = DETAILS / f"{place_key(lead['id'])}.json"
+            if not f.exists():
+                continue
+            info = touched.setdefault(f, json.loads(f.read_text()))
+            wanted = {p['file'] for p in shown_photos(lead)}
+            originals = {p['url'] for p in info.get('photos', [])}
+            for ph in info.get('photo_files') or []:
+                if ph['file'] not in wanted:
+                    continue
+                idx = int(ph['file'].rsplit('-', 1)[1].split('.')[0])
+                src = [p for p in info.get('photos', []) if usable(p)][idx]['url'] if originals else None
+                if src:
+                    jobs.append(one(client, src + '=w2560-h2560-k-no', ph['file'].rsplit('.', 1)[0], 'photos', ph))
+        # Attractions: Commons thumbnail at 1920 px (a standard width).
+        places = attractions()
+        titles = [a['image']['commons_file'] for a in places if a.get('image')]
+        thumbs = {}
+        for i in range(0, len(titles), 40):
+            r = await client.get('https://commons.wikimedia.org/w/api.php', params={
+                'action': 'query', 'format': 'json', 'prop': 'imageinfo', 'iiprop': 'url', 'iiurlwidth': 1920,
+                'titles': '|'.join(titles[i:i + 40])})
+            data = r.json().get('query', {})
+            norm = {n['to']: n['from'] for n in data.get('normalized', [])}
+            for page in data.get('pages', {}).values():
+                info_ = (page.get('imageinfo') or [{}])[0]
+                thumbs[norm.get(page['title'], page['title'])] = info_.get('thumburl') or info_.get('url')
+        for a in places:
+            if a.get('image') and thumbs.get(a['image']['commons_file']):
+                jobs.append(one(client, thumbs[a['image']['commons_file']], 'place-' + a['id'], 'places', a['image']))
+        await asyncio.gather(*jobs)
+        for f, info in touched.items():
+            f.write_text(json.dumps(info, ensure_ascii=False, indent=1))
+        ATTRACTIONS_JSON.write_text(json.dumps(places, ensure_ascii=False, indent=1) + '\n')
+    pool.shutdown()
+    return stats
+
+
 def details(lead_id: str) -> Dict[str, Any]:
     f = DETAILS / f'{place_key(lead_id)}.json'
     return json.loads(f.read_text()) if f.exists() else {}
@@ -319,12 +444,20 @@ def nearest(lat: Optional[float], lng: Optional[float], kinds, radius: float = 2
 def main() -> None:
     from . import db
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('action', choices=['pick', 'fetch', 'scan'])
+    ap.add_argument('action', choices=['pick', 'fetch', 'scan', 'web'])
+    ap.add_argument('--workers', type=int, default=6)
+    ap.add_argument('--live', action='store_true', help='web: every tourism lead with a published site')
     ap.add_argument('--limit', type=int, default=1000)
     ap.add_argument('--rate', type=float, default=2.0)
     args = ap.parse_args()
     with db.connect() as con:
-        leads = pick(con, args.limit)
+        if args.live:
+            leads = [dict(r) for r in con.execute("SELECT * FROM lk_leads WHERE slug IS NOT NULL AND industry = 'Tourism'")]
+        else:
+            leads = pick(con, args.limit)
+    if args.action == 'web':
+        print(json.dumps(asyncio.run(build_web(leads, workers=args.workers)), indent=1))
+        return
     if args.action == 'pick':
         from collections import Counter
         print(len(leads), 'businesses')

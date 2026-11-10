@@ -112,6 +112,27 @@ def place_url(name: str) -> str:
     return f"/previewsite-assets/{LK_ASSETS}/places/{name.rsplit('.', 1)[0]}.webp"
 
 
+FULL_BLEED_MIN = 1600  # px of original width a photo needs to fill the screen sharply
+
+
+def picture(stem: str, web: Dict[str, Any], folder: str, fallback: str, w: int = 1600, h: int = 1067) -> Dict[str, Any]:
+    """An image for the template: sharp AVIFs with a srcset when built
+    (tourism_data.build_web), else the older single file."""
+    base = f"/previewsite-assets/{LK_ASSETS}/{folder}"
+    files = {int(k): v for k, v in ((web or {}).get('files') or {}).items()}
+    if files:
+        big = max(files)
+        return {'url': f"{base}/{data.web_name(stem, big)}", 'w': files[big][0], 'h': files[big][1],
+                'srcset': ', '.join(f"{base}/{data.web_name(stem, k)} {files[k][0]}w" for k in sorted(files)),
+                'src_w': web.get('src_w') or files[big][0]}
+    return {'url': fallback, 'w': w, 'h': h, 'srcset': '', 'src_w': w}
+
+
+def place_picture(a: Dict[str, Any]) -> Dict[str, Any]:
+    img = a['image']
+    return picture('place-' + a['id'], img.get('web'), 'places', place_url(img['file']), img.get('width') or 1600, img.get('height') or 1067)
+
+
 def maps_link(lead: Dict[str, Any]) -> str:
     q = f"{lead['name']} {lead.get('address') or lead.get('search_town') or ''}".strip()
     return 'https://www.google.com/maps/search/?' + urllib.parse.urlencode({'api': '1', 'query': q})
@@ -142,9 +163,11 @@ def clean_name(name: str, town: str = '') -> str:
     """Tidy a Google listing name for a headline: no "(Pvt) Ltd", no
     shouting, no "- Kandy" tail repeating the town."""
     from .documents import short_name
-    n = LEGAL.sub('', name or '').strip(' -,')
+    n = re.sub(r'[_\s]+', ' ', name or '').strip()
+    n = LEGAL.sub('', n).strip(' -,')
     n = re.sub(r'\(\s*\)?\s*$', '', n).strip(' -,')
     n = re.split(r'\s+@\s*', n)[0]
+    n = re.sub(r'\s*\([^)]*(\)|$)', ' ', n).strip() or n   # "Name(Keywords…)": drop the bracketed part
     n = short_name(n, 34).strip(' -,.|')
     n = re.sub(r'\s+(&|and|with|by|-)$', '', n, flags=re.I).strip(' -,.|&')
     n = re.sub(r'\s+[-|]\s+' + re.escape(town) + r'$', '', n, flags=re.I) if town else n
@@ -158,6 +181,21 @@ def clean_name(name: str, town: str = '') -> str:
                    r'habarana|koggala|hiriketiya|polhena|yala|udawalawe|kataragama|tissamaharama)\b',
                    lambda m: m.group(1).capitalize(), n)
     return n.strip() or name
+
+
+SIZES = ['xl', 'l', 'm', 's']
+# How wide each family's display face sets a character, relative to the serif.
+FACE_WIDTH = {'surf': 1.3, 'hostel': .82, 'trip': .85, 'ride': .8}
+
+
+def name_size(name: str, family: str = '') -> str:
+    """Heading size: by length, and small enough that the longest word fits a
+    320 px phone (a word can't wrap)."""
+    n = len(name)
+    size = 0 if n <= 16 else 1 if n <= 26 else 2 if n <= 38 else 3
+    longest = max((len(w) for w in name.split()), default=0) * FACE_WIDTH.get(family, 1.0)
+    size = max(size, 3 if longest >= 13 else 2 if longest >= 9.5 else 1 if longest >= 7.5 else 0)
+    return SIZES[size]
 
 
 def ucfirst(text: str) -> str:
@@ -216,14 +254,22 @@ def context(lead: Dict[str, Any], assets: str = '/previewsite-assets') -> Dict[s
         paper, ink, accent, deep, soft = pick(copy.PALETTES[family], slug)
     display, body, weight = copy.FONTS[family]
 
-    photos = [dict(p, url=photo_url(p['file'])) for p in det.get('photo_files') or [] if not data.is_flyer(p)]
+    photos = [dict(picture(ph['file'].rsplit('.', 1)[0], ph.get('web'), 'photos', photo_url(ph['file']), ph.get('w') or 1600, ph.get('h') or 1067),
+                   own=True) for ph in data.shown_photos(lead)]
+    near = [dict(a, pic=place_picture(a)) for a in near]
+    variant = _seed(slug + 'layout') % 2
+    own_inline = None
     hero = photos[0] if photos else None
+    sharp = bool(hero) and hero['src_w'] >= FULL_BLEED_MIN
+    if hero and not sharp and family == 'stay':
+        variant = 1                      # framed beside the words, never stretched
+    elif hero and not sharp and family in ('trip', 'dine') and near:
+        own_inline, hero = hero, None    # a landmark fills the screen, their photo sits by the intro
     if hero is None and near:
         likes = HERO_KINDS.get(cat, ())
         spot = next((a for k in likes for a in near if a['kind'] == k), near[0])
         near = [spot] + [a for a in near if a is not spot]
-        hero = {'url': place_url(near[0]['image']['file']), 'w': near[0]['image'].get('width') or 1600,
-                'h': near[0]['image'].get('height') or 1067, 'place': near[0]}
+        hero = dict(near[0]['pic'], place=near[0])
     rating, reviews = lead.get('rating') or det.get('rating'), lead.get('reviews') or det.get('reviews') or 0
     rated = bool(rating and rating >= 4.0 and reviews >= 5)
     booking = copy.BOOKING_BY_CATEGORY.get(cat, copy.BOOKING[family])
@@ -234,7 +280,7 @@ def context(lead: Dict[str, Any], assets: str = '/previewsite-assets') -> Dict[s
 
     ctx = {
         'lead': lead, 'slug': slug, 'family': family, 'category': cat, 'cat_slug': slugify(cat, 40),
-        'variant': _seed(slug + 'layout') % 2,
+        'variant': variant, 'own_inline': own_inline,
         'paper': paper, 'ink': ink, 'accent': accent, 'accent_ink': ink_on(accent), 'deep': deep, 'soft': soft,
         'display_font': display, 'body_font': body, 'display_weight': weight,
         'name': name, 'town': town, 'region': info['region'], 'district': info['district'],
@@ -244,7 +290,12 @@ def context(lead: Dict[str, Any], assets: str = '/previewsite-assets') -> Dict[s
         'itinerary': [(fill(t, fills), fill(d, fills)) for t, d in words.get('itinerary', [])],
         'included': words.get('included', []),
         'nav': words['nav'], 'special': words['special'], 'booking': booking,
-        'surf_video': 'surf-chameleon' if (STATIC / 'video/surf-chameleon.mp4').exists() else '',
+        'surf_video': 'surf-chameleon' if (STATIC / 'video/ride-lg.mp4').exists() else '',
+        'hero_sizes': ('100vw' if family in ('trip', 'dine') or (family == 'stay' and variant == 0)
+                       else '(min-width: 900px) 55vw, 100vw' if family == 'stay'
+                       else '(min-width: 980px) 1200px, 92vw' if family == 'ride'
+                       else '(min-width: 980px) 45vw, 92vw' if family == 'local'
+                       else '(min-width: 980px) 560px, 92vw'),
         'hero': hero, 'photos': photos, 'near': near, 'surf_break': surf, 'beach': beach,
         'amenities': [nice_amenity(a) for a in det.get('amenities', [])][:10],
         'price': det.get('price', ''), 'checkin': det.get('checkin', ''), 'hours': nice_hours(det.get('hours') or []),
@@ -252,7 +303,7 @@ def context(lead: Dict[str, Any], assets: str = '/previewsite-assets') -> Dict[s
         'airport': airport_drive(lat, lng) if lat is not None else '',
         'ride_to': ride_to,
         'rated': rated, 'rating': f'{rating:g}' if rating else '', 'reviews_fmt': f'{reviews:,}',
-        'address': lead.get('address') or '', 'maps_link': maps_link(lead),
+        'address': re.sub(r'\s*https?://\S+,?\s*', ' ', lead.get('address') or '').strip(' ,'), 'maps_link': maps_link(lead),
         'phone': lead.get('phone') or '', 'phone_display': display_phone(lead.get('phone') or ''),
         'wa': 'https://wa.me/' + (lead.get('phone') or '').lstrip('+'),
         'credits': credits,
@@ -266,7 +317,7 @@ def context(lead: Dict[str, Any], assets: str = '/previewsite-assets') -> Dict[s
         'checkout_url': (f"{config.CHECKOUT_PATH}?" + urllib.parse.urlencode({'site': slug, 'b': lead['name']})
                          if config.CHECKOUT_PATH else ''),
         'year': date.today().year,
-        'name_size': 'xl' if len(name) <= 16 else 'l' if len(name) <= 26 else 'm' if len(name) <= 38 else 's',
+        'name_size': name_size(name, family),
         'monogram': ''.join(w[0] for w in re.findall(r'[A-Za-z]+', name)[:2]).upper() or name[:1],
     }
     return ctx
@@ -293,45 +344,55 @@ def sync_assets(site_dir: Path, leads: List[Dict[str, Any]]) -> Dict[str, int]:
             shutil.copyfile(f, root / f.name)
     if (STATIC / 'video').is_dir():
         (root / 'video').mkdir(parents=True, exist_ok=True)
+        keep = {f.name for f in (STATIC / 'video').iterdir() if f.is_file()}
         for f in (STATIC / 'video').iterdir():
-            if f.is_file() and not (root / 'video' / f.name).exists():
-                shutil.copyfile(f, root / 'video' / f.name)
+            dst = root / 'video' / f.name
+            if f.is_file() and (not dst.exists() or dst.stat().st_size != f.stat().st_size):
+                shutil.copyfile(f, dst)
+        for f in (root / 'video').iterdir():   # clips from earlier builds
+            if f.is_dir():
+                shutil.rmtree(f)
+            elif f.name not in keep:
+                f.unlink()
     (root / 'fonts').mkdir(parents=True, exist_ok=True)
     for f in (STATIC / 'fonts').glob('*.woff2'):
         shutil.copyfile(f, root / 'fonts' / f.name)
-    want_photos, want_places = {}, set()
+    want = {'photos': {}, 'places': {}}  # published name -> source file
     for lead in leads:
         det = data.details(lead['id'])
-        usable = [p['file'] for p in det.get('photo_files') or [] if not data.is_flyer(p)]
-        stay = copy.FAMILY.get(lead.get('tourism_category') or '') == 'stay'
-        for i, name in enumerate(usable[:2 if stay else 1]):
-            want_photos[name] = 1280 if i == 0 else 860
+        for ph in data.shown_photos(lead):
+            files = ((ph.get('web') or {}).get('files') or {})
+            stem = ph['file'].rsplit('.', 1)[0]
+            if files:
+                for w in files:
+                    want['photos'][data.web_name(stem, int(w))] = data.WEB / data.web_name(stem, int(w))
+            else:
+                want['photos'][ph['file']] = data.PHOTOS / ph['file']
         for a in data.nearby(det.get('lat'), det.get('lng'), lead.get('search_town') or '', limit=6):
-            want_places.add(a['image']['file'])
-    copied = 0
-    (root / 'photos').mkdir(parents=True, exist_ok=True)
-    for name, width in want_photos.items():
-        src, dst = data.PHOTOS / name, root / 'photos' / name
-        if src.exists() and not dst.exists():
-            img = Image.open(src).convert('RGB')
-            if img.width > width:
-                img = img.resize((width, round(img.height * width / img.width)), Image.LANCZOS)
-            img.save(dst, 'WEBP', quality=50, method=4)
+            files = ((a['image'].get('web') or {}).get('files') or {})
+            if files:
+                for w in files:
+                    n = data.web_name('place-' + a['id'], int(w))
+                    want['places'][n] = data.WEB / n
+            else:
+                n = a['image']['file'].rsplit('.', 1)[0] + '.webp'
+                want['places'][n] = data.ATTRACTION_IMG / a['image']['file']
+    copied = removed = 0
+    for folder, files in want.items():
+        (root / folder).mkdir(parents=True, exist_ok=True)
+        for name, src in files.items():
+            dst = root / folder / name
+            if dst.exists() or not src.exists():
+                continue
+            if name.endswith('.avif') or src.suffix == '.webp':
+                shutil.copyfile(src, dst)
+            else:  # an attraction photo with no sharp build yet
+                img = Image.open(src).convert('RGB')
+                img.save(dst, 'WEBP', quality=72, method=4)
             copied += 1
-    (root / 'places').mkdir(parents=True, exist_ok=True)
-    for name in want_places:
-        src = data.ATTRACTION_IMG / name
-        dst = root / 'places' / (name.rsplit('.', 1)[0] + '.webp')
-        if src.exists() and not dst.exists():
-            img = Image.open(src).convert('RGB')
-            if img.width > 1400:
-                img = img.resize((1400, round(img.height * 1400 / img.width)), Image.LANCZOS)
-            img.save(dst, 'WEBP', quality=55, method=4)
-            copied += 1
-    removed = 0
-    for folder, keep in (('photos', want_photos), ('places', {n.rsplit('.', 1)[0] + '.webp' for n in want_places})):
         for f in (root / folder).iterdir():
-            if f.name not in keep:
+            if f.name not in files:
                 f.unlink()
                 removed += 1
+    want_photos, want_places = want['photos'], want['places']
     return {'photos': len(want_photos), 'places': len(want_places), 'copied': copied, 'removed': removed}

@@ -21,7 +21,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1440,
-   "height": 1080
+   "height": 1080,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -46,7 +60,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -72,7 +100,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1019
+   "height": 1019,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1223,
+    "files": {
+     "1920": [
+      1920,
+      1223
+     ],
+     "960": [
+      960,
+      612
+     ]
+    }
+   }
   }
  },
  {
@@ -98,7 +140,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 1089
+   "height": 1089,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1307,
+    "files": {
+     "1920": [
+      1920,
+      1307
+     ],
+     "960": [
+      960,
+      654
+     ]
+    }
+   }
   }
  },
  {
@@ -123,7 +179,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -148,7 +218,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 1062
+   "height": 1062,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1275,
+    "files": {
+     "1920": [
+      1920,
+      1275
+     ],
+     "960": [
+      960,
+      638
+     ]
+    }
+   }
   }
  },
  {
@@ -173,7 +257,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -199,7 +297,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -224,7 +336,21 @@
    "license": "CC BY-SA 2.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -250,7 +376,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1025
+   "height": 1025,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1230,
+    "files": {
+     "1920": [
+      1920,
+      1230
+     ],
+     "960": [
+      960,
+      615
+     ]
+    }
+   }
   }
  },
  {
@@ -276,7 +416,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1064
+   "height": 1064,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1277,
+    "files": {
+     "1920": [
+      1920,
+      1277
+     ],
+     "960": [
+      960,
+      638
+     ]
+    }
+   }
   }
  },
  {
@@ -308,7 +462,21 @@
    "license": "CC BY 3.0",
    "license_url": "https://creativecommons.org/licenses/by/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -334,7 +502,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1024,
+    "src_h": 768,
+    "files": {
+     "1920": [
+      1024,
+      768
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -359,7 +541,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -382,7 +578,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1015
+   "height": 1015,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1218,
+    "files": {
+     "1920": [
+      1920,
+      1218
+     ],
+     "960": [
+      960,
+      609
+     ]
+    }
+   }
   }
  },
  {
@@ -405,7 +615,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -447,7 +671,21 @@
    "license": "CC BY 3.0",
    "license_url": "https://creativecommons.org/licenses/by/3.0",
    "width": 1200,
-   "height": 1600
+   "height": 1600,
+   "web": {
+    "src_w": 1920,
+    "src_h": 2560,
+    "files": {
+     "1920": [
+      1584,
+      2112
+     ],
+     "960": [
+      792,
+      1056
+     ]
+    }
+   }
   }
  },
  {
@@ -479,7 +717,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1060
+   "height": 1060,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1272,
+    "files": {
+     "1920": [
+      1920,
+      1272
+     ],
+     "960": [
+      960,
+      636
+     ]
+    }
+   }
   }
  },
  {
@@ -511,7 +763,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 1110
+   "height": 1110,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1332,
+    "files": {
+     "1920": [
+      1920,
+      1332
+     ],
+     "960": [
+      960,
+      666
+     ]
+    }
+   }
   }
  },
  {
@@ -537,7 +803,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -577,7 +857,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1041
+   "height": 1041,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1250,
+    "files": {
+     "1920": [
+      1920,
+      1250
+     ],
+     "960": [
+      960,
+      625
+     ]
+    }
+   }
   }
  },
  {
@@ -601,7 +895,21 @@
    "license": "CC0",
    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -625,7 +933,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1184
+   "height": 1184,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1421,
+    "files": {
+     "1920": [
+      1920,
+      1421
+     ],
+     "960": [
+      960,
+      710
+     ]
+    }
+   }
   }
  },
  {
@@ -650,7 +972,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1063
+   "height": 1063,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1276,
+    "files": {
+     "1920": [
+      1920,
+      1276
+     ],
+     "960": [
+      960,
+      638
+     ]
+    }
+   }
   }
  },
  {
@@ -680,7 +1016,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -717,7 +1067,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -740,7 +1104,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1440,
-   "height": 956
+   "height": 956,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1275,
+    "files": {
+     "1920": [
+      1920,
+      1275
+     ],
+     "960": [
+      960,
+      638
+     ]
+    }
+   }
   }
  },
  {
@@ -773,7 +1151,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1065
+   "height": 1065,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1278,
+    "files": {
+     "1920": [
+      1920,
+      1278
+     ],
+     "960": [
+      960,
+      639
+     ]
+    }
+   }
   }
  },
  {
@@ -805,7 +1197,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1062
+   "height": 1062,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1275,
+    "files": {
+     "1920": [
+      1920,
+      1275
+     ],
+     "960": [
+      960,
+      638
+     ]
+    }
+   }
   }
  },
  {
@@ -837,7 +1243,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1280,
-   "height": 960
+   "height": 960,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -873,7 +1293,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -907,7 +1341,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 756
+   "height": 756,
+   "web": {
+    "src_w": 1920,
+    "src_h": 907,
+    "files": {
+     "1920": [
+      1920,
+      907
+     ],
+     "960": [
+      960,
+      454
+     ]
+    }
+   }
   }
  },
  {
@@ -939,7 +1387,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1600,
+    "src_h": 1200,
+    "files": {
+     "1920": [
+      1600,
+      1200
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -973,7 +1435,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -1007,7 +1483,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1005
+   "height": 1005,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1206,
+    "files": {
+     "1920": [
+      1920,
+      1206
+     ],
+     "960": [
+      960,
+      603
+     ]
+    }
+   }
   }
  },
  {
@@ -1035,7 +1525,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -1069,7 +1573,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -1103,7 +1621,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1152,7 +1684,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1185,7 +1731,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 777
+   "height": 777,
+   "web": {
+    "src_w": 1920,
+    "src_h": 933,
+    "files": {
+     "1920": [
+      1920,
+      933
+     ],
+     "960": [
+      960,
+      466
+     ]
+    }
+   }
   }
  },
  {
@@ -1218,7 +1778,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1198
+   "height": 1198,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1438,
+    "files": {
+     "1920": [
+      1920,
+      1438
+     ],
+     "960": [
+      960,
+      719
+     ]
+    }
+   }
   }
  },
  {
@@ -1269,7 +1843,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -1304,7 +1892,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1337,7 +1939,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -1368,7 +1984,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -1400,7 +2030,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1296,
+    "src_h": 864,
+    "files": {
+     "1920": [
+      1296,
+      864
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -1435,7 +2079,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1279,
+    "files": {
+     "1920": [
+      1920,
+      1279
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -1469,7 +2127,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1505,7 +2177,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1541,7 +2227,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1569,7 +2269,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1670,7 +2384,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1704,7 +2432,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1068
+   "height": 1068,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1282,
+    "files": {
+     "1920": [
+      1920,
+      1282
+     ],
+     "960": [
+      960,
+      641
+     ]
+    }
+   }
   }
  },
  {
@@ -1737,7 +2479,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1440,
-   "height": 1080
+   "height": 1080,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1772,7 +2528,21 @@
    "license": "CC BY-SA 2.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -1805,7 +2575,21 @@
    "license": "CC0",
    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1280,
+    "src_h": 960,
+    "files": {
+     "1920": [
+      1280,
+      960
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1830,7 +2614,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1864,7 +2662,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -1899,7 +2711,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1017
+   "height": 1017,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1221,
+    "files": {
+     "1920": [
+      1920,
+      1221
+     ],
+     "960": [
+      960,
+      610
+     ]
+    }
+   }
   }
  },
  {
@@ -1930,7 +2756,21 @@
    "license": "CC BY-SA 2.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -1954,7 +2794,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -1985,7 +2839,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1071
+   "height": 1071,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1285,
+    "files": {
+     "1920": [
+      1920,
+      1285
+     ],
+     "960": [
+      960,
+      642
+     ]
+    }
+   }
   }
  },
  {
@@ -2009,7 +2877,21 @@
    "license": "CC BY 3.0",
    "license_url": "https://creativecommons.org/licenses/by/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2032,7 +2914,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1440,
-   "height": 1151
+   "height": 1151,
+   "web": {
+    "src_w": 1440,
+    "src_h": 1151,
+    "files": {
+     "1920": [
+      1440,
+      1151
+     ],
+     "960": [
+      960,
+      767
+     ]
+    }
+   }
   }
  },
  {
@@ -2059,7 +2955,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1051
+   "height": 1051,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1262,
+    "files": {
+     "1920": [
+      1920,
+      1262
+     ],
+     "960": [
+      960,
+      631
+     ]
+    }
+   }
   }
  },
  {
@@ -2082,7 +2992,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2108,7 +3032,21 @@
    "license": "CC BY-SA 2.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2134,7 +3072,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 904
+   "height": 904,
+   "web": {
+    "src_w": 1278,
+    "src_h": 722,
+    "files": {
+     "1920": [
+      1278,
+      722
+     ],
+     "960": [
+      960,
+      542
+     ]
+    }
+   }
   }
  },
  {
@@ -2161,7 +3113,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -2186,7 +3152,21 @@
    "license": "CC0",
    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
    "width": 1600,
-   "height": 981
+   "height": 981,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1177,
+    "files": {
+     "1920": [
+      1920,
+      1177
+     ],
+     "960": [
+      960,
+      588
+     ]
+    }
+   }
   }
  },
  {
@@ -2212,7 +3192,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1024,
+    "src_h": 768,
+    "files": {
+     "1920": [
+      1024,
+      768
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2239,7 +3233,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -2266,7 +3274,21 @@
    "license": "CC BY 3.0",
    "license_url": "https://creativecommons.org/licenses/by/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1024,
+    "src_h": 768,
+    "files": {
+     "1920": [
+      1024,
+      768
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2289,7 +3311,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -2312,7 +3348,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2358,7 +3408,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1115
+   "height": 1115,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1338,
+    "files": {
+     "1920": [
+      1920,
+      1338
+     ],
+     "960": [
+      960,
+      669
+     ]
+    }
+   }
   }
  },
  {
@@ -2386,7 +3450,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2415,7 +3493,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -2444,7 +3536,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2472,7 +3578,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1066,
-   "height": 1600
+   "height": 1600,
+   "web": {
+    "src_w": 1080,
+    "src_h": 1620,
+    "files": {
+     "1920": [
+      1080,
+      1620
+     ],
+     "960": [
+      704,
+      1056
+     ]
+    }
+   }
   }
  },
  {
@@ -2503,7 +3623,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 902
+   "height": 902,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1083,
+    "files": {
+     "1920": [
+      1920,
+      1083
+     ],
+     "960": [
+      960,
+      542
+     ]
+    }
+   }
   }
  },
  {
@@ -2552,7 +3686,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2580,7 +3728,21 @@
    "license": "CC BY-SA 2.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
    "width": 1600,
-   "height": 916
+   "height": 916,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1099,
+    "files": {
+     "1920": [
+      1920,
+      1099
+     ],
+     "960": [
+      960,
+      550
+     ]
+    }
+   }
   }
  },
  {
@@ -2608,7 +3770,21 @@
    "license": "Public domain",
    "license_url": "",
    "width": 1600,
-   "height": 1128
+   "height": 1128,
+   "web": {
+    "src_w": 1392,
+    "src_h": 982,
+    "files": {
+     "1920": [
+      1392,
+      982
+     ],
+     "960": [
+      960,
+      677
+     ]
+    }
+   }
   }
  },
  {
@@ -2634,7 +3810,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -2664,7 +3854,21 @@
    "license": "CC BY 3.0",
    "license_url": "https://creativecommons.org/licenses/by/3.0",
    "width": 1440,
-   "height": 1080
+   "height": 1080,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2691,7 +3895,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1176
+   "height": 1176,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1412,
+    "files": {
+     "1920": [
+      1920,
+      1412
+     ],
+     "960": [
+      960,
+      706
+     ]
+    }
+   }
   }
  },
  {
@@ -2718,7 +3936,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2743,7 +3975,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1280,
+    "src_h": 960,
+    "files": {
+     "1920": [
+      1280,
+      960
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2769,7 +4015,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -2797,7 +4057,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2825,7 +4099,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2858,7 +4146,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2890,7 +4192,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1190
+   "height": 1190,
+   "web": {
+    "src_w": 1024,
+    "src_h": 762,
+    "files": {
+     "1920": [
+      1024,
+      762
+     ],
+     "960": [
+      960,
+      714
+     ]
+    }
+   }
   }
  },
  {
@@ -2916,7 +4232,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2944,7 +4274,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2972,7 +4316,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -2999,7 +4357,21 @@
    "license": "CC BY 3.0",
    "license_url": "https://creativecommons.org/licenses/by/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3024,7 +4396,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1109
+   "height": 1109,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1331,
+    "files": {
+     "1920": [
+      1920,
+      1331
+     ],
+     "960": [
+      960,
+      666
+     ]
+    }
+   }
   }
  },
  {
@@ -3056,7 +4442,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3084,7 +4484,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3113,7 +4527,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3140,7 +4568,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1071
+   "height": 1071,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1285,
+    "files": {
+     "1920": [
+      1920,
+      1285
+     ],
+     "960": [
+      960,
+      642
+     ]
+    }
+   }
   }
  },
  {
@@ -3166,7 +4608,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3195,7 +4651,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1280,
-   "height": 960
+   "height": 960,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3226,7 +4696,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3259,7 +4743,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1105
+   "height": 1105,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1326,
+    "files": {
+     "1920": [
+      1920,
+      1326
+     ],
+     "960": [
+      960,
+      663
+     ]
+    }
+   }
   }
  },
  {
@@ -3285,7 +4783,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 899
+   "height": 899,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1079,
+    "files": {
+     "1920": [
+      1920,
+      1079
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -3311,7 +4823,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -3341,7 +4867,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -3394,7 +4934,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1426,
+    "src_h": 950,
+    "files": {
+     "1920": [
+      1426,
+      950
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -3420,7 +4974,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1066,
-   "height": 1600
+   "height": 1600,
+   "web": {
+    "src_w": 1920,
+    "src_h": 2880,
+    "files": {
+     "1920": [
+      1408,
+      2112
+     ],
+     "960": [
+      704,
+      1056
+     ]
+    }
+   }
   }
  },
  {
@@ -3448,7 +5016,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1440,
-   "height": 1080
+   "height": 1080,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3475,7 +5057,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1280,
-   "height": 960
+   "height": 960,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3508,7 +5104,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
    "width": 1600,
-   "height": 1027
+   "height": 1027,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1233,
+    "files": {
+     "1920": [
+      1920,
+      1233
+     ],
+     "960": [
+      960,
+      616
+     ]
+    }
+   }
   }
  },
  {
@@ -3539,7 +5149,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1440,
-   "height": 1080
+   "height": 1080,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3567,7 +5191,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -3595,7 +5233,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1440,
-   "height": 1080
+   "height": 1080,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3625,7 +5277,21 @@
    "license": "CC BY 3.0",
    "license_url": "https://creativecommons.org/licenses/by/3.0",
    "width": 1600,
-   "height": 1013
+   "height": 1013,
+   "web": {
+    "src_w": 1536,
+    "src_h": 973,
+    "files": {
+     "1920": [
+      1536,
+      973
+     ],
+     "960": [
+      960,
+      608
+     ]
+    }
+   }
   }
  },
  {
@@ -3651,7 +5317,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3674,7 +5354,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 882
+   "height": 882,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1059,
+    "files": {
+     "1920": [
+      1920,
+      1059
+     ],
+     "960": [
+      960,
+      530
+     ]
+    }
+   }
   }
  },
  {
@@ -3700,7 +5394,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3726,7 +5434,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3751,7 +5473,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -3776,7 +5512,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1068
+   "height": 1068,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1282,
+    "files": {
+     "1920": [
+      1920,
+      1282
+     ],
+     "960": [
+      960,
+      641
+     ]
+    }
+   }
   }
  },
  {
@@ -3802,7 +5552,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1051
+   "height": 1051,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1261,
+    "files": {
+     "1920": [
+      1920,
+      1261
+     ],
+     "960": [
+      960,
+      630
+     ]
+    }
+   }
   }
  },
  {
@@ -3828,7 +5592,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1060
+   "height": 1060,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1272,
+    "files": {
+     "1920": [
+      1920,
+      1272
+     ],
+     "960": [
+      960,
+      636
+     ]
+    }
+   }
   }
  },
  {
@@ -3851,7 +5629,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3874,7 +5666,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1440,
-   "height": 1026
+   "height": 1026,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1369,
+    "files": {
+     "1920": [
+      1920,
+      1369
+     ],
+     "960": [
+      960,
+      684
+     ]
+    }
+   }
   }
  },
  {
@@ -3897,7 +5703,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1169
+   "height": 1169,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1403,
+    "files": {
+     "1920": [
+      1920,
+      1403
+     ],
+     "960": [
+      960,
+      702
+     ]
+    }
+   }
   }
  },
  {
@@ -3923,7 +5743,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3946,7 +5780,21 @@
    "license": "CC0",
    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -3973,7 +5821,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -3997,7 +5859,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1074
+   "height": 1074,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1289,
+    "files": {
+     "1920": [
+      1920,
+      1289
+     ],
+     "960": [
+      960,
+      644
+     ]
+    }
+   }
   }
  },
  {
@@ -4023,7 +5899,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4050,7 +5940,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4075,7 +5979,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1051
+   "height": 1051,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1261,
+    "files": {
+     "1920": [
+      1920,
+      1261
+     ],
+     "960": [
+      960,
+      630
+     ]
+    }
+   }
   }
  },
  {
@@ -4100,7 +6018,21 @@
    "license": "CC BY 4.0",
    "license_url": "https://creativecommons.org/licenses/by/4.0",
    "width": 1600,
-   "height": 1062
+   "height": 1062,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1275,
+    "files": {
+     "1920": [
+      1920,
+      1275
+     ],
+     "960": [
+      960,
+      638
+     ]
+    }
+   }
   }
  },
  {
@@ -4125,7 +6057,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4148,7 +6094,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 960
+   "height": 960,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1152,
+    "files": {
+     "1920": [
+      1920,
+      1152
+     ],
+     "960": [
+      960,
+      576
+     ]
+    }
+   }
   }
  },
  {
@@ -4175,7 +6135,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4201,7 +6175,21 @@
    "license": "Public domain",
    "license_url": "",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4225,7 +6213,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1065
+   "height": 1065,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1278,
+    "files": {
+     "1920": [
+      1920,
+      1278
+     ],
+     "960": [
+      960,
+      639
+     ]
+    }
+   }
   }
  },
  {
@@ -4249,7 +6251,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 964
+   "height": 964,
+   "web": {
+    "src_w": 1500,
+    "src_h": 904,
+    "files": {
+     "1920": [
+      1500,
+      904
+     ],
+     "960": [
+      960,
+      579
+     ]
+    }
+   }
   }
  },
  {
@@ -4273,7 +6289,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1013
+   "height": 1013,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1216,
+    "files": {
+     "1920": [
+      1920,
+      1216
+     ],
+     "960": [
+      960,
+      608
+     ]
+    }
+   }
   }
  },
  {
@@ -4297,7 +6327,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 900
+   "height": 900,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1080,
+    "files": {
+     "1920": [
+      1920,
+      1080
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -4322,7 +6366,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4346,7 +6404,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4370,7 +6442,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 778
+   "height": 778,
+   "web": {
+    "src_w": 1920,
+    "src_h": 934,
+    "files": {
+     "1920": [
+      1920,
+      934
+     ],
+     "960": [
+      960,
+      467
+     ]
+    }
+   }
   }
  },
  {
@@ -4395,7 +6481,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1024,
+    "src_h": 768,
+    "files": {
+     "1920": [
+      1024,
+      768
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4420,7 +6520,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4444,7 +6558,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4468,7 +6596,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4492,7 +6634,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 720
+   "height": 720,
+   "web": {
+    "src_w": 1920,
+    "src_h": 864,
+    "files": {
+     "1920": [
+      1920,
+      864
+     ],
+     "960": [
+      960,
+      432
+     ]
+    }
+   }
   }
  },
  {
@@ -4517,7 +6673,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 899
+   "height": 899,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1079,
+    "files": {
+     "1920": [
+      1920,
+      1079
+     ],
+     "960": [
+      960,
+      540
+     ]
+    }
+   }
   }
  },
  {
@@ -4541,7 +6711,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 720
+   "height": 720,
+   "web": {
+    "src_w": 1920,
+    "src_h": 864,
+    "files": {
+     "1920": [
+      1920,
+      864
+     ],
+     "960": [
+      960,
+      432
+     ]
+    }
+   }
   }
  },
  {
@@ -4566,7 +6750,21 @@
    "license": "CC BY 2.0",
    "license_url": "https://creativecommons.org/licenses/by/2.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1024,
+    "src_h": 768,
+    "files": {
+     "1920": [
+      1024,
+      768
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4590,7 +6788,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4615,7 +6827,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 960
+   "height": 960,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1152,
+    "files": {
+     "1920": [
+      1920,
+      1152
+     ],
+     "960": [
+      960,
+      576
+     ]
+    }
+   }
   }
  },
  {
@@ -4639,7 +6865,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 993
+   "height": 993,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1192,
+    "files": {
+     "1920": [
+      1920,
+      1192
+     ],
+     "960": [
+      960,
+      596
+     ]
+    }
+   }
   }
  },
  {
@@ -4664,7 +6904,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4689,7 +6943,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4713,7 +6981,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4736,7 +7018,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1066
+   "height": 1066,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1280,
+    "files": {
+     "1920": [
+      1920,
+      1280
+     ],
+     "960": [
+      960,
+      640
+     ]
+    }
+   }
   }
  },
  {
@@ -4759,7 +7055,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4782,7 +7092,21 @@
    "license": "CC BY-SA 3.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
    "width": 1600,
-   "height": 1065
+   "height": 1065,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1278,
+    "files": {
+     "1920": [
+      1920,
+      1278
+     ],
+     "960": [
+      960,
+      639
+     ]
+    }
+   }
   }
  },
  {
@@ -4818,7 +7142,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4841,7 +7179,21 @@
    "license": "CC BY-SA 4.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
    "width": 1600,
-   "height": 1200
+   "height": 1200,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1440,
+    "files": {
+     "1920": [
+      1920,
+      1440
+     ],
+     "960": [
+      960,
+      720
+     ]
+    }
+   }
   }
  },
  {
@@ -4864,7 +7216,21 @@
    "license": "CC BY-SA 2.0",
    "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
    "width": 1600,
-   "height": 1142
+   "height": 1142,
+   "web": {
+    "src_w": 1920,
+    "src_h": 1371,
+    "files": {
+     "1920": [
+      1920,
+      1371
+     ],
+     "960": [
+      960,
+      686
+     ]
+    }
+   }
   }
  }
 ]

@@ -31,7 +31,9 @@ html[data-family="dine"] { --glass-bg: color-mix(in srgb, var(--paper) 62%, tran
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 120px; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-wrap: break-word; }
+.two > *, .intro-grid > *, .foot-grid > * { min-width: 0; }
+.addr, .credits li { overflow-wrap: anywhere; }
 img { display: block; max-width: 100%; height: auto; }
 h1, h2, h3, p, ul, ol, dl, dd, figure { margin: 0; padding: 0; }
 ul, ol { list-style: none; }
@@ -74,12 +76,12 @@ a { color: inherit; }
 .nav.is-scrolled { top: calc(var(--bar) + 8px); }
 .glass { background: var(--glass-bg); color: var(--ink); -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
   box-shadow: var(--glass-shadow); border: 1px solid var(--glass-edge); }
-.nav-pill { pointer-events: auto; display: flex; align-items: center; gap: 4px; height: 58px; width: 100%; max-width: 560px; padding: 0 7px; border-radius: 999px; }
+.nav-pill { pointer-events: auto; min-width: 0; display: flex; align-items: center; gap: 4px; height: 58px; width: 100%; max-width: 560px; padding: 0 7px; border-radius: 999px; }
 @media (min-width: 980px) { .nav-pill { width: auto; max-width: none; } }
-.brand { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px 0 4px; text-decoration: none; min-width: 0; border-radius: 999px; }
+.brand { display: flex; flex: 0 1 auto; align-items: center; gap: 10px; height: 44px; padding: 0 10px 0 4px; text-decoration: none; min-width: 0; border-radius: 999px; }
 .brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--accent-ink);
   font: var(--display-weight) 1.15rem/1 var(--display), Georgia, serif; flex: none; }
-.brand-name { font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 30vw; }
+.brand-name { min-width: 0; font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 30vw; }
 @media (min-width: 980px) { .brand-name { max-width: 240px; } }
 .nav-sep { display: none; width: 1px; height: 24px; margin: 0 4px; background: var(--line); }
 .nav-links { position: relative; display: none; align-items: center; }
@@ -92,7 +94,7 @@ a { color: inherit; }
   transition: transform .52s var(--spring), width .52s var(--spring), opacity .2s ease; }
 html[data-family="dine"] .nav-lens { background: rgba(255,255,255,.12); box-shadow: 0 1px 0 rgba(255,255,255,.14) inset; }
 .nav-lens[data-on="true"] { opacity: 1; }
-.nav-cta { height: 44px; min-height: 44px; margin-left: auto; padding: 0 18px; }
+.nav-cta { flex: none; height: 44px; min-height: 44px; margin-left: auto; padding: 0 18px; }
 @media (min-width: 980px) { .nav-cta { margin-left: 6px; } }
 .nav-burger { position: relative; display: grid; place-items: center; width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
 .nav-burger i { position: absolute; width: 18px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .3s var(--ease); }
@@ -106,10 +108,11 @@ html[data-family="dine"] .nav-lens { background: rgba(255,255,255,.12); box-shad
 .nav-sheet a { padding: 14px 16px; border-radius: 18px; font: var(--display-weight) 1.6rem/1.1 var(--display), Georgia, serif; text-decoration: none; }
 .nav-sheet a:hover { background: color-mix(in srgb, #fff 40%, transparent); }
 @media (min-width: 980px) { .nav-sheet { display: none; } }
+@media (max-width: 380px) { .nav-pill { gap: 2px; padding: 0 5px; } .nav-cta { padding: 0 13px; font-size: .86rem; } .brand { padding-right: 4px; } .brand-name { max-width: 24vw; } }
 
 /* ---- hero: shared ------------------------------------------------------ */
 .hero { position: relative; overflow: clip; }
-.name { font-family: var(--display), Georgia, serif; font-weight: var(--display-weight); letter-spacing: -0.03em; line-height: .92; text-wrap: balance; }
+.name { overflow-wrap: break-word; hyphens: auto; font-family: var(--display), Georgia, serif; font-weight: var(--display-weight); letter-spacing: -0.03em; line-height: .92; text-wrap: balance; }
 .name-xl { font-size: clamp(3.4rem, 1.6rem + 7.4vw, 8.4rem); }
 .name-l { font-size: clamp(3rem, 1.5rem + 5.6vw, 6.6rem); }
 .name-m { font-size: clamp(2.5rem, 1.4rem + 4.2vw, 5.2rem); }
@@ -122,7 +125,7 @@ html[data-family="dine"] .nav-lens { background: rgba(255,255,255,.12); box-shad
 
 /* booking form */
 .book { display: grid; gap: 12px; }
-.book-fields { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
+.book-fields { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(142px, 1fr)); }
 .f { display: grid; gap: 4px; padding: 9px 14px 10px; border-radius: 14px; background: color-mix(in srgb, var(--paper) 88%, #fff); border: 1px solid var(--line); min-width: 0; }
 .f span { font-size: .74rem; font-weight: 600; color: var(--ink-2); }
 .f input, .f select { width: 100%; min-width: 0; border: 0; padding: 0; background: transparent; color: var(--ink); font: 500 1rem/1.3 var(--body); outline: none; appearance: none; -webkit-appearance: none; }
@@ -201,8 +204,7 @@ html[data-family="dine"] .btn-line { color: var(--ink); border-color: rgba(255,2
 .hero-surf .book { margin-top: 26px; max-width: 560px; padding: 12px; border-radius: 22px; background: #fff; box-shadow: 0 24px 50px -30px color-mix(in srgb, var(--deep) 70%, transparent); }
 .surf-scene { position: relative; width: min(100%, 760px); justify-self: center; -webkit-mask-image: radial-gradient(130% 95% at 60% 35%, #000 62%, transparent 86%); mask-image: radial-gradient(130% 95% at 60% 35%, #000 62%, transparent 86%); }
 .chameleon { width: 100%; height: auto; overflow: visible; }
-.surf-scene.has-video { -webkit-mask-image: none; mask-image: none; border-radius: 28px; overflow: hidden; }
-.scrub { width: 100%; height: auto; display: block; }
+
 @media (min-width: 980px) {
   .hero-surf { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); align-items: center; padding-inline: max(var(--gutter), (100vw - var(--wrap)) / 2); min-height: min(100svh, 900px); }
   .surf-scene { grid-column: 2; grid-row: 1; width: calc(100% + (100vw - var(--wrap)) / 2 + 40px); max-width: none; justify-self: start; margin-right: calc(-1 * max(var(--gutter), (100vw - var(--wrap)) / 2)); }
@@ -224,6 +226,47 @@ html[data-family="dine"] .btn-line { color: var(--ink); border-color: rgba(255,2
 @keyframes lip { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04, .97); } }
 @keyframes spray { from { opacity: .8; transform: translate(0, 0); } to { opacity: 0; transform: translate(-24px, -18px); } }
 @keyframes tail { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-6deg); } }
+
+/* surf with the filmed chameleon: the film itself, played forwards or
+   backwards towards wherever the pointer (or a finger) sends him. */
+.hero-surf.has-video { isolation: isolate; background: var(--paper); padding: 0 0 40px; gap: 0; }
+/* The film sits a little below the top, under the menu, and fades up into
+   a sky of its own colour, so he is never behind the bar. */
+.surf-video { --gap: 76px; position: relative; overflow: hidden; width: 100%; background: #dca471; touch-action: pan-y;
+  height: calc(var(--gap) + 100vw * 5 / 6); }
+@media (min-width: 600px) and (max-width: 1099px) { .surf-video { height: auto; aspect-ratio: 6 / 5; max-height: calc(100svh - 40px); }
+  .surf-video img, .surf-video .ride { object-position: 50% 22%; } }
+@media (min-width: 980px) and (max-width: 1099px) { .hero-surf.has-video { display: block; } }
+.surf-video img, .surf-video .ride { position: absolute; left: 0; top: var(--gap); width: 100%; height: calc(100% - var(--gap)); object-fit: cover; object-position: 50% 50%;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 8%); mask-image: linear-gradient(180deg, transparent, #000 8%); }
+.surf-video img { transition: opacity .5s linear; }
+.surf-video .ride { opacity: 0; }
+.surf-video.is-live .ride.on { opacity: 1; }
+.surf-video.is-live .surf-poster { opacity: 0; }
+.ride-hint { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); padding: 7px 14px; border-radius: 99px; white-space: nowrap;
+  font: 600 12px/1 var(--body); letter-spacing: .02em; color: #fff; background: rgb(8 40 44 / .42);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; transition: opacity .6s linear; pointer-events: none; }
+.surf-video.is-live.show-hint .ride-hint { opacity: 1; }
+.surf-video picture { display: contents; }
+.hero-surf.has-video .hero-copy { padding: 28px var(--gutter) 0; }
+.hero-surf.has-video .name { font-stretch: 112%; }
+@media (min-width: 1100px) {
+  .hero-surf.has-video { display: grid; align-content: center; min-height: min(100svh, 940px); padding: calc(var(--bar) + 110px) max(var(--gutter), (100vw - var(--wrap)) / 2) 64px; background: transparent; }
+  /* The film takes the right of the hero and melts into the page on its left
+     edge, so the words sit on clean paper and the chameleon has his stage. */
+  .surf-video { --gap: 12%; position: absolute; inset: 0 0 0 34%; width: auto; height: auto; z-index: -1; aspect-ratio: auto; max-height: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%); mask-image: linear-gradient(90deg, transparent 0%, #000 22%); }
+  /* zoomed out: the film sits in the lower right and melts into its sky */
+  .surf-video img, .surf-video .ride { top: auto; bottom: 0; left: auto; right: 0; height: 76%; width: auto; aspect-ratio: 6 / 5;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 9%), linear-gradient(90deg, transparent, #000 16%); -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(180deg, transparent, #000 9%), linear-gradient(90deg, transparent, #000 16%); mask-composite: intersect; }
+  .surf-video::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(0deg, color-mix(in srgb, var(--deep) 30%, transparent), transparent 26%); }
+  .hero-surf.has-video { background: linear-gradient(90deg, var(--paper) 0%, var(--paper) 40%, #dca471 100%); }
+  .hero-surf.has-video .hero-copy { padding: 0; max-width: 600px; }
+  .hero-surf.has-video .name { font-stretch: 125%; }
+  .hero-surf.has-video .headline { color: var(--ink); }
+}
 
 /* ---- café, coworking and local: arch photo ---------------------------- */
 .hero-cafe, .hero-local, .hero-well { display: grid; gap: 32px; padding: calc(var(--bar) + 110px) var(--gutter) 56px; }
@@ -278,6 +321,8 @@ html[data-family="dine"] .btn-line { color: var(--ink); border-color: rgba(255,2
 @media (min-width: 900px) { .intro-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 96px; } }
 .intro-text { font: var(--display-weight) clamp(1.45rem, 1.1rem + 1.3vw, 2.15rem)/1.3 var(--display), Georgia, serif; letter-spacing: -0.01em; max-width: 32em; }
 html[data-family="surf"] .intro-text, html[data-family="trip"] .intro-text, html[data-family="ride"] .intro-text, html[data-family="hostel"] .intro-text { font-weight: 500; font-stretch: 100%; }
+.own-photo { margin-top: 36px; max-width: 560px; border-radius: var(--radius); overflow: hidden; }
+.own-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .facts { display: grid; gap: 18px; align-content: start; }
 .facts div { display: grid; gap: 2px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 .facts dt { font-size: .82rem; color: var(--ink-2); }

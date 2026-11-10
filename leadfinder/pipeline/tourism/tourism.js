@@ -1,6 +1,6 @@
 /* Sri Lanka tourism previews: glass nav with a sliding lens, the mobile
    sheet, the floating "Book" button, the booking forms (preview mode) and
-   the surfing chameleon, whose eyes follow you, each on its own. */
+   the surfing chameleon, each on its own. */
 (function () {
   "use strict";
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -89,29 +89,145 @@
     } catch (err) {}
   });
 
-  /* ---- a generated character clip, scrubbed by the pointer (or scroll) --- */
-  var vid = document.querySelector("[data-scrub]");
-  if (vid && !reduce) {
-    var want = 0, seeking = false;
-    function seek() {
-      if (!vid.duration || seeking) return;
-      if (Math.abs(vid.currentTime - want) < 0.02) return;
-      seeking = true; vid.currentTime = want;
+  /* ---- the filmed chameleon ---------------------------------------------
+     The film is kept whole (sea and surfer together) and encoded twice, once
+     forwards and once backwards. The pointer, or a sideways drag on a phone,
+     takes him back up the wave or sends him on, and the film plays there at
+     real video frame rate, forwards or backwards, quicker the further it has
+     to go. Changing direction swaps to the other copy at the mirrored frame,
+     so there is never a jump. Let go and he rides on down the wave to the
+     end, and waits there. */
+  var stage = document.querySelector("[data-surf-stage]");
+  if (stage && !reduce && !(navigator.connection && navigator.connection.saveData)) {
+    var vf = stage.querySelector(".ride-f"), vr = stage.querySelector(".ride-r");
+    var big = stage.getBoundingClientRect().width > 600;          // phones get the light clips
+    var src = stage.getAttribute(big ? "data-lg" : "data-sm");
+    var D = 0, active = vf, flipping = false, revReady = false, running = false, seen = true;
+    var input = null, drag = null;
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+    var noop = function () {};
+    var pos = function () { return active === vf ? vf.currentTime : D - vr.currentTime; };
+
+    vf.muted = vr.muted = true;
+    vf.preload = "auto"; vf.src = src;
+    vf.addEventListener("loadedmetadata", function () { D = vf.duration || 0; });
+    vf.addEventListener("playing", function () { stage.classList.add("is-live"); }, { once: true });
+    vf.addEventListener("canplay", start, { once: true });
+    // The backwards copy follows once the first can play.
+    function loadRev() {
+      if (vr.src) return;
+      vr.preload = "auto"; vr.src = src.replace(/\.mp4$/, "-rev.mp4");
+      vr.addEventListener("loadeddata", function () { revReady = true; }, { once: true });
+      var p = vr.play();                        // iOS only buffers what has played
+      if (p && p.then) p.then(function () { if (active !== vr) vr.pause(); }, noop);
     }
-    vid.addEventListener("seeked", function () { seeking = false; seek(); });
-    vid.addEventListener("loadedmetadata", function () { want = vid.duration / 2; seek(); });
-    var fine = window.matchMedia("(pointer: fine)").matches;
-    if (fine) {
-      window.addEventListener("pointermove", function (e) {
-        var x = Math.min(1, Math.max(0, e.clientX / window.innerWidth));
-        want = x * (vid.duration || 0) * 0.999; seek();
-      }, { passive: true });
-    } else {
-      window.addEventListener("scroll", function () {
-        var r = vid.getBoundingClientRect(), p = 1 - Math.min(1, Math.max(0, (r.top + r.height) / (window.innerHeight + r.height)));
-        want = p * (vid.duration || 0) * 0.999; seek();
-      }, { passive: true });
+    vf.addEventListener("canplaythrough", loadRev, { once: true });
+    setTimeout(loadRev, 2500);
+
+    function show(v) {
+      (v === vf ? vr : vf).classList.remove("on"); v.classList.add("on");
     }
+    // Turn round: hold this frame, put the other copy on the same frame, swap.
+    function flip() {
+      flipping = true;
+      var next = active === vf ? vr : vf, done = false;
+      active.pause();
+      function swap() {
+        if (done) return; done = true;
+        show(next); active = next; flipping = false;
+      }
+      next.addEventListener("seeked", swap, { once: true });
+      setTimeout(swap, 450);
+      var p = pos();                            // the same moment, on the other copy's clock
+      next.currentTime = clamp(next === vr ? D - p : p, 0, D - 0.001);
+    }
+    // A few fixed speeds: changing speed every frame makes some players stutter.
+    var RATES = [0.35, 0.5, 0.7, 1, 1.4, 2, 2.6];
+    function setRate(v, r) {
+      for (var i = 0; i < RATES.length - 1 && RATES[i] < r * 0.92; i++);
+      if (v.playbackRate !== RATES[i]) v.playbackRate = RATES[i];
+    }
+
+    var HOLD = 1400;                                  // pause after you let go, then ride on
+    function tick(now) {
+      if (!seen) { running = false; active.pause(); return; }
+      requestAnimationFrame(tick);
+      if (flipping || !D) return;
+      var p = pos(), want, d, speed;
+      var engaged = !!(input && ((drag && drag.live) || now - input.at < HOLD));
+      if (engaged) {                                  // go to the moment you chose, and wait there
+        want = input.t; d = want - p;
+        if (Math.abs(d) < 0.02) { if (!active.paused) active.pause(); return; }
+        speed = clamp(Math.abs(d) * 3.4, 0.3, 2.6);
+      } else {                                        // ride on down the wave, and stop at the end
+        want = D - 0.05; d = want - p;
+        if (d < 0.02) { if (!active.paused) active.pause(); return; }
+        speed = 1;
+      }
+      var dir = d > 0 ? 1 : -1;
+      if (dir < 0 && !revReady) {                     // backwards copy not here yet
+        if (active !== vf) { show(vf); active = vf; }
+        if (!vf.paused) vf.pause();
+        if (!vf.seeking) vf.currentTime = Math.max(want, p - speed / 24);
+        return;
+      }
+      if (dir !== (active === vf ? 1 : -1)) { flip(); return; }
+      setRate(active, speed);
+      if (active.paused && !active.ended) active.play().catch(noop);
+    }
+    function start() {
+      if (running || !seen) return;
+      running = true;
+      requestAnimationFrame(tick);
+    }
+
+    // Desktop: moving the mouse left takes him back up the wave, right sends
+    // him on; across about half the window is the whole ride.
+    var lastX = null;
+    window.addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse" || !D) return;
+      var now = performance.now(), dx = lastX === null ? 0 : e.clientX - lastX;
+      lastX = e.clientX;
+      if (!dx) return;
+      var from = input && now - input.at < HOLD ? input.t : pos();
+      input = { t: clamp(from + dx / (window.innerWidth * 0.55) * D, 0.05, D - 0.05), at: now };
+    }, { passive: true });
+    // Phones and tablets: drag sideways on the film; up and down still scrolls.
+    stage.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse" || !D) return;
+      drag = { x: e.clientX, y: e.clientY, t: pos(), w: stage.clientWidth, id: e.pointerId, live: false };
+    });
+    stage.addEventListener("pointermove", function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!drag.live) {
+        if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; }
+        if (Math.abs(dx) < 6) return;
+        drag.live = true; stage.classList.remove("show-hint");
+        try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      input = { t: clamp(drag.t + dx / drag.w * D * 1.2, 0.05, D - 0.05), at: performance.now() };
+    });
+    function endDrag() { if (drag && input) input.at = performance.now(); drag = null; }
+    stage.addEventListener("pointerup", endDrag);
+    stage.addEventListener("pointercancel", endDrag);
+    if (!window.matchMedia("(pointer: fine)").matches) {
+      stage.classList.add("show-hint");
+      setTimeout(function () { stage.classList.remove("show-hint"); }, 6000);
+    }
+
+    // Only run while he is on screen.
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        seen = es[0].isIntersecting && !document.hidden;
+        if (seen && vf.readyState >= 2) start();
+      }).observe(stage);
+    }
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) seen = false;
+      else { var r = stage.getBoundingClientRect(); seen = r.bottom > 0 && r.top < window.innerHeight; }
+      if (seen && vf.readyState >= 2) start();
+    });
   }
 
   /* ---- the chameleon: two eyes, two minds ------------------------------ */

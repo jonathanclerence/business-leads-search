@@ -68,11 +68,24 @@ def main():
                 problems.append(f"{cat}: chrome missing")
         check("all categories render within the copy rules", problems, [])
         surf = site.render(lead_for("Surf camps & surf schools", 99))
-        check("surf sites have the chameleon", "data-chameleon" in surf, True)
-        check("non-surf sites do not", "data-chameleon" in site.render(lead_for("Cafés", 98)), False)
+        check("surf sites have the filmed chameleon", ("data-surf-stage" in surf, "ride-lg.mp4" in surf), (True, True))
+        check("non-surf sites do not", "data-surf-stage" in site.render(lead_for("Cafés", 98)), False)
         stay = site.render(lead_for("Resorts & boutique hotels", 97))
         check("stays show the Google nightly price", "From LKR 9,500 a night" in stay, True)
         check("stays show the airport drive", "Bandaranaike Airport" in stay, True)
+        def small_photo(lead_id):
+            d = fake_details(lead_id)
+            d["photo_files"] = [{"file": "x-0.webp", "w": 900, "h": 1200, "text_chars": 0, "text_area": 0}]
+            return d
+        data.details = small_photo
+        villa = site.context(lead_for("Villas & holiday rentals", 50))
+        check("small photo: a villa gets the framed layout, not full screen", villa["variant"], 1)
+        trip = site.context(lead_for("Safari jeep operators", 51))
+        check("small photo: a trip uses a landmark hero and shows their photo by the intro",
+              (bool(trip["hero"].get("place")), bool(trip["own_inline"])), (True, True))
+        data.details = fake_details
+        big = site.context(lead_for("Safari jeep operators", 52))
+        check("big photo: their own photo fills the hero", (big["hero"].get("own"), big["own_inline"]), (True, None))
     finally:
         data.details = real
     check("names tidied", [site.clean_name(n, t) for n, t in [
