@@ -289,7 +289,8 @@ def _encode(data: bytes, stem: str) -> Dict[str, Any]:
 def shown_photos(lead: Dict[str, Any]) -> List[Dict[str, Any]]:
     """The business photos a site shows: the first usable one, two for stays."""
     from .tourism_copy import FAMILY
-    air = airbnb(lead['id']).get('photo_files') or []
+    family = FAMILY.get(lead.get('tourism_category') or '')
+    air = airbnb(lead['id']).get('photo_files') or [] if family in ('stay', 'hostel') else []
     if air:  # their own Airbnb listing has more and better photos than the Google cover
         return air
     det = details(lead['id'])

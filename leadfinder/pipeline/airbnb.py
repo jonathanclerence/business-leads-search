@@ -244,8 +244,8 @@ def rejudge(log=print) -> None:
         if not f.exists():
             continue
         r = json.loads(f.read_text())
-        if r.get('status') not in ('match', 'possible', 'none'):
-            continue
+        if r.get('status') not in ('match', 'possible', 'none') or r.get('held'):
+            continue  # 'held': a match checked by eye and put down to possible
         town = (lead.get('search_town') or '').split(',')[0].strip()
         kept = []
         for x in r.get('listings', []):
@@ -263,11 +263,13 @@ def result(lead_id: str) -> Dict[str, Any]:
 
 
 def stays(con) -> List[Dict[str, Any]]:
+    """Every tourism business with a preview. Stays first; surf camps, yoga
+    retreats and restaurants with rooms are often listed on Airbnb too."""
     from .sri_lanka import _tables
-    marks = ', '.join('?' for _ in STAY_CATEGORIES)
-    return [dict(r) for r in con.execute(
+    rows = [dict(r) for r in con.execute(
         f"SELECT * FROM {_tables()[0]} WHERE industry = 'Tourism' AND slug IS NOT NULL AND slug != '' "
-        f"AND tourism_category IN ({marks}) ORDER BY score DESC, reviews DESC, id", STAY_CATEGORIES)]
+        "ORDER BY score DESC, reviews DESC, id")]
+    return sorted(rows, key=lambda r: r['tourism_category'] not in STAY_CATEGORIES)
 
 
 def check(limit: Optional[int] = None, redo: bool = False, log=print) -> Dict[str, int]:
