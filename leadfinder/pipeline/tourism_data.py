@@ -289,6 +289,9 @@ def _encode(data: bytes, stem: str) -> Dict[str, Any]:
 def shown_photos(lead: Dict[str, Any]) -> List[Dict[str, Any]]:
     """The business photos a site shows: the first usable one, two for stays."""
     from .tourism_copy import FAMILY
+    air = airbnb(lead['id']).get('photo_files') or []
+    if air:  # their own Airbnb listing has more and better photos than the Google cover
+        return air
     det = details(lead['id'])
     usable_ = [p for p in det.get('photo_files') or [] if not is_flyer(p)]
     return usable_[:2 if FAMILY.get(lead.get('tourism_category') or '') == 'stay' else 1]
@@ -373,6 +376,19 @@ async def build_web(leads: List[Dict[str, Any]], workers: int = 6, log=print) ->
 def details(lead_id: str) -> Dict[str, Any]:
     f = DETAILS / f'{place_key(lead_id)}.json'
     return json.loads(f.read_text()) if f.exists() else {}
+
+
+AIRBNB = ROOT / 'batches/sri-lanka/airbnb'
+
+
+def airbnb(lead_id: str) -> Dict[str, Any]:
+    """What `python -m pipeline.airbnb` found for a business that is surely on
+    Airbnb under its own name (listing page details and photos), else {}."""
+    f = AIRBNB / f'{place_key(lead_id)}.json'
+    if not f.exists():
+        return {}
+    found = json.loads(f.read_text())
+    return found if found.get('status') == 'match' and found.get('page') else {}
 
 
 # --------------------------------------------------------------------------

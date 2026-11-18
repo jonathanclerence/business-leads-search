@@ -136,6 +136,7 @@
       {% if own_inline %}<figure class="own-photo">{{ pic(own_inline, '(min-width: 900px) 560px, 92vw', name ~ ', ' ~ town, lazy=True) }}</figure>{% endif %}
     </div>
     <dl class="facts">
+      {% if place_facts %}<div><dt>The place</dt><dd>{{ place_facts }}</dd></div>{% endif %}
       {% if rated %}<div><dt>Guests say</dt><dd><b>{{ rating }}</b> out of 5 from {{ reviews_fmt }} Google reviews</dd></div>{% endif %}
       {% if airport and family in ('stay', 'hostel', 'surf', 'ride', 'trip') %}<div><dt>Getting here</dt><dd>{{ airport | ucfirst }}</dd></div>{% endif %}
       {% if beach and family != 'ride' %}<div><dt>Closest beach</dt><dd>{{ beach.name }}, {{ beach.travel }}</dd></div>{% endif %}
@@ -242,6 +243,16 @@
   <div class="wrap two">
     <ul class="offer-list">{% for t, d in offer %}<li><h3>{{ t }}</h3><p>{{ d }}</p></li>{% endfor %}</ul>
     {% if hours %}<table class="hours">{% for d, h in hours %}<tr><th>{{ d }}</th><td>{{ h }}</td></tr>{% endfor %}</table>{% endif %}
+  </div>
+</section>
+{% endif %}
+
+{# ------------------------------------------------------------- their own photos #}
+{% if gallery|length > 1 %}
+<section class="sec gallery-sec">
+  <div class="wrap">
+    <h2 class="h2">A look around {{ name }}</h2>
+    <div class="gallery gallery-{{ gallery|length }}">{% for p in gallery %}<figure>{{ pic(p, '(min-width: 900px) 45vw, 92vw', name, lazy=True) }}</figure>{% endfor %}</div>
   </div>
 </section>
 {% endif %}

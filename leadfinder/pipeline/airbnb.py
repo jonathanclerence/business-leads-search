@@ -3,6 +3,10 @@
     python -m pipeline.airbnb check [--limit N] [--redo]   # look each stay up (slow, polite)
     python -m pipeline.airbnb report                       # counts + exports/airbnb_matches.csv
     python -m pipeline.airbnb rank [--apply] [--undo]      # move sure matches up the call list
+    python -m pipeline.airbnb details                      # read each sure match's listing page
+    python -m pipeline.airbnb photos                       # download and compress its photos
+    python -m pipeline.airbnb names [--apply]              # host's first name -> the lead's contact name
+    python -m pipeline.airbnb publish [--no-push]          # re-render the preview sites and push
 
 For every stay (resort, villa, guest house, hostel) that has a preview site,
 `check` opens Airbnb's public map search around the business's Google
@@ -327,6 +331,177 @@ def report(log=print) -> Dict[str, int]:
     return counts
 
 
+# --------------------------------------------------------------------------
+# The listing page of a sure match: host, what the place is, amenities, photos
+# --------------------------------------------------------------------------
+MAX_PHOTOS = 6
+_NOT_A_NAME = re.compile(r'\b(villa|villas|hotel|resort|homes?|stays?|house|guest|lodge|inn|hostel|rentals?|holidays?|'
+                         r'properties|property|management|group|team|tours?|travels?|lanka|ceylon|cabana|residenc\w+|pvt|ltd|'
+                         r'green|turtle|nature|night|beach|surf|eco|garden|view|blue|sun|sea|ocean)\b', re.I)
+
+
+def person_name(host: str, business: str = '') -> str:
+    """The host's first name, when the host profile is a person and not a business."""
+    host = re.sub(r'\s+', ' ', host or '').strip()
+    if set(tokens(host)) & set(tokens(business)) or len(host) < 3:
+        return ''  # the profile is named after the place
+    first = re.split(r'\s+(?:and|&|And)\s+|\s*[,/]\s*', host)[0].strip()
+    if not first or _NOT_A_NAME.search(host) or not re.fullmatch(r"[A-Za-z][A-Za-z.'-]{1,19}(?: [A-Za-z][A-Za-z.'-]{1,19})?", first):
+        return ''
+    return ' '.join(w.capitalize() if w.islower() or w.isupper() else w for w in first.split())
+
+
+def parse_listing(html: str) -> Dict[str, Any]:
+    import html as html_lib
+    out: Dict[str, Any] = {}
+    m = re.search(r'"text":"Hosted by ([^"]{1,80})"', html)
+    out['host'] = json.loads(f'"{m.group(1)}"') if m else ''
+    ld: Dict[str, Any] = {}
+    for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
+        try:
+            data = json.loads(block)
+        except ValueError:
+            continue
+        if isinstance(data, dict) and data.get('@type') in ('VacationRental', 'Hotel', 'LodgingBusiness', 'Product'):
+            ld = data
+            break
+    out['description'] = ld.get('description') or ''
+    m = re.search(r'<meta property="og:title" content="([^"]*)"', html)
+    out['overview'] = html_lib.unescape(m.group(1)) if m else ''
+    m = re.search(r'"propertyType":"([^"]*)"', html)
+    out['property_type'] = m.group(1) if m else ''
+    m = re.search(r'"personCapacity":(\d+)', html)
+    out['sleeps'] = int(m.group(1)) if m else 0
+    amenities: List[str] = []
+    m = re.search(r'"previewAmenitiesGroups":(\[.*?\]),"seeAllAmenitiesGroups"', html, re.S)
+    if m:
+        try:
+            for group in json.loads(m.group(1)):
+                amenities += [a['title'] for a in group.get('amenities', []) if a.get('available') and a.get('title')]
+        except ValueError:
+            pass
+    out['amenities'] = amenities
+    images = ld.get('image') or []
+    images = [images] if isinstance(images, str) else list(images)
+    for url in re.findall(r'https://a0\.muscache\.com/im/pictures/[^"?\\&]+\.(?:jpe?g|png|webp)', html):
+        if '/user/' not in url and 'Hosting-' in url or '/miso/' in url:
+            images.append(url)
+    seen: List[str] = []
+    for url in images:
+        url = url.split('?')[0]
+        if url not in seen and '/user/' not in url and '/pictures/airflow/' not in url:
+            seen.append(url)
+    out['photos'] = seen[:24]
+    return out
+
+
+def sure_matches() -> List[Dict[str, Any]]:
+    from . import db
+    with db.connect() as con:
+        leads = stays(con)
+    return [l for l in leads if result(l['id']).get('status') == 'match']
+
+
+def details(redo: bool = False, log=print) -> int:
+    done = 0
+    for lead in sure_matches():
+        f = OUT / f'{td.place_key(lead["id"])}.json'
+        r = json.loads(f.read_text())
+        if r.get('page') and not redo:
+            continue
+        try:
+            r['page'] = parse_listing(_get(r['listings'][0]['url']))
+        except Exception as e:  # noqa: BLE001
+            log(f'  {lead["name"]}: {e}')
+            continue
+        f.write_text(json.dumps(r, ensure_ascii=False, indent=1))
+        done += 1
+        page = r['page']
+        log(f'{lead["name"][:36]:36} host={page["host"][:18]:18} photos={len(page["photos"]):2} amenities={len(page["amenities"])} {page["overview"][:50]}')
+        time.sleep(PAUSE)
+    return done
+
+
+def photos(redo: bool = False, log=print) -> Dict[str, int]:
+    """Download each sure match's first photos and write the sharp AVIFs the
+    preview sites serve (same sizes as the Google photos)."""
+    stats = {'leads': 0, 'photos': 0, 'failed': 0}
+
+    def one(lead: Dict[str, Any]) -> None:
+        key = td.place_key(lead['id'])
+        f = OUT / f'{key}.json'
+        r = json.loads(f.read_text())
+        if not r.get('page') or (r.get('photo_files') and not redo):
+            return
+        saved: List[Dict[str, Any]] = []
+        for url in r['page']['photos']:
+            if len(saved) >= MAX_PHOTOS:
+                break
+            stem = f'{key}-a{len(saved)}'
+            try:
+                req = urllib.request.Request(url + '?im_w=1920', headers={'User-Agent': UA})
+                with urllib.request.urlopen(req, timeout=40) as resp:
+                    web = td._encode(resp.read(), stem)
+            except Exception as e:  # noqa: BLE001
+                stats['failed'] += 1
+                log(f'  {lead["name"]}: {e}')
+                continue
+            big = web['files'][max(web['files'])]
+            if web['src_w'] < 1000 or web['src_w'] < web['src_h'] * 0.9:  # too small, or a tall phone shot
+                continue
+            saved.append({'file': stem + '.webp', 'w': big[0], 'h': big[1], 'web': web, 'source': 'airbnb', 'from': url})
+        r['photo_files'] = saved
+        f.write_text(json.dumps(r, ensure_ascii=False, indent=1))
+        stats['leads'] += 1
+        stats['photos'] += len(saved)
+        log(f'{lead["name"][:40]:40} {len(saved)} photos')
+
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(6) as pool:
+        list(pool.map(one, sure_matches()))
+    return stats
+
+
+def names(apply: bool = False, log=print) -> int:
+    """Put the Airbnb host's first name on leads that have no contact name yet."""
+    from . import db
+    from .sri_lanka import _tables
+    tbl, ev_tbl = _tables()
+    ts = datetime.now(timezone.utc).isoformat(timespec='seconds')
+    changes = []
+    for lead in sure_matches():
+        host = (result(lead['id']).get('page') or {}).get('host') or ''
+        name = person_name(host, lead['name'])
+        if name and not (lead.get('contact_name') or '').strip():
+            changes.append((name, lead['id'], lead['name'], host))
+    for name, _, business, host in changes:
+        log(f'  {business[:40]:40} {name}  (Airbnb host: {host})')
+    if apply and changes:
+        with db.connect() as con:
+            con.executemany(f"UPDATE {tbl} SET contact_name = ? WHERE id = ? AND COALESCE(contact_name, '') = ''",
+                            [(n, i) for n, i, _, _ in changes])
+            con.executemany(f'INSERT INTO {ev_tbl} (lead_id, at, detail) VALUES (?, ?, ?)',
+                            [(i, ts, f'Contact name {n} taken from the Airbnb host profile ("{h}"). Confirm on the call.')
+                             for n, i, _, h in changes])
+    log(f'{len(changes)} names {"saved" if apply else "found (add --apply)"}')
+    return len(changes)
+
+
+def publish(push: bool = True, log=print) -> Dict[str, Any]:
+    """Re-render every live preview (the Airbnb ones pick up their new photos
+    and details) and push the marketing site."""
+    from . import db, publish as pub
+    with db.connect() as con:
+        leads = pub.active_leads(con) + pub.active_lk_leads(con)
+    target = pub.prepare_worktree(log)
+    pub.refresh_info_pack(log)
+    log(f'Rendering {len(leads)} preview pages…')
+    stats = pub.write_site_files(target, leads)
+    n = len(sure_matches())
+    pushed = pub.commit_and_push(target, f'Sri Lanka previews: Airbnb photos and details on {n} stays', push, log)
+    return dict(stats, pushed=bool(pushed and push))
+
+
 RANK_BONUS = 10
 _WHY = ' · Listed on Airbnb: '
 
@@ -362,12 +537,24 @@ def main() -> None:
     c.add_argument('--redo', action='store_true')
     sub.add_parser('report')
     sub.add_parser('rejudge')
+    for cmd in ('details', 'photos'):
+        sub.add_parser(cmd).add_argument('--redo', action='store_true')
+    sub.add_parser('names').add_argument('--apply', action='store_true')
+    sub.add_parser('publish').add_argument('--no-push', action='store_true')
     k = sub.add_parser('rank')
     k.add_argument('--apply', action='store_true')
     k.add_argument('--undo', action='store_true')
     a = ap.parse_args()
     if a.cmd == 'check':
         print(check(a.limit, a.redo))
+    elif a.cmd == 'details':
+        print(details(a.redo))
+    elif a.cmd == 'photos':
+        print(photos(a.redo))
+    elif a.cmd == 'names':
+        names(a.apply)
+    elif a.cmd == 'publish':
+        print(json.dumps(publish(not a.no_push), indent=2))
     elif a.cmd == 'rejudge':
         rejudge()
         report()

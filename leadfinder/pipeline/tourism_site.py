@@ -210,6 +210,46 @@ def nice_amenity(a: str) -> str:
             'Free breakfast': 'Breakfast included', 'Paid breakfast': 'Breakfast available'}.get(a, a)
 
 
+_AMENITY_SKIP = re.compile(r'alarm|camera|extinguisher|first aid|lock|hanger|essentials|linen|iron|dryer|shampoo|soap|'
+                           r'hot water|noise|monitor|allowed|check|luggage|long.term|host greets|cleaning|workspace|paid ', re.I)
+_AMENITY_NAMES = {'Wifi': 'Free Wi-Fi', 'Free parking on premises': 'Free parking', 'Free street parking': 'Free parking',
+                  'TV': 'TV', 'Air conditioning': 'Air conditioning', 'Breakfast': 'Breakfast', 'Kitchen': 'Kitchen',
+                  'Pool': 'Pool', 'Washer': 'Washing machine', 'BBQ grill': 'Barbecue'}
+
+
+def airbnb_amenities(titles: List[str]) -> List[str]:
+    out: List[str] = []
+    for t in titles:
+        t = re.split(r'\s*[—–,(]\s*|\s+-\s+', t)[0].strip()
+        if not t or _AMENITY_SKIP.search(t) or len(t) > 28:
+            continue
+        t = 'TV' if re.search(r'\bTV\b', t) else _AMENITY_NAMES.get(t, t)
+        if not same_amenity(t, out):
+            out.append(t)
+    return out
+
+
+def same_amenity(a: str, have: List[str]) -> bool:
+    def key(x: str) -> str:
+        return re.sub(r'^(free|paid|shared|private|outdoor|central) ', '', x.lower()).replace('-', '')
+    return any(key(a) == key(h) for h in have)
+
+
+def place_facts(page: Dict[str, Any]) -> str:
+    """'Whole villa with 4 bedrooms, 7 beds and 3 baths. Sleeps 10.' Only for
+    whole places: one room of a guest house says nothing about the house."""
+    if not (page.get('property_type') or '').lower().startswith('entire'):
+        return ''
+    parts = [p.strip() for p in (page.get('overview') or '').split('·')]
+    kind = parts[0].split(' in ')[0].strip().lower() if parts and ' in ' in parts[0] else 'place'
+    rooms = [p for p in parts[1:] if re.match(r'\d+ (bedroom|bed|bath)', p)]
+    if not rooms:
+        return ''
+    listed = rooms[0] if len(rooms) == 1 else ', '.join(rooms[:-1]) + ' and ' + rooms[-1]
+    sleeps = f" Sleeps {page['sleeps']}." if page.get('sleeps') else ''
+    return f'Whole {kind} with {listed}.{sleeps}'
+
+
 # With no usable photo of their own, the hero is the nearest real place of these kinds.
 HERO_KINDS = {
     'Safari jeep operators': ('wildlife', 'lake'),
@@ -270,6 +310,12 @@ def context(lead: Dict[str, Any], assets: str = '/previewsite-assets') -> Dict[s
         spot = next((a for k in likes for a in near if a['kind'] == k), near[0])
         near = [spot] + [a for a in near if a is not spot]
         hero = dict(near[0]['pic'], place=near[0])
+    page = data.airbnb(lead['id']).get('page') or {}
+    amenities = airbnb_amenities(page.get('amenities') or [])
+    for a in (nice_amenity(a) for a in det.get('amenities', [])):
+        if not same_amenity(a, amenities):
+            amenities.append(a)
+    shown = 2 if family == 'stay' else 1
     rating, reviews = lead.get('rating') or det.get('rating'), lead.get('reviews') or det.get('reviews') or 0
     rated = bool(rating and rating >= 4.0 and reviews >= 5)
     booking = copy.BOOKING_BY_CATEGORY.get(cat, copy.BOOKING[family])
@@ -297,7 +343,8 @@ def context(lead: Dict[str, Any], assets: str = '/previewsite-assets') -> Dict[s
                        else '(min-width: 980px) 45vw, 92vw' if family == 'local'
                        else '(min-width: 980px) 560px, 92vw'),
         'hero': hero, 'photos': photos, 'near': near, 'surf_break': surf, 'beach': beach,
-        'amenities': [nice_amenity(a) for a in det.get('amenities', [])][:10],
+        'amenities': amenities[:10], 'place_facts': place_facts(page),
+        'gallery': [p for p in photos[shown:] if p is not hero and p is not own_inline][:4],
         'price': det.get('price', ''), 'checkin': det.get('checkin', ''), 'hours': nice_hours(det.get('hours') or []),
         'season': season_for(info, cat, lead['name']),
         'airport': airport_drive(lat, lng) if lat is not None else '',
