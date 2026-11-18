@@ -217,10 +217,13 @@ function scriptHtml(r){
   const ratingHook=r.rating&&r.reviews
     ?`saw your ${esc(r.rating)}-star rating and ${esc(r.reviews)} reviews`
     :(r.reviews?`saw your ${esc(r.reviews)} Google reviews`:`came across your listing in ${town}`);
+  const reputation=r.rating&&r.reviews
+    ?`a ${esc(r.rating)}-star reputation from ${esc(r.reviews)} reviews`
+    :`a good name in ${town}`;
 
   return `
   <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-    <span class="note muted">Goal: <b>Hook in 15s → Show live preview → Close the Growth Package (LKR 39,000)</b></span>
+    <span class="note muted">Goal: <b>Hook in 15s → Ask, don't tell → Show live preview → Close the Growth Package (LKR 39,000)</b></span>
     <label style="display:inline-flex;align-items:center;gap:6px;margin:0;font-size:12px">Your name <input id="repNameInput" value="${esc(callerName())}" placeholder="e.g. Aaruran" style="width:110px;padding:4px 8px"></label>
   </div>
 
@@ -241,17 +244,29 @@ function scriptHtml(r){
     <p class="note muted">👉 <b>Action:</b> Type the owner's name into <b>Who to contact / Owner name</b> and their number into <b>Owner's direct phone / WhatsApp</b> in the Call Log section above, then call or WhatsApp the owner directly.</p>
   </details>
 
-  <p class="branch">Step 2B · Once Speaking to the Owner (Why You Built It)</p>
+  <p class="branch">Step 2B · Once Speaking to the Owner — Ask Before You Tell</p>
+  <p class="note muted">The owner should say the problem out loud, not you. Ask, then <b>stop talking</b> and write down their exact words in the call notes — you will use them again at the close.</p>
+  <p class="say"><b>Permission:</b> “Before I show it to you — can I ask you a quick question about how customers find <b>${name}</b>?”<br><br>
+  <b>Root cause:</b> ${isSocial
+    ?`“When someone sees one of your posts on ${socialName} and wants to check prices or book — what do they have to do next?”`
+    :isDir
+    ?`“Roughly how many of your bookings come through <b>${dirName}</b>, compared to people who contact you directly?”`
+    :`“When someone hears about <b>${name}</b> from a friend and wants to check you out before calling — where do they go?”`}<br><br>
+  <b>Probe</b> <span class="muted"><i>(repeat their own words back)</i></span>: “When you say <i>[their words — e.g. ‘they just DM us’ / ‘most of them’ / ‘they call’]</i>, what do you mean by that?”</p>
+  <p class="note muted">💡 <b>If they brush it off</b> (“it's fine”, “we're busy”): ask <b>one</b> more time, calmly — “Fair enough. When you say it's fine, do you mean you're fully booked every week, or is there room for more?” If they really are full, believe them and go straight to Step 3. Never push a third time.</p>
+
+  <p class="branch">Step 2C · Ask Permission, Then Show Them the Customer's View</p>
+  <p class="say">“Can I make a suggestion?” <span class="muted"><i>(Wait for “yes”.)</i></span><br><br>
   ${isSocial?`
-  <p class="say">“I saw you've got your <b>${socialName}</b> linked right now, which is great for photos and reels. The reason I built this for <b>${name}</b> is that on ${socialName}, posts get buried fast and customers have to DM ‘price pls’ and wait around just to check packages or book — half of them drop off.<br><br>
-  And when higher-paying locals or tourists search <b>${name}</b> on Google, they expect a proper website like <b>${dom}</b> where they can ${payoff} in 10 seconds and hit one button to message you on WhatsApp.”</p>
+  “Put yourself in the shoes of someone who has never heard of you and searches <b>${name}</b> on Google tonight. They land on your <b>${socialName}</b> — great for photos and reels — but posts get buried fast, and to ${payoff} they have to DM ‘price pls’ and wait. If you were that customer, would you wait, or message the next place?<br><br>
+  That's why we built a proper site for <b>${name}</b> (like <b>${dom}</b>) — they see everything in 10 seconds and hit one button to WhatsApp you.”
   `:isDir?`
-  <p class="say">“I noticed when people search <b>${name}</b> on Google, they get sent to <b>${dirName}</b> — which means right underneath your photos, customers are shown five of your competitors, plus you lose 15% to 20% commission on every booking.<br><br>
-  So we built a standalone site for <b>${name}</b> (<b>${dom}</b>) so people finding you on Google or Instagram can ${payoff} directly with you — zero commission.”</p>
+  “Put yourself in the shoes of a guest searching <b>${name}</b> on Google tonight. They get sent to <b>${dirName}</b> — and right underneath your photos they are shown five of your competitors. And if they do book you, 15% to 20% of it goes in commission. Looking at it as that guest, what would you do?<br><br>
+  That's why we built a standalone site for <b>${name}</b> (<b>${dom}</b>) — so people finding you on Google or Instagram can ${payoff} directly with you, zero commission.”
   `:`
-  <p class="say">“You've already done the hard part building a strong reputation in ${town}. Right now, when someone hears about <b>${name}</b> or finds you on Google Maps, the website button is blank — so anyone who wants to ${payoff} before calling has nowhere to go.<br><br>
-  Instead of calling you with an empty sales pitch, we already built the sample site for <b>${name}</b> so you can judge it with your own eyes.”</p>
-  `}
+  “You've already done the hard part building a strong reputation in ${town}. Now put yourself in the shoes of someone who just heard about <b>${name}</b> and finds you on Google Maps tonight. The website button is blank — so if they want to ${payoff} before calling, there's nowhere to go. If you were that customer, what would you do next?<br><br>
+  Instead of calling you with an empty sales pitch, we already built the sample site for <b>${name}</b> so you can judge it with your own eyes.”
+  `}</p>
 
   <p class="branch">Step 3 · Get Them Looking at Their Live Preview (Ownership Transfer)</p>
   ${r.code?`
@@ -262,7 +277,19 @@ function scriptHtml(r){
   <p class="say">“Have a look at how we laid out your services, your Google rating, and the WhatsApp enquiry flow. You can even change the colours on screen. Honestly, how does that look to you? Would you keep those colours or swap in your own photos?”</p>
   <p class="note muted">💡 <b>Sales tip:</b> Pause and let them talk. Once they say <i>“I'd change that photo”</i> or <i>“Can we add our price list?”</i>, they are already picturing owning it.</p>
 
-  <p class="branch match">Step 4 · Pitch the Growth Package (LKR 39,000 + 50% Off 1st Year Hosting)</p>
+  <p class="branch">Step 4 · Before You Say a Price — What Does Doing Nothing Cost?</p>
+  <p class="say"><b>Cost of doing nothing:</b> ${isSocial
+    ?`“If people keep having to DM for prices and some of them don't wait for a reply — how many enquiries a week do you think that costs you?”`
+    :isDir
+    ?`“If bookings keep going through <b>${dirName}</b> for the next 12 months — roughly what does that commission add up to?”`
+    :`“If that website button stays blank for another year — where do the people who wanted to check you out first end up going?”`}
+  <span class="muted"><i>(Let them work out the number themselves. Don't fill the silence.)</i></span><br><br>
+  <b>Look ahead:</b> “And if it's still like that a year from now — what does that look like for <b>${name}</b>?”<br><br>
+  <b>Challenge</b> <span class="muted"><i>(friendly, not accusing)</i></span>: “You've built ${reputation}. Is leaving it like this something you're happy to settle for?”<br><br>
+  <b>Let them say the fix:</b> “So what would you rather happen when someone searches <b>${name}</b>?”</p>
+  <p class="note muted">💡 <b>Sales tip:</b> Whatever they answer here (“they should book with us directly”, “see our prices”) is the reason they buy. Write it down, then pitch the package as the way to get <i>their</i> answer — not as your idea. Pick the 2 questions that fit the call; four in a row sounds like an interrogation.</p>
+
+  <p class="branch match">Step 5 · Pitch the Growth Package (LKR 39,000 + 50% Off 1st Year Hosting)</p>
   <p class="say">“We can swap in all your real photos and your exact packages in 3 days. And because we already built the base for <b>${name}</b>, we don't charge agency prices like 120,000 or 150,000 rupees, and there's no monthly retainer:<br><br>
   • We do have a large 5-page <b>Pro package at LKR 69,000</b> (which includes full copywriting, photo gallery, Google &amp; Meta ad tracking, and <b>first year domain and hosting completely free</b>).<br><br>
   • <b>But honestly, for ${name}, I recommend our Growth Package at LKR 39,000 one-off.</b> That's our sweet spot — you get:<br>
@@ -274,17 +301,21 @@ function scriptHtml(r){
   • And if someone only wants a basic 1-page digital flyer as-is, our <b>Foundation starter is LKR 25,000</b> (with <b>15% off first-year domain &amp; hosting</b>).<br><br>
   Between the 3-page <b>Growth package at 39k</b> (with the WhatsApp booking form and 50% off hosting) and the 1-page starter, Growth is the one that actually brings in bookings. How does the Growth setup sound for <b>${name}</b>?”</p>
 
-  <p class="branch">Step 5 · The Close (Zero Risk — 50% Deposit, 50% Only When Happy)</p>
-  <p class="say">“Here's how we make it zero risk for you: you don't pay the 39,000 upfront. It's 50% (LKR 19,500) to register your domain and get our designer putting your photos and prices in, and the other 50% <b>only after</b> you've seen the finished site on your phone and you're 100% happy to put it live.<br><br>
+  <p class="branch">Step 6 · The Close (Zero Risk — 50% Deposit, 50% Only When Happy)</p>
+  <p class="say"><b>Get their “yes” in their own words first:</b> “So just so I've got it right — you'd rather <i>[what they said in Step 4, e.g. ‘people book with us directly’]</i>. Is that right?” <span class="muted"><i>(Wait for “yes”.)</i></span><br><br>
+  “Here's how we make it zero risk for you: you don't pay the 39,000 upfront. It's 50% (LKR 19,500) to register your domain and get our designer putting your photos and prices in, and the other 50% <b>only after</b> you've seen the finished site on your phone and you're 100% happy to put it live.<br><br>
   Let me send the preview link and our 5-page Website Pack PDF to your WhatsApp right now. If you like what you see, we can get <b>${name}</b> live in 3 days. Shall I send that to this number?”</p>
 
   <details class="sub-details">
-    <summary>Step 6 · Handling Objections (Don't Let Them Brush You Off)</summary>
+    <summary>Step 7 · Handling Objections (Don't Let Them Brush You Off)</summary>
+    <p class="note muted"><b>Rule for every objection:</b> don't answer it straight away. Acknowledge it (“I hear you”), then probe once — <i>“When you say [their words], what do you mean by that?”</i> — and answer the real reason they give you, which is often different from the first thing they said.</p>
     <p><b>1. “Just WhatsApp me the details, I'll look later.”</b><br>
     “Sending it to your WhatsApp right now — it just went through. Do me one quick favour: just tap the link to make sure it opens on your phone while I'm here. Look at the top section — does that style suit <b>${name}</b>, or would you want darker/lighter colours? Great — have a proper read of page 3 (the 39k Growth pack with 50% off hosting) tonight, and I'll give you a quick 2-minute ring tomorrow around 11am or 4pm. Which time is better for you?”</p>
     <p><b>2. “39,000 is a bit out of budget right now.” (Down-sell to Foundation 25k)</b><br>
+    <i>Probe first:</i> “I hear you. When you say out of budget, do you mean the 39,000 in total, or paying it all right now?” <span class="muted"><i>(If it's the timing, remind them it's only 19,500 to start. If it's the total:)</i></span><br>
     “I completely understand. Here's what we can do so you don't miss out: start on our <b>Foundation package at LKR 25,000</b> (plus 15% off first year domain and hosting). Since it's 50/50 payment, it's just <b>LKR 12,500 to start</b> and 12,500 when it's ready. That gets <b>${name}</b> live on Google with your photos and WhatsApp button in 2 days — and whenever you want to upgrade to the 3-page Growth site later, you only pay the 14k difference. Fair enough?”</p>
     <p><b>3. “We get enough business from Instagram / Facebook / word of mouth.”</b><br>
+    <i>Probe first:</i> “That's great to hear. When you say enough, do you mean you're turning people away, or could you take a few more each week?”<br>
     “That's why your reviews are so good! Your website isn't there to replace Instagram or word of mouth — it closes the people who hear about <b>${name}</b> from a friend or see a reel and then Google you. Even 2 or 3 extra customers all year pays off the entire 39k Growth site for life.”</p>
     <p><b>4. “I need to discuss with my partner / husband / wife.”</b><br>
     “100% — you should both see the live preview together. What's their name so I can include it on the proposal? I'll send the preview link and the PDF pack to your WhatsApp right now so you can show them tonight, and I'll call you back tomorrow afternoon once you've both had a look.”</p>
