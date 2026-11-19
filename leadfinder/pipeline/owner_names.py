@@ -7,7 +7,10 @@ Sources, most trustworthy first:
   profile   the website link is a personal Facebook profile (first.last.123)
   named     the business is named after a person: "Nimal's Place",
             "Villa by Dilan", "Uncle Sunil Homestay", "Kumara & family"
-Airbnb host names are handled by `python -m pipeline.airbnb names`.
+  trade     the business is a first name plus a trade: "Jayantha Salon",
+            "Sameera Tours". Often the owner, sometimes a son or daughter.
+Airbnb host names are handled by `python -m pipeline.airbnb names`; names from
+the Sri Lanka Tourism register by `python -m pipeline.sltda names`.
 
 A name is only taken when it is a known given name (GIVEN below), so
 "Mama's Kitchen" and "Stay by the Sea" are left alone. Every name written is
@@ -57,6 +60,24 @@ _PATTERNS = [
     re.compile(r"\b(?:Uncle|Aunty|Mr|Mrs|Chef|Captain|Capt|Master)\.? ([A-Z][a-z]{2,13})\b"),
     re.compile(r"\b([A-Z][a-z]{2,13}) (?:&|and) (?:[Ff]amily|[Ss]ons|[Bb]rothers)\b"),
 ]
+# "Jayantha Salon": a first name straight before a trade word. Names that are
+# also everyday words, gods or saints are left out, as are temples and schools.
+_AMBIGUOUS = set('''
+sagara saman samantha kumari lakshmi ganesh murugan siva shanthi amara aruna udaya ravi roy sam mark paul peter
+john joseph anthony antony george francis jude bandara kumara kumar priya nilu ranga sisira wasantha kanchana
+pushpa malini meena bala gopal mohan vijay shakthi madhura nayana ishara tharaka thushara asiri sanka nipuna
+prasanna charles michael stephen richard christopher dominic patrick angelo tony kevin ryan shane eric denver
+marcus roger jerome nathan rajan prabu arun
+'''.split())
+_TRADE = re.compile(
+    r"^\W*(?:new |sri |hotel |villa |the )?([A-Za-z]{3,14}) (?:tours?|travels?|stores?|motors?|salon|saloon|tailors?|"
+    r"hardware|bakers?|bakery|hotel|villa|guest|home ?stay|inn|rest|resort|cabanas?|restaurant|cafe|studio|"
+    r"electricals?|traders?|trade|enterprises?|garage|auto|cabs?|taxi|safari|pharmacy|textiles?|fashion|"
+    r"jewell?ers?|communications?|agency|services?|engineering|furniture|book ?shop|grocery|super|mart|video|"
+    r"photo|photography|tyres?|battery|cycle|lodge|place|house|kitchen|foods?|catering|transport|lanka|ayurveda|"
+    r"spa|beauty|printers?|timber|mills?|farm|rent)\b", re.I)
+_NOT_A_BUSINESS = re.compile(r'temple|church|school|college|vidyal|hospital|memorial|kovil|mosque|devalaya|viharaya|'
+                             r'road|mawatha|bank|station|stadium|university|institute', re.I)
 _PROFILE = re.compile(r'(?:facebook|fb)\.com/([a-z]{3,14})[._]([a-z]{3,16})[._]\d{1,6}/?(?:\?|$)', re.I)
 
 
@@ -69,12 +90,16 @@ def find(name: str, website: str = '') -> Optional[Tuple[str, str]]:
     m = _PROFILE.search(website or '')
     if m and (_ok(m.group(1)) or _ok(m.group(2))):
         return (_ok(m.group(1)) or m.group(1).capitalize()), 'profile'
+    m = _TRADE.search(name or '')
+    if m and _ok(m.group(1)) and m.group(1).lower() not in _AMBIGUOUS and not _NOT_A_BUSINESS.search(name):
+        return _ok(m.group(1)), 'trade'
     return None
 
 
 SOURCE_NOTE = {
     'profile': 'their website link is a personal Facebook profile',
     'named': 'the business is named after them',
+    'trade': 'the business name starts with it (could be a family member)',
 }
 
 
@@ -90,7 +115,7 @@ def run(apply: bool = False, log=print) -> Dict[str, int]:
         hit = find(r['name'], r['website'] or '')
         if hit:
             found.append((hit[0], hit[1], r['id'], r['name'], bool(r['slug'])))
-    counts = {'profile': 0, 'named': 0, 'with_preview': 0}
+    counts = {'profile': 0, 'named': 0, 'trade': 0, 'with_preview': 0}
     for name, source, _, business, preview in found:
         counts[source] += 1
         counts['with_preview'] += preview
